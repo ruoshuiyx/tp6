@@ -1,14 +1,14 @@
 <?php
 /**
  * +----------------------------------------------------------------------
- * | 公共钩子模型
+ * | 友情链接验证器
  * +----------------------------------------------------------------------
  *                      .::::.
  *                    .::::::::.            | AUTHOR: siyu
  *                    :::::::::::           | EMAIL: 407593529@qq.com
  *                 ..:::::::::::'           | QQ: 407593529
  *             '::::::::::::'               | WECHAT: zhaoyingjie4125
- *                .::::::::::               | DATETIME: 2019/03/04
+ *                .::::::::::               | DATETIME: 2019/03/06
  *           '::::::::::::::..
  *                ..::::::::::::.
  *              ``::::::::::::::::
@@ -23,12 +23,24 @@
  *                      '.:::::'                    ':'````..
  * +----------------------------------------------------------------------
  */
-namespace app\common\model;
+namespace app\admin\validate;
 
-class Hooks extends Base
+use think\Validate;
+
+class Link extends Validate
 {
-    // 定义时间戳字段名
-    protected $createTime = 'create_time';
-    protected $updateTime = 'update_time';
-
+    protected $rule = [
+        'name|网站名称' => [
+            'require' => 'require',
+            'max'     => '255',
+        ],
+        'url|网站地址' => [
+            'require' => 'require',
+            'max'     => '255',
+        ],
+        'sort|排序' => [
+            'require' => 'require',
+            'number'  => 'number'
+        ],
+    ];
 }
