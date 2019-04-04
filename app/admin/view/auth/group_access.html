@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>后台管理面板</title>
+  <!-- 告诉浏览器该页面是自适应布局 -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+   {include file="index/top" /}
+   <link rel="stylesheet" href="/static/plugins/zTree_v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
+</head>
+<body class="hold-transition skin-blue sidebar-mini">	
+<div class="wrapper">
+    <div class="content-wrapper" style="margin-left: 0 !important;">
+        <!--页眉-->
+        <section class="content-header">
+          <h1>配置权限</h1>
+        </section>
+        <!--内容开始-->
+        <section class="content">
+        	<form method="post" name="myForm" id="myForm" action="">
+            <ul id="treeDemo" class="ztree"></ul>
+            <div class="row dd_input_group">
+	        		<div class="form-group">
+	              <div class="col-sm-4 col-xs-8">
+	                	<button type="submit" class="btn btn-flat btn-primary ">提 交</button> 
+	                	<button type="button" class="btn btn-flat btn-default" onclick="javascript :history.back(-1)">返 回</button>
+	              </div>
+	
+	            </div>
+	        </div>
+          </div>  
+        </section>
+        <!-- right col -->
+      </div>
+      <!-- /.row (main row) -->
+
+    </section>
+        <!--内容结束-->
+    </div>
+</div>
+{include file="index/bottom" /} 
+
+
+<script type="text/javascript" src="/static/plugins/zTree_v3/js/jquery.ztree.core.js"></script>
+<script type="text/javascript" src="/static/plugins/zTree_v3/js/jquery.ztree.excheck.js"></script>
+<SCRIPT type="text/javascript">
+		<!--
+		var setting = {
+			check: {
+				enable: true
+			},
+			data: {
+				simpleData: {
+					enable: true
+				}
+			}
+		};
+
+		var zNodes =[
+			{volist name='list' id='list'}
+    			{ id:{$list.id}, pId:{$list.pid}, name:"{$list.title}",checked:{$list.checked?'true':'false'}, open:true},
+    		{/volist}
+		];
+		
+		var code;
+		
+		function setCheck() {
+			 var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+        	zTree.setting.check.chkboxType = { "Y":"ps", "N":"s"}; //勾选 checkbox 对于父子节点的关联关系。默认值：{ "Y": "ps", "N": "ps" }
+		}
+		function showCode(str) {
+			if (!code) code = $("#code");
+			code.empty();
+			code.append("<li>"+str+"</li>");
+		}
+		
+		$(document).ready(function(){
+			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+			setCheck();
+			$("#py").bind("change", setCheck);
+			$("#sy").bind("change", setCheck);
+			$("#pn").bind("change", setCheck);
+			$("#sn").bind("change", setCheck);
+		});
+		//-->
+		
+$("#myForm").submit(function(){
+	var treeObj=$.fn.zTree.getZTreeObj("treeDemo"),
+	    nodes=treeObj.getCheckedNodes(true),
+	    v="";
+	for(var i=0;i<nodes.length;i++){
+	    v+=nodes[i].id + ",";
+	}
+	var id = "{:input('id')}";
+	var url = "{:url('groupSetaccess')}";
+	$.post(url,{id:id,rules:v},function(result){
+		if(result.error == 0){
+			swal(result.msg,'','success').then(function(){
+				window.location.href = result.url;
+			});
+		}else{
+			swal(result.msg,'','error');
+		}
+	})
+	return false;
+})
+
+	</SCRIPT>
+</body>
+</html>    

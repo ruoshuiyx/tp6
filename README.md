@@ -1,37 +1,34 @@
-# tp6
+ThinkPHP 6.0
+===============
 
-#### 介绍
-基于ThinkPHP6开发的快速开发框架
-
-#### 软件架构
-软件架构说明
+> 运行环境要求PHP7.1+。
 
 
-#### 安装教程
+## 安装
 
-1. xxxx
-2. xxxx
-3. xxxx
+~~~
+composer create-project topthink/think tp 6.0.*-dev
+~~~
 
-#### 使用说明
+如果需要更新框架使用
+~~~
+composer update topthink/framework
+~~~
 
-1. xxxx
-2. xxxx
-3. xxxx
+## 参与开发
 
-#### 参与贡献
+请参阅 [ThinkPHP 核心框架包](https://github.com/top-think/framework)。
 
-1. Fork 本仓库
-2. 新建 Feat_xxx 分支
-3. 提交代码
-4. 新建 Pull Request
+## 版权信息
 
+ThinkPHP遵循Apache2开源协议发布，并提供免费使用。
 
-#### 码云特技
+本项目包含的第三方源码和二进制文件之版权信息另行标注。
 
-1. 使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2. 码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3. 你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4. [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5. 码云官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6. 码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+版权所有Copyright © 2006-2019 by ThinkPHP (http://thinkphp.cn)
+
+All rights reserved。
+
+ThinkPHP® 商标和著作权所有者为上海顶想信息科技有限公司。
+
+更多细节参阅 [LICENSE.txt](LICENSE.txt)

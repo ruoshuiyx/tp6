@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>后台管理面板</title>
+  <!-- 告诉浏览器该页面是自适应布局 -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+   {include file="index/top" /}
+</head>
+<body class="hold-transition skin-blue sidebar-mini">	
+<div class="wrapper">
+    <div class="content-wrapper" style="margin-left: 0 !important;">
+        <!--页眉-->
+        <section class="content-header">
+          <h1>{$info?'修改':'添加'}权限</h1>
+        </section>
+        <!--内容开始-->
+        <section class="content">
+            <div class="search">
+            	<form class="form-inline" action="">
+                 <input class="btn btn-flat btn-primary m_10_l_0" onclick="location.href='{:url('Auth/adminRule')}'" type="button" value="显示全部">
+                 <a class="btn btn-flat btn-success m_10 f_r" onclick="javascript :history.back(-1)"><i class="fa fa-undo m-r-10"></i>返 回</a>  
+            	</form> 
+            	
+            </div>
+            <!--数据表开始-->
+            <div class="row">
+                <div class="col-xs-12">
+                	<div class="box box-body">
+                		{if $info}
+                		<form method="post" action="{:url('Auth/ruleEdit')}">
+                			<input type="hidden" name="id" value="{$info.id}"/>
+                		{else /}
+                		<form method="post" action="{:url('Auth/ruleAdd')}">
+                		{/if}
+		                	<!---->
+		                	<div class="row dd_input_group">
+			                	<div class="form-group">
+				                  <label class="col-sm-1 col-xs-4 control-label dd_input_l">父级</label>
+				                  <div class="col-sm-4 col-xs-8">
+				                    <select name="pid" class="form-control">
+						                    <option value="0">默认顶级</option>
+						                    {volist name="ruleList" id="vo"}
+						                    {if $info}
+						                    	<option {if $info['pid']==$vo.id}selected{/if} value="{$vo.id}">{$vo.ltitle}</option>
+						                    {else /}
+						                    	<option {if $pid==$vo.id}selected{/if} value="{$vo.id}">{$vo.ltitle}</option>
+						                    {/if}
+						                    {/volist}
+						                </select>
+				                  </div>
+				                  <div class="col-sm-4 dd_ts"></div>
+				                </div>
+			                </div>	
+		                	<!---->
+		                	<div class="row dd_input_group">
+			                	<div class="form-group">
+				                  <label class="col-sm-1 col-xs-4 control-label dd_input_l">权限名称</label>
+				                  <div class="col-sm-4 col-xs-8">
+				                    <input type="text" name="title" class="form-control" placeholder="请输入权限名称" value="{$info.title}">
+				                  </div>
+				                </div>
+			                </div>
+			                <!---->
+		                	<div class="row dd_input_group">
+			                	<div class="form-group">
+				                  <label class="col-sm-1 col-xs-4 control-label dd_input_l">控制器/方法</label>
+				                  <div class="col-sm-4 col-xs-8">
+				                    <input type="text" name="name" class="form-control" placeholder="请输入控制器/方法" value="{$info.name}">
+				                  </div>
+				                </div>
+			                </div>
+			                <!---->
+			                <div class="row dd_input_group">
+			                	<div class="form-group">
+				                  <label class="col-sm-1 col-xs-4 control-label dd_input_l">图标名称</label>
+				                  <div class="col-sm-4 col-xs-8">
+				                    <input type="text" name="icon" class="form-control" placeholder="请输入图标名称" value="{$info.icon}">
+				                  </div>
+				                  <div class="col-sm-4 dd_ts"></div>
+				                </div>
+			                </div>
+			                <!---->
+			                <div class="row dd_input_group">
+			                	<div class="form-group">
+				                  <label class="col-sm-1 col-xs-4 control-label dd_input_l">排 序</label>
+				                  <div class="col-sm-4 col-xs-8">
+				                    <input type="text" name="sort" class="form-control" placeholder="请输入排序编号" value="{$info.sort?$info.sort:'50'}">
+				                  </div>
+				                  <div class="col-sm-4 dd_ts"></div>
+				                </div>
+			                </div>
+			                <!---->
+			                <div class="row dd_input_group">
+			                	<div class="form-group">
+				                  <label class="col-sm-1 col-xs-4 control-label"></label>
+				                  <div class="col-sm-4 col-xs-8">
+				                    	<button type="submit" class="btn btn-flat btn-primary ">提 交</button> 
+				                    	<button type="button" class="btn btn-flat btn-default" onclick="javascript :history.back(-1)">返 回</button>
+				                  </div>
+		
+				                </div>
+			                </div>
+                		</form>
+                 </div>
+                  <!-- /.box -->
+                </div>
+              </div>
+            <!--数据表结束-->
+        </section>
+        <!-- right col -->
+      </div>
+      <!-- /.row (main row) -->
+
+    </section>
+        <!--内容结束-->
+    </div>
+</div>
+{include file="index/bottom" /} 
+</body>
+</html>    
