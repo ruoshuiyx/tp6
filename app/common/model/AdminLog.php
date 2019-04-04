@@ -23,7 +23,7 @@
  *                      '.:::::'                    ':'````..
  * +----------------------------------------------------------------------
  */
-namespace app\admin\model;
+namespace app\common\model;
 
 use think\facade\Request;
 use think\facade\Session;
@@ -77,18 +77,6 @@ class AdminLog extends Base {
             'ip'          => $ip,
             'create_time' =>$create_time
         ]);
-    }
-
-    //删除
-    public static function del($id){
-        self::destroy($id);
-        return ['error'=>0,'msg'=>'删除成功!'];
-    }
-
-    //批量删除
-    public static function selectDel($id){
-        self::destroy($id);
-        return ['error'=>0,'msg'=>'删除成功!'];
     }
 
 }

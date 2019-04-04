@@ -32,13 +32,13 @@ class Base extends Model
     protected $autoWriteTimestamp = true;
 
     //通用修改数据
-    public function edit($id){
+    public static function edit($id){
         $info = self::find($id);
         return $info;
     }
 
     //通用修改保存
-    public function editPost($data)
+    public static function editPost($data)
     {
         $result = self::where('id',$data['id'])
             ->update($data);
@@ -50,7 +50,7 @@ class Base extends Model
     }
 
     //通用添加保存
-    public function addPost($data){
+    public static function addPost($data){
         $result = self::create($data);
         if ($result) {
             return ['error' => 0, 'msg' => '添加成功'];
@@ -60,19 +60,19 @@ class Base extends Model
     }
 
     //删除
-    public function del($id){
+    public static function del($id){
         self::destroy($id);
         return json(['error'=>0,'msg'=>'删除成功!']);
     }
 
     //批量删除
-    public function selectDel($id){
+    public static function selectDel($id){
         self::destroy($id);
         return json(['error'=>0,'msg'=>'删除成功!']);
     }
 
     //排序修改
-    public function sort($data){
+    public static function sort($data){
         self::where('id',$data['id'])
             ->update($data);
         return json(['error'=>0,'msg'=>'修改成功!']);
@@ -80,7 +80,7 @@ class Base extends Model
     }
 
     //状态修改
-    public function state($id){
+    public static function state($id){
         $data = self::find($id);
         $status = $data['status']==1?0:1;
         self::where('id',$data['id'])

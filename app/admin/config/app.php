@@ -18,7 +18,6 @@ return [
     'page_size'               => 10,
     // 默认的空控制器名
     'empty_controller'       => 'Error',
-    //当前版本
     //版本信息
     'siyu_version'=>'6.0',
 ];

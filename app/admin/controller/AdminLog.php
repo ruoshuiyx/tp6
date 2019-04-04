@@ -8,7 +8,7 @@
  *                    :::::::::::           | EMAIL: 407593529@qq.com
  *                 ..:::::::::::'           | QQ: 407593529
  *             '::::::::::::'               | WECHAT: zhaoyingjie4125
- *                .::::::::::               | DATETIME: 2019/03/29
+ *                .::::::::::               | DATETIME: 2019/04/04
  *           '::::::::::::::..
  *                ..::::::::::::.
  *              ``::::::::::::::::
@@ -24,11 +24,14 @@
  * +----------------------------------------------------------------------
  */
 namespace app\admin\controller;
-use think\Db;
+
+use app\common\model\AdminLog as M;
+
+use think\facade\Config;
+use think\facade\Db;
 use think\facade\Request;
-//实例化默认模型
-use app\admin\model\AdminLog as M;
 use think\facade\Session;
+use think\facade\View;
 
 class AdminLog extends Base
 {
@@ -36,7 +39,6 @@ class AdminLog extends Base
     public function index(){
         //条件筛选
         $keyword = Request::param('keyword');
-        $this->view->assign('keyword',$keyword);
         //全局查询条件
         $where=[];
         if(!empty($keyword)){
@@ -47,8 +49,7 @@ class AdminLog extends Base
             $where[]=['admin_id', '=', Session::get('admin.id')];
         }
         //显示数量
-        $pageSize = Request::param('page_size') ? Request::param('page_size') : config('page_size');
-        $this->view->assign('pageSize', page_size($pageSize));
+        $pageSize = Request::param('page_size') ? Request::param('page_size') : Config::get('app.page_size');
 
         //调取列表
         $list = M::where($where)
@@ -59,30 +60,33 @@ class AdminLog extends Base
             $list[$k]['useragent']=$useragent[0];
         }
         $page = $list->render();
-        $this->view->assign('page' , $page);
-        $this->view->assign('list' , $list);
-        $this->view->assign('empty', empty_list(9));
-        return $this->view->fetch();
+
+        $view = [
+            'keyword'=>$keyword,
+            'pageSize' => page_size($pageSize),
+            'page' => $page,
+            'list' => $list,
+            'empty'=> empty_list(9),
+        ];
+        View::assign($view);
+        return View::fetch();
     }
 
     //查看
     public function edit(){
         $id = Request::param('id');
-        if( empty($id) ){
-            return ['error'=>1,'msg'=>'ID不存在'];
-        }
-        $info = M::get($id);
-        $this->view->assign('info', $info);
-        return $this->view->fetch();
+        $info = M::edit($id);
+        $view =[
+            'info'   => $info,
+        ];
+        View::assign($view);
+        return View::fetch();
     }
 
     //删除
     public function del(){
         if(Request::isPost()) {
-            $id = Request::post('id');
-            if( empty($id) ){
-                return ['error'=>1,'msg'=>'ID不存在'];
-            }
+            $id = Request::param('id');
             return M::del($id);
         }
     }
@@ -90,10 +94,7 @@ class AdminLog extends Base
     //批量删除
     public function selectDel(){
         if(Request::isPost()) {
-            $id = Request::post('id');
-            if (empty($id)) {
-                return ['error'=>1,'msg'=>'ID不存在'];
-            }
+            $id = Request::param('id');
             return M::selectDel($id);
         }
     }

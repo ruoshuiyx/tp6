@@ -24,12 +24,13 @@
  * +----------------------------------------------------------------------
  */
 namespace app\admin\controller;
+
 use app\common\model\AdType;
 use app\common\model\Ad as M;
+
+use think\facade\Config;
 use think\facade\Db;
 use think\facade\Request;
-
-//实例化默认模型
 use think\facade\View;
 
 class Ad extends Base
@@ -46,7 +47,8 @@ class Ad extends Base
             $where[]=['a.name|a.description', 'like', '%'.$keyword.'%'];
         }
         //显示数量
-        $pageSize = Request::param('page_size') ? Request::param('page_size') : config('page_size');
+        $pageSize = Request::param('page_size') ? Request::param('page_size') : Config::get('app.page_size');
+
         //调取列表
         $list = Db::name('ad')
             ->alias('a')
@@ -90,8 +92,7 @@ class Ad extends Base
             // 验证失败 输出错误信息
             $this->error($result);
         }else{
-            $m = new M();
-            $result =  $m->addPost($data);
+            $result =  M::addPost($data);
             if($result['error']){
                 $this->error($result['msg']);
             }else{
@@ -102,12 +103,8 @@ class Ad extends Base
 
     //修改
     public function edit(){
-        $m = new M();
         $id = Request::param('id');
-        if( empty($id) ){
-            return ['error'=>1,'msg'=>'ID不存在'];
-        }
-        $info = $m->edit($id);
+        $info = M::edit($id);
         $adType = AdType::where('status',1)->select();
         $view =[
             'info'   => $info,
@@ -125,8 +122,7 @@ class Ad extends Base
             // 验证失败 输出错误信息
             $this->error($result);
         }else{
-            $m = new M();
-            $result = $m->editPost($data);
+            $result = M::editPost($data);
             if($result['error']){
                 $this->error($result['msg']);
             }else{
@@ -139,11 +135,7 @@ class Ad extends Base
     public function del(){
         if(Request::isPost()) {
             $id = Request::param('id');
-            if( empty($id) ){
-                return ['error'=>1,'msg'=>'ID不存在'];
-            }
-            $m = new M();
-            return $m->del($id);
+            return M::del($id);
         }
     }
 
@@ -151,11 +143,7 @@ class Ad extends Base
     public function selectDel(){
         if(Request::isPost()) {
             $id = Request::param('id');
-            if (empty($id)) {
-                return ['error'=>1,'msg'=>'ID不存在'];
-            }
-            $m = new M();
-            return $m->selectDel($id);
+            return M::selectDel($id);
         }
     }
 
@@ -163,11 +151,7 @@ class Ad extends Base
     public function sort(){
         if(Request::isPost()){
             $data = Request::param();
-            if (empty($data['id'])){
-                return ['error'=>1,'msg'=>'ID不存在'];
-            }
-            $m = new M();
-            return $m->sort($data);
+            return M::sort($data);
         }
     }
 
@@ -175,11 +159,7 @@ class Ad extends Base
     public function state(){
         if(Request::isPost()){
             $id = Request::param('id');
-            if (empty($id)){
-                return ['error'=>1,'msg'=>'ID不存在'];
-            }
-            $m = new M();
-            return $m->state($id);
+            return M::state($id);
         }
     }
 
