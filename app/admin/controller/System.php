@@ -26,7 +26,6 @@
 namespace app\admin\controller;
 
 use think\facade\Config;
-use think\facade\Db;
 use think\facade\Request;
 use think\facade\View;
 
@@ -125,7 +124,10 @@ class System extends Base
         if(Request::isPost()) {
             $data = Request::param();
             foreach ($data as $k=>$v){
-                Config::where([['name','=',$k],['inc_type','=','sms']])->update(['value'=>$v]);
+                \app\common\model\Config::where([
+                    ['name','=',$k],['inc_type','=','sms']
+                ])
+                    ->update(['value'=>$v]);
             }
             $this->success('保存成功', 'sms');
         }
