@@ -1,7 +1,13 @@
 <?php
 namespace app\admin\controller;
+
+use think\facade\Config;
+use think\facade\Db;
 use think\facade\Request;
+use think\facade\View;
+
 use \tp5er\Backup;
+
 class Database extends Base
 {
     protected $db = '', $datadir;
@@ -26,21 +32,24 @@ class Database extends Base
             $total += $v['data_length'];
         }
         $result = ['data'=>$list,'total'=>format_bytes($total),'tableNum'=>count($list)];
-        $this->view->assign('result',$result);
-        return $this->view->fetch();
+        $view = [
+            'result' => $result
+        ];
+        View::assign($view);
+        return View::fetch();
     }
 
     //优化
     public function optimize() {
         $tables = Request::param('id');
         if (empty($tables)) {
-            return ['error'=>1,'msg'=>'请选择要优化的表！'];
+            return json(['error'=>1,'msg'=>'请选择要优化的表！']);
         }
         $tables = explode(',',$tables);
         if($this->db->optimize($tables)){
-            return ['error'=>0,'msg'=>'数据表优化成功！'];
+            return json(['error'=>0,'msg'=>'数据表优化成功！']);
         }else{
-            return ['error'=>1,'msg'=>'数据表优化出错请重试！'];
+            return json(['error'=>1,'msg'=>'数据表优化出错请重试！']);
         }
     }
 
@@ -48,13 +57,13 @@ class Database extends Base
     public function repair() {
         $tables = Request::param('id');
         if (empty($tables)) {
-            return ['error'=>1,'msg'=>'请选择要修复的表！'];
+            return json(['error'=>1,'msg'=>'请选择要修复的表！']);
         }
         $tables = explode(',',$tables);
         if($this->db->repair($tables)){
-            return ['error'=>0,'msg'=>'数据表修复成功！'];
+            return json(['error'=>0,'msg'=>'数据表修复成功！']);
         }else{
-            return ['error'=>1,'msg'=>'数据表修复出错请重试！'];
+            return json(['error'=>1,'msg'=>'数据表修复出错请重试！']);
         }
     }
 
@@ -66,9 +75,9 @@ class Database extends Base
             foreach ($tables as $table) {
                 $this->db->setFile()->backup($table, 0);
             }
-            return ['error'=>0,'msg'=>'备份成功！'];
+            return json(['error'=>0,'msg'=>'备份成功！']);
         } else {
-            return ['error'=>1,'msg'=>'请选择要备份的表！'];
+            return json(['error'=>1,'msg'=>'请选择要备份的表！']);
         }
     }
 
@@ -81,18 +90,21 @@ class Database extends Base
             $list[$k]['size'] = format_bytes($v['size']);
         }
         $statistics=['total'=>format_bytes($total),'count'=>count($list)];
-        $this->view->assign('statistics',$statistics);
 
-        $this->view->assign('list',$list);
-        $this->assign('empty', empty_list(4));
-        return $this->view->fetch();
+        $view = [
+            'statistics' => $statistics,
+            'list'       => $list,
+            'empty'      => empty_list(4)
+        ];
+        View::assign($view);
+        return View::fetch();
     }
 
     //执行还原数据库操作
     public function import($time) {
         $list  = $this->db->getFile('timeverif',$time);
         $this->db->setFile($list)->import(1);
-        return ['error'=>0,'msg'=>'还原成功！'];
+        return json(['error'=>0,'msg'=>'还原成功！']);
     }
 
     //下载
@@ -103,9 +115,9 @@ class Database extends Base
     public function delSqlFiles() {
         $time = input('time');
         if($this->db->delFile($time)){
-            return ['error'=>0,'msg'=>"备份文件删除成功！"];
+            return json(['error'=>0,'msg'=>"备份文件删除成功！"]);
         }else{
-            return ['error'=>1,'msg'=>"备份文件删除失败，请检查权限！"];
+            return json(['error'=>1,'msg'=>"备份文件删除失败，请检查权限！"]);
         }
     }
 }

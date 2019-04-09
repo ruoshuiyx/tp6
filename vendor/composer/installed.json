@@ -697,5 +697,49 @@
             }
         ],
         "description": "thinkphp template driver"
+    },
+    {
+        "name": "tp5er/tp5-databackup",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/tp5er/tp5-databackup.git",
+            "reference": "10abd4383cf78844e1c22584fd823ef1d18e75dc"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/tp5er/tp5-databackup/zipball/10abd4383cf78844e1c22584fd823ef1d18e75dc",
+            "reference": "10abd4383cf78844e1c22584fd823ef1d18e75dc",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "php": ">=5.4.0"
+        },
+        "time": "2017-12-29T05:36:58+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "tp5er\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "tp5er",
+                "email": "tp5er@qq.com"
+            }
+        ],
+        "description": "Implement the database backup restore"
     }
 ]

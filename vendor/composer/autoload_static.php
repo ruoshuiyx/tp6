@@ -14,6 +14,7 @@ class ComposerStaticInit0336dcff4924a2d748459491723a40ae
     public static $prefixLengthsPsr4 = array (
         't' => 
         array (
+            'tp5er\\' => 6,
             'think\\view\\driver\\' => 18,
             'think\\composer\\' => 15,
             'think\\captcha\\' => 14,
@@ -38,6 +39,10 @@ class ComposerStaticInit0336dcff4924a2d748459491723a40ae
     );
 
     public static $prefixDirsPsr4 = array (
+        'tp5er\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/tp5er/tp5-databackup/src',
+        ),
         'think\\view\\driver\\' => 
         array (
             0 => __DIR__ . '/..' . '/topthink/think-view/src',
