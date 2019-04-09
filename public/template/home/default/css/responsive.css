@@ -1,0 +1,408 @@
+/* Large desktop :1920px. */
+@media (min-width: 1920px) {
+    .container {width: 1230px}
+    .as-mainwrapper .container {width: 1200px}
+    .header-top::before {width: 44%;}
+    .header-top::after {right: 44%;}
+    .slider-area::after {width: 63.5%;}
+    .as-mainwrapper.wrapper-boxed .slider-area::after {width: 65%;}
+    .banner-content h1 {font-size: 62px;}
+    .form-container {padding: 38px 77px;}
+    .single-course-details .single-item-content {padding-top: 41px;}
+    .single-latest-text {padding: 30px 10px 35px 25px;}
+    .newsletter-area::before {width: 46.5%;}
+    .newsletter-area::after {left: 46.5%;}
+    .single-sidebar-widget .tags li a {margin-right: 10px;}
+    .as-mainwrapper.wrapper-boxed .slider-area.slider-two::after {width: 100%;}
+    .video-wrapper, .video-banner {height: 630px}
+    .form-container > button {padding: 0 22px;}
+    .select.large {width: 247px;}
+}
+
+/* Normal desktop :992px. */
+@media (min-width: 992px) and (max-width: 1169px) {
+    .container {width:970px}
+    .as-mainwrapper.wrapper-boxed {width: 970px}
+    .as-mainwrapper.wrapper-boxed .header-logo-menu.stick {width: 970px}
+    .header-top::before {width: 53%;}
+    .header-top::after {right: 53%;}
+    .slider-area::after {width: 77%; transform: rotate(21.5deg) scale(1.7)}
+    .banner-content .text-content-wrapper {margin-right: -15px;}
+    .banner-content h1 {font-size: 52px; line-height: 57px;}
+    .single-item {padding: 0 20px;} 
+    .single-latest-text > h3 {font-size: 19px;}
+    .single-latest-text {padding: 30px 0 16px 11px;}
+    .single-product-text {padding: 23px 15px 22px;}
+    .single-event-text {padding: 29px 10px 35px;}
+    .single-event-item .single-item-comment-view span {margin-right: 3px;}
+    .newsletter-area::before {width: 42%;}
+    .newsletter-area::after {left: 42%;}
+    .subscribe-form {width: 452px;}
+    .social-icons a {margin-right: 8px;}
+    .single-footer-widget > span i {width: 24px;} 
+    .footer-img {height: 59px; width: 59px;}
+    .footer-img a::after {margin: -13px auto 0;}
+    .select.large {width: 178px;}
+    .select.medium {width: 150px;}
+    .select.small {width: 130px;}
+    .course-page {padding: 120px 0 100px;}
+    .course-page .single-item {margin-bottom: 130px;}
+    .teachers-area {padding: 0 0 120px;}
+    .single-sidebar-widget .single-item {padding: 0 8px;}
+    .single-item-text-info span {margin-right: 8px;}
+    .single-sidebar-widget {margin-bottom: 35px;}
+    .sidebar-widget .single-teacher-text > p, .single-sidebar-widget .single-item-text > p {
+        font-size: 14px;
+    }
+    .single-course-details .single-item-text h4 {padding-top: 0;}
+    .single-course-details .single-item-text-info {margin-bottom: 10px;}
+    .newsletter-two .subscribe-form > input {width: 304px;}
+    .newsletter-two .subscribe-form > button {margin-left: 7px; width: 142px;}
+    .news-details-content .single-latest-text {padding: 35px 27px 0;} 
+    .product-details-content {margin: 0 26px; padding: 3px 0 0;}
+    .header-logo-menu.stick .logo {padding: 28px 0;}
+    .testimonial-text-slider {width: 72%;}
+    .mailchimp-alerts {padding-left: 85px} 
+    .subscribe-container {padding: 16px 27px 21px;}
+    .gallery-img h2 {margin: 47px auto 10px;}
+    .gallery-img p {margin: 0;}
+    .slider-two .banner-content h1::after {display: none;}
+    .slider-two .banner-content h1 {
+        font-size: 46px;
+        line-height: 46px;
+        padding-bottom: 7px;
+    }
+    .slider-two .banner-content p {padding-bottom: 0;}
+    .video-wrapper, .video-banner {height: 550px}
+    .padding-small .mainmenu ul#nav > li > a {line-height: 66px;}
+}
+
+/* Tablet desktop :768px. */
+@media (min-width: 768px) and (max-width: 991px) {
+    .container {width:750px}
+    .as-mainwrapper.wrapper-boxed {width:750px}
+    .mobile-menu-area {display: block}
+    .as-mainwrapper.wrapper-boxed .header-logo-menu.stick {width: 750px;}
+    .header-logo-menu.stick, .header-logo-menu.sticker.fixed {position: inherit;}
+    .header-top::before {width: 48%;}
+    .header-top::after {right: 48%;} 
+    .logo {padding: 40px 0 33px; text-align: center}
+    .slider-area::after {width: 100%; transform: rotate(0) scale(1)}
+    .banner-content .text-content-wrapper {margin-right: 0;}   
+    .banner-content .text-content-wrapper, .slider-two .banner-content .text-content-wrapper {
+        float: none;
+        margin: auto;
+        text-align: center;
+    }
+    .banner-content h1 {margin-bottom: 14px}
+    .banner-content h1::after {right: 0}
+    .about-area {
+        background-position: left top;
+        margin-top: 100px;
+    }
+    .about-container {margin-left: 0;}
+    .single-latest-text {padding: 30px 0 56.5px 35px;}
+    .section-title-wrapper {margin-bottom: 70px;}
+    .course-area .section-title-wrapper {margin-bottom: 105px;}
+    .section-margin {margin: 80px 0 100px 0}
+    .section-padding {padding: 80px 0;}
+    .section-bottom-padding {padding: 0 0 80px;}
+    .fun-factor-area {padding: 70px 0;}
+    .latest-area .col-md-6:last-child .single-latest-item:last-child {margin: 0;}
+    .single-product-text .button-default {margin-left: 5px;}
+    .button-large.button-default {margin-top: 70px;}
+    .single-event-item .single-item-comment-view span {margin-right: 6px;}
+    .newsletter-content h3 {font-size: 21px}    
+    .newsletter-content h2 {font-size: 25px}
+    .subscribe-form {width: 335px;}
+    .footer-img {height: 62px; width: 62px;}
+    .footer-img a::after {margin: -13px auto 0;}
+    .teachers-area.padding-top {padding: 80px 0 100px;} 
+    .skill-image {margin-top: 40px;}
+    .link-social {margin-bottom: 60px;}
+    .contact-text {margin-bottom: 60px;}
+    .select.large {width: 170px;}
+    .select.medium {width: 130px;}
+    .select.small {width: 126px;}
+    .form-container > button {padding: 0 15px;} 
+    .course-page {padding-top: 110px;}
+    .course-page .single-item, .course-page .col-md-4:nth-child(4) .single-item {margin-bottom: 110px;}
+    .course-page .col-md-4:nth-child(5) .single-item, .course-page .col-md-4:nth-child(6) .single-item {
+        margin-bottom: 50px;
+    }
+    .teachers-area {padding: 0 0 110px;} 
+    .newsletter-two .subscribe-form > input {width: 237px;}
+    .newsletter-two .subscribe-form > button {margin-left: 8px;}
+    .latest-page .col-md-6:last-child  .single-latest-item:last-child {margin-bottom: 30px;}
+    .news-details-content .single-latest-text {padding: 35px 30px 0;}
+    .news-details-area .sidebar-widget {margin-top: 30px;}
+    .product-details-content {margin: 0; padding: 0;} 
+    .qty {margin-top: 12px;}
+    .product-details-content .button-default {margin: 10px 0;}
+    .product-details-content .p-price {font-size: 30px; padding-top: 10px;}
+    .section-top-padding {padding: 80px 0 0;}
+    .shop-grid-area .col-md-3:nth-child(9) .single-product-item {margin-bottom: 60px;}
+    .pagination-content.number .pagination {margin: 60px 0 20px;}
+    .shortcode-area {padding: 35px 0 80px;}
+    .course-details-content {margin: 0;}
+    .course-details-area a img {margin: 0; width: 100%;}
+    .course-details-content .single-course-details {padding: 30px;}
+    .course-details-area .sidebar-widget {margin-top: 45px;}
+    .testimonial-text-slider {width: 90%;}
+    .mailchimp-alerts {padding-left: 85px} 
+    .subscribe-container {padding: 13px 20px 15px;}
+    .angle .mailchimp-alerts {padding-left: 83px;}
+    .gallery-img h2 {margin: 67px auto 10px;}
+    .slider-two .banner-content h1::after {display: none;}
+    .slider-two .banner-content h1 {
+        font-size: 46px;
+        line-height: 46px;
+        padding-bottom: 7px;
+    }
+    .slider-two .banner-content p {padding-bottom: 0;}
+    .slider-three .banner-content h1 {
+        font-size: 48px;
+        line-height: 53px;
+        margin: 0;
+        padding-bottom: 14px;
+    }
+    .banner-content h1.mt-60 {margin-top: 10px;}
+    .video-wrapper, .video-banner {height: 430px}
+    .header-logo-menu.fixed {position: inherit;}
+}
+
+/* small mobile :320px. */
+@media (max-width: 767px) {
+    .container {width:auto}
+    .as-mainwrapper.wrapper-boxed {width:300px}
+    .mobile-menu-area {display: block}
+    .as-mainwrapper.wrapper-boxed .header-logo-menu.stick {width: 300px;}
+    .header-logo-menu.stick, .as-mainwrapper.wrapper-boxed .header-logo-menu.stick, .header-logo-menu.sticker.fixed {position: inherit;}
+    .btn {margin-bottom: 10px; padding: 6px 10px;}
+    .header-top-right > .content {
+        margin-left: 7px;
+        padding-left: 0;
+        z-index: 9;
+    }
+    .header-top-right > .content:first-child {margin: 0; padding: 0;}
+    .header-top::before {width: 91%;}
+    .header-top::after {right: 91%;}
+    .header-top-right > .content i {margin-right: 4px;}
+    .header-top-right > .content::after, .nivo-directionNav, .slider-two .preview-2 .nivo-controlNav, .banner-content h1::after, .subscribe-form::before, .header-two .header-top-right span:first-child, .slider-three .preview-2 .nivo-controlNav {
+        display: none;
+    }
+    .banner-content h1 {
+        font-size: 22px;
+        line-height: 30px;
+        padding-bottom: 5px;
+        margin: 0
+    }
+    .banner-content .text-content-wrapper, .slider-two .banner-content .text-content-wrapper {
+        float: none;
+        margin: auto;
+        text-align: center;
+    }
+    .button-default {padding: 10px 20px;}
+    .slider-area::after {width: 100%; transform: rotate(0) scale(1)}
+    .logo {padding: 46px 0 28px; text-align: center;}
+    .about-area {background: #2D3E50; margin-top: 80px;}
+    .about-container {margin-left: 0;}
+    .single-latest-text {padding: 30px 17px;}
+    .section-title-wrapper {margin-bottom: 60px;}
+    .section-title h3 {font-size: 25px;}
+    .course-area .section-title-wrapper {margin-bottom: 80px;}
+    .section-padding {padding: 60px 0;}
+    .section-margin {margin: 60px 0 80px 0}
+    .section-bottom-padding {padding: 0 0 60px;}
+    .course-page {padding-top: 80px;}
+    .about-area::before {width: 74%;}    
+    .about-area::after {left: 74%;}
+    .single-item {margin-bottom: 80px;padding: 0 16px;}
+    .single-item-image {top: -20px;}
+    .button-large.button-default {margin-top: 5px;}
+    .fun-factor-area {padding: 60px 0 20px;}
+    .single-fun-factor {margin-bottom: 45px;}
+    .single-latest-image {float: none; text-align: center;}
+    .single-latest-image a, .single-latest-image img {width: 100%;}
+    .latest-area .col-md-6:last-child .single-latest-item:last-child, .product-area .col-md-3:last-child .single-product-item:last-child {
+        margin: 0;
+    }
+    .single-product-item, .single-event-item {margin-bottom: 40px;}
+    .single-event-text {padding: 29px 8px 35px;}
+    .event-area .col-md-4:last-child .single-event-item:last-child {margin-bottom: 15px;}
+    .newsletter-area::before {width: 69%;}
+    .newsletter-area::after {left: 69%;}
+    .newsletter-content > h2 {font-size: 22px;}
+    .subscribe-form > button {width: 33%;}
+    .subscribe-form {
+        height: 45px;
+        margin-top: 50px;
+        width: 100%;
+    }
+    .newsletter-form {padding: 36px 0 0;}
+    .single-footer-widget > h3 {padding-top: 40px;}
+    .footer-area {
+        font-size: 14px;
+        line-height: 24px;
+        text-align: center;
+    }
+    .column-right {float: none;}
+    .footer-widget-area {padding: 60px 0 40px;}
+    .breadcrumb-banner-area {padding: 60px 0;}
+    .skill-image {margin-top: 30px;}
+    .skill-and-experience-area .col-md-6:last-child .skill-bar-item:first-child {margin-top: 25px;}
+    .teachers-area.padding-top {padding: 60px 0 40px;}
+    .single-teacher-item {margin-bottom: 35px;}
+    span.c-icon i {width: 21px;}
+    .contact-text {margin-bottom: 40px;}
+    h4.contact-title {font-size: 22px;}
+    .link-social {margin-bottom: 45px;}
+    .breadcrumb-text h1 {line-height: 37px; font-size: 32px} 
+    .form-container {margin: -35px 0 0; padding: 40px 30px;}
+    .select.large, .select.medium, .select.small {margin-bottom: 12px; width: 100%;}
+    .form-container > button {width: 100%;}
+    .course-page .single-item {margin-bottom: 80px;}
+    .course-page .col-md-4:nth-child(4) .single-item, .course-page .col-md-4:nth-child(5) .single-item, .course-page .col-md-4:nth-child(6) .single-item {
+        margin-bottom: 57px;
+    }
+    .single-item-text-info span {margin-right: 8px;} 
+    .teachers-area {padding: 0 0 50px;}
+    .course-details-content {margin-left: 0;}
+    .course-details-area a img {margin: 0; width: 100%;}
+    .single-course-details .col-md-6:first-child {padding-right: 15px;}
+    .single-course-details .single-item-text h4 {font-size: 22px;}
+    .single-course-details {margin-bottom: 50px; padding: 0 0 30px;}
+    .single-course-details .single-item-text {padding: 0 10px;}
+    .course-duration .text span {width: 40%;}
+    .course-duration .text span.text-right {width: 60%;}
+    .comments {padding: 50px 0 20px;}
+    .author-image {margin-right: 8px;}
+    .author-info > h4 {display: block;}
+    .comment-time {float: none; font-size: 12px;}
+    .single-comment.comment-reply {padding-left: 10px;}
+    .single-sidebar-widget {margin-bottom: 35px;}
+    .single-sidebar-widget:last-child {margin-bottom: 0;}
+    .event-details-content .single-event-item {padding: 0;}
+    .event-details-content .single-event-text {padding: 32px 10px 0;}
+    .event-details-content .single-event-text h3 {font-size: 23px;}
+    .event-details-content .single-event-image a > span {
+        height: 65px;
+        line-height: 22px;
+        padding-top: 10px;
+        width: 65px;
+    }
+    .event-details-content .single-event-image span {font-size: 25px;}
+    .event-details-content .comments {padding: 10px 0 35px;}
+    .header-two .header-top-right {float: none; text-align: center;}
+    .newsletter-two .subscribe-form > input {
+        height: 40px;
+        margin: 0 auto 15px;
+        width: 100%;
+    }
+    .newsletter-two .subscribe-form > button {
+        float: none;
+        height: 45px;
+        margin: auto;
+        text-align: center;
+        width: 100%;
+    }
+    .newsletter-two .subscribe-form {
+        float: left;
+        height: auto;
+        margin: 0;
+        width: 100%;
+    }
+    .newsletter-two .newsletter-form {padding-top: 30px;}
+    .latest-page .col-md-6:last-child  .single-latest-item:last-child {margin-bottom: 30px;}   
+    .news-details-content .single-latest-text {padding: 21px 13px 0;}
+    .news-details-content .single-latest-text > h3 {margin-bottom: 15px;}
+    .quote-section {margin: 20px 0 25px; padding: 17px 0 0 10px;}
+    .tags-and-links {padding-top: 0;}
+    .news-details-content .social-links {
+        display: block;
+        float: left;
+        margin: 0;
+    }
+    .news-details-content .comments {padding: 25px 0 40px;}
+    .product-details-content {margin: 0; padding: 0;}   
+    .qty {margin-top: 12px;}
+    .product-details-content .button-default {margin: 10px 0;}
+    .section-top-padding {padding: 50px 0 0;}
+    .product-details-content h2 {font-size: 27px; padding: 20px 0 10px;}
+    .shop-grid-area .col-md-3:nth-child(9) .single-product-item, .shop-grid-area .col-md-3:nth-child(10) .single-product-item, .shop-grid-area .col-md-3:nth-child(11) .single-product-item {
+        margin-bottom: 60px
+    }
+    .pagination-content.number .pagination {margin: 50px 0 20px;}
+    .shortcode-area {padding: 20px 0 50px 0}
+    .breadcrumb-bar li {line-height: 22px;}
+    .testimonial-text-slider {width: 100%;} 
+    .testimonial-area {background-size: cover; padding: 55px 0 42px;}
+    .testimonial-text-slider h2 {font-size: 25px;}
+    .sin-testiText p {line-height: 22px; margin-top: 15px;}
+    .slick-prev {left: 0;}
+    .slick-next {right: 0;}
+    .mailchimp-alerts {padding-left: 0px}  
+    .text-area {padding: 60px 0 80px;}
+    .text-area p {line-height: 25px;}
+    .subscribe-container {padding: 16px 20px 20px;}
+    .footer-info-container {padding-bottom: 50px; padding-top: 80px;}
+    .footer-info > span { margin: 15px 0 0;}
+    .single-footer-widget {margin-bottom: 27px;}
+    .footer-container {padding: 30px 0 25px;}
+    .footer-container .social-links-three {
+        float: none;
+        margin-top: 12px;
+        text-align: center;
+    }
+    .footer-container span {display: block; text-align: center;}
+    .newsletter-four .subscribe-form {margin-bottom: 24px; margin-top: 0;}
+    .footer-widget-four .single-footer-widget > h3 {padding-top: 10px;}
+    .angle .mailchimp-alerts {padding-left: 0;}
+    .gallery-img h2 {margin: 33px auto 10px;}
+    .gallery-area .col-md-4 {margin-bottom: 30px;}
+    .gallery-area .col-md-4:last-child {margin: 0;}
+    .video-wrapper, .video-banner {height: 280px}
+    .header-logo-menu.fixed {position: inherit;}
+    .subscribe-form > button {padding: 0 7px; width: auto;}
+    .subscribe-form > input {padding-left: 7px;}
+    .pagination-lg > li > a, .pagination-lg > li > span {padding: 6px 14px;}
+    .mainmenu-area {
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        z-index: 999;
+    }
+    .header-search .search-menu {background: rgba(0, 0, 0, 0) none repeat scroll 0 0;}
+    .search {left: -16px; margin: auto; top: 37px; width: 100%;}
+    .header-search {position: absolute; right: 48px;}
+    .header-logo-menu {position: relative;}
+}
+
+/* Large Mobile :480px. */
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+    .container {width:450px}
+    .single-item {margin: 0 14px 56px; padding: 0 47px;}
+    .as-mainwrapper.wrapper-boxed {width:450px}
+    .banner-content h1 {
+        font-size: 36px;
+        line-height: 46px;
+        padding-bottom: 22px;
+    }
+    .single-event-text {padding: 29px 21px 35px;}
+    .footer-img {height: 59px; width: 59px;}
+    .footer-img a::after {margin: -13px auto 0;}
+    .event-details-content .single-event-image a > span {
+        height: 80px;
+        line-height: 29px;
+        padding-top: 10px;
+        width: 80px;
+    }
+    .sin-testiImage.slick-current img {
+        height: 120px;
+        margin-top: 17px;
+        width: 120px;
+    }
+    .gallery-img h2 {margin: 83px auto 10px;}
+    .video-wrapper, .video-banner {height: 320px}
+}

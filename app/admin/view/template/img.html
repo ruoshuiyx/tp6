@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>后台管理面板</title>
+  <!-- 告诉浏览器该页面是自适应布局 -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+   {include file="index/top" /}
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<style>
+    a{text-decoration: none;}
+    ul.pic { list-style: none;padding: 0;}
+    ul.pic li {float:left;position:relative;margin:5px 10px;_margin:5px 8px;text-align: center;}
+    ul.pic li span { width:82px;height:82px;display: block;border: 1px solid #dedede;}
+    ul.pic li span a {border:1px solid #eee;width:80px;height:80px;*font-size: 75px;display: table-cell; vertical-align: middle; overflow: hidden;}
+    ul.pic li img  {max-height:80px;max-width:80px ;_width:80px;_height:80px;}
+    ul.pic li  b {display:block;line-height:20px;height:40px;font-weight:normal;width:82px;overflow:hidden;}
+    ul.pic li  em {position:absolute;right:25px;bottom:40px;font-style: normal;}
+    ul.pic li  em a{color: #f00;}
+</style>	
+<div class="wrapper">
+    <div class="content-wrapper" style="margin-left: 0 !important;">
+        <!--页眉-->
+        <section class="content-header">
+          <h1>模版管理</h1>
+        </section>
+        <!--内容开始-->
+        <section class="content">
+            <div class="search">
+               <form class="form-inline">
+                 <input class="btn btn-flat btn-primary m_10 {if $type == 'html'}btn-warning{/if}" onclick="location.href='{:url('index',['type'=>'html'])}'" type="button" value="html">
+                 <input class="btn btn-flat btn-primary m_10 {if $type == $css}btn-warning{/if}"  onclick="location.href='{:url('index',['type'=>$css])}'" type="button" value="{$css}">
+                 <input class="btn btn-flat btn-primary m_10 {if $type == $js}btn-warning{/if}"  onclick="location.href='{:url('index',['type'=>$js])}'" type="button" value="{$js}">
+                 <input class="btn btn-flat btn-primary m_10 {if $type == $img}btn-warning{/if}"  onclick="location.href='{:url('img',['type'=>$img])}'" type="button" value="媒体文件">
+                 <a class="btn btn-flat btn-success m_10 f_r" href='{:url('add')}'><i class="fa fa-plus m-r-10"></i>添 加</a>
+               </form> 
+            </div>
+            <!--数据表开始-->
+            <div class="row">
+                <div class="col-xs-12">
+                  <div class="box">
+                    <div class="box-header">
+                    <!-- /.box-header -->
+                    <div class="box-body table-responsive no-padding">
+                    	<ul class="pic">
+                        	<!--返回上一级-->
+                            {if $leve}
+                            <li>
+                                <span><a href="{:url('img')}?folder={$uppath}"><img src="/static/admin/images/upback.gif"></a></span>
+                                <b><font color="#665aff">返回上一级</font></b>
+                            </li>
+                            {/if}
+                        	<!--展示文件夹-->
+                        	{volist name='folders' id='folders'}
+                            <li>
+                                <span><a href="{:url('img')}?folder={$folder}{$folders['filename']}/"><img src="/static/admin/images/folder.gif"></a></span>
+                                <b>{$folders.filename}</b>
+                                <em>
+                                    <a href="javascript:confirm_delete('{$folder}','{$folders.filename}')">删除</a>
+                                </em>
+                            </li>
+                            {/volist}
+                            <!--展示文件-->
+                            {volist name='files' id='files'}
+                        	<li>
+                            <span>
+                                <a href="{$files.filepath}" target="_blank">
+                                    <img src="{$files.filepath}">
+                                </a>
+                            </span>
+                            <b>{$files.filename}</b>
+                            <em><a href="javascript:confirm_delete('{$folder}','{$files.filename}')">删除</a></em>
+                        </li>
+                            {/volist}
+                            
+                        </ul>
+                    </div>
+                    <!-- /.box-body -->
+                  </div>
+                  <!-- /.box -->
+                </div>
+              </div>
+            <!--数据表结束-->
+        </section>
+        <!-- right col -->
+      </div>
+      <!-- /.row (main row) -->
+
+    </section>
+        <!--内容结束-->
+    </div>
+</div>
+{include file="index/bottom" /} 
+
+<script>
+	//删除
+
+	
+function confirm_delete(folder,filename) {
+	var url = '{:url('imgDel')}';
+	swal({
+	  title: '确定删除?',
+	  text: "删除后将无法恢复!",
+	  type: 'warning',
+	  showCancelButton: true,
+	  confirmButtonColor: '#3c8dbc',
+	  cancelButtonColor: '#d33',
+	  confirmButtonText: '确定',
+	  cancelButtonText: '取消'
+	}).then(function(isConfirm) {
+	  if (isConfirm) {
+		$.post(url,{folder:folder,filename,filename},function(result){
+			if(result.code == 1){
+				swal(result.msg,'','success').then(function(){window.location.reload()});
+			}else{
+				swal(result.msg,'','error');
+			}
+		  });
+	  }
+	})	
+}
+</script>
+</body>
+</html>    

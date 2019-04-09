@@ -1,0 +1,81 @@
+<header class="main-header">
+    <!-- Logo -->
+    <a href="{:url('Index/index')}" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><b>SIYU</b></span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg"><b>SIYU</b> CMS</span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button" title="切换导航">
+        <span class="sr-only">切换导航</span>
+      </a>
+      <!-- full screen -->
+      <a href="javascript:;" class="sidebar-toggle fullscreen" title="全屏模式">
+        <i class="glyphicon glyphicon-fullscreen"></i>
+      </a>
+
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <!-- User Account: style can be found in dropdown.less -->
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="{$Think.session.admin.image ? $Think.session.admin.image : '/static/plugins/AdminLTE-2.4/dist/img/user2-160x160.jpg'}" class="user-image">
+              <span class="hidden-xs">{$admin.nickname ? $admin.nickname : $admin.username}</span>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- User image -->
+              <li class="user-header">
+                <img src="{$Think.session.admin.image ? $Think.session.admin.image : '/static/plugins/AdminLTE-2.4/dist/img/user2-160x160.jpg'}" class="img-circle">
+                <h5>上次登录时间{$admin.logintime|date="Y-m-d H:i:s"}</h5>
+                <h5>上次登录IP：{$admin.loginip}</h5>
+              </li>
+              <!-- Menu Body -->
+              <!-- Menu Footer-->
+              <li class="user-body">
+                <div class="pull-left">
+                  <a href="{:url('auth/adminedit',['id'=>$admin.id])}" target="right" class="btn btn-default btn-flat">资料</a>
+                </div>
+                <div class="pull-right">
+                  <a href="{:url('Login/logout')}" class="btn btn-default btn-flat">退出</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+          <li>
+              <a class="clear_cash" href="javascript:;"  target="right" title="清空缓存"><i class="glyphicon glyphicon-refresh"></i></a>
+          </li>
+          <li>
+            <a href="/"  target="_blank" title="访问系统前台"><i class="glyphicon glyphicon-home"></i></a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <script>
+      $(".clear_cash").click(function(){
+          var url = "{:url('Index/clear')}";
+          swal({
+              title: '确定要清除缓存吗?',
+              text: "该操作无法撤回！",
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3c8dbc',
+              cancelButtonColor: '#d33',
+              confirmButtonText: '确定',
+              cancelButtonText: '取消'
+          }).then(function(isConfirm) {
+              if (isConfirm) {
+                  $.post(url,{del:true},function(result){
+                      if(result.error == 0){
+                          swal(result.msg,'','success').then(function(){window.location.reload()});
+                      }else{
+                          swal(result.msg,'','error');
+                      }
+                  });
+              }
+          })
+      })
+  </script>
