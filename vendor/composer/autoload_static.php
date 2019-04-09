@@ -85,6 +85,16 @@ class ComposerStaticInit0336dcff4924a2d748459491723a40ae
         ),
     );
 
+    public static $prefixesPsr0 = array (
+        'P' => 
+        array (
+            'PHPExcel' => 
+            array (
+                0 => __DIR__ . '/..' . '/phpoffice/phpexcel/Classes',
+            ),
+        ),
+    );
+
     public static $fallbackDirsPsr0 = array (
         0 => __DIR__ . '/../..' . '/extend',
     );
@@ -94,6 +104,7 @@ class ComposerStaticInit0336dcff4924a2d748459491723a40ae
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit0336dcff4924a2d748459491723a40ae::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit0336dcff4924a2d748459491723a40ae::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit0336dcff4924a2d748459491723a40ae::$prefixesPsr0;
             $loader->fallbackDirsPsr0 = ComposerStaticInit0336dcff4924a2d748459491723a40ae::$fallbackDirsPsr0;
 
         }, null, ClassLoader::class);
