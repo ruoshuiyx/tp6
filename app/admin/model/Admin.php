@@ -49,14 +49,15 @@ class Admin extends Base {
                 return json($data);
             }
         }
-        $result = self::where(['username'=>$username,'password'=>md5($password)])->find();
+        $result = self::where(['username'=>$username,'password'=>md5($password)])->find()->toArray();
         if(empty($result)){
             $data = ['error' => '1', 'msg' => '帐号或密码错误'];
             return json($data);
         }else{
             if ($result['status']==1){
                 //更新登录IP和登录时间
-                self::where('id', $result['id'])->update(['logintime' => time(),'loginip'=>request()->ip()]);
+                self::where('id', '=' ,$result['id'])
+                    ->update(['logintime' => time(),'loginip'=>request()->ip()]);
 
                 $rules = Db::name('auth_group_access')
                     ->alias('a')

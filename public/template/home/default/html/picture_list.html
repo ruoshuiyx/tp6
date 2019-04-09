@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+ <head> 
+  <meta charset="utf-8" /> 
+  <meta http-equiv="x-ua-compatible" content="ie=edge" /> 
+  <title>{$title}_{$system.name}</title> 
+  <meta name="keywords" content="{$keywords}" /> 
+  <meta name="description" content="{$description}" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" /> 
+  <link rel="shortcut icon" type="image/x-icon" href="{$public}img/favicon.ico" /> 
+  {include file="common/css"/}
+ </head> 
+ <body> 
+  <!--[if lt IE 8]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]--> 
+  <!--Main Wrapper Start--> 
+  <div class="as-mainwrapper"> 
+   <!--Bg White Start--> 
+   <div class="bg-white"> 
+    <!--Header Area Start--> 
+    {include file="common/header"/} 
+    <!--End of Header Area--> 
+    <!--Breadcrumb Banner Area Start-->
+    {include file="common/banner"/} 
+    <!--End of Breadcrumb Banner Area-->
+    <!--Little Nav Start-->
+    {include file="common/nav"/} 
+    <!--End of Little Nav-->
+    <!--Event Area Start--> 
+    <div class="event-area section-padding event-page">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                	{tp:list name="list"}
+                    <div class="col-md-4 col-sm-6">
+                        <div class="single-event-item">
+                        	{if $list.image}
+                            <div class="single-event-image">
+                                <a href="{$list.url}">
+                                    <img src="{$list.image}" alt="{$list.title}">
+                                    <span><span>{$list.create_time|date="d"}</span>{$list.create_time|date="M"}</span>
+                                </a>
+                            </div>
+                            {/if}
+                            <div class="single-event-text">
+                                <h3><a href="{$list.url}">{$list.title}</a></h3>
+                                <div class="single-item-comment-view">
+                                   <span><i class="zmdi zmdi-time"></i>{$list.create_time|date="Y-m-d H:i:s"}</span>
+                                   <span><i class="zmdi zmdi-pin-account"></i>{$list.author}</span>
+                               </div>
+                               <p class="line_three">{$list.summary}</p>
+                               <a class="button-default" href="{$list.url}">查看详细</a>
+                            </div>
+                        </div>
+                    </div>
+                    {/tp:list}
+                    {if empty($list)}
+                    	<h2 class="aligncenter">暂无相关内容</h2>
+                    {/if}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="pagination-content number">
+                    	{$page|raw}
+                        <!--<ul class="pagination">
+                            <li><a href="#"><i class="zmdi zmdi-chevron-left"></i></a></li>
+                            <li class="current"><a href="#"><i class="zmdi zmdi-chevron-right"></i></a></li>
+                        </ul>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End of Event Area-->
+    
+    <!--文章列表-->
+    {include file="common/footer"/}
+   </div> 
+   <!--End of Bg White--> 
+  </div> 
+  <!--End of Main Wrapper Area--> 
+  {include file="common/js"/}
+ </body>
+</html>

@@ -26,10 +26,11 @@
 namespace app\admin\controller;
 use app\admin\model\Admin;
 use app\common\model\System;
+
+use think\captcha\facade\Captcha;
 use think\facade\Request;
 use think\facade\Session;
 use think\facade\View;
-use think\response\Redirect;
 
 class Login
 {
@@ -49,13 +50,13 @@ class Login
 
     //验证码
     public function captcha(){
-        //验证码再等官方文档的更新，目前composer不到
+        return Captcha::create();
     }
 
     //退出登录
     public function logout(){
         Session::set('admin',null);
-        return Redirect::create('login/index');
+        return redirect('login/index');
     }
 
 }

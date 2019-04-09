@@ -21,7 +21,9 @@
  */
 function send_email($to,$subject='',$content=''){
     $mail = new PHPMailer\PHPMailer\PHPMailer();
-    $arr = db('config')->where('inc_type','smtp')->select();
+    $arr = \think\facade\Db::name('config')
+        ->where('inc_type','smtp')
+        ->select();
     $config = convert_arr_kv($arr,'name','value');
 
     $mail->CharSet  = 'UTF-8'; //设定邮件编码，默认ISO-8859-1，如果发中文此项必须设置，否则乱码

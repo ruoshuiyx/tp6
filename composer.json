@@ -18,7 +18,9 @@
     "require": {
         "php": ">=7.1.0",
         "topthink/framework": "6.0.*-dev",
-        "topthink/think-view": "^1.0"
+        "topthink/think-view": "^1.0",
+        "phpmailer/phpmailer": "^6.0",
+        "topthink/think-captcha": "3.0.x-dev"
     },
     "autoload": {
         "psr-4": {
