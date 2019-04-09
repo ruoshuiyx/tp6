@@ -24,12 +24,14 @@
  * +----------------------------------------------------------------------
  */
 namespace app\admin\controller;
-use app\common\model\UsersType;
-use think\Db;
-use think\facade\Request;
 
-//实例化默认模型
+use app\common\model\UsersType;
 use app\common\model\Users as M;
+
+use think\facade\Config;
+use think\facade\Db;
+use think\facade\Request;
+use think\facade\View;
 
 use PHPExcel_IOFactory;
 use PHPExcel;
@@ -42,15 +44,13 @@ class Users extends Base
     public function index(){
         //条件筛选
         $keyword = Request::param('keyword');
-        $this->view->assign('keyword',$keyword);
         //全局查询条件
         $where=[];
         if(!empty($keyword)){
             $where[]=['u.email|u.mobile', 'like', '%'.$keyword.'%'];
         }
         //显示数量
-        $pageSize = Request::param('page_size') ? Request::param('page_size') : config('page_size');
-        $this->view->assign('pageSize', page_size($pageSize));
+        $pageSize = Request::param('page_size') ? Request::param('page_size') : Config::get('app.page_size');
         //调取列表
         $list = Db::name('users')
             ->alias('u')
@@ -60,25 +60,36 @@ class Users extends Base
             ->where($where)
             ->paginate($pageSize,false,['query' => request()->param()]);
         $page = $list->render();
-        $this->view->assign('page' , $page);
-        $this->view->assign('list' , $list);
-        $this->view->assign('empty', empty_list(11));
-        return $this->view->fetch();
+        $view = [
+            'keyword'=>$keyword,
+            'pageSize' => page_size($pageSize),
+            'page' => $page,
+            'list' => $list,
+            'empty'=> empty_list(11),
+        ];
+        View::assign($view);
+        return View::fetch();
     }
 
     //添加
     public function add(){
         $usersType = UsersType::where('status','=',1)
             ->select();
-        $this->view->assign('usersType',$usersType);
-        $this->view->assign('info',null);
-        return $this->view->fetch();
+        if(!count($usersType)){
+            $this->error('请先添加会员组');
+        }
+        $view = [
+            'usersType' => $usersType,
+            'info'   => null
+        ];
+        View::assign($view);
+        return View::fetch();
     }
 
     //添加保存
     public function addPost(){
         if(Request::isPost()) {
-            $data = Request::param();
+            $data = Request::except(['file']);
             $result = $this->validate($data,$this->validate);
             if (true !== $result) {
                 // 验证失败 输出错误信息
@@ -90,8 +101,7 @@ class Users extends Base
                 $data['last_login_time'] = time();
                 $data['create_ip'] = $data['last_login_ip'] = Request::ip();
                 $data['password'] = md5($data['password']);
-                $m = new M();
-                $result =  $m->addPost($data);
+                $result =  M::addPost($data);
                 if($result['error']){
                     $this->error($result['msg']);
                 }else{
@@ -104,23 +114,21 @@ class Users extends Base
     //修改
     public function edit(){
         $id = Request::param('id');
-        if( empty($id) ){
-            return ['error'=>1,'msg'=>'ID不存在'];
-        }
-        $usersType = UsersType::all();
-        $this->view->assign('usersType',$usersType);
+        $info = M::edit($id);
+        $usersType = UsersType::where('status',1)->select();
+        $view =[
+            'info'   => $info,
+            'usersType' => $usersType,
+        ];
+        View::assign($view);
+        return View::fetch('add');
 
-        $m = new M();
-        $info = $m->edit($id);
-
-        $this->view->assign('info', $info);
-        return $this->view->fetch('add');
     }
 
     //修改保存
     public function editPost(){
         if(Request::isPost()) {
-            $data = Request::param();
+            $data = Request::except(['file']);
             $result = $this->validate($data,$this->validate);
             if (true !== $result) {
                 // 验证失败 输出错误信息
@@ -131,8 +139,7 @@ class Users extends Base
                 }else{
                     unset($data['password']);
                 }
-                $m = new M();
-                $result =  $m->editPost($data);
+                $result = M::editPost($data);
                 if($result['error']){
                     $this->error($result['msg']);
                 }else{
@@ -145,41 +152,27 @@ class Users extends Base
     //删除
     public function del(){
         if(Request::isPost()) {
-            $id = Request::post('id');
-            if( empty($id) ){
-                return ['error'=>1,'msg'=>'ID不存在'];
-            }
-            $m = new M();
-            return $m->del($id);
+            $id = Request::param('id');
+            return M::del($id);
         }
     }
 
     //批量删除
     public function selectDel(){
         if(Request::isPost()) {
-            $id = Request::post('id');
-            if (empty($id)) {
-                return ['error'=>1,'msg'=>'ID不存在'];
-            }
-            $m = new M();
-            return $m->selectDel($id);
+            $id = Request::param('id');
+            return M::selectDel($id);
         }
-
     }
 
     //状态
     public function state(){
         if(Request::isPost()){
-            $id = Request::post('id');
-            if (empty($id)){
-                return ['error'=>1,'msg'=>'ID不存在'];
-            }
-            $m = new M();
-            return $m->state($id);
+            $id = Request::param('id');
+            return M::state($id);
         }
-
-
     }
+
 
     //下载
     public function download(){
