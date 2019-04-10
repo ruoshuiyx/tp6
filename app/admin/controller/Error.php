@@ -24,8 +24,11 @@
  * +----------------------------------------------------------------------
  */
 namespace app\admin\controller;
-use think\Db;
+
+use think\facade\Config;
+use think\facade\Db;
 use think\facade\Request;
+use think\facade\View;
 
 class Error extends Base
 {
@@ -64,14 +67,14 @@ class Error extends Base
             $where[]=['catid','=',$catid];
             if(Request::param('title')){
                 $where[]=['title','like','%'.Request::param('title').'%'];
-                $this->view->assign('title',Request::param('title'));
+                $title = Request::param('title');
             }else{
-                $this->view->assign('title',null);
+                $title = null;
             }
 
             //显示数量
-            $pageSize=input('page_size')?input('page_size'):config('page_size');
-            $this->view->assign('pageSize', page_size($pageSize));
+            $pageSize = Request::param('page_size') ? Request::param('page_size') : Config::get('app.page_size');
+
             //查出所有内容数据
             $list = Db::name($this->table)
                 ->field('id,title,catid,hits,sort,status,create_time')
@@ -79,10 +82,6 @@ class Error extends Base
                 ->order('sort ASC,id DESC')
                 ->paginate($pageSize);
             $page = $list->render();
-            $this->view->assign('page' , $page);
-            $this->view->assign('list' , $list);
-            $this->view->assign('catid' ,$catid);
-            $this->view->assign('empty', empty_list(8));
 
             //获取栏目列表
             $cate = Db::name('cate')
@@ -90,9 +89,20 @@ class Error extends Base
                 ->order('sort ASC,id ASC')
                 ->select();
             $cate = tree_cate($cate);
-            $this->view->assign('cate',$cate);
         }
-        return $this->view->fetch('error/index');
+
+        $view = [
+            'title'=> $title,
+            'pageSize' => page_size($pageSize),
+            'page' => $page,
+            'list' => $list,
+            'catid'=> $catid,
+            'cate' => $cate,
+            'empty'=> empty_list(8),
+        ];
+        View::assign($view);
+        return View::fetch('error/index');
+
     }
 
     //添加
@@ -100,7 +110,7 @@ class Error extends Base
         if(Request::isPost()){
             //根据catid获取所有字段
             if(Request::post('catid')){
-                $data = Request::post();
+                $data = Request::param();
                 //去除上传图片和文件的无用字段
                 if(array_key_exists('file',$data)){
                     unset($data['file']);
@@ -275,10 +285,6 @@ class Error extends Base
                 ->order('sort ASC,id ASC')
                 ->select();
             $cate = tree_cate($cate);
-            $this->view->assign('cate',$cate);
-
-            //获取模版列表
-            $this->view->assign('template',getTemplate());
 
             //获取所有字段
             $field = Db::name('field')
@@ -298,16 +304,18 @@ class Error extends Base
                 }
 
             }
-            //dump($field);
-            $this->view->assign('field',$field);
 
-            $this->view->assign('moduleid',$this->moduleid);
-            $this->view->assign('catid',Request::param('catid'));
-
-            $this->view->assign('info',null);
-            $this->view->assign('time',date("Y-m-d H:i:s"));
-            $this->view->assign('moduleid',$this->moduleid);
-            return $this->view->fetch('error/add');
+            $view = [
+                'cate'     => $cate,
+                'template' => getTemplate(),//获取模版列表
+                'field'    => $field,
+                'moduleid' => $this->moduleid,
+                'catid'    => Request::param('catid'),
+                'info'     => null,
+                'time'     => date("Y-m-d H:i:s"),
+            ];
+            View::assign($view);
+            return View::fetch('error/add');
         }
     }
 
@@ -316,7 +324,7 @@ class Error extends Base
         if(Request::isPost()){
             //根据catid获取所有字段
             if(Request::post('catid')){
-                $data = Request::post();
+                $data = Request::param();
                 //去除上传图片和文件的无用字段
                 if(array_key_exists('file',$data)){
                     unset($data['file']);
@@ -495,10 +503,6 @@ class Error extends Base
                     ->order('sort ASC,id ASC')
                     ->select();
                 $cate = tree_cate($cate);
-                $this->view->assign('cate',$cate);
-
-                //获取模版列表
-                $this->assign('template',getTemplate());
 
                 //获取所有字段
                 $field = Db::name('field')
@@ -518,10 +522,6 @@ class Error extends Base
                     }
 
                 }
-                //dump($field);
-                $this->view->assign('field',$field);
-                $this->view->assign('moduleid',$this->moduleid);
-                $this->view->assign('catid',Request::param('catid'));
 
                 //调取内容
                 $info = Db::name($this->table)
@@ -533,18 +533,24 @@ class Error extends Base
                     if(array_key_exists($v['field'],$info)){
                         if($info[$v['field']]){
                             if($v['type']=='images'){
-                                //echo 1;exit;
                                 $info[$v['field']] = json_decode($info[$v['field']],true);
                             }
                         }
                     }
                 }
 
-                //dump($info);exit;
-                $this->view->assign('info',$info);
-                $this->view->assign('time',date("Y-m-d H:i:s"));
-                $this->view->assign('moduleid',$this->moduleid);
-                return $this->view->fetch('error/add');
+                $view = [
+                    'cate'=>$cate,
+                    'template'=>getTemplate(),
+                    'field'=>$field,
+                    'moduleid'=>$this->moduleid,
+                    'catid'=>Request::param('catid'),
+                    'info'=>$info,
+                    'time'=>date("Y-m-d H:i:s"),
+                    'moduleid'=>$this->moduleid
+                ];
+                View::assign($view);
+                return View::fetch('error/add');
             }
         }
     }
@@ -552,10 +558,8 @@ class Error extends Base
     //状态
     public function state(){
         if(Request::isPost()){
-            $id = Request::post('id');
-            if (empty($id)){
-                return ['error'=>1,'msg'=>'ID不存在'];
-            }
+            $id = Request::param('id');
+
             //查找当前状态值
             $status = Db::name($this->table)
                 ->where('id',$id)
@@ -565,21 +569,17 @@ class Error extends Base
             Db::name($this->table)
                 ->where('id', $id)
                 ->update(['status' => $status]);
-
-            return ['error'=>0,'msg'=>'修改成功!'];
+            return json(['error'=>0,'msg'=>'修改成功!']);
         }
     }
 
     //删除
     public function del(){
         if(Request::isPost()) {
-            $id = Request::post('id');
-            if (empty($id)) {
-                return ['error'=>1,'msg'=>'ID不存在'];
-            }
+            $id = Request::param('id');
             Db::name($this->table)
                 ->delete($id);
-            return ['error'=>0,'msg'=>'删除成功!'];
+            return json(['error'=>0,'msg'=>'删除成功!']);
         }
     }
 
@@ -587,12 +587,9 @@ class Error extends Base
     public function selectDel(){
         if(Request::isPost()) {
             $id = Request::post('id');
-            if (empty($id)) {
-                return ['error'=>1,'msg'=>'ID不存在'];
-            }
             Db::name($this->table)
                 ->delete($id);
-            return ['error'=>0,'msg'=>'删除成功!'];
+            return json(['error'=>0,'msg'=>'删除成功!']);
         }
     }
 
@@ -607,7 +604,7 @@ class Error extends Base
                 ->where('id',Request::post('catidmove'))
                 ->value('moduleid');
             if($moduleid==$moduleidmove){
-                if(Request::post('id')){
+                if(Request::param('id')){
                     //获取表名称
                     $table = Db::name('module')
                         ->where('id',$moduleid)
@@ -628,7 +625,7 @@ class Error extends Base
                 $result['error'] = 1;
                 $result['msg'] = '不同模型间不可移动';
             }
-            return $result;
+            return json($result);
         }
     }
 
@@ -637,13 +634,11 @@ class Error extends Base
         if(Request::isPost()){
             $id = Request::post('id');
             $sort = Request::post('sort');
-            if (empty($id)){
-                return ['error'=>1,'msg'=>'ID不存在'];
-            }
+
             Db::name($this->table)
                 ->where('id',$id)
-                ->setField('sort', $sort);
-            return ['error'=>0,'msg'=>'修改成功!'];
+                ->update(['sort'=>$sort]);
+            return json(['error'=>0,'msg'=>'修改成功!']);
         }
     }
 }
