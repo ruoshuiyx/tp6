@@ -31,6 +31,11 @@ use think\facade\Session;
 
 class Admin extends Base {
 
+    // 开启自动写入时间戳字段
+    protected $autoWriteTimestamp = true;
+    // 定义时间戳字段名
+    protected $createTime = 'create_time';
+    protected $updateTime = 'update_time';
     /**
      * 管理员登录校验
      * @return array|\think\response\Json

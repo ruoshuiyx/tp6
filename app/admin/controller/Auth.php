@@ -24,12 +24,16 @@
  * +----------------------------------------------------------------------
  */
 namespace app\admin\controller;
+
 use app\admin\model\Admin;
 use app\admin\model\AuthGroup;
 use app\admin\model\AuthGroupAccess;
 use app\admin\model\AuthRule;
-use think\Db;
+
+use think\facade\Config;
+use think\facade\Db;
 use think\facade\Request;
+use think\facade\View;
 
 class Auth extends Base
 {
@@ -40,15 +44,13 @@ class Auth extends Base
     {
         //条件筛选
         $username = Request::param('username');
-        $this->view->assign('username',$username);
         //全局查询条件
         $where=[];
         if( !empty($username) ){
             $where[]=['a.username|a.nickname', 'like', '%'.$username.'%'];
         }
         //显示数量
-        $pageSize = Request::param('page_size') ? Request::param('page_size') : config('page_size');
-        $this->view->assign('pageSize', page_size($pageSize));
+        $pageSize = Request::param('page_size') ? Request::param('page_size') : Config::get('app.page_size');
 
         //查出所有数据
         $list = Db::name('admin')
@@ -59,35 +61,37 @@ class Auth extends Base
             ->where($where)
             ->paginate($pageSize,false,['query' => request()->param()]);
         $page = $list->render();
-        $this->view->assign('page'  , $page);
-        $this->view->assign('list'  , $list);
-        $this->view->assign('empty' , empty_list(11));
-        return $this->view->fetch();
+
+        $view = [
+            'username'=>$username,
+            'pageSize' => page_size($pageSize),
+            'page' => $page,
+            'list' => $list,
+            'empty'=> empty_list(11),
+        ];
+        View::assign($view);
+        return View::fetch('admin_list');
     }
 
     //管理员添加
     public function adminAdd(){
         if(Request::isPost()){
-            $data = Request::post();
+            $data = Request::param();
             if(empty($data['group_id'])){
                 $this->error('请选择用户组');
             }else{
                 $group_id = $data['group_id'];
                 unset($data['group_id']);
             }
-            $check_user = Admin::where('username',$data['username'])->find();
-            if ($check_user) {
-                $this->error('用户名已存在');
-            }
-            //验证
-            $msg = $this->validate($data,'app\admin\validate\Admin');
-            if($msg!='true'){
-                $this->error($msg);
-            }
-
             //单独验证密码
             if (empty($data['password'])) {
                 $this->error('密码不能为空');
+            }
+            //验证
+            $result = $this->validate($data,'Admin');
+            if (true !== $result) {
+                // 验证失败 输出错误信息
+                $this->error($result);
             }
 
             $data['password'] = md5(trim($data['password']));
@@ -106,10 +110,14 @@ class Auth extends Base
                 $this->error('管理员添加失败');
             }
         }else{
-            $auth_group = AuthGroup::where('status','=',1)->select();
-            $this->view->assign('authGroup',$auth_group);
-            $this->view->assign('info',null);
-            return $this->view->fetch();
+            $auth_group = AuthGroup::where('status','=',1)
+                ->select();
+            $view = [
+                'authGroup'=>$auth_group,
+                'info' => null
+            ];
+            View::assign($view);
+            return View::fetch('admin_add');
         }
     }
 
@@ -117,10 +125,10 @@ class Auth extends Base
     public function adminDel(){
         $id = Request::post('id');
         if ($id >1){
-            Admin::where('id','=',$id)->delete();
-            return ['error'=>0,'msg'=>'删除成功!'];
+            Admin::destroy($id);
+            return json(['error'=>0,'msg'=>'删除成功!']);
         }else{
-            return ['error'=>1,'msg'=>'超级管理员不可删除!'];
+            return json(['error'=>1,'msg'=>'超级管理员不可删除!']);
         }
     }
 
@@ -131,10 +139,10 @@ class Auth extends Base
             $ids = explode(',',$id);
         }
         if(in_array('1',$ids)){
-            return $result = ['error'=>1,'msg'=>'超级管理员不可删除!'];
+            return json(['error'=>1,'msg'=>'超级管理员不可删除!']);
         }
         Admin::destroy($id);
-        return $result = ['error'=>0,'msg'=>'删除成功!'];
+        return  json(['error'=>0,'msg'=>'删除成功!']);
     }
 
     //管理员状态修改
@@ -142,17 +150,17 @@ class Auth extends Base
         if(Request::isPost()){
             $id = Request::post('id');
             if (empty($id)){
-                return ['error'=>1,'msg'=>'用户ID不存在!'];
+                return json(['error'=>1,'msg'=>'用户ID不存在!']);
             }
             if ($id==1){
-                return ['error'=>1,'msg'=>'超级管理员不可修改状态!'];
+                return json(['error'=>1,'msg'=>'超级管理员不可修改状态!']);
             }
 
-            $admin = Admin::get($id);
+            $admin = Admin::find($id);
             $status = $admin['status']==1?0:1;
             $admin->status = $status;
             $admin->save();
-            return ['error'=>0,'msg'=>'修改成功!'];
+            return json(['error'=>0,'msg'=>'修改成功!']);
         }
     }
 
@@ -164,23 +172,20 @@ class Auth extends Base
             $map[] = ['id','<>',$data['id']];
             $where['id'] = $data['id'];
 
+            $group_id = $data['group_id'];
+            unset($data['group_id']);
+
+            $result = $this->validate($data,'Admin');
+            if (true !== $result) {
+                $this->error($result);
+            }
+
             if ($password){
                 $data['password']=input('post.password','','md5');
             }else{
                 unset($data['password']);
             }
 
-            if(empty($data['group_id'])){
-                $this->error('请选择用户组');
-            }else{
-                $group_id = $data['group_id'];
-                unset($data['group_id']);
-            }
-
-            $msg = $this->validate($data,'app\admin\validate\Admin');
-            if($msg!='true'){
-                $this->error($msg);
-            }
             Admin::update($data,$where);
             AuthGroupAccess::update([
                 'group_id' =>  $group_id
@@ -189,13 +194,17 @@ class Auth extends Base
 
         }else{
             if(Request::param('id')){
-                $auth_group = AuthGroup::all();
-                $this->assign('authGroup',$auth_group);
+                $auth_group = AuthGroup::select();
+                $admin = Admin::find(Request::param('id'));
+                $admin['group_id'] = AuthGroupAccess::where('uid',$admin['id'])
+                    ->value('group_id');
 
-                $admin = Admin::get(Request::param('id'));
-                $admin['group_id'] = AuthGroupAccess::where('uid',$admin['id'])->value('group_id');
-                $this->view->assign('info',$admin);
-                return $this->view->fetch('admin_add');
+                $view =[
+                    'info'   => $admin,
+                    'authGroup' => $auth_group,
+                ];
+                View::assign($view);
+                return View::fetch('admin_add');
             }
         }
     }
@@ -206,34 +215,38 @@ class Auth extends Base
     public function adminGroup(){
         //条件筛选
         $title = Request::param('title');
-        $this->view->assign('title',$title);
         //全局查询条件
         $where=[];
         if($title){
             $where[]=['title', 'like', '%'.$title.'%'];
         }
         //显示数量
-        $pageSize = Request::param('page_size') ? Request::param('page_size') : config('page_size');
-        $this->view->assign('pageSize', page_size($pageSize));
+        $pageSize = Request::param('page_size') ? Request::param('page_size') : Config::get('app.page_size');
 
         //查出所有数据
         $list = AuthGroup::where($where)->paginate($pageSize,false,['query' => request()->param()]);
         $page = $list->render();
-        $this->view->assign('page' , $page);
-        $this->view->assign('list' ,$list);
-        $this->view->assign('empty', empty_list(7));
-        return $this->view->fetch();
+
+        $view = [
+            'title'=>$title,
+            'pageSize' => page_size($pageSize),
+            'page' => $page,
+            'list' => $list,
+            'empty'=> empty_list(7),
+        ];
+        View::assign($view);
+        return View::fetch('admin_group');
+
     }
 
     //用户组删除
     public function groupDel(){
         $id = Request::post('id');
-        if($id){
-            AuthGroup::where('id','=',$id)
-                ->delete();
-            return ['error'=>0,'msg'=>'删除成功!'];
+        if($id>1){
+            AuthGroup::destroy($id);
+            return json(['error'=>0,'msg'=>'删除成功!']);
         }else{
-            return ['error'=>1,'msg'=>'删除失败!'];
+            return json(['error'=>1,'msg'=>'超级管理员组不可删除!']);
         }
 
     }
@@ -241,69 +254,75 @@ class Auth extends Base
     //用户组添加
     public function groupAdd(){
         if(Request::isPost()){
-            $data=Request::post();
-            if(!$data['title']){
-                $this->error('用户组不能为空');
-            }
-            if(AuthGroup::create($data)){
-                $this->success('用户组添加成功', 'Auth/adminGroup');
+            $data=Request::param();
+
+
+            $result = $this->validate($data,'AuthGroup');
+            if (true !== $result) {
+                // 验证失败 输出错误信息
+                $this->error($result);
             }else{
-                $this->error('用户组添加失败');
+                $result =  AuthGroup::create($data);
+                if($result){
+                    $this->success('用户组添加成功', 'Auth/adminGroup');
+                }else{
+                    $this->error('用户组添加失败');
+                }
             }
         }else{
-            $this->view->assign('info',null);
-            return $this->view->fetch();
+            $view =[
+                'info'   => null
+            ];
+            View::assign($view);
+            return View::fetch('group_add');
         }
     }
 
     //用户组修改
     public function groupEdit(){
-        if(request()->isPost()) {
+        if(Request::isPost()) {
             $data=Request::post();
-            //防止重复
-            if($data['title']){
-                $map[] = ['id','<>',$data['id']];
-                $map[] = ['title','=',$data['title']];
-                $check_title = AuthGroup::where($map)->find();
-                if ($check_title) {
-                    $this->error('用户组名已存在!');
-                }
+            $result = $this->validate($data,'AuthGroup');
+            if (true !== $result) {
+                // 验证失败 输出错误信息
+                $this->error($result);
             }else{
-                $this->error('用户组名不能为空!');
+                $where['id'] = $data['id'];
+                AuthGroup::update($data,$where);
+                $this->success('修改成功!','Auth/adminGroup');
             }
-
-            $where['id'] = $data['id'];
-            AuthGroup::update($data,$where);
-            $this->success('管理员修改成功!','Auth/adminGroup');
         }else{
             $id = Request::param('id');
-            $info = AuthGroup::get(['id'=>$id]);
-            $this->assign('info', $info);
-            return view('group_add');
+            $info = AuthGroup::find(['id'=>$id]);
+            $view =[
+                'info'   => $info
+            ];
+            View::assign($view);
+            return View::fetch('group_add');
         }
     }
 
     //用户组状态修改
     public function groupState(){
         if(Request::isPost()){
-            $id = Request::post('id');
-            if (empty($id)){
-                return ['error'=>1,'msg'=>'ID不存在'];
-            }
+            $id = Request::param('id');
 
-            $info = AuthGroup::get($id);
-            $status = $info['status']==1?0:1;
-            $info->status = $status;
+            $info = AuthGroup::find($id);
+            $info->status = $info['status']==1?0:1;
             $info->save();
-            return ['error'=>0,'msg'=>'修改成功!'];
+            return json(['error'=>0,'msg'=>'修改成功!']);
         }
     }
 
     //用户组批量删除
     public function groupSelectDel(){
         $id = Request::post('id');
-        AuthGroup::destroy($id);
-        return ['error'=>0,'msg'=>'删除成功!'];
+        if($id>1){
+            AuthGroup::destroy($id);
+            return json(['error'=>0,'msg'=>'删除成功!']);
+        }else{
+            return json(['error'=>1,'msg'=>'超级管理员组不可删除!']);
+        }
     }
 
     //用户组显示权限
@@ -322,101 +341,91 @@ class Auth extends Base
             "title"=>"全部",
             "open"=>true
         );
-        $this->view->assign('list',$list);
-        return $this->view->fetch();
+        $view =[
+            'list'   => $list
+        ];
+        View::assign($view);
+        return View::fetch('group_access');
     }
 
     //用户组保存权限
     public function groupSetaccess(){
         $rules = Request::post('rules');
         if(empty($rules)){
-            return array('msg'=>'请选择权限!','error'=>1);
+            return json(['msg'=>'请选择权限!','error'=>1]);
         }
         $data = Request::post();
         $where['id'] = $data['id'];
         if(AuthGroup::update($data,$where)){
-            return array('msg'=>'权限配置成功!','url'=>url('adminGroup'),'error'=>0);
+            return json(['msg'=>'权限配置成功!','url'=>url('adminGroup'),'error'=>0]);
         }else{
-            return array('msg'=>'保存错误','error'=>1);
+            return json(['msg'=>'保存错误','error'=>1]);
         }
     }
 
     /********************************权限管理*******************************/
-
     //权限列表
     public function adminRule(){
-        $list = Db::name('auth_rule')->order('sort ASC')->select();
+        $list = Db::name('auth_rule')
+            ->order('sort ASC')
+            ->select();
         $list = tree($list);
-        $this->view->assign('list', $list);
-        return $this->view->fetch();
+        $view =[
+            'list'   => $list
+        ];
+        View::assign($view);
+        return View::fetch('admin_rule');
     }
 
     //权限菜单显示或者隐藏
     public function ruleState(){
         if(Request::isPost()){
-            $id = Request::post('id');
-            if (empty($id)){
-                return ['error'=>1,'msg'=>'ID不存在'];
-            }
-
-            $info = AuthRule::get($id);
-            $status = $info['status']==1?0:1;
-            $info->status = $status;
+            $id = Request::param('id');
+            $info = AuthRule::find($id);
+            $info->status = $info['status']==1?0:1;
             $info->save();
-
-            return ['error'=>0,'msg'=>'修改成功'];
+            return json(['error'=>0,'msg'=>'修改成功']);
         }
     }
 
     //设置权限是否验证
     public function ruleOpen(){
         if(Request::isPost()){
-            $id = Request::post('id');
-            if (empty($id)){
-                return ['error'=>1,'msg'=>'ID不存在'];
-            }
-
-            $info = AuthRule::get($id);
-            $auth_open = $info['auth_open']==1?0:1;
-            $info->auth_open = $auth_open;
+            $id = Request::param('id');
+            $info = AuthRule::find($id);
+            $info->auth_open = $info['auth_open']==1?0:1;
             $info->save();
-
-            return ['error'=>0,'msg'=>'修改成功'];
+            return json(['error'=>0,'msg'=>'修改成功']);
         }
     }
 
     //设置权限排序
     public function ruleSort(){
         if(Request::isPost()){
-            $id = Request::post('id');
-            $sort = Request::post('sort');
-            if (empty($id)){
-                return ['error'=>1,'msg'=>'ID不存在'];
-            }
-
-            $info = AuthRule::get($id);
+            $id = Request::param('id');
+            $sort = Request::param('sort');
+            $info = AuthRule::find($id);
             $info->sort = $sort;
             $info->save();
-
-            return ['error'=>0,'msg'=>'修改成功'];
+            return json(['error'=>0,'msg'=>'修改成功']);
         }
     }
 
     //权限删除
     public function ruleDel(){
-        $id=Request::post('id');
+        $id=Request::param('id');
         if ($id){
-            AuthRule::where('id','=',input('id'))->delete();
-            return ['error'=>0,'msg'=>'删除成功'];
+            AuthRule::destroy($id);
+            return json(['error'=>0,'msg'=>'删除成功']);
         }
     }
 
     //权限批量删除
     public function ruleSelectDel(){
-        $id=Request::post('id');
+        $id=Request::param('id');
         if($id){
             AuthRule::destroy($id);
-            return ['error'=>0,'msg'=>'删除成功'];
+            return json(['error'=>0,'msg'=>'删除成功']);
         }
 
     }
@@ -435,34 +444,37 @@ class Auth extends Base
                 ->order('sort ASC')
                 ->select();
             $list = tree($list);
-            $this->view->assign('ruleList', $list);
-
             $pid = Request::param('id') ? Request::param('id') : 0;
-            $this->view->assign('pid',$pid);
-
-            $this->view->assign('info',null);
-            return $this->view->fetch();
+            $view =[
+                'info'     => null,
+                'pid'      => $pid,
+                'ruleList' => $list
+            ];
+            View::assign($view);
+            return View::fetch('rule_add');
         }
     }
 
     //权限修改
     public function ruleEdit(){
         if(request()->isPost()) {
-            $data=Request::post();
+            $data=Request::param();
             $where['id'] = $data['id'];
             AuthRule::update($data,$where);
-            $this->success('权限修改成功!','Auth/adminRule');
+            $this->success('修改成功!','Auth/adminRule');
         }else{
             $list = Db::name('auth_rule')
                 ->order('sort ASC')
                 ->select();
             $list = tree($list);
-            $this->view->assign('ruleList', $list);
-
             $id = Request::param('id');
-            $info = AuthRule::get(['id'=>$id]);
-            $this->view->assign('info', $info);
-            return $this->view->fetch('rule_add');
+            $info = AuthRule::find($id);
+            $view =[
+                'info'   => $info,
+                'ruleList' => $list,
+            ];
+            View::assign($view);
+            return View::fetch('rule_add');
         }
     }
 

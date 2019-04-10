@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2019-04-10 09:17:02
+Date: 2019-04-10 11:16:03
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -61,7 +61,7 @@ CREATE TABLE `tp_admin` (
 -- ----------------------------
 -- Records of tp_admin
 -- ----------------------------
-INSERT INTO `tp_admin` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '1553763700', '127.0.0.1', '1', 'admin', '/uploads/20181228/e5885dc546eb1369482cdf29fb07decd.jpg', '0', '1553846932');
+INSERT INTO `tp_admin` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '1553763700', '127.0.0.1', '1', 'admin', '/uploads/20181228/e5885dc546eb1369482cdf29fb07decd.jpg', '1553846932', '1553846932');
 
 -- ----------------------------
 -- Table structure for tp_admin_log
@@ -103,8 +103,8 @@ CREATE TABLE `tp_ad_type` (
 -- ----------------------------
 -- Records of tp_ad_type
 -- ----------------------------
-INSERT INTO `tp_ad_type` VALUES ('1', '【首页】顶部通栏', '导航下的焦点图', '1', '1', null, '1551936878');
-INSERT INTO `tp_ad_type` VALUES ('2', '【内页】顶部通栏', '内页顶部通栏', '2', '1', null, '1551936840');
+INSERT INTO `tp_ad_type` VALUES ('1', '【首页】顶部通栏', '导航下的焦点图', '1', '1', '0', '1551936878');
+INSERT INTO `tp_ad_type` VALUES ('2', '【内页】顶部通栏', '内页顶部通栏', '2', '1', '0', '1551936840');
 
 -- ----------------------------
 -- Table structure for tp_article
@@ -166,7 +166,7 @@ CREATE TABLE `tp_auth_group` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `title` char(100) NOT NULL DEFAULT '',
   `status` tinyint(1) NOT NULL DEFAULT '1',
-  `rules` text NOT NULL,
+  `rules` text,
   `create_time` int(11) DEFAULT '0' COMMENT '添加时间',
   `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`id`)
@@ -175,7 +175,7 @@ CREATE TABLE `tp_auth_group` (
 -- ----------------------------
 -- Records of tp_auth_group
 -- ----------------------------
-INSERT INTO `tp_auth_group` VALUES ('1', '超级管理员', '1', '0,1,4,5,38,6,7,10,11,12,14,13,8,15,16,17,18,19,20,21,9,22,23,24,25,28,27,26,29,3', '0', '1537944508');
+INSERT INTO `tp_auth_group` VALUES ('1', '超级管理员', '1', '0,1,4,5,38,6,7,10,11,12,14,13,8,15,16,17,18,19,20,21,9,22,23,24,25,28,27,26,29,3', '1537944508', '1537944508');
 INSERT INTO `tp_auth_group` VALUES ('5', '测试组', '1', '0,1,4,5,107,6,152,153,154,155,29,30,34,32,33,31,35,36,39,40,41,42,44,45,46,47,48,49,51,52,53,54,57,58,59,60,61,62,63,64,67,68,70,71,74,73,69,76,77,137,80,95,96,97,131,132,109,138,139,140,141,143,110,111,113,117,118,100,101,102,103,105,81,82,84,85,88,94,83,89,91,120,121,', '1536304526', '1553848122');
 
 -- ----------------------------
@@ -195,7 +195,7 @@ CREATE TABLE `tp_auth_group_access` (
 -- ----------------------------
 -- Records of tp_auth_group_access
 -- ----------------------------
-INSERT INTO `tp_auth_group_access` VALUES ('1', '1', '0', '1553846932');
+INSERT INTO `tp_auth_group_access` VALUES ('1', '1', '1553846932', '1553846932');
 INSERT INTO `tp_auth_group_access` VALUES ('12', '1', '1536456218', '1536467724');
 INSERT INTO `tp_auth_group_access` VALUES ('13', '1', '1536467738', '1536468155');
 INSERT INTO `tp_auth_group_access` VALUES ('14', '1', '1536468227', '1536468284');
@@ -224,7 +224,7 @@ CREATE TABLE `tp_auth_rule` (
 -- ----------------------------
 -- Records of tp_auth_rule
 -- ----------------------------
-INSERT INTO `tp_auth_rule` VALUES ('1', '0', 'System', '系统设置', '1', '1', '', '1', '1', 'fa fa-cogs', '0', '1536819134');
+INSERT INTO `tp_auth_rule` VALUES ('1', '0', 'System', '系统设置', '1', '1', '', '1', '1', 'fa fa-cogs', '1536819134', '1536819134');
 INSERT INTO `tp_auth_rule` VALUES ('4', '1', 'System/system', '系统设置', '1', '1', '', '11', '1', 'fa fa-cog', '1536327129', '1547520976');
 INSERT INTO `tp_auth_rule` VALUES ('5', '1', 'System/email', '邮箱配置', '1', '1', '', '12', '1', '', '1536327444', '1536327838');
 INSERT INTO `tp_auth_rule` VALUES ('6', '0', 'Auth', '权限管理', '1', '1', '', '2', '1', 'fa fa-group', '1536327468', '1547520856');
@@ -663,7 +663,7 @@ CREATE TABLE `tp_link` (
 -- ----------------------------
 -- Records of tp_link
 -- ----------------------------
-INSERT INTO `tp_link` VALUES ('2', '百度', 'http://www.baidu.com', '', '联系人：XXX', '1', '1', null, '1553837737');
+INSERT INTO `tp_link` VALUES ('2', '百度', 'http://www.baidu.com', '', '联系人：XXX', '1', '1', '1553837737', '1553837737');
 INSERT INTO `tp_link` VALUES ('5', 'SIYUCMS', 'http://www.siyucms.com', '', '', '2', '1', '1548727536', '1551930738');
 
 -- ----------------------------
@@ -930,12 +930,12 @@ CREATE TABLE `tp_users` (
 -- ----------------------------
 -- Records of tp_users
 -- ----------------------------
-INSERT INTO `tp_users` VALUES ('1', 'test001@qq.com', 'e10adc3949ba59abbe56e057f20f883e', '1', '1553138106', '127.0.0.1', '407593529', '15840189268', '0', '0', '1', '1', '127.0.0.1', null, '1541405155');
-INSERT INTO `tp_users` VALUES ('2', 'test002@qq.com', 'e10adc3949ba59abbe56e057f20f883e', '0', '1541405185', '127.0.0.1', '407593529', '15840189627', '0', '0', '2', '1', '127.0.0.1', null, '1541405185');
-INSERT INTO `tp_users` VALUES ('3', 'test003@qq.com', 'e10adc3949ba59abbe56e057f20f883e', '1', '1546060654', '127.0.0.1', '', '', '0', '0', '1', '1', '127.0.0.1', null, '1546060654');
-INSERT INTO `tp_users` VALUES ('4', 'test004@qq.com', 'e10adc3949ba59abbe56e057f20f883e', '1', '1546060666', '127.0.0.1', '', '', '0', '0', '1', '1', '127.0.0.1', null, '1546060666');
-INSERT INTO `tp_users` VALUES ('5', 'test005@qq.com', 'e10adc3949ba59abbe56e057f20f883e', '1', '1546060680', '127.0.0.1', '', '15840189625', '0', '0', '1', '1', '127.0.0.1', null, '1546060680');
-INSERT INTO `tp_users` VALUES ('6', 'test007@qq.com', 'e10adc3949ba59abbe56e057f20f883e', '0', '1546061841', '127.0.0.1', null, null, '0', '0', '1', '1', '127.0.0.1', null, '1546061841');
+INSERT INTO `tp_users` VALUES ('1', 'test001@qq.com', 'e10adc3949ba59abbe56e057f20f883e', '1', '1553138106', '127.0.0.1', '407593529', '15840189268', '0', '0', '1', '1', '127.0.0.1', '1541405155', '1541405155');
+INSERT INTO `tp_users` VALUES ('2', 'test002@qq.com', 'e10adc3949ba59abbe56e057f20f883e', '0', '1541405185', '127.0.0.1', '407593529', '15840189627', '0', '0', '2', '1', '127.0.0.1', '1541405155', '1541405185');
+INSERT INTO `tp_users` VALUES ('3', 'test003@qq.com', 'e10adc3949ba59abbe56e057f20f883e', '1', '1546060654', '127.0.0.1', '', '', '0', '0', '1', '1', '127.0.0.1', '1541405155', '1546060654');
+INSERT INTO `tp_users` VALUES ('4', 'test004@qq.com', 'e10adc3949ba59abbe56e057f20f883e', '1', '1546060666', '127.0.0.1', '', '', '0', '0', '1', '1', '127.0.0.1', '1541405155', '1546060666');
+INSERT INTO `tp_users` VALUES ('5', 'test005@qq.com', 'e10adc3949ba59abbe56e057f20f883e', '1', '1546060680', '127.0.0.1', '', '15840189625', '0', '0', '1', '1', '127.0.0.1', '1541405155', '1546060680');
+INSERT INTO `tp_users` VALUES ('6', 'test007@qq.com', 'e10adc3949ba59abbe56e057f20f883e', '0', '1546061841', '127.0.0.1', null, null, '0', '0', '1', '1', '127.0.0.1', '1541405155', '1546061841');
 INSERT INTO `tp_users` VALUES ('7', 'test008@qq.com', 'e10adc3949ba59abbe56e057f20f883e', '0', '1546062123', '127.0.0.1', '123', '', '0', '0', '1', '1', '127.0.0.1', '1551844614', '1546061953');
 
 -- ----------------------------
@@ -956,5 +956,5 @@ CREATE TABLE `tp_users_type` (
 -- ----------------------------
 -- Records of tp_users_type
 -- ----------------------------
-INSERT INTO `tp_users_type` VALUES ('1', '注册会员', '注册会员', '1', '1', null, null);
-INSERT INTO `tp_users_type` VALUES ('2', 'VIP会员', 'VIP会员', '2', '1', null, null);
+INSERT INTO `tp_users_type` VALUES ('1', '注册会员', '注册会员', '1', '1', '1541405155', '1541405155');
+INSERT INTO `tp_users_type` VALUES ('2', 'VIP会员', 'VIP会员', '2', '1', '1541405155', '1541405155');

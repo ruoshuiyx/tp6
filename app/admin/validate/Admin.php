@@ -36,6 +36,10 @@ class Admin extends Validate
             'max'     => '25',
             'unique'  => 'admin',
         ],
+        'password|密码' => [
+            'min'     => '6',
+            'max'     => '25',
+        ],
         'nickname|昵称' => [
             'require' => 'require',
             'max'     => '100',
