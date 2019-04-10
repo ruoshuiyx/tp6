@@ -112,7 +112,7 @@ function confirm_delete(folder,filename) {
 	}).then(function(isConfirm) {
 	  if (isConfirm) {
 		$.post(url,{folder:folder,filename,filename},function(result){
-			if(result.code == 1){
+			if(result.error == 0){
 				swal(result.msg,'','success').then(function(){window.location.reload()});
 			}else{
 				swal(result.msg,'','error');

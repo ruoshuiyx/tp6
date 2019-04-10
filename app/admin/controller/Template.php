@@ -24,12 +24,15 @@
  * +----------------------------------------------------------------------
  */
 namespace app\admin\controller;
-use think\Db;
+
+use think\facade\Config;
+use think\facade\Db;
 use think\facade\Request;
+use think\facade\View;
 
 class Template extends Base
 {
-    protected $template_path,$template_html,$template_css,$template_js,$upload_path;
+    protected $template_path,$template_html,$template_css,$template_js,$template_img,$upload_path;
     function initialize()
     {
         parent::initialize();
@@ -43,10 +46,14 @@ class Template extends Base
         $this->template_js = 'js';
         $this->template_img = 'img';
 
-        $this->assign('html', $this->template_html);//自定义html目录
-        $this->assign('css' , $this->template_css); //自定义css目录
-        $this->assign('js'  , $this->template_js);  //自定义js目录
-        $this->assign('img' , $this->template_img);  //自定义媒体文件目录
+        $initialize = [
+            'html' => $this->template_html, //自定义html目录
+            'css'  => $this->template_css,  //自定义css目录
+            'js'   => $this->template_js,   //自定义js目录
+            'img'  => $this->template_img,  //自定义媒体文件目录
+        ];
+        View::assign($initialize);
+
     }
 
     //列表
@@ -69,23 +76,25 @@ class Template extends Base
             $templates[$key]['ext'] = strtolower(substr($filename,strrpos($filename, '.')-strlen($filename)));
         }
 
-        $this->view->assign('type' , $type);         //当前显示的类型
-        $this->view->assign('empty', empty_list(4)); //空数据提示
-        $this->view->assign('list' , $templates);    //加载数据
-        return $this->view->fetch();
+        $view = [
+            'type'  => $type,        //当前显示的类型
+            'list'  => $templates,   //加载数据
+            'empty' => empty_list(4),//空数据提示
+        ];
+        View::assign($view);
+        return View::fetch();
     }
 
     //添加
     public function add(){
         $type=  Request::param('type') ? Request::param('type') : 'html';
-        if($type=='html'){
-            $path=$this->template_path.$this->template_html.'/';
-        }else{
-            $path=$this->template_path.$type.'/';
-        }
-        $this->view->assign('type', $type);//当前显示的类型
-        $this->view->assign('info',null);
-        return $this->view->fetch();
+
+        $view = [
+            'type'  => $type,        //当前显示的类型
+            'info'  => null,         //加载数据
+        ];
+        View::assign($view);
+        return View::fetch();
     }
 
     //添加保存
@@ -108,7 +117,6 @@ class Template extends Base
                 }else{
                     $this->success('添加成功!',url('index', ['type' => $type]));
                 }
-
             }
         }
     }
@@ -132,12 +140,15 @@ class Template extends Base
                 'content'=>$content,
                 'type'=>$type
             ];
-            $this->view->assign('info',$info);
         }else{
             $this->error('文件不存在！');
         }
-        $this->view->assign('type', $type);//当前显示的类型
-        return $this->view->fetch('add');
+        $view = [
+            'info'=>$info,
+            'type' => $type,//当前显示的类型
+        ];
+        View::assign($view);
+        return View::fetch('add');
     }
 
     //修改保存
@@ -169,9 +180,6 @@ class Template extends Base
     public function del(){
         if(Request::isPost()) {
             $id = Request::param('id');
-            if (empty($id)) {
-                return ['error'=>1,'msg'=>'传输错误'];
-            }
             //删除文件
             $filename = $id;
             $type = Request::param('type') ? Request::param('type') : 'html';
@@ -183,11 +191,10 @@ class Template extends Base
             $file = $path.$filename;
             if(file_exists($file)){
                 unlink($file);
-                return ['error'=>0,'msg'=>'删除成功!'];
+                return json(['error'=>0,'msg'=>'删除成功!']);
             }else{
-                return ['error'=>1,'msg'=>'删除失败!'];
+                return json(['error'=>1,'msg'=>'删除失败!']);
             }
-
         }
     }
 
@@ -195,8 +202,6 @@ class Template extends Base
     public function img(){
         $path = $this->template_path.$this->template_img.'/'.Request::param('folder');
         $folder = Request::param('folder') ? Request::param('folder') : '';
-        $this->view->assign('folder',$folder);
-
         $uppath = explode('/',Request::param('folder'));
         $leve = count($uppath)-1;
         unset($uppath[$leve]);
@@ -206,8 +211,6 @@ class Template extends Base
         }else{
             $uppath = '';
         }
-        $this->view->assign('leve',$leve);
-        $this->view->assign('uppath',$uppath);
 
         $files = glob($path.'*');
         $folders = $templates = array();
@@ -224,11 +227,17 @@ class Template extends Base
                 if(!in_array($templates[$key]['ext'],array('gif','jpg','png','bmp'))) $templates[$key]['ico'] =1;
             }
         }
-        $this->view->assign('path',$path);                //路径
-        $this->view->assign('folders',$folders );         //文件夹
-        $this->view->assign('files',$templates );         //文件
-        $this->view->assign('type', $this->template_img); //当前显示的类型
-        return $this->view->fetch();
+        $view = [
+            'folder'  => $folder,
+            'leve'    => $leve,
+            'uppath'  => $uppath,
+            'path'    => $path,               //路径
+            'folders' => $folders,            //文件夹
+            'files'   => $templates,          //文件
+            'type'    => $this->template_img, //当前显示的类型
+        ];
+        View::assign($view);
+        return View::fetch();
     }
 
     //媒体文件删除
@@ -238,9 +247,9 @@ class Template extends Base
 
         if(file_exists($file)){
             is_dir($file) ? dir_delete($file) : unlink($file);
-            return ['error'=>0,'msg'=>'删除成功!'];
+            return json(['error'=>0,'msg'=>'删除成功!']);
         }else{
-            return ['error'=>1,'msg'=>'文件不存在!'];
+            return json(['error'=>1,'msg'=>'文件不存在!']);
         }
     }
 
