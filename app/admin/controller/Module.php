@@ -24,8 +24,11 @@
  * +----------------------------------------------------------------------
  */
 namespace app\admin\controller;
-use think\Db;
+
+use think\facade\Config;
+use think\facade\Db;
 use think\facade\Request;
+use think\facade\View;
 
 class module extends Base
 {
@@ -40,45 +43,45 @@ class module extends Base
     public function index(){
         //条件筛选
         $title=Request::param('title');
-        $this->view->assign('title',$title);
         //全局查询条件
         $where=[];
         if($title){
             $where[]=['title|name', 'like', '%'.$title.'%'];
         }
         //显示数量
-        $pageSize = Request::param('page_size') ? Request::param('page_size') : config('page_size');
-        $this->view->assign('pageSize', page_size($pageSize));
+        $pageSize = Request::param('page_size') ? Request::param('page_size') : Config::get('app.page_size');
 
         //查出所有数据
         $list = $this->table
             ->where($where)
-            ->order('sort asc')
+            ->order('sort asc,id asc')
             ->paginate($pageSize,false,['query' => request()->param()]);
-
         $page = $list->render();
-        $this->view->assign('page'  , $page);
-        $this->view->assign('list'  , $list);
-        $this->view->assign('empty' , empty_list(7));
-        return $this->view->fetch();
+
+        $view = [
+            'title'=>$title,
+            'pageSize' => page_size($pageSize),
+            'page' => $page,
+            'list' => $list,
+            'empty'=> empty_list(7),
+        ];
+        View::assign($view);
+        return View::fetch();
     }
 
     //模型状态
     public function moduleState(){
         if(Request::isPost()){
-            $id = Request::post('id');
-            if (empty($id)){
-                return ['error'=>1,'msg'=>'ID不存在'];
-            }
+            $id = Request::param('id');
 
             $status = $this->table
                 ->where('id='.$id)
                 ->value('status');
             $status = $status==1?0:1;
             if($this->table->where('id='.$id)->update(['status'=>$status])!==false){
-                return ['error'=>0,'msg'=>'修改成功!'];
+                return json(['error'=>0,'msg'=>'修改成功!']);
             }else{
-                return ['error'=>1,'msg'=>'修改失败!'];
+                return json(['error'=>1,'msg'=>'修改失败!']);
             }
         }
     }
@@ -87,13 +90,10 @@ class module extends Base
     public function del(){
         if(Request::isPost()) {
             $id = Request::post('id');
-            if( empty($id) ){
-                return ['error'=>1,'msg'=>'ID不存在'];
-            }
             $this->table
                 ->where('id','=',$id)
                 ->delete();
-            return ['error'=>0,'msg'=>'删除成功!'];
+            return json(['error'=>0,'msg'=>'删除成功!']);
         }
     }
 
@@ -101,20 +101,20 @@ class module extends Base
     public function selectDel(){
         if(Request::isPost()) {
             $id = Request::post('id');
-            if (empty($id)) {
-                return ['error'=>1,'msg'=>'ID不存在'];
-            }
             $this->table
                 ->delete($id);
-            return ['error'=>0,'msg'=>'删除成功!'];
+            return json(['error'=>0,'msg'=>'删除成功!']);
 
         }
     }
 
     //模型添加
     public function add(){
-        $this->view->assign('info',null);
-        return $this->view->fetch();
+        $view =[
+            'info'   => null
+        ];
+        View::assign($view);
+        return View::fetch('');
     }
 
     //模型添加保存
@@ -123,16 +123,21 @@ class module extends Base
             //获取数据库所有表名
             $tables = Db::getConnection()->getTables();
             //组装表名
-            $prefix = config('database.prefix');
-            $tablename = $prefix.Request::post('name');
+            $prefix = Config::get('database.prefix');
+            $tablename = $prefix.Request::param('name');
             //判断表名是否已经存在
             if(in_array($tablename,$tables)){
                 $this->error('该表已经存在！');
             }
-            $name = ucfirst(Request::post('name'));
-            $data = request()->except('emptytable');
+            //$name = ucfirst(Request::post('name'));
+
+            $data = Request::except(['emptytable']);
             $data['type'] = 1;
-            $moduleid = $this->table->insertGetId($data);
+
+            $moduleid = $this->table->insert($data);
+            $moduleid = $this->table->where('title','=',$data['title'])->field('id')->find();
+            $moduleid = $moduleid['id'];
+
             if(empty($moduleid)){
                 $this->error('添加模型失败！');
             }
@@ -177,7 +182,7 @@ class module extends Base
 
             }
 
-            if ($moduleid  !==false) {
+            if ($moduleid !==false) {
                 $this->success('添加模型成功', 'index');
             }else{
                 $this->error('添加模型失败');
@@ -192,14 +197,17 @@ class module extends Base
             ->field('id,title,name,description,listfields')
             ->where($where)
             ->find();
-        $this->view->assign('info', $info);
-        return $this->view->fetch('add');
+        $view = [
+            'info'   => $info
+        ];
+        View::assign($view);
+        return View::fetch('add');
     }
 
     //模型修改保存
     public function editPost(){
         if(Request::isPost()){
-            $data = Request::except('name');
+            $data = Request::except(['name']);
             if(Db::name('module')->update($data)!==false){
                 $this->success('修改成功!', 'index');
             }else{
@@ -212,7 +220,6 @@ class module extends Base
 
     //字段列表
     public function field(){
-
         $nodostatus = array('catid','title','status','create_time');
         $sysfield = array('catid','title','thumb','keywords','description','status','create_time','url','template');
 
@@ -237,45 +244,50 @@ class module extends Base
                 $list[$k]['delStatus']=0;//可删除
             }
         }
-        $this->view->assign('list'     , $list);
-        $this->view->assign('moduleid' , Request::param('id'));
-        return $this->view->fetch();
+
+        $view = [
+            'list' => $list,
+            'moduleid'   => Request::param('id')
+        ];
+        View::assign($view);
+        return View::fetch();
     }
 
     //字段排序
     public function fieldSort(){
         $data = Request::post();
         if(Db::name('field')->update($data)!==false){
-            return $result = ['error' => 0,'msg' => '操作成功！'];
+            return json(['error' => 0,'msg' => '操作成功！']);
         }else{
-            return $result = ['error'=>1,'msg'=>'操作失败！'];
+            return json(['error'=>1,'msg'=>'操作失败！']);
         }
     }
 
     //字段状态
     public function fieldState(){
         if(Request::isPost()){
-            $id = Request::post('id');
-            if (empty($id)){
-                return ['error'=>1,'msg'=>'ID不存在!'];
-            }
-
-            $status = Db::name('field')->where('id','=',$id)->value('status');
+            $id = Request::param('id');
+            $status = Db::name('field')
+                ->where('id','=',$id)
+                ->value('status');
             $status = $status==1?0:1;
             if(Db::name('field')->where('id','=',$id)->update(['status'=>$status])!==false){
-                return ['error'=>0,'msg'=>'设置成功!'];
+                return json(['error'=>0,'msg'=>'设置成功!']);
             }else{
-                return ['error'=>1,'msg'=>'设置失败!'];
+                return json(['error'=>1,'msg'=>'设置失败!']);
             }
         }
     }
 
     //添加字段
     public function fieldAdd(){
-        $this->view->assign('moduleid',input('moduleid'));
-        $this->view->assign('info',null);
-        $this->view->assign('fieldInfo',null);
-        return $this->view->fetch();
+        $view = [
+            'moduleid'  => Request::param('moduleid'),
+            'info'      => null,
+            'fieldInfo' => null,
+        ];
+        View::assign($view);
+        return View::fetch('field_add');
     }
 
     //添加字段保存
@@ -283,8 +295,7 @@ class module extends Base
         if(Request::isPost()){
             if(Request::param('isajax')) {
                 //调用字段设置模版
-                $this->assign(input('get.'));
-                $this->assign(input('post.'));
+                View::assign(Request::param());
                 //根据name取值
                 if(Request::param('name')){
                     $fieldInfo = Db::name('field')
@@ -292,15 +303,19 @@ class module extends Base
                         ->where('field','=',Request::param('name'))
                         ->find();
                     $fieldInfo['setup'] = string2array($fieldInfo['setup']);
-                    $this->view->assign('fieldInfo',$fieldInfo);
                 }else{
-                    $this->view->assign('fieldInfo',null);
+                    $fieldInfo = null;
                 }
-                return $this->view->fetch('fieldAddType');
+                $view = [
+                    'fieldInfo'  => $fieldInfo,
+                ];
+                View::assign($view);
+                return View::fetch('fieldAddType');
+
             }else{
-                $data = Request::post();
-                $fieldName=$data['field'];
-                $prefix=config('database.prefix');
+                $data = Request::param();
+                $fieldName = $data['field'];
+                $prefix = Config::get('database.prefix');
                 $name = Db::name('module')
                     ->where('id','=',$data['moduleid'])
                     ->value('name');
@@ -309,6 +324,12 @@ class module extends Base
                 if(in_array($fieldName,$Fields)){
                     $this->error('字段名已经存在！');
                 }
+                if(empty($data['type']))
+                    $this->error('请选择字段类型！');
+                if(empty($data['field']))
+                    $this->error('请填写字段名！');
+                if(empty($data['name']))
+                    $this->error('请填写别名！');
                 $addfieldsql =$this->get_tablesql($data,'add');
                 if(isset($data['setup'])) {
                     $data['setup'] = array2string($data['setup']);
@@ -335,28 +356,30 @@ class module extends Base
     public function fieldEdit(){
         $model = Db::name('field');
         $id = Request::param('id');
-        if(empty($id)){
-            $this->error('缺少必要的参数！');
-        }
         $fieldInfo = $model
             ->where('id','=',$id)
             ->find();
-        if($fieldInfo['setup']) $fieldInfo['setup']=string2array($fieldInfo['setup']);
-        $this->view->assign('info',$fieldInfo);
-        $this->view->assign('moduleid', Request::param('moduleid'));
-        return $this->view->fetch('field_add');
+        if($fieldInfo['setup'])
+            $fieldInfo['setup']=string2array($fieldInfo['setup']);
+
+        $view = [
+            'moduleid'  => Request::param('moduleid'),
+            'info'      => $fieldInfo
+        ];
+        View::assign($view);
+        return View::fetch('field_add');
     }
 
     //编辑字段保存
     public function fieldEditPost(){
         if(Request::isPost()){
-            $data = Request::except('oldfield');
+            $data = Request::except(['oldfield']);
             $oldfield = Request::param('oldfield');
             $fieldName = $data['field'];
             $name = Db::name('module')
                 ->where('id' , '=' ,$data['moduleid'])
                 ->value('name');
-            $prefix=config('database.prefix');
+            $prefix = Config::get('database.prefix');
             if($this->_iset_field($prefix.$name,$fieldName) && $oldfield!=$fieldName){
                 $this->error('字段名重复！');
             }
@@ -385,24 +408,25 @@ class module extends Base
 
     //删除字段
     public function fieldDel() {
-        $id=Request::param('id');
-        $r = Db::name('field')->find($id);
+        $id = Request::param('id');
+        $r  = Db::name('field')->find($id);
         Db::name('field')->delete($id);
 
         $moduleid = $r['moduleid'];
+        $field    = $r['field'];
 
-        $field = $r['field'];
+        $prefix = Config::get('database.prefix');
+        $name   = Db::name('module')
+            ->where('id','=',$moduleid)
+            ->value('name');
+        $tablename = $prefix.$name;
 
-        $prefix=config('database.prefix');
-        $name = Db::name('module')->where('id','=',$moduleid)->value('name');
-        $tablename=$prefix.$name;
-
-        Db::name('field')->execute("ALTER TABLE `$tablename` DROP `$field`");
-
-        return ['error'=>0,'msg'=>'删除成功！'];
+        Db::name('field')
+            ->execute("ALTER TABLE `$tablename` DROP `$field`");
+        return json(['error'=>0,'msg'=>'删除成功！']);
     }
 
-    public function get_tablesql($info,$do){
+    protected function get_tablesql($info,$do){
         $comment = $info['name'];
         $fieldtype = $info['type'];
 
@@ -415,7 +439,7 @@ class module extends Base
             $default=$info['setup']['default'];
         }
         $field = $info['field'];
-        $prefix = config('database.prefix');
+        $prefix = Config::get('database.prefix');
         $name = Db::name('module')
             ->where('id',$moduleid)
             ->value('name');
