@@ -188,7 +188,7 @@ class Middleware
             list($middleware, $param) = explode(':', $middleware, 2);
         }
 
-        return [[$this->app->make($middleware), 'handle'], $param ?? null];
+        return [[$middleware, 'handle'], $param ?? null];
     }
 
     protected function resolve(string $type = 'route')
@@ -202,8 +202,12 @@ class Middleware
 
             list($call, $param) = $middleware;
 
+            if (is_array($call) && is_string($call[0])) {
+                $call = [$this->app->make($call[0]), $call[1]];
+            }
+
             try {
-                $response = call_user_func_array($call, [$request, $this->resolve($type), $param]);
+                $response = $this->app->invoke($call, [$request, $this->resolve($type), $param]);
             } catch (HttpResponseException $exception) {
                 $response = $exception->getResponse();
             }

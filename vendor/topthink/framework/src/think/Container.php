@@ -90,12 +90,6 @@ class Container implements ContainerInterface, ArrayAccess, IteratorAggregate, C
     ];
 
     /**
-     * 容器标识别名
-     * @var array
-     */
-    protected $alias = [];
-
-    /**
      * 获取当前容器的实例（单例）
      * @access public
      * @return static
@@ -187,8 +181,7 @@ class Container implements ContainerInterface, ArrayAccess, IteratorAggregate, C
             $bind = $this->bind[$abstract];
 
             if (is_string($bind)) {
-                $this->instances[$bind] = $instance;
-                return $this;
+                return $this->instance($bind, $instance);
             }
         }
 
@@ -231,7 +224,7 @@ class Container implements ContainerInterface, ArrayAccess, IteratorAggregate, C
             $bind = $this->bind[$abstract];
 
             if (is_string($bind)) {
-                return isset($this->instances[$bind]);
+                return $this->exists($bind);
             }
         }
 
@@ -248,8 +241,6 @@ class Container implements ContainerInterface, ArrayAccess, IteratorAggregate, C
      */
     public function make(string $abstract, array $vars = [], bool $newInstance = false)
     {
-        $abstract = $this->alias[$abstract] ?? $abstract;
-
         if (isset($this->instances[$abstract]) && !$newInstance) {
             return $this->instances[$abstract];
         }
@@ -260,7 +251,6 @@ class Container implements ContainerInterface, ArrayAccess, IteratorAggregate, C
             if ($concrete instanceof Closure) {
                 $object = $this->invokeFunction($concrete, $vars);
             } else {
-                $this->alias[$abstract] = $concrete;
                 return $this->make($concrete, $vars, $newInstance);
             }
         } else {
@@ -277,44 +267,22 @@ class Container implements ContainerInterface, ArrayAccess, IteratorAggregate, C
     /**
      * 删除容器中的对象实例
      * @access public
-     * @param string|array $abstract 类名或者标识
+     * @param string $name 类名或者标识
      * @return void
      */
-    public function delete($abstract): void
+    public function delete($name)
     {
-        foreach ((array) $abstract as $name) {
-            $name = $this->alias[$name] ?? $name;
+        if (isset($this->bind[$name])) {
+            $bind = $this->bind[$name];
 
-            if (isset($this->bind[$name])) {
-                $name = $this->bind[$name];
-            }
-
-            if (isset($this->instances[$name])) {
-                unset($this->instances[$name]);
+            if (is_string($bind)) {
+                return $this->delete($bind);
             }
         }
-    }
 
-    /**
-     * 获取容器中的对象实例
-     * @access public
-     * @return array
-     */
-    public function all()
-    {
-        return $this->instances;
-    }
-
-    /**
-     * 清除容器中的对象实例
-     * @access public
-     * @return void
-     */
-    public function flush(): void
-    {
-        $this->instances = [];
-        $this->bind      = [];
-        $this->alias     = [];
+        if (isset($this->instances[$name])) {
+            unset($this->instances[$name]);
+        }
     }
 
     /**

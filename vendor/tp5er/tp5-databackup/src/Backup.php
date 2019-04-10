@@ -137,20 +137,23 @@ class Backup
         foreach ($glob as $name => $file) {
             if (preg_match('/^\\d{8,8}-\\d{6,6}-\\d+\\.sql(?:\\.gz)?$/', $name)) {
                 $name = sscanf($name, '%4s%2s%2s-%2s%2s%2s-%d');
+                $info['name'] = $name;
                 $date = "{$name[0]}-{$name[1]}-{$name[2]}";
                 $time = "{$name[3]}:{$name[4]}:{$name[5]}";
                 $part = $name[6];
                 if (isset($list["{$date} {$time}"])) {
                     $info = $list["{$date} {$time}"];
                     $info['part'] = max($info['part'], $part);
-                    $info['size'] = $info['size'] + $file->getSize();
+                    $info['size'] = format_bytes($info['size'] + $file->getSize());
                 } else {
                     $info['part'] = $part;
-                    $info['size'] = $file->getSize();
+                    $info['size'] = format_bytes($file->getSize());
                 }
                 $extension = strtoupper(pathinfo($file->getFilename(), PATHINFO_EXTENSION));
                 $info['compress'] = $extension === 'SQL' ? '-' : $extension;
+                $info['name'] = $file->getFilename();
                 $info['time'] = strtotime("{$date} {$time}");
+                $info['addtime'] = ("{$date} {$time}");
                 $list["{$date} {$time}"] = $info;
             }
         }
