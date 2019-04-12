@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2019-04-10 11:16:03
+Date: 2019-04-12 13:33:45
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -56,12 +56,13 @@ CREATE TABLE `tp_admin` (
   `create_time` int(11) DEFAULT '0' COMMENT '添加时间',
   `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='管理员表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='管理员表';
 
 -- ----------------------------
 -- Records of tp_admin
 -- ----------------------------
-INSERT INTO `tp_admin` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '1553763700', '127.0.0.1', '1', 'admin', '/uploads/20181228/e5885dc546eb1369482cdf29fb07decd.jpg', '1553846932', '1553846932');
+INSERT INTO `tp_admin` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '1555047173', '127.0.0.1', '1', 'admin', '/uploads/20181228/e5885dc546eb1369482cdf29fb07decd.jpg', '1553846932', '1553846932');
+INSERT INTO `tp_admin` VALUES ('2', 'test', 'e10adc3949ba59abbe56e057f20f883e', '1555047195', '127.0.0.1', '1', '123456', '', '1555047195', '1555047195');
 
 -- ----------------------------
 -- Table structure for tp_admin_log
@@ -199,6 +200,7 @@ INSERT INTO `tp_auth_group_access` VALUES ('1', '1', '1553846932', '1553846932')
 INSERT INTO `tp_auth_group_access` VALUES ('12', '1', '1536456218', '1536467724');
 INSERT INTO `tp_auth_group_access` VALUES ('13', '1', '1536467738', '1536468155');
 INSERT INTO `tp_auth_group_access` VALUES ('14', '1', '1536468227', '1536468284');
+INSERT INTO `tp_auth_group_access` VALUES ('2', '5', '0', '0');
 
 -- ----------------------------
 -- Table structure for tp_auth_rule

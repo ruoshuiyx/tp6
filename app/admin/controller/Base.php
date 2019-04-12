@@ -24,6 +24,7 @@
  * +----------------------------------------------------------------------
  */
 namespace app\admin\controller;
+
 use think\Controller;
 use think\facade\Request;
 use think\facade\Session;
@@ -65,7 +66,11 @@ class Base extends Controller
                 $auth = new \Auth();
                 $result = $auth->check($route,$admin_id);
                 if(!$result){
-                    $this->error('您无此操作权限');
+                    if(Request::isAjax()){
+                        exit(json_encode(['error'=>1,'msg'=>'您无此操作权限']))  ;
+                    }else{
+                        $this->error('您无此操作权限');
+                    }
                 }
             }
         }

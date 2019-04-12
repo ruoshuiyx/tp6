@@ -1,5 +1,4 @@
 <?php
-namespace auth;
 use think\facade\Request;
 use think\facade\Session;
 use think\facade\Db;
