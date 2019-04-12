@@ -11,6 +11,89 @@
 
 // 应用公共文件
 
+//URL设置
+function getUrl($v){
+    //判断是否直接跳转
+    if(trim($v['url'])!==''){
+
+    }else{
+        //判断是否跳转到下级栏目
+        if($v['is_next']==1){
+            $is_next = \think\facade\Db::name('cate')->where('parentid',$v['id'])->order('sort ASC,id DESC')->find();
+            if($is_next){
+                $v['url'] = getUrl($is_next);
+            }
+        }else{
+            $moduleurl = \think\facade\Db::name('module')->where('id',$v['moduleid'])->value('name');
+            if($v['catdir']){
+                $v['url'] = url(request()->module().'/'.$v['catdir'].'/index', 'catId='.$v['id']);
+            }else{
+                $v['url'] = url(request()->module().'/'.$moduleurl.'/index', 'catId='.$v['id']);
+            }
+        }
+    }
+    return $v['url'];
+}
+
+//获取详情URL
+function getShowUrl($v){
+    if($v){
+        //$home_rote[''.$v['catdir'].'-:catId/:id'] = 'home/'.$v['catdir'].'/index';
+        $cate = \think\facade\Db::name('cate')->field('id,catdir,moduleid')->where('id',$v['catid'])->find();
+        $moduleurl = \think\facade\Db::name('module')->where('id',$cate['moduleid'])->value('name');
+        if($cate['catdir']){
+            $url = url(request()->module().'/'.$cate['catdir'].'/info', ['catId'=>$cate['id'],'id'=>$v['id']]);
+        }else{
+            $url = url(request()->module().'/'.$moduleurl.'/info', ['catId'=>$cate['id'],'id'=>$v['id']] );
+        }
+    }
+    return $url;
+}
+
+
+
+function changeFields($list,$moduleid){
+    $info = [];
+    foreach ($list as $k=>$v){
+        $url = getShowUrl($v);
+        $list[$k] = changeField($v,$moduleid);
+        $info[$k] = $list[$k];//定义中间变量防止报错
+        $info[$k]['url'] = $url;
+    }
+    return $info;
+}
+function changefield($info,$moduleid){
+    $fields = \think\facade\Db::name('field')->where('moduleid','=',$moduleid)->select();
+    foreach ($fields as $k=>$v){
+        $field = $v['field'];
+        if($info[$field]){
+            switch ($v['type'])
+            {
+                case 'textarea'://多行文本
+                    break;
+                case 'editor'://编辑器
+                    $info[$field]=($info[$field]);
+                    break;
+                case 'select'://下拉列表
+                    break;
+                case 'radio'://单选按钮
+                    break;
+                case 'checkbox'://复选框
+                    $info[$field]=explode(',',$info[$field]);
+                    break;
+                case 'images'://多张图片
+                    $info[$field]=json_decode($info[$field]);
+                    break;
+                default:
+            }
+        }
+
+    }
+    return $info;
+}
+
+
+//==============================================以上为未校验的函数
 /**
  * 邮件发送
  * @param $to    接收人
@@ -65,91 +148,6 @@ function send_email($to,$subject='',$content=''){
     $mail->msgHTML($content);
     return $mail->send();
 }
-
-//URL设置
-function getUrl($v){
-    //判断是否直接跳转
-    if(trim($v['url'])!==''){
-
-    }else{
-        //判断是否跳转到下级栏目
-        if($v['is_next']==1){
-            $is_next = db('cate')->where('parentid',$v['id'])->order('sort ASC,id DESC')->find();
-            if($is_next){
-                $v['url'] = getUrl($is_next);
-            }
-        }else{
-            $moduleurl = db('module')->where('id',$v['moduleid'])->value('name');
-            if($v['catdir']){
-                $v['url'] = url(request()->module().'/'.$v['catdir'].'/index', 'catId='.$v['id']);
-            }else{
-                $v['url'] = url(request()->module().'/'.$moduleurl.'/index', 'catId='.$v['id']);
-            }
-        }
-    }
-    return $v['url'];
-}
-
-//获取详情URL
-function getShowUrl($v){
-    if($v){
-        //$home_rote[''.$v['catdir'].'-:catId/:id'] = 'home/'.$v['catdir'].'/index';
-        $cate = db('cate')->field('id,catdir,moduleid')->where('id',$v['catid'])->find();
-        $moduleurl = db('module')->where('id',$cate['moduleid'])->value('name');
-        if($cate['catdir']){
-            $url = url(request()->module().'/'.$cate['catdir'].'/info', ['catId'=>$cate['id'],'id'=>$v['id']]);
-        }else{
-            $url = url(request()->module().'/'.$moduleurl.'/info', ['catId'=>$cate['id'],'id'=>$v['id']] );
-        }
-    }
-    return $url;
-}
-
-
-
-function changeFields($list,$moduleid){
-    $info = [];
-    foreach ($list as $k=>$v){
-        $url = getShowUrl($v);
-        $list[$k] = changeField($v,$moduleid);
-        $info[$k] = $list[$k];//定义中间变量防止报错
-        $info[$k]['url'] = $url;
-    }
-    return $info;
-}
-function changefield($info,$moduleid){
-    $fields = db('field')->where('moduleid','=',$moduleid)->select();
-    foreach ($fields as $k=>$v){
-        $field = $v['field'];
-        if($info[$field]){
-            switch ($v['type'])
-            {
-                case 'textarea'://多行文本
-                    break;
-                case 'editor'://编辑器
-                    $info[$field]=($info[$field]);
-                    break;
-                case 'select'://下拉列表
-                    break;
-                case 'radio'://单选按钮
-                    break;
-                case 'checkbox'://复选框
-                    $info[$field]=explode(',',$info[$field]);
-                    break;
-                case 'images'://多张图片
-                    $info[$field]=json_decode($info[$field]);
-                    break;
-                default:
-            }
-        }
-
-    }
-
-    return $info;
-}
-
-
-//==============================================以上为未校验的函数
 /**
  * 验证输入的邮件地址是否合法
  * @param $user_email 邮箱
