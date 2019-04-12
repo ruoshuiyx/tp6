@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2019-04-12 13:33:45
+Date: 2019-04-12 14:43:14
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -61,8 +61,8 @@ CREATE TABLE `tp_admin` (
 -- ----------------------------
 -- Records of tp_admin
 -- ----------------------------
-INSERT INTO `tp_admin` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '1555047173', '127.0.0.1', '1', 'admin', '/uploads/20181228/e5885dc546eb1369482cdf29fb07decd.jpg', '1553846932', '1553846932');
-INSERT INTO `tp_admin` VALUES ('2', 'test', 'e10adc3949ba59abbe56e057f20f883e', '1555047195', '127.0.0.1', '1', '123456', '', '1555047195', '1555047195');
+INSERT INTO `tp_admin` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '1555051306', '127.0.0.1', '1', 'admin', '/uploads/20181228/e5885dc546eb1369482cdf29fb07decd.jpg', '1553846932', '1553846932');
+INSERT INTO `tp_admin` VALUES ('2', 'test', 'e10adc3949ba59abbe56e057f20f883e', '1555047233', '127.0.0.1', '1', '123456', '', '1555047195', '1555047195');
 
 -- ----------------------------
 -- Table structure for tp_admin_log
@@ -332,7 +332,7 @@ INSERT INTO `tp_auth_rule` VALUES ('105', '101', 'Template/img', '媒体文件-�
 INSERT INTO `tp_auth_rule` VALUES ('106', '101', 'Template/imgDel', '媒体文件-删除', '1', '1', '', '817', '1', '', '1545962287', '1553760065');
 INSERT INTO `tp_auth_rule` VALUES ('107', '1', 'System/sms', '短信配置', '1', '1', '', '13', '1', '', '1548400960', '1548400980');
 INSERT INTO `tp_auth_rule` VALUES ('108', '107', 'System/trySms', '操作-测试短信发送', '1', '1', '', '132', '1', '', '1548401007', '1551864103');
-INSERT INTO `tp_auth_rule` VALUES ('109', '0', 'Addons', '插件管理', '1', '1', '', '7', '1', 'fa fa-plug', '1551774339', '1551774539');
+INSERT INTO `tp_auth_rule` VALUES ('109', '0', 'Addons', '插件管理', '1', '0', '', '7', '1', 'fa fa-plug', '1551774339', '1551774539');
 INSERT INTO `tp_auth_rule` VALUES ('110', '109', 'Hooks/index', '钩子管理', '1', '1', '', '72', '1', '', '1551774594', '1551774594');
 INSERT INTO `tp_auth_rule` VALUES ('111', '110', 'Hooks/add', '操作-添加', '1', '1', '', '721', '1', '', '1551774664', '1551774664');
 INSERT INTO `tp_auth_rule` VALUES ('112', '110', 'Hooks/addPost', '操作-添加保存', '1', '1', '', '722', '1', '', '1551774677', '1551774677');
