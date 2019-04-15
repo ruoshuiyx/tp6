@@ -24,7 +24,9 @@
  * +----------------------------------------------------------------------
  */
 namespace app\common\taglib;
+
 use think\template\TagLib;
+
 class Tp extends TagLib {
 
     protected $tags = array(
@@ -186,7 +188,7 @@ class Tp extends TagLib {
                 ->field(\'a.id,a.moduleid,a.pagesize,a.catname,m.name as modulename\')
                 ->where(\'a.id\',\'=\','.$id.')
                 ->find();
-            //获取表名称    
+            //获取表名称
             $__TABLENAME_ = $__TABLE_[\'modulename\'];
             //获取模型ID
             $__MODULEID__ = $__TABLE_[\'moduleid\'];
@@ -280,9 +282,9 @@ class Tp extends TagLib {
                 if($__PREV__){
                     //处理上一篇中的URL
                     $__PREV__[\'url\'] = getShowUrl($__PREV__);
-                    $__PREV__ = "<a class=\"prev\" title=\" ".$__PREV__[\'title\']." \" href=\" ".$__PREV__[\'url\']." \">".$__PREV__[\'title\']."</a>"; 
+                    $__PREV__ = "<a class=\"prev\" title=\" ".$__PREV__[\'title\']." \" href=\" ".$__PREV__[\'url\']." \">".$__PREV__[\'title\']."</a>";
                 }else{
-                    $__PREV__ = "<a class=\"prev_no\" href=\"javascript:;\">暂无数据</a>"; 
+                    $__PREV__ = "<a class=\"prev_no\" href=\"javascript:;\">暂无数据</a>";
                 }
                 echo $__PREV__;
                 ';
@@ -313,9 +315,9 @@ class Tp extends TagLib {
                 if($__PREV__){
                     //处理下一篇中的URL
                     $__PREV__[\'url\'] = getShowUrl($__PREV__);
-                    $__PREV__ = "<a class=\"next\" title=\" ".$__PREV__[\'title\']." \" href=\" ".$__PREV__[\'url\']." \">".$__PREV__[\'title\']."</a>"; 
+                    $__PREV__ = "<a class=\"next\" title=\" ".$__PREV__[\'title\']." \" href=\" ".$__PREV__[\'url\']." \">".$__PREV__[\'title\']."</a>";
                 }else{
-                    $__PREV__ = "<a class=\"next_no\" href=\"javascript:;\">暂无数据</a>"; 
+                    $__PREV__ = "<a class=\"next_no\" href=\"javascript:;\">暂无数据</a>";
                 }
                 echo $__PREV__;
                 ';
