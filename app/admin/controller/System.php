@@ -34,7 +34,7 @@ class System extends Base
     //系统设置
     public function system(){
         //查找所有模版
-        $dir = './template/home/';
+        $dir = $this->app->getRootPath() . 'public' .DIRECTORY_SEPARATOR. 'template';
         $template = get_dir($dir);
         $system = \app\common\model\System::find(1);
         $view = [

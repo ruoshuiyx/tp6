@@ -25,7 +25,6 @@
  */
 namespace app\admin\controller;
 
-use think\facade\Config;
 use think\facade\Db;
 use think\facade\Request;
 use think\facade\View;
@@ -40,11 +39,20 @@ class Template extends Base
             ->where('id',1)
             ->find();
 
-        $this->template_path = './template/home/'.$system['template'].'/';
+        $this->template_path =
+            $this->app->getRootPath() .
+            'public' .
+            DIRECTORY_SEPARATOR .
+            'template' .
+            DIRECTORY_SEPARATOR .
+            $system['template'] .
+            DIRECTORY_SEPARATOR .
+            'index'.
+            DIRECTORY_SEPARATOR;
         $this->template_html = $system['html'];
-        $this->template_css = 'css';
-        $this->template_js = 'js';
-        $this->template_img = 'img';
+        $this->template_css  = 'css';
+        $this->template_js   = 'js';
+        $this->template_img  = 'img';
 
         $initialize = [
             'html' => $this->template_html, //自定义html目录
@@ -60,9 +68,9 @@ class Template extends Base
     public function index(){
         $type = Request::param('type') ? Request::param('type') : 'html';
         if($type=='html'){
-            $path=$this->template_path.$this->template_html.'/';
+            $path=$this->template_path.$this->template_html.DIRECTORY_SEPARATOR;
         }else{
-            $path=$this->template_path.$type.'/';
+            $path=$this->template_path.$type.DIRECTORY_SEPARATOR;
         }
         $files = dir_list($path,$type);
         $templates = array();
