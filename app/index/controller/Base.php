@@ -43,8 +43,16 @@ class Base extends Controller
         $this->appName        = strtolower(Request::app());
         $this->controllerName = strtolower(Request::controller());
         $this->system         = System::where('id',1)->find();
-        $this->public         = '/template/'.$this->appName.'/'.$this->system['template'].'/';
-        $this->template       = $this->public.$this->system['html'];
+        $this->public         = $this->app->getRootPath().
+            'public'.
+            DIRECTORY_SEPARATOR.
+            'template'.
+            DIRECTORY_SEPARATOR.
+            $this->system['template'].
+            DIRECTORY_SEPARATOR.
+            $this->appName.
+            DIRECTORY_SEPARATOR;
+        $this->template       = $this->public.$this->system['html'].DIRECTORY_SEPARATOR;
     }
 
 }

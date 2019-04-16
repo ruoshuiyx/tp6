@@ -52,7 +52,7 @@ class Index extends Base
             'description' => $this->system['des'],   //seo信息
         ];
 
-        $template = $this->template.'/index.html';
+        $template = $this->template.'index.html';
         View::assign($view);
         return View::fetch($template);
     }
