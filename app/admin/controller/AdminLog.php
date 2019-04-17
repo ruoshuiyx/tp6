@@ -25,7 +25,7 @@
  */
 namespace app\admin\controller;
 
-use app\common\model\AdminLog as M;
+use app\admin\model\AdminLog as M;
 
 use think\facade\Config;
 use think\facade\Db;

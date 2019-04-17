@@ -8,7 +8,7 @@
  *                    :::::::::::           | EMAIL: 407593529@qq.com
  *                 ..:::::::::::'           | QQ: 407593529
  *             '::::::::::::'               | WECHAT: zhaoyingjie4125
- *                .::::::::::               | DATETIME: 2019/03/29
+ *                .::::::::::               | DATETIME: 2019/04/18
  *           '::::::::::::::..
  *                ..::::::::::::.
  *              ``::::::::::::::::
@@ -23,7 +23,7 @@
  *                      '.:::::'                    ':'````..
  * +----------------------------------------------------------------------
  */
-namespace app\common\model;
+namespace app\admin\model;
 
 use think\facade\Request;
 use think\facade\Session;
@@ -47,7 +47,7 @@ class AdminLog extends Base {
         $create_time = time();
 
         //标题处理
-        $auth = new \Auth\Auth();
+        $auth = new \Auth();
         $titleArr = $auth->getBreadCrumb();
         if(is_array($titleArr)){
             foreach($titleArr as $k=>$v){
