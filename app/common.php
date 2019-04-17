@@ -39,12 +39,17 @@ function getUrl($v){
 function getShowUrl($v){
     if($v){
         //$home_rote[''.$v['catdir'].'-:catId/:id'] = 'home/'.$v['catdir'].'/index';
-        $cate = \think\facade\Db::name('cate')->field('id,catdir,moduleid')->where('id',$v['catid'])->find();
-        $moduleurl = \think\facade\Db::name('module')->where('id',$cate['moduleid'])->value('name');
+        $cate = \think\facade\Db::name('cate')
+            ->field('id,catdir,moduleid')
+            ->where('id',$v['catid'])
+            ->find();
+        $moduleurl = \think\facade\Db::name('module')
+            ->where('id',$cate['moduleid'])
+            ->value('name');
         if($cate['catdir']){
-            $url = url(request()->module().'/'.$cate['catdir'].'/info', ['catId'=>$cate['id'],'id'=>$v['id']]);
+            $url = url(\think\facade\Request::app().'/'.$cate['catdir'].'/info', ['catId'=>$cate['id'],'id'=>$v['id']]);
         }else{
-            $url = url(request()->module().'/'.$moduleurl.'/info', ['catId'=>$cate['id'],'id'=>$v['id']] );
+            $url = url(\think\facade\Request::app().'/'.$moduleurl.'/info', ['catId'=>$cate['id'],'id'=>$v['id']] );
         }
     }
     return $url;

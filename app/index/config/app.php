@@ -16,6 +16,4 @@
 return [
     // 默认分页显示数量
     'page_size'               => 10,
-    //版本信息
-    'siyu_version'=>'6.0',
 ];
