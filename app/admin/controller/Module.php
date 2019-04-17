@@ -56,12 +56,11 @@ class module extends Base
             ->where($where)
             ->order('sort asc,id asc')
             ->paginate($pageSize,false,['query' => request()->param()]);
-        $page = $list->render();
 
         $view = [
             'title'=>$title,
-            'pageSize' => page_size($pageSize),
-            'page' => $page,
+            'pageSize' => page_size($pageSize,$list->total()),
+            'page' => $list->render(),
             'list' => $list,
             'empty'=> empty_list(7),
         ];

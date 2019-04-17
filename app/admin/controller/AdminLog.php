@@ -58,12 +58,11 @@ class AdminLog extends Base
             $useragent = explode('(',$v['useragent']);
             $list[$k]['useragent']=$useragent[0];
         }
-        $page = $list->render();
 
         $view = [
             'keyword'=>$keyword,
-            'pageSize' => page_size($pageSize),
-            'page' => $page,
+            'pageSize' => page_size($pageSize,$list->total()),
+            'page' => $list->render(),
             'list' => $list,
             'empty'=> empty_list(9),
         ];

@@ -81,7 +81,6 @@ class Error extends Base
                 ->where($where)
                 ->order('sort ASC,id DESC')
                 ->paginate($pageSize);
-            $page = $list->render();
 
             //获取栏目列表
             $cate = Db::name('cate')
@@ -93,8 +92,8 @@ class Error extends Base
 
         $view = [
             'title'=> $title,
-            'pageSize' => page_size($pageSize),
-            'page' => $page,
+            'pageSize' => page_size($pageSize,$list->total()),
+            'page' => $list->render(),
             'list' => $list,
             'catid'=> $catid,
             'cate' => $cate,

@@ -53,11 +53,11 @@ class AdType extends Base
         $list = M::where($where)
             ->order('sort ASC,id DESC')
             ->paginate($pageSize,false,['query' => request()->param()]);
-        $page = $list->render();
+
         $view = [
             'keyword'=>$keyword,
-            'pageSize' => page_size($pageSize),
-            'page' => $page,
+            'pageSize' => page_size($pageSize,$list->total()),
+            'page' => $list->render(),
             'list' => $list,
             'empty'=> empty_list(12),
         ];

@@ -59,11 +59,11 @@ class Users extends Base
             ->order('u.id DESC')
             ->where($where)
             ->paginate($pageSize,false,['query' => request()->param()]);
-        $page = $list->render();
+
         $view = [
             'keyword'=>$keyword,
-            'pageSize' => page_size($pageSize),
-            'page' => $page,
+            'pageSize' => page_size($pageSize,$list->total()),
+            'page' => $list->render(),
             'list' => $list,
             'empty'=> empty_list(11),
         ];

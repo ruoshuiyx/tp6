@@ -2,16 +2,19 @@
 
 /**
  * 生成页码跳转
- * @param int $page_size
+ * @param int $page_size 每页显示的数量
  * @return string
  */
-function page_size($page_size=0){
+function page_size($page_size=0,$total=0){
     $str  = '<select class="form-control page_size">';
     for ($i=10;$i<=100;$i+=10){
         $selected = $page_size==$i? 'selected':'';
         $str .= '<option value="'.$i.'" '.$selected.' >'.$i.' 条/页</option>';
     }
     $str .= '</select>';
+    if($total>0){
+        $str .= '<span class="form-control page_total">总共 '.$total.' 条记录</span>';
+    }
     return $str;
 }
 

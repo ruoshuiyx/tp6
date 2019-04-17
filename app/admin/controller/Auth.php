@@ -60,12 +60,11 @@ class Auth extends Base
             ->field('a.*,ac.group_id,ag.title')
             ->where($where)
             ->paginate($pageSize,false,['query' => request()->param()]);
-        $page = $list->render();
 
         $view = [
             'username'=>$username,
-            'pageSize' => page_size($pageSize),
-            'page' => $page,
+            'pageSize' => page_size($pageSize,$list->total()),
+            'page' => $list->render(),
             'list' => $list,
             'empty'=> empty_list(11),
         ];
@@ -225,12 +224,11 @@ class Auth extends Base
 
         //查出所有数据
         $list = AuthGroup::where($where)->paginate($pageSize,false,['query' => request()->param()]);
-        $page = $list->render();
 
         $view = [
             'title'=>$title,
-            'pageSize' => page_size($pageSize),
-            'page' => $page,
+            'pageSize' => page_size($pageSize,$list->total()),
+            'page' => $list->render(),
             'list' => $list,
             'empty'=> empty_list(7),
         ];
