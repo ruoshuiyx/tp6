@@ -442,12 +442,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/framework.git",
-            "reference": "466ef2286d2e6e09ddd9f0cb8e96f5e2f220cda8"
+            "reference": "0362ee8fc6a5dfda5228330d5665c8465650d748"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/framework/zipball/466ef2286d2e6e09ddd9f0cb8e96f5e2f220cda8",
-            "reference": "466ef2286d2e6e09ddd9f0cb8e96f5e2f220cda8",
+            "url": "https://api.github.com/repos/top-think/framework/zipball/0362ee8fc6a5dfda5228330d5665c8465650d748",
+            "reference": "0362ee8fc6a5dfda5228330d5665c8465650d748",
             "shasum": "",
             "mirrors": [
                 {
@@ -469,7 +469,7 @@
             "mockery/mockery": "^1.2",
             "phpunit/phpunit": "^7.0"
         },
-        "time": "2019-04-16T08:03:25+00:00",
+        "time": "2019-04-16T11:14:41+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
