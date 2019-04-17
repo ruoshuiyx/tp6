@@ -42,7 +42,7 @@ class AdminLog extends Base
         //全局查询条件
         $where=[];
         if(!empty($keyword)){
-            $where[]=['username|url', 'like', '%'.$keyword.'%'];
+            $where[]=['username|title', 'like', '%'.$keyword.'%'];
         }
         //非超级管理员只能查看自己的日志
         if(Session::get('admin.id')>1){
