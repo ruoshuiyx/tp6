@@ -85,6 +85,17 @@ class AdminLog extends Base {
                         'create_time' =>$create_time
                     ]);
                 }
+            }else{
+                self::create([
+                    'title'       => $title ? $title : '',
+                    'content'     => !is_scalar($content) ? json_encode($content) : $content,
+                    'url'         => $url,
+                    'admin_id'    => $admin_id,
+                    'username'    => $username,
+                    'useragent'   => $useragent,
+                    'ip'          => $ip,
+                    'create_time' =>$create_time
+                ]);
             }
         }
     }
