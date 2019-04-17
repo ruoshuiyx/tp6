@@ -54,7 +54,7 @@ class Admin extends Base {
                 return json($data);
             }
         }
-        $result = self::where(['username'=>$username,'password'=>md5($password)])->find()->toArray();
+        $result = self::where(['username'=>$username,'password'=>md5($password)])->find();
         if(empty($result)){
             $data = ['error' => '1', 'msg' => '帐号或密码错误'];
             return json($data);
@@ -70,6 +70,8 @@ class Admin extends Base {
                     ->field('a.group_id,ag.rules,ag.title')
                     ->where('uid',$result['id'])
                     ->find();
+                //重新查询要赋值的数据[原因是toArray必须保证find的数据不为空，为空就报错]
+                $result = self::where(['username'=>$username,'password'=>md5($password)])->find()->toArray();
                 Session::set('admin'         ,$result);
                 Session::set('admin.group_id', $rules['group_id']);
                 Session::set('admin.rules'   , explode(',',$rules['rules']));
