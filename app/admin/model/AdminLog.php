@@ -70,16 +70,22 @@ class AdminLog extends Base {
 
         //插入数据
         if(!empty($title)){
-            self::create([
-                'title'       => $title ? $title : '',
-                'content'     => !is_scalar($content) ? json_encode($content) : $content,
-                'url'         => $url,
-                'admin_id'    => $admin_id,
-                'username'    => $username,
-                'useragent'   => $useragent,
-                'ip'          => $ip,
-                'create_time' =>$create_time
-            ]);
+            //查询管理员上一条数据
+            $result = self::where('admin_id' , '=' , $admin_id)->order('id', 'desc')->find();
+            if($result){
+                if($result->url != $url){
+                    self::create([
+                        'title'       => $title ? $title : '',
+                        'content'     => !is_scalar($content) ? json_encode($content) : $content,
+                        'url'         => $url,
+                        'admin_id'    => $admin_id,
+                        'username'    => $username,
+                        'useragent'   => $useragent,
+                        'ip'          => $ip,
+                        'create_time' =>$create_time
+                    ]);
+                }
+            }
         }
     }
 
