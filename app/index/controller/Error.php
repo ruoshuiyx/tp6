@@ -61,6 +61,14 @@ class Error extends Base
         $keywords    = $cate['keywords']    ? $cate['keywords']    : $this->system['key']; //关键词
         $description = $cate['description'] ? $cate['description'] : $this->system['des']; //描述
 
+        //单页模型
+        if($this->tableName=='page'){
+            $info = Db::name($this->tableName)
+                ->where('catid','=',Request::param('catId'))
+                ->find();
+            View::assign(['info'=>$info]);//单页内容
+        }
+
         $view = [
             'cate'        => $cate,         //栏目信息
             'system'      => $this->system, //系统信息
