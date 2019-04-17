@@ -31,6 +31,9 @@ use think\facade\Session;
 
 class Base extends Controller
 {
+    //定义中间件
+    protected $middleware = ['app\admin\middleware\Admin'];
+
     //初始化方法
     public function initialize()
     {
