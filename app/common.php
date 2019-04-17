@@ -25,10 +25,15 @@ function getUrl($v){
             }
         }else{
             $moduleurl = \think\facade\Db::name('module')->where('id',$v['moduleid'])->value('name');
+
             if($v['catdir']){
-                $v['url'] = url(request()->module().'/'.$v['catdir'].'/index', 'catId='.$v['id']);
+                //路由还没搞定先不管路由
+                //$v['url'] = url(request()->app().'/'.$v['catdir'].'/index', ['catId'=>$v['id']]);
+
+                $v['url'] = url(request()->app().'/'.$moduleurl.'/index', ['catId'=>$v['id']]);
+
             }else{
-                $v['url'] = url(request()->module().'/'.$moduleurl.'/index', 'catId='.$v['id']);
+                $v['url'] = url(request()->app().'/'.$moduleurl.'/index', ['catId'=>$v['id']]);
             }
         }
     }

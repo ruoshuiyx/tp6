@@ -21,7 +21,7 @@ $system = \think\facade\Db::name('system')
 return [
 
     // 模板路径
-    'view_path'    => './template/'.\think\facade\Request::app().'/'.$system['template'].'/'.$system['html'].'/',
+    'view_path'    => './template/'.$system['template'].'/'.\think\facade\Request::app().'/'.$system['html'].'/',
     // 模板文件名分隔符
     'view_depr'    => '_',
 

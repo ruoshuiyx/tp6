@@ -46,7 +46,6 @@ class Error extends Base
 
     //列表
     public function index(){
-
         //栏目ID
         $catId = Request::param('catId');
 
