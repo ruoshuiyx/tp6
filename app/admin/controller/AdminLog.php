@@ -28,7 +28,6 @@ namespace app\admin\controller;
 use app\admin\model\AdminLog as M;
 
 use think\facade\Config;
-use think\facade\Db;
 use think\facade\Request;
 use think\facade\Session;
 use think\facade\View;
@@ -85,18 +84,16 @@ class AdminLog extends Base
 
     //删除
     public function del(){
-        if(Request::isPost()) {
-            $id = Request::param('id');
-            return M::del($id);
-        }
+        $id = Request::param('id');
+        M::destroy($id);
+        return json(['error'=>0,'msg'=>'删除成功!']);
     }
 
     //批量删除
     public function selectDel(){
-        if(Request::isPost()) {
-            $id = Request::param('id');
-            return M::selectDel($id);
-        }
+        $id = Request::param('id');
+        M::destroy($id);
+        return json(['error'=>0,'msg'=>'删除成功!']);
     }
 
 
