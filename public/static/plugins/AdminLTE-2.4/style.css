@@ -1,0 +1,90 @@
+/*后台样式*/
+.page{text-align: right;}
+.page .pagination{padding:0;margin: 0;}
+.bg-white{background-color:#ffffff}
+.search{padding:5px 15px;background-color:#FFF;border-left: 3px solid #337ab7;}
+.search:before,
+.search:after {display: table;content: " ";}
+.search:after {clear: both;}
+.search e{ line-height:35px}
+
+.search .m_10{margin-left:10px;margin-bottom: 5px;margin-top: 5px;}
+.search .m_10_l_0{margin-left:0;margin-bottom: 5px;margin-top: 5px;}
+.search .f_r{float:right}
+
+.w_40{width: 40px;}
+.w_110{width:110px;}
+.m-r-5{ margin-right: 5px;}
+.m-r-10{ margin-right: 10px;}
+.m_auto{ margin-left: auto; margin-right: auto;}
+.t_c{ text-align: center;}
+.p_r_0{ padding-right:0}
+.line_height_38{ line-height:38px}
+
+.dd_input_group{margin: 12px 0;}
+.dd_input_group button{ margin:0 10px 0 0}
+.dd_input_l{padding: 8px 15px; height: 38px; line-height: 20px; border-width: 1px; border-style: solid; border-radius: 2px 0 0 2px; text-align: center; background-color: #FBFBFB; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; box-sizing: border-box;border-color: #d2d6de;margin: 0;border-right: 0;font-weight: normal;}
+ .dd_input_group .col-sm-4, .dd_input_group .col-xs-8, .dd_input_group .col-sm-5, .dd_input_group .col-xs-12{margin-left: 0;padding-left: 0;border-right: 0;}
+.dd_input_group input, .dd_input_group select, .ldd_input_group textarea{height: 38px; line-height: 1.3; line-height: 38px\9; border-width: 1px; border-style: solid; background-color: #fff; border-radius: 2px;border-top-left-radius: 0; border-bottom-left-radius: 0;}
+.dd_ts{line-height: 38px; color: #999!important;}
+.dd_input_group .dd_radio_lable{ line-height:36px; margin:0;font-weight:normal;padding: 0 10px;}
+.dd_input_group .dd_radio_lable input{ height:36px !important;}
+.dd_input_group .dd_radio_lable_left{box-sizing: border-box; border-width: 1px;border-style: solid;border-color: #d2d6de;min-height: 38px;}
+.dd_input_group .dd_radio{margin: 0 10px;float: left; }
+#field_setup{ border:none;    background-color: #d2d6de;}
+
+/*状态*/
+.state,.auth_open{cursor: pointer;}
+.state_ok{ color: #3c8dbc;}
+.state_no{ color: #f39c12;}
+
+/*每页显示记录数*/
+.page_size{ width: 105px;float: right;margin: 0 0 0 10px;}
+.page_total{ float:left; width:auto}
+.box-footer{ padding:10px 0 0 0}
+
+ul.ztree li span.button.switch{margin-right:5px}
+ul.ztree>li{background: #dae6f0;padding: 8px;}
+ul.ztree>li ul li{background: #eef5fa;margin-top: 8px;padding: 5px;}
+ul.ztree>li ul li ul li{background: #f6fbff;padding: 5px;}
+ul.ztree>li ul li ul li ul li{background: #fff;padding: 5px;}
+ul.ztree ul ul ul li{display:inline-block;}
+ul.ztree>ul li>ul>li{padding:5px}
+ul.ztree>ul li>ul{margin-top:12px}
+ul.ztree>ul li{padding:15px;padding-right:25px}
+ul.ztree>ul li{white-space:normal!important;background: #01AAED}
+ul.ztree li{white-space:inherit;}
+ul.ztree>li>a>span{font-size:15px;font-weight:700}
+.skin-blue .sidebar-menu>li>.treeview-menu{ margin:0; padding: 0;}
+.skin-blue .sidebar-menu>li>.treeview-menu a{ line-height:40px; padding:0 0 0 20px}
+/*.treeview-menu>li.active{ background-color:#3c8dbc}*/
+.nav-tabs-custom{box-shadow:none}
+.text-lable{display: block;background-color: #FBFBFB; margin: 0; padding: 8px 15px; height: 38px;line-height: 20px;border-width: 1px;border-style: solid;border-radius: 2px 2px 0 0;border-bottom: 0;border-color: #d2d6de;font-weight: normal;}
+
+/*细节调整*/
+/*.content-wrapper, .main-footer,.main-header .navbar{margin-left: 200px;}
+.main-sidebar,.main-header .logo{}*/
+
+.changeSort{padding: 0 8px;line-height: 21px;height: 21px;}
+.image_preview{float: left;margin-left: 10px;max-width: 100px;max-height: 38px;}
+.main-header .fullscreen:before {content: "";}
+
+/*多图区域调整*/
+#more_images_duotu{border: 1px solid #d2d6de;}
+#more_images_duotu .row{margin-top: 2px;margin-bottom: 2px;}
+#more_images_duotu .row .col-xs-6{padding-right: 0;padding-left: 20px;}
+#more_images_duotu .row .col-xs-3{padding-right: 20px;}
+/*ckeditor 默认高度设置*/
+.ck-editor__editable {min-height: 200px;}
+.btn-app{min-width: 60px;width: 23%;margin: 1%;height: 75px;}
+.btn-app i{ margin-bottom:10px;font-size: 24px;}
+.small-box{margin-bottom: 18px;margin-top: 18px;}
+
+.skin-blue .sidebar-menu>li:hover>a, .skin-blue .sidebar-menu>li.active>a, .skin-blue .sidebar-menu>li.menu-open>a{border-left-color: #3c8dbc;}
+.user-panel>.info i{ font-size:13px}
+.user-panel>.info>p{ font-weight:normal}
+.user-header h5{ color:#ffffff}
+.juanzeng{ cursor:pointer}
+@media screen and (max-width: 768px){
+    .padding_0{ padding:0}
+}
