@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2019-04-12 14:43:14
+Date: 2019-04-18 11:51:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -80,7 +80,7 @@ CREATE TABLE `tp_admin_log` (
   `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '操作时间',
   PRIMARY KEY (`id`),
   KEY `name` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=384 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='管理员日志表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='管理员日志表';
 
 -- ----------------------------
 -- Records of tp_admin_log
@@ -333,15 +333,6 @@ INSERT INTO `tp_auth_rule` VALUES ('106', '101', 'Template/imgDel', '媒体文�
 INSERT INTO `tp_auth_rule` VALUES ('107', '1', 'System/sms', '短信配置', '1', '1', '', '13', '1', '', '1548400960', '1548400980');
 INSERT INTO `tp_auth_rule` VALUES ('108', '107', 'System/trySms', '操作-测试短信发送', '1', '1', '', '132', '1', '', '1548401007', '1551864103');
 INSERT INTO `tp_auth_rule` VALUES ('109', '0', 'Addons', '插件管理', '1', '0', '', '7', '1', 'fa fa-plug', '1551774339', '1551774539');
-INSERT INTO `tp_auth_rule` VALUES ('110', '109', 'Hooks/index', '钩子管理', '1', '1', '', '72', '1', '', '1551774594', '1551774594');
-INSERT INTO `tp_auth_rule` VALUES ('111', '110', 'Hooks/add', '操作-添加', '1', '1', '', '721', '1', '', '1551774664', '1551774664');
-INSERT INTO `tp_auth_rule` VALUES ('112', '110', 'Hooks/addPost', '操作-添加保存', '1', '1', '', '722', '1', '', '1551774677', '1551774677');
-INSERT INTO `tp_auth_rule` VALUES ('113', '110', 'Hooks/edit', '操作-修改', '1', '1', '', '723', '1', '', '1551774690', '1551774690');
-INSERT INTO `tp_auth_rule` VALUES ('114', '110', 'Hooks/editPost', '操作-修改保存', '1', '1', '', '724', '1', '', '1551774707', '1551774707');
-INSERT INTO `tp_auth_rule` VALUES ('115', '110', 'Hooks/del', '操作-删除', '1', '1', '', '725', '1', '', '1551774721', '1551774721');
-INSERT INTO `tp_auth_rule` VALUES ('116', '110', 'Hooks/selectDel', '操作-批量删除', '1', '1', '', '726', '1', '', '1551774734', '1551774734');
-INSERT INTO `tp_auth_rule` VALUES ('117', '110', 'Hooks/sort', '操作-排序', '1', '1', '', '727', '1', '', '1551774749', '1551774749');
-INSERT INTO `tp_auth_rule` VALUES ('118', '110', 'Hooks/state', '操作-状态', '1', '1', '', '728', '1', '', '1551774814', '1551774814');
 INSERT INTO `tp_auth_rule` VALUES ('119', '83', 'UsersType/selectDel', '操作-批量删除', '1', '1', '', '926', '1', '', '1551836092', '1551836092');
 INSERT INTO `tp_auth_rule` VALUES ('120', '83', 'UsersType/sort', '操作-排序', '1', '1', '', '927', '1', '', '1551836104', '1551836104');
 INSERT INTO `tp_auth_rule` VALUES ('121', '83', 'UsersType/state', '操作-状态', '1', '1', '', '928', '1', '', '1551836132', '1551836132');
@@ -362,11 +353,6 @@ INSERT INTO `tp_auth_rule` VALUES ('135', '69', 'AdType/addPost', '操作-添加
 INSERT INTO `tp_auth_rule` VALUES ('136', '69', 'AdType/editPost', '操作-修改保存', '1', '1', '', '634', '1', '', '1551936663', '1551936663');
 INSERT INTO `tp_auth_rule` VALUES ('137', '69', 'AdType/state', '操作-状态', '1', '1', '', '637', '1', '', '1551936803', '1551936814');
 INSERT INTO `tp_auth_rule` VALUES ('138', '109', 'Addons/index', '插件管理', '1', '1', '', '71', '1', '', '1552455295', '1552455295');
-INSERT INTO `tp_auth_rule` VALUES ('139', '138', 'Addons/install', '操作-安装', '1', '1', '', '711', '1', '', '1552455347', '1552455347');
-INSERT INTO `tp_auth_rule` VALUES ('140', '138', 'Addons/uninstall', '操作-卸载', '1', '1', '', '712', '1', '', '1552455359', '1552455359');
-INSERT INTO `tp_auth_rule` VALUES ('141', '138', 'Addons/config', '操作-配置', '1', '1', '', '713', '1', '', '1552455388', '1552455388');
-INSERT INTO `tp_auth_rule` VALUES ('142', '138', 'Addons/configPost', '操作-配置保存', '1', '1', '', '714', '1', '', '1552455400', '1552455400');
-INSERT INTO `tp_auth_rule` VALUES ('143', '138', 'Addons/state', '操作-状态', '1', '1', '', '715', '1', '', '1552455414', '1552455414');
 INSERT INTO `tp_auth_rule` VALUES ('144', '101', 'Template/addPost', '操作-添加保存', '1', '1', '', '812', '1', '', '1553759995', '1553760047');
 INSERT INTO `tp_auth_rule` VALUES ('145', '101', 'Template/editPost', '操作-修改保存', '1', '1', '', '814', '1', '', '1553760016', '1553760056');
 INSERT INTO `tp_auth_rule` VALUES ('146', '52', 'Category/addPost', '操作-添加保存', '1', '1', '', '512', '1', '', '1553760556', '1553760556');
