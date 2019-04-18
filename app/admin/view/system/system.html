@@ -10,6 +10,28 @@
 </head>
 <body class="hold-transition skin-blue sidebar-mini">	
 <div class="wrapper">
+
+<form>
+    <textarea name="editor1" id="editor1">
+        This is my textarea to be replaced with CKEditor.
+    </textarea>
+    <script>
+        // Replace the <textarea id="editor1"> with a CKEditor
+        // instance, using default configuration.
+        //CKEDITOR.replace( 'editor1' );
+		CKEDITOR.replace('editor1', { height: '400px', width: '100%' });
+    </script>
+</form>
+
+
+
+
+
+
+
+
+
+
     <div class="content-wrapper" style="margin-left: 0 !important;">
         <!--页眉-->
         <section class="content-header">

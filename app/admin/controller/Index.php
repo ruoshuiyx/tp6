@@ -29,6 +29,7 @@ use app\common\model\Users;
 use think\facade\App;
 use think\facade\Config;
 use think\facade\Db;
+use think\facade\Request;
 use think\facade\Session;
 use think\facade\View;
 
@@ -107,25 +108,58 @@ class Index extends Base
     }
 
     //上传文件
-    function upload(){
-        //file是传文件的名称，这是webloader插件固定写入的。因为webloader插件会写入一个隐藏input，不信你们可以通过浏览器检查页面
-        $file = request()->file('file');
-        $info = $file->validate(['ext' => 'jpg,png,gif,jpeg,rar,zip,avi,rmvb,3gp,flv,mp3,txt,doc,xls,ppt,pdf,xls,docx,xlsx,doc'])->move('uploads');
+    public function upload(){
+        if(Request::param('from')=='ckeditor'){
+            // 获取上传文件表单字段名
+            $fileKey = array_keys(request()->file());
+            for($i=0 ; $i<count($fileKey) ; $i++){
+                // 获取表单上传文件
+                $file = request()->file($fileKey[$i]);
+                // 移动到框架应用根目录/public/uploads/ 目录下
+                $info = $file->validate(['ext' => 'jpg,png,gif,jpeg'])->move('uploads');
+                if($info){
+                    $path[]='/uploads/'.str_replace('\\','/',$info->getSaveName());
+                }
+            }
 
-        if($info){
-            // 成功上传后 获取上传信息
-            // 输出 jpg
-            //echo $info->getExtension();
-            // 输出 20160820/42a79759f284b767dfcb2a0197904287.jpg
-            $url =  "/uploads/".$info->getSaveName();
-            $url = str_replace("\\","/",$url);
-            echo $url;
-            // 输出 42a79759f284b767dfcb2a0197904287.jpg
-            //echo $info->getFilename();
+            if($path){
+                $result['uploaded'] = true;
+                //分辨是否截图上传，截图上传只能上传一个，非截图上传可以上传多个
+                if(Request::param('responseType')=='json'){
+                    $result["url"] =  $path[0];
+                }else{
+                    $result["url"] =  $path;
+                }
+                return json_encode($result);
+            }else{
+                // 上传失败获取错误信息
+                $result['uploaded'] =false;
+                $result['url'] = '';
+                return json_encode($result,true);
+            }
         }else{
-            // 上传失败获取错误信息
-            echo $file->getError();
+            //webupload
+            //file是传文件的名称，这是webloader插件固定写入的。因为webloader插件会写入一个隐藏input，不信你们可以通过浏览器检查页面
+            $file = request()->file('file');
+            $info = $file->validate(['ext' => 'jpg,png,gif,jpeg,rar,zip,avi,rmvb,3gp,flv,mp3,txt,doc,xls,ppt,pdf,xls,docx,xlsx,doc'])->move('uploads');
+
+            if($info){
+                // 成功上传后 获取上传信息
+                // 输出 jpg
+                //echo $info->getExtension();
+                // 输出 20160820/42a79759f284b767dfcb2a0197904287.jpg
+                $url =  "/uploads/".$info->getSaveName();
+                $url = str_replace("\\","/",$url);
+                echo $url;
+                // 输出 42a79759f284b767dfcb2a0197904287.jpg
+                //echo $info->getFilename();
+            }else{
+                // 上传失败获取错误信息
+                echo $file->getError();
+            }
+
         }
+
     }
 
     //清除缓存
