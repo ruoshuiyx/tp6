@@ -50,7 +50,7 @@ class Base extends Controller
             'Index/main',       //右侧
             'Index/upload',     //上传文件
             'Index/clear',      //清除缓存
-            
+
             'Login/index',      //登录页面
             'Login/checkLogin', //校验登录
             'Login/captcha',    //登录验证码

@@ -10,28 +10,6 @@
 </head>
 <body class="hold-transition skin-blue sidebar-mini">	
 <div class="wrapper">
-
-<form>
-    <textarea name="editor1" id="editor1">
-        This is my textarea to be replaced with CKEditor.
-    </textarea>
-    <script>
-        // Replace the <textarea id="editor1"> with a CKEditor
-        // instance, using default configuration.
-        //CKEDITOR.replace( 'editor1' );
-		CKEDITOR.replace('editor1', { height: '400px', width: '100%' });
-    </script>
-</form>
-
-
-
-
-
-
-
-
-
-
     <div class="content-wrapper" style="margin-left: 0 !important;">
         <!--页眉-->
         <section class="content-header">
@@ -74,11 +52,11 @@
 				                  </div>
 				                  <div class="col-sm-4 dd_ts">
 				                  	<!--上传图片-->
-												    <!--用来存放item-->
-												    <div id="fileList_logo" class="uploader-list">
-												    </div>
-												    <div id="filePicker_logo"><i class="fa fa-upload m-r-10"></i>选择图片</div>
-												    <img class="image_preview" src="{$system['logo']?$system['logo']:'/static/admin/images/nopic.png'}" id="logo_preview">
+                                    <!--用来存放item-->
+                                    <div id="fileList_logo" class="uploader-list">
+                                    </div>
+                                    <div id="filePicker_logo"><i class="fa fa-upload m-r-10"></i>选择图片</div>
+                                    <img class="image_preview" src="{$system['logo']?$system['logo']:'/static/admin/images/nopic.png'}" id="logo_preview">
 				                  	<!--上传图片-->
 				                  </div>
 				                </div>
@@ -182,10 +160,10 @@
 				                  </div>
 				                  <div class="col-sm-4 dd_ts">
 				                  	<!--上传图片-->
-												    <!--用来存放item-->
-												    <div id="fileList_qrcode" class="uploader-list"></div>
-												    <div id="filePicker_qrcode"><i class="fa fa-upload m-r-10"></i>选择图片</div>
-												    <img class="image_preview" src="{$system['qrcode']?$system['qrcode']:'/static/admin/images/nopic.png'}" id="qrcode_preview">
+                                    <!--用来存放item-->
+                                    <div id="fileList_qrcode" class="uploader-list"></div>
+                                    <div id="filePicker_qrcode"><i class="fa fa-upload m-r-10"></i>选择图片</div>
+                                    <img class="image_preview" src="{$system['qrcode']?$system['qrcode']:'/static/admin/images/nopic.png'}" id="qrcode_preview">
 				                  	<!--上传图片-->
 				                  </div>
 				                </div>

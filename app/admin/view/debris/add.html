@@ -83,32 +83,13 @@
 				                </div>
 			                </div>
                             <!---->
-                            <!-- wangEditor编辑器源码文件 -->
-							<script type="text/javascript" src="/static/wangEditor-3.1.1/release/wangEditor.min.js"></script>
-                            <script type="text/javascript" src="/static/wangEditor-3.1.1/release/wangEditorExt.js"></script>
+                            <!-- 编辑器 -->
                             <div class="row dd_input_group">
 			                	<div class="form-group">
-				                  <div class="col-sm-8 col-xs-8">
+				                  <div class="col-sm-10 col-xs-12">
                                       <label class="text-lable">内容</label>
-                                      </div>
-                                      <div class="col-sm-8 col-xs-8">
-                                          <div id="editor_content">{$info.content?$info.content|raw:''}</div>
-                                          <textarea class="form-control" name="content" id="text_content" style="display:none"></textarea>
-                                            <script type="text/javascript">
-                                                var E = window.wangEditor;
-                                                var editor_content = new E('#editor_content');
-                                                var $text_content = $('#text_content');
-                                                editor_content.customConfig.onchange = function (html) {
-                                                    // 监控变化，同步更新到 textarea
-                                                    $text_content.val(html);
-                                                }
-                                                editor_content.customConfig.uploadImgServer = '{:url("index/wangEditor")}';  // 上传图片到服务器
-                                                editor_content.create();
-												E.viewSource.init(editor_content);
-                                                // 初始化 textarea 的值
-                                                $text_content.val(editor_content.txt.html());
-                                            </script>
-                                      </div>
+                                      {:make_editor('content',$info.content)}
+                                  </div>
 				                </div>
 			                </div>
                             <!---->

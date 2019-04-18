@@ -85,21 +85,6 @@ function format_bytes($size, $delimiter = '') {
     return round($size, 2) . $delimiter . $units[$i];
 }
 
-function get_file_list(){
-    $file_list = [];
-    $file_path = resource_path('views\home');
-    if (is_dir($file_path)){
-        $handler = opendir($file_path);
-        while( ($filename = readdir($handler)) !== false ) {
-            if($filename != "." && $filename != ".."){
-                $file_list[] = $filename;
-            }
-        }
-        closedir($handler);
-        return $file_list;
-    }
-}
-
 /**
  * 获取目录里的文件，不包括下级文件夹
  * @param string $dir  路径
@@ -170,4 +155,18 @@ function dir_delete($dir) {
         is_dir($v) ? dir_delete($v) : @unlink($v);
     }
     return @rmdir($dir);
+}
+
+/**
+ * 生成不同的编辑器(目前只支持ckeditor)
+ * @param string $name     字段名称
+ * @param string $conetnt  内容
+ * @param string $editor   编辑器
+ * @param string $height   高度
+ * @param string $width    宽度
+ * @return string
+ */
+function make_editor($name, $conetnt = '', $editor = '' ,$height = '400px', $width ='' ){
+    $result = '<textarea name="'.$name.'" id="'.$name.'">'.$conetnt.'</textarea><script>CKEDITOR.replace(\''.$name.'\', { height: \''.$height.'\', width: \''.$width.'\' });</script>';
+    return $result;
 }
