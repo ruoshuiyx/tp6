@@ -417,7 +417,7 @@ function get_file_folder_List($pathname,$fileFlag = 0, $pattern='*') {
 function getTemplate(){
     //查找设置的模版
     $system = \think\facade\Db::name('system')->where('id',1)->find();
-    $path = './template/home/'.$system['template'].'/'.$system['html'].'/';
+    $path = './template/'.$system['template'].'/index/'.$system['html'].'/';
     $tpl['list'] = get_file_folder_List($path , 2, '*_list*');
     $tpl['show'] = get_file_folder_List($path , 2, '*_show*');
     return $tpl;
