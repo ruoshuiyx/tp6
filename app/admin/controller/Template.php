@@ -31,24 +31,20 @@ use think\facade\View;
 
 class Template extends Base
 {
-    protected $template_path,$template_html,$template_css,$template_js,$template_img,$upload_path;
+    protected $public,$template_path,$template_html,$template_css,$template_js,$template_img,$upload_path;
     function initialize()
     {
         parent::initialize();
         $system = Db::name('system')
             ->where('id',1)
             ->find();
-
-        $this->template_path =
-            $this->app->getRootPath() .
-            'public' .
-            DIRECTORY_SEPARATOR .
-            'template' .
-            DIRECTORY_SEPARATOR .
-            $system['template'] .
-            DIRECTORY_SEPARATOR .
+        $this->public         = '/template/'.
+            $system['template'].
+            '/'.
             'index'.
-            DIRECTORY_SEPARATOR;
+            '/';
+        $this->template_path =
+            '.'.$this->public;
         $this->template_html = $system['html'];
         $this->template_css  = 'css';
         $this->template_js   = 'js';
