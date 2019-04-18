@@ -73,7 +73,7 @@ class AdminLog extends Base
     //查看
     public function edit(){
         $id = Request::param('id');
-        $info = M::edit($id);
+        $info = M::find($id);
         $view =[
             'info'   => $info,
         ];
