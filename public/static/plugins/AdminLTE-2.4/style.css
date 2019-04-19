@@ -66,7 +66,7 @@ ul.ztree>li>a>span{font-size:15px;font-weight:700}
 .main-sidebar,.main-header .logo{}*/
 
 .changeSort{padding: 0 8px;line-height: 21px;height: 21px;}
-.image_preview{float: left;margin-left: 10px;max-width: 100px;max-height: 38px;}
+.image_preview{float: left;margin-left: 10px;/*max-width: 100px;*/max-height: 38px;}
 .main-header .fullscreen:before {content: "";}
 
 /*多图区域调整*/
@@ -87,4 +87,5 @@ ul.ztree>li>a>span{font-size:15px;font-weight:700}
 .juanzeng{ cursor:pointer}
 @media screen and (max-width: 768px){
     .padding_0{ padding:0}
+	.uploader-list{ margin-top:10px;}
 }

@@ -87,7 +87,7 @@
 				                 		   <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"}* 必填{/eq}</div>
                                         {/case}
                                         {case textarea}
-                                          <div class="col-sm-5 col-xs-12">
+                                          <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5">
                                           <label class="text-lable">{$field.name}</label>
                                           <textarea class="form-control" name="{$field.field}" rows="3" placeholder="请输入{$field.name}">{$info[$field.field]}</textarea>
                                           </div>
@@ -228,7 +228,7 @@
                                               <script>webupload('fileList_image{$field.field}','filePicker_image{$field.field}','image_preview{$field.field}','{$field.field}',false ,'{$field.setup.upload_allowext}');	</script>
                                         {/case}
                                         {case images}
-                                          <div class="col-sm-5 col-xs-12">
+                                          <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5">
                                           <label class="text-lable">{$field.name}</label>
                                           	<div class="more_images dd_ts">
                                             	<div id="more_images_{$field.field}">
