@@ -37,30 +37,30 @@
 		                	<div class="row dd_input_group">
 			                	<div class="form-group">
 				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">模型名称</label>
-				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+				                  <div class="col-xs-8 col-sm-6 col-md-4 col-lg-4">
 				                    <input type="text" name="title" class="form-control" placeholder="模型名称" value="{$info.title?$info.title:''}">
 				                  </div>
-                                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">* 请填写中文名称</div>
+                                  <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">* 请填写中文名称</div>
 				                </div>
 			                </div>
 			                <!---->
 		                	<div class="row dd_input_group">
 			                	<div class="form-group">
 				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">表名</label>
-				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+				                  <div class="col-xs-8 col-sm-6 col-md-4 col-lg-4">
 				                    <input type="text" name="name" class="form-control" placeholder="表名" value="{$info.name?$info.name:''}" {$info.name?'disabled':''}>
 				                  </div>
-                                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">* 请填写不带表前缀的英文，如 test</div>
+                                  <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">* 请填写不带表前缀的英文，如 test</div>
 				                </div>
 			                </div>
 			                <!---->
 			                <div class="row dd_input_group">
 			                	<div class="form-group">
 				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">列表页字段</label>
-				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+				                  <div class="col-xs-8 col-sm-6 col-md-4 col-lg-4">
 				                    <input type="text" name="listfields" class="form-control" placeholder="请输入列表页调用字段" value="{$info.listfields?$info.listfields:'*'}">
 				                  </div>
-				                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">请输入列表页调用字段，* 表示全部（功能未完善，目前只可填*）</div>
+				                  <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">请输入列表页调用字段，* 表示全部（功能未完善，目前只可填*）</div>
 				                </div>
 			                </div>
 			                <!---->
@@ -68,14 +68,14 @@
                       		<div class="row dd_input_group">
 			                	<div class="form-group">
 				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">新建表字段</label>
-				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+				                  <div class="col-xs-8 col-sm-6 col-md-4 col-lg-4">
 				                  	<div class="dd_radio_lable_left">
                                         <label class="dd_radio_lable">
                                           <input type="radio" name="emptytable" value="1" class="dd_radio" checked><span>普通文章表字段</span>
                                         </label>
                                     </div>  
 				                  </div>
-                                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">目前只支持复制普通文章表</div>
+                                  <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">目前只支持复制普通文章表</div>
 				                </div>
 			                </div>
 			                {/if}
@@ -91,8 +91,7 @@
                     	<!---->
 			                <div class="row dd_input_group">
 			                	<div class="form-group">
-				                  <label class="col-sm-1 col-xs-4 control-label"></label>
-				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+				                  <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5 text-center">
 				                    	<button type="submit" class="btn btn-flat btn-primary ">提 交</button> 
 				                    	<button type="button" class="btn btn-flat btn-default" onclick="javascript :history.back(-1)">返 回</button>
 				                  </div>

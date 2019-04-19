@@ -432,6 +432,12 @@ class Auth extends Base
     public function ruleAdd(){
         if(Request::isPost()){
             $data=Request::post();
+            if(empty($data['title'])){
+                $this->error('权限名称不可为空');
+            }
+            if(empty($data['sort'])){
+                $this->error('排序不可为空');
+            }
             if(AuthRule::create($data)){
                 $this->success('权限添加成功', 'Auth/adminRule');
             }else{
