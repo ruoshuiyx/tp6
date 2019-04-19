@@ -160,4 +160,27 @@ class Index extends Base
             return ['error' => 1, 'msg' => '邮件发送失败！'];
         }
     }
+
+    //搜索
+    public function search(){
+        $search = Request::param('search');//关键字
+        if(empty($search)){
+            $this->error('请输入关键词');
+        }
+
+
+        $view = [
+            'cate'        => null,
+            'search'      => $search,       //关键字
+            'system'      => $this->system, //系统信息
+            'public'      => $this->public, //公共目录
+            'title'       => $this->system['title'] ? $this->system['title'] : $this->system['name'], //seo信息
+            'keywords'    => $this->system['key'],   //seo信息
+            'description' => $this->system['des'],   //seo信息
+        ];
+
+        $template = $this->template.'search.html';
+        View::assign($view);
+        return View::fetch($template);
+    }
 }
