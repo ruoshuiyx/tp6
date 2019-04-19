@@ -12,6 +12,7 @@ declare (strict_types = 1);
 
 namespace think\db;
 
+use Closure;
 use PDO;
 use think\Exception;
 
@@ -342,7 +343,7 @@ abstract class Builder
      * @param  string $logic Logic
      * @param  array  $val   查询条件
      * @param  array  $binds 参数绑定
-     * @return string
+     * @return array
      */
     protected function parseWhereLogic(Query $query, string $logic, array $val, array $binds = []): array
     {
@@ -364,15 +365,15 @@ abstract class Builder
 
             if ($value instanceof \Closure) {
                 // 使用闭包查询
-                $where[] = $this->parseClousre($query, $value, $logic);
+                $where[] = $this->parseClousreWhere($query, $value, $logic);
             } elseif (is_array($field)) {
-                $where[] = $this->parseWhereField($query, $value, $field, $logic, $binds);
+                $where[] = $this->parseMultiWhereField($query, $value, $field, $logic, $binds);
             } elseif ($field instanceof Raw) {
                 $where[] = ' ' . $logic . ' ' . $this->parseWhereItem($query, $field, $value, $binds);
             } elseif (strpos($field, '|')) {
-                $where[] = $this->parseMultiFieldOr($query, $value, $field, $logic, $binds);
+                $where[] = $this->parseFieldsOr($query, $value, $field, $logic, $binds);
             } elseif (strpos($field, '&')) {
-                $where[] = $this->parseMultiFieldAnd($query, $value, $field, $logic, $binds);
+                $where[] = $this->parseFieldsAnd($query, $value, $field, $logic, $binds);
             } else {
                 // 对字段使用表达式查询
                 $field   = is_string($field) ? $field : '';
@@ -393,12 +394,11 @@ abstract class Builder
      * @param  array  $binds 参数绑定
      * @return string
      */
-    protected function parseMultiFieldAnd(Query $query, $value, string $field, string $logic, array $binds): string
+    protected function parseFieldsAnd(Query $query, $value, string $field, string $logic, array $binds): string
     {
-        $array = explode('&', $field);
-        $item  = [];
+        $item = [];
 
-        foreach ($array as $k) {
+        foreach (explode('&', $field) as $k) {
             $item[] = $this->parseWhereItem($query, $k, $value, $binds);
         }
 
@@ -415,12 +415,11 @@ abstract class Builder
      * @param  array  $binds 参数绑定
      * @return string
      */
-    protected function parseMultiFieldOr(Query $query, $value, string $field, string $logic, array $binds): string
+    protected function parseFieldsOr(Query $query, $value, string $field, string $logic, array $binds): string
     {
-        $array = explode('|', $field);
-        $item  = [];
+        $item = [];
 
-        foreach ($array as $k) {
+        foreach (explode('|', $field) as $k) {
             $item[] = $this->parseWhereItem($query, $k, $value, $binds);
         }
 
@@ -435,7 +434,7 @@ abstract class Builder
      * @param  string  $logic Logic
      * @return string
      */
-    protected function parseClousre(Query $query, Closure $value, string $logic): string
+    protected function parseClousreWhere(Query $query, Closure $value, string $logic): string
     {
         $newQuery = $query->newQuery()->setConnection($this->connection);
         $value($newQuery);
@@ -453,29 +452,30 @@ abstract class Builder
      * @access protected
      * @param  Query  $query 查询对象
      * @param  mixed  $value 查询条件
-     * @param  string $field 查询字段
+     * @param  mixed  $field 查询字段
      * @param  string $logic Logic
      * @param  array  $binds 参数绑定
      * @return string
      */
-    protected function parseWhereField(Query $query, $value, $field, $logic, $binds): string
+    protected function parseMultiWhereField(Query $query, $value, $field, string $logic, array $binds): string
     {
         array_unshift($value, $field);
-        $str2 = [];
+
+        $where = [];
         foreach ($value as $item) {
-            $str2[] = $this->parseWhereItem($query, array_shift($item), $item, $binds);
+            $where[] = $this->parseWhereItem($query, array_shift($item), $item, $binds);
         }
 
-        return ' ' . $logic . ' ( ' . implode(' AND ', $str2) . ' )';
+        return ' ' . $logic . ' ( ' . implode(' AND ', $where) . ' )';
     }
 
     /**
      * where子单元分析
      * @access protected
-     * @param  Query  $query 查询对象
-     * @param  string $field 查询字段
-     * @param  array  $value 查询条件
-     * @param  array  $binds 参数绑定
+     * @param  Query $query 查询对象
+     * @param  mixed $field 查询字段
+     * @param  array $val   查询条件
+     * @param  array $binds 参数绑定
      * @return string
      */
     protected function parseWhereItem(Query $query, $field, array $val, array $binds = []): string

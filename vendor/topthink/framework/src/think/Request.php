@@ -129,12 +129,6 @@ class Request
     protected $realIP;
 
     /**
-     * 当前路由信息
-     * @var array
-     */
-    protected $routeInfo = [];
-
-    /**
      * 当前调度信息
      * @var Dispatch
      */
@@ -1793,21 +1787,6 @@ class Request
     }
 
     /**
-     * 获取当前请求的路由信息
-     * @access public
-     * @param  array $route 路由名称
-     * @return array
-     */
-    public function routeInfo(array $route = []): array
-    {
-        if (!empty($route)) {
-            $this->routeInfo = $route;
-        }
-
-        return $this->routeInfo;
-    }
-
-    /**
      * 设置或者获取当前请求的调度信息
      * @access public
      * @param  Dispatch  $dispatch 调度信息
@@ -1967,7 +1946,7 @@ class Request
         $except = !empty($except) ? $except : $this->config['request_cache_except'];
         $tag    = $tag ?: $this->config['request_cache_tag'];
 
-        if (false === $key || !$this->isGet() || $this->isCheckCache) {
+        if ($this->isCheckCache) {
             // 关闭当前缓存
             return;
         }
