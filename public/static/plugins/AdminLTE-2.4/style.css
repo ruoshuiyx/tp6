@@ -24,7 +24,7 @@
 .dd_input_group{margin: 12px 0;}
 .dd_input_group button{ margin:0 10px 0 0}
 .dd_input_l{padding: 8px 0; height: 38px; line-height: 20px; border-width: 1px; border-style: solid; border-radius: 2px 0 0 2px; text-align: center; background-color: #FBFBFB; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; box-sizing: border-box;border-color: #d2d6de;margin: 0;border-right: 0;font-weight: normal;}
- .dd_input_group .col-sm-4,.dd_input_group .col-sm-6, .dd_input_group .col-xs-8,.col-xs-10, .dd_input_group .col-sm-5, .dd_input_group .col-xs-12{margin-left: 0;padding-left: 0;border-right: 0;}
+ .dd_input_group .col-sm-4,.dd_input_group .col-sm-6, .dd_input_group .col-xs-8,.col-xs-10, .dd_input_group .col-sm-5, .dd_input_group .col-xs-11, .dd_input_group .col-xs-12{margin-left: 0;padding-left: 0;border-right: 0;}
 .dd_input_group input, .dd_input_group select, .ldd_input_group textarea{height: 38px; line-height: 1.3; line-height: 38px\9; border-width: 1px; border-style: solid; background-color: #fff; border-radius: 2px;border-top-left-radius: 0; border-bottom-left-radius: 0;}
 .dd_ts{line-height: 38px; color: #999!important;}
 .dd_input_group .dd_radio_lable{ line-height:36px; margin:0;font-weight:normal;padding: 0 10px;}

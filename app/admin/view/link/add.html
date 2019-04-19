@@ -61,7 +61,7 @@
 				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
 				                    <input type="text" name="logo" class="form-control" placeholder="请点击按钮上传或手动输入地址" value="{$info.logo}">
 				                  </div>
-				                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">
+				                  <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">
 				                  	<!--上传图片-->
                                     <!--用来存放item-->
                                     <div id="fileList_image" class="uploader-list">
@@ -75,7 +75,7 @@
                             <!---->
                             <div class="row dd_input_group">
                                 <div class="form-group">
-                                  <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5">
+                                  <div class="col-xs-11 col-sm-8 col-md-6 col-lg-5">
                                   <label class="text-lable">备注</label>
                                   <textarea class="form-control" name="description" rows="3" placeholder="请输入描述">{$info.description}</textarea>
                                   </div>
@@ -105,7 +105,7 @@
                                      {/if}
                                      </div>
 				                  </div>
-                                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts"></div>
+                                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">*</div>
 				                </div>
 			                </div>
                             <!---->
@@ -115,15 +115,14 @@
 				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
 				                     <input type="text" name="sort" class="form-control" placeholder="请输入排序" value="{$info.sort?$info.sort:'50'}">
 				                  </div>
-                                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">排序为从小到大排序，默认为50,相同则按ID从大到小排序</div>
+                                  <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts"> * 排序为从小到大排序，默认为50</div>
 				                </div>
 			                </div>
                             <!---->
                             
 			                <div class="row dd_input_group">
 			                	<div class="form-group">
-				                  <label class="col-sm-1 col-xs-4 control-label"></label>
-				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+				                  <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5 text-center">
 				                    	<button type="submit" class="btn btn-flat btn-primary ">提 交</button> 
 				                    	<button type="button" class="btn btn-flat btn-default" onclick="javascript :history.back(-1)">返 回</button>
 				                  </div>

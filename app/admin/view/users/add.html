@@ -51,7 +51,7 @@
 						                    {/volist}
 						                </select>
 				                  </div>
-				                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">*</div>
+				                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts"> *</div>
 				                </div>
 			                </div>	
                             <!---->
@@ -61,7 +61,7 @@
 				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
 				                     <input type="text" name="email" class="form-control" placeholder="请输入邮箱帐号" value="{$info.email}" {if $info}disabled{/if}>
 				                  </div>
-                                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">*</div>
+                                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts"> *</div>
 				                </div>
 			                </div>
                             <!---->
@@ -71,7 +71,7 @@
 				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
 				                     <input type="text" name="password" class="form-control" placeholder="请输入密码" value="">
 				                  </div>
-                                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{if $info}* 为空则不修改{else}*{/if}</div>
+                                  <div class="col-xs-{if $info}12{else}1{/if} col-sm-4 col-md-6 col-lg-6 dd_ts">{if $info}* 为空则不修改{else}*{/if}</div>
 				                </div>
 			                </div>
                             <!---->
@@ -97,7 +97,7 @@
                                      {/if}
                                      </div>
 				                  </div>
-                                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts"></div>
+                                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts"> *</div>
 				                </div>
 			                </div>
                             <!---->
@@ -107,7 +107,6 @@
 				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
 				                     <input type="text" name="qq" class="form-control" placeholder="请输入qq" value="{$info.qq}">
 				                  </div>
-                                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts"></div>
 				                </div>
 			                </div>
                              <!---->
@@ -117,7 +116,6 @@
 				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
 				                     <input type="text" name="mobile" class="form-control" placeholder="请输入联系电话" value="{$info.mobile}">
 				                  </div>
-                                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts"></div>
 				                </div>
 			                </div>
                             <!---->
@@ -143,14 +141,13 @@
                                      {/if}
                                      </div>
 				                  </div>
-                                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts"></div>
+                                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts"> *</div>
 				                </div>
 			                </div>
                             <!----> 
 			                <div class="row dd_input_group">
 			                	<div class="form-group">
-				                  <label class="col-sm-1 col-xs-4 control-label"></label>
-				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+				                  <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5 text-center">
 				                    	<button type="submit" class="btn btn-flat btn-primary ">提 交</button> 
 				                    	<button type="button" class="btn btn-flat btn-default" onclick="javascript :history.back(-1)">返 回</button>
 				                  </div>
