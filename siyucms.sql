@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2019-04-18 11:51:49
+Date: 2019-04-19 10:59:47
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -80,11 +80,19 @@ CREATE TABLE `tp_admin_log` (
   `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '操作时间',
   PRIMARY KEY (`id`),
   KEY `name` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='管理员日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='管理员日志表';
 
 -- ----------------------------
 -- Records of tp_admin_log
 -- ----------------------------
+INSERT INTO `tp_admin_log` VALUES ('1', '1', 'admin', '/admin/admin_log/index.html', '[权限管理] -> [管理员日志]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36', '1555642713');
+INSERT INTO `tp_admin_log` VALUES ('2', '1', 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [用户组列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36', '1555642722');
+INSERT INTO `tp_admin_log` VALUES ('3', '1', 'admin', '/admin/auth/groupaccess.html?id=5', '[权限管理] -> [用户组列表] -> [操作-权限]', '{\"id\":\"5\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36', '1555642724');
+INSERT INTO `tp_admin_log` VALUES ('4', '1', 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [用户组列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36', '1555642752');
+INSERT INTO `tp_admin_log` VALUES ('5', '1', 'admin', '/admin/auth/groupselectdel.html', '[权限管理] -> [用户组列表] -> [操作-批量删除]', '{\"id\":\"1,5\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36', '1555642763');
+INSERT INTO `tp_admin_log` VALUES ('6', '1', 'admin', '/admin/auth/adminlist.html', '[权限管理] -> [管理员列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36', '1555642767');
+INSERT INTO `tp_admin_log` VALUES ('7', '1', 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [用户组列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36', '1555642768');
+INSERT INTO `tp_admin_log` VALUES ('9', '1', 'admin', '/admin/admin_log/selectdel.html', '[权限管理] -> [管理员日志] -> [操作-批量删除]', '{\"id\":\"8,7,6,5,4,3,2,1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36', '1555642773');
 
 -- ----------------------------
 -- Table structure for tp_ad_type
@@ -177,7 +185,7 @@ CREATE TABLE `tp_auth_group` (
 -- Records of tp_auth_group
 -- ----------------------------
 INSERT INTO `tp_auth_group` VALUES ('1', '超级管理员', '1', '0,1,4,5,38,6,7,10,11,12,14,13,8,15,16,17,18,19,20,21,9,22,23,24,25,28,27,26,29,3', '1537944508', '1537944508');
-INSERT INTO `tp_auth_group` VALUES ('5', '测试组', '1', '0,1,4,5,107,6,152,153,154,155,29,30,34,32,33,31,35,36,39,40,41,42,44,45,46,47,48,49,51,52,53,54,57,58,59,60,61,62,63,64,67,68,70,71,74,73,69,76,77,137,80,95,96,97,131,132,109,138,139,140,141,143,110,111,113,117,118,100,101,102,103,105,81,82,84,85,88,94,83,89,91,120,121,', '1536304526', '1553848122');
+INSERT INTO `tp_auth_group` VALUES ('5', '测试组', '1', '1,4,5,107,6,152,153,154,155,29,30,34,32,33,31,35,36,39,40,41,42,44,45,46,47,48,49,51,52,53,54,60,61,62,63,64,67,68,70,71,74,73,69,76,77,137,80,95,96,97,131,132,109,138,100,101,102,103,105,81,82,84,85,88,94,83,89,91,120,121,', '1536304526', '1555642751');
 
 -- ----------------------------
 -- Table structure for tp_auth_group_access

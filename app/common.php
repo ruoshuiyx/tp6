@@ -82,7 +82,7 @@ function changefield($info,$moduleid){
                 case 'textarea'://多行文本
                     break;
                 case 'editor'://编辑器
-                    $info[$field]=($info[$field]);
+                    $info[$field]=$info[$field];
                     break;
                 case 'select'://下拉列表
                     break;

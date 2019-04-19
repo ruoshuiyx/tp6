@@ -47,7 +47,7 @@ class Index extends Base
             'cate'        => null,
             'system'      => $this->system, //系统信息
             'public'      => $this->public, //公共目录
-            'title'       => $this->system['title'], //seo信息
+            'title'       => $this->system['title'] ? $this->system['title'] : $this->system['name'], //seo信息
             'keywords'    => $this->system['key'],   //seo信息
             'description' => $this->system['des'],   //seo信息
         ];

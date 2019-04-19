@@ -9,16 +9,6 @@
   {include file="index/top" /}
   <!--引入JS-->
   <script type="text/javascript" src="/static/plugins/webuploader-0.1.5/webuploader.js"></script>
-  <!-- UEditor配置文件 -->
-  <script type="text/javascript" src="/static/UEditor/ueditor.config.js"></script>
-  <!-- UEditor编辑器源码文件 -->
-  <script type="text/javascript" src="/static/UEditor/ueditor.all.js"></script>
-  <!-- wangEditor编辑器源码文件 -->
-  <script type="text/javascript" src="/static/wangEditor-3.1.1/release/wangEditor.min.js"></script>
-  <script type="text/javascript" src="/static/wangEditor-3.1.1/release/wangEditorExt.js"></script>
-  <!-- ckeditor5编辑器源码文件 -->
-  <script type="text/javascript" src="/static/ckeditor5/ckeditor.js"></script>
-  <script type="text/javascript" src="/static/ckeditor5/translations/zh-cn.js"></script>
   <script type="text/javascript">
     //多图删除
 	$(document).on('click','.remove_images',function(){
@@ -64,7 +54,7 @@
 				                  		   <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
                                            <input type="text" name="{$field.field}" class="form-control" placeholder="请输入{$field.name}" value="{$info[$field.field]}"> 
                                            </div>
-				                 		   <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"}* 必填{/eq}</div>
+				                 		   <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"} *{/eq}</div>
                                         {/case}
                                     	{case catid}
                                           <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$field.name}</label>
@@ -77,83 +67,30 @@
                                                 {/volist}
                                           </select>
                                           </div>
-                                          <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"}* 必填{/eq}</div>
+                                          <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"} *{/eq}</div>
                                         {/case}
                                         {case text}
                                            <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$field.name}</label>
 				                  		   <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
                                            <input type="text" name="{$field.field}" class="form-control" placeholder="请输入{$field.name}" value="{$info[$field.field]}"> 
                                            </div>
-				                 		   <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"}* 必填{/eq}</div>
+				                 		   <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"} *{/eq}</div>
                                         {/case}
                                         {case textarea}
-                                          <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5">
+                                          <div class="col-xs-11 col-sm-8 col-md-6 col-lg-5">
                                           <label class="text-lable">{$field.name}</label>
                                           <textarea class="form-control" name="{$field.field}" rows="3" placeholder="请输入{$field.name}">{$info[$field.field]}</textarea>
                                           </div>
-                                          <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"}* 必填{/eq}</div>
+                                          <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"} *{/eq}</div>
                                         {/case}
                                         {case editor}
+                                        	<div class="col-xs-12 col-sm-11 col-md-10 col-lg-8">
+                                                <label class="text-lable">{$field.name}</label>
+                                                {:make_editor($field.field,$info[$field.field])}
+                                            </div>
                                         	{switch $field.setup.edittype }
-                                                {case wangEditor }
-                                                <div class="col-sm-8 col-xs-8">
-                                                  <label class="text-lable">{$field.name}</label>
-                                                  </div>
-                                                  <div class="col-sm-8 col-xs-8">
-                                                      <div id="editor_{$field.field}">
-                                                        {$info[$field.field]|raw}
-                                                      </div>
-                                                      <textarea class="form-control" name="{$field.field}" id="text_{$field.field}" style="display:none"></textarea>
-                                                        <script type="text/javascript">
-                                                            var E = window.wangEditor;
-                                                            var editor_{$field.field} = new E('#editor_{$field.field}');
-                                                            var $text_{$field.field} = $('#text_{$field.field}');
-                                                            editor_{$field.field}.customConfig.onchange = function (html) {
-                                                                // 监控变化，同步更新到 textarea
-                                                                $text_{$field.field}.val(html);
-                                                            }
-                                                            editor_{$field.field}.customConfig.uploadImgServer = '{:url("index/wangEditor")}';  // 上传图片到服务器
-                                                            editor_{$field.field}.create();
-															E.viewSource.init(editor_{$field.field});
-                                                            // 初始化 textarea 的值
-                                                            $text_{$field.field}.val(editor_{$field.field}.txt.html());
-                                                        </script>
-                                                  </div>
-                                                {/case}
                                                 {case ckeditor}
-                                                <div class="col-sm-8 col-xs-8">
-                                                  <label class="text-lable">{$field.name}</label>
-                                                </div>
-                                                <div class="col-sm-8 col-xs-8">
-                                                <textarea name="{$field.field}" id="editor_{$field.field}">{$info[$field.field]}</textarea>
-                                                </div>
-												<script>
-                                                    ClassicEditor.create( 
-														document.querySelector( '#editor_{$field.field}' ), 
-														{
-															language: 'zh-cn',
-															ckfinder: {
-																uploadUrl: '{:url("index/ckeditor")}'
-															}
-														}
-													)
-													.catch( error => {
-														console.error( error );
-													} );
-                                                </script>
-                                                {/case}
-                                                {case UEditor}
-                                                <div class="col-sm-8 col-xs-8">
-                                                  <label class="text-lable">{$field.name}</label>
-                                                  </div>
-                                                  <div class="col-sm-8 col-xs-8">
-                                                    <!-- 加载编辑器的容器 -->
-                                                    <textarea name="{$field.field}" id="container_{$field.field}" style="width:100%;height:200px;">{$info[$field.field]}</textarea>
-                                                    <!-- 实例化编辑器 -->
-                                                    <script type="text/javascript">
-                                                        var container_{$field.field} = UE.getEditor('container_{$field.field}');
-                                                    </script>
-                                                  </div>
+                                                
                                                 {/case}
                                                 {default /}
                                             {/switch}
@@ -172,7 +109,7 @@
                                                 {/foreach}
                                           </select>
                                           </div>
-                                          <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"}* 必填{/eq}</div>
+                                          <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"} *{/eq}</div>
                                         {/case}
                                         {case radio}
                                           <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$field.name}</label>
@@ -189,7 +126,7 @@
                                             {/foreach}
                                            </div>
                                           </div>
-                                          <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"}* 必填{/eq}</div>
+                                          <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"} *{/eq}</div>
                                         {/case}
                                         {case checkbox}
                                           <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$field.name}</label>
@@ -208,14 +145,14 @@
                                             {/foreach}
                                            </div>
                                           </div>
-                                          <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"}* 必填{/eq}</div>
+                                          <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"} *{/eq}</div>
                                         {/case}
                                         {case image}
                                         	<label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$field.name}</label>
                                               <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
                                                 <input type="text" name="{$field.field}" class="form-control" placeholder="请点击按钮上传或手动输入地址" value="{$info[$field.field]}">
                                               </div>
-                                              <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">
+                                              <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">
                                                 <!--上传图片-->
                                                 <!--用来存放item-->
                                                 <div id="fileList_image{$field.field}" class="uploader-list">
@@ -223,12 +160,12 @@
                                                 <div id="filePicker_image{$field.field}"><i class="fa fa-upload m-r-10"></i>选择图片</div>
                                                 <img class="image_preview" src="{$info[$field.field]?$info[$field.field]:'/static/admin/images/nopic.png'}" id="image_preview{$field.field}">
                                                 <!--上传图片-->
-                                                {eq name="$field.required" value="1"}<span class="image_preview"> * 必填</span>{/eq}
+                                                {eq name="$field.required" value="1"}<span class="image_preview"> *</span>{/eq}
                                               </div>
                                               <script>webupload('fileList_image{$field.field}','filePicker_image{$field.field}','image_preview{$field.field}','{$field.field}',false ,'{$field.setup.upload_allowext}');	</script>
                                         {/case}
                                         {case images}
-                                          <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5">
+                                          <div class="col-xs-11 col-sm-8 col-md-6 col-lg-5">
                                           <label class="text-lable">{$field.name}</label>
                                           	<div class="more_images dd_ts">
                                             	<div id="more_images_{$field.field}">
@@ -242,7 +179,7 @@
                                                 </div>
                                             </div>
                                           </div>
-                                          <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">
+                                          <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">
                                                 <!--上传图片-->
                                                 <!--用来存放item-->
                                                 <div id="fileList_image{$field.field}" class="uploader-list">
@@ -258,13 +195,13 @@
                                               <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
                                                 <input type="text" name="{$field.field}" class="form-control" placeholder="请点击按钮上传或手动输入地址" value="{$info[$field.field]}">
                                               </div>
-                                              <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">
+                                              <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">
                                                 <!--上传图片-->
                                                 <!--用来存放item-->
                                                 <div id="fileList_image{$field.field}" class="uploader-list">
                                                 </div>
                                                 <div id="filePicker_image{$field.field}"><i class="fa fa-upload m-r-10"></i>选择文件</div>
-                                                {eq name="$field.required" value="1"}<span class="image_preview"> * 必填</span>{/eq}
+                                                {eq name="$field.required" value="1"}<span class="image_preview"> *</span>{/eq}
                                                 <!--上传图片-->
                                               </div>
                                               <script>webupload('fileList_image{$field.field}','filePicker_image{$field.field}','image_preview{$field.field}','{$field.field}',false ,'{$field.setup.upload_allowext}');	</script>
@@ -275,7 +212,7 @@
 				                  		   <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
                                            <input type="number" name="{$field.field}" class="form-control" placeholder="请输入{$field.name}" value="{$info[$field.field]?$info[$field.field]:$field.setup.default}"> 
                                            </div>
-				                 		   <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"}* 必填{/eq}</div>
+				                 		   <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"} *{/eq}</div>
                                         {/case}
                                         {case datetime}
                                         	<label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$field.name}</label>
@@ -283,7 +220,7 @@
                                            <input type="text" name="{$field.field}" class="form-control" placeholder="请输入{$field.name}" value="{if $info}{$info[$field.field]|date="Y-m-d H:i"}{else/}{$time}{/if}" id="datepicker_{$field.field}"> 
                                            
                                            </div>
-				                 		   <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"}* 必填{/eq}</div>
+				                 		   <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"} *{/eq}</div>
                                         	<script>
 											$(function(){
 												$('#datepicker_{$field.field}').datetimepicker({
@@ -305,7 +242,7 @@
                                                 {/foreach}
                                           </select>
                                           </div>
-                                          <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"}* 必填{/eq}默认延用栏目设置的模版</div>
+                                          <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"}*{/eq}默认延用栏目设置的模版</div>
                                         {/case}
 				                    	{default /}	
                                     {/switch}
@@ -317,8 +254,7 @@
 		                	
 			                <div class="row dd_input_group">
 			                	<div class="form-group">
-				                  <label class="col-sm-1 col-xs-4 control-label"></label>
-				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+				                  <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5 text-center">
 				                    	<button type="submit" class="btn btn-flat btn-primary ">提 交</button> 
 				                    	<button type="button" class="btn btn-flat btn-default" onclick="javascript :history.back(-1)">返 回</button>
 				                  </div>
