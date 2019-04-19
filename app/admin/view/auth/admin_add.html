@@ -36,8 +36,8 @@
 		                	<!---->
 		                	<div class="row dd_input_group">
 			                	<div class="form-group">
-				                  <label class="col-sm-1 col-xs-4 control-label dd_input_l">用户组</label>
-				                  <div class="col-sm-4 col-xs-8">
+				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">用户组</label>
+				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
 				                    <select name="group_id" class="form-control">
 						                    <option value="">请选择用户组</option>
 						                    {volist name="authGroup" id="vo"}
@@ -49,37 +49,37 @@
 						                    {/volist}
 						                </select>
 				                  </div>
-				                  <div class="col-sm-4 dd_ts"></div>
+				                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts"></div>
 				                </div>
 			                </div>	
 		                	<!---->
 		                	<div class="row dd_input_group">
 			                	<div class="form-group">
-				                  <label class="col-sm-1 col-xs-4 control-label dd_input_l">用户名</label>
-				                  <div class="col-sm-4 col-xs-8">
+				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">用户名</label>
+				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
 				                    <input type="text" name="username" class="form-control" placeholder="请输入登录用户名" value="{$info.username}">
 				                  </div>
-				                  <div class="col-sm-4 dd_ts">* 用户名在4到25个字符之间。</div>
+				                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">* 用户名在4到25个字符之间。</div>
 				                </div>
 			                </div>
 			                <!---->
 		                	<div class="row dd_input_group">
 			                	<div class="form-group">
-				                  <label class="col-sm-1 col-xs-4 control-label dd_input_l">密 码</label>
-				                  <div class="col-sm-4 col-xs-8">
+				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">密 码</label>
+				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
 				                    <input type="password" name="password" class="form-control" placeholder="请输入登录密码">
 				                  </div>
-				                  <div class="col-sm-4 dd_ts">* 密码在6到25个字符之间。</div>
+				                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">* 密码在6到25个字符之间。</div>
 				                </div>
 			                </div>
                             <!---->
                             <div class="row dd_input_group">
                                 <div class="form-group">
-                                    <label class="col-sm-1 col-xs-4 control-label dd_input_l">头像</label>
-                                    <div class="col-sm-4 col-xs-8">
+                                    <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">头像</label>
+                                    <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
                                         <input type="text" name="image" class="form-control" placeholder="请点击按钮上传或手动输入地址" value="{$info.image}">
                                     </div>
-                                    <div class="col-sm-4 dd_ts">
+                                    <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">
                                         <!--上传图片-->
                                         <!--用来存放item-->
                                         <div id="fileList_image" class="uploader-list">
@@ -93,18 +93,18 @@
 			                <!---->
 			                <div class="row dd_input_group">
 			                	<div class="form-group">
-				                  <label class="col-sm-1 col-xs-4 control-label dd_input_l">昵 称</label>
-				                  <div class="col-sm-4 col-xs-8">
+				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">昵 称</label>
+				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
 				                    <input type="text" name="nickname" class="form-control" placeholder="请输入昵称" value="{$info.nickname?$info.nickname:''}">
 				                  </div>
-				                  <div class="col-sm-4 dd_ts">* </div>
+				                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">* </div>
 				                </div>
 			                </div>
 			                <!---->
 			                <div class="row dd_input_group">
 			                	<div class="form-group">
 				                  <label class="col-sm-1 col-xs-4 control-label"></label>
-				                  <div class="col-sm-4 col-xs-8">
+				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
 				                    	<button type="submit" class="btn btn-flat btn-primary ">提 交</button> 
 				                    	<button type="button" class="btn btn-flat btn-default" onclick="javascript :history.back(-1)">返 回</button>
 				                  </div>

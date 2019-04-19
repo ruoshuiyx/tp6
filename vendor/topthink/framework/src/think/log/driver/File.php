@@ -19,6 +19,10 @@ use think\App;
  */
 class File
 {
+    /**
+     * 配置参数
+     * @var array
+     */
     protected $config = [
         'time_format' => 'c',
         'single'      => false,
@@ -29,7 +33,17 @@ class File
         'json'        => false,
     ];
 
+    /**
+     * 应用对象
+     * @var App
+     */
     protected $app;
+
+    /**
+     * 是否控制台执行
+     * @var bool
+     */
+    protected $isCli = false;
 
     // 实例化并传入参数
     public function __construct(App $app, $config = [])
@@ -40,16 +54,17 @@ class File
             $this->config = array_merge($this->config, $config);
         }
 
+        $this->isCli = $app->runningInConsole();
     }
 
     /**
      * 日志写入接口
      * @access public
-     * @param  array    $log    日志信息
-     * @param  bool     $append 是否追加请求信息
+     * @param  array $log    日志信息
+     * @param  bool  $append 是否追加请求信息
      * @return bool
      */
-    public function save(array $log = [], bool $append = false): bool
+    public function save(array $log, bool $append = false): bool
     {
         $destination = $this->getMasterLogFile();
 
@@ -88,10 +103,10 @@ class File
     /**
      * 日志写入
      * @access protected
-     * @param  array     $message 日志信息
-     * @param  string    $destination 日志文件
-     * @param  bool      $apart 是否独立文件写入
-     * @param  bool      $append 是否追加请求信息
+     * @param  array  $message 日志信息
+     * @param  string $destination 日志文件
+     * @param  bool   $apart 是否独立文件写入
+     * @param  bool   $append 是否追加请求信息
      * @return bool
      */
     protected function write(array $message, string $destination, bool $apart = false, bool $append = false): bool
@@ -107,7 +122,7 @@ class File
             $info[$type] = is_array($msg) ? implode(PHP_EOL, $msg) : $msg;
         }
 
-        if (PHP_SAPI == 'cli') {
+        if ($this->isCli) {
             $message = $this->parseCliLog($info);
         } else {
             // 添加调试日志
@@ -149,7 +164,7 @@ class File
 
             $destination = $this->config['path'] . $name . '.log';
         } else {
-            $cli = PHP_SAPI == 'cli' ? '_cli' : '';
+            $cli = $this->isCli ? '_cli' : '';
 
             if ($this->config['max_files']) {
                 $filename = date('Ymd') . $cli . '.log';
@@ -172,7 +187,7 @@ class File
      */
     protected function getApartLevelFile(string $path, string $type): string
     {
-        $cli = PHP_SAPI == 'cli' ? '_cli' : '';
+        $cli = $this->isCli ? '_cli' : '';
 
         if ($this->config['single']) {
             $name = is_string($this->config['single']) ? $this->config['single'] : 'single';
@@ -190,7 +205,7 @@ class File
     /**
      * 检查日志文件大小并自动生成备份文件
      * @access protected
-     * @param  string    $destination 日志文件
+     * @param  string $destination 日志文件
      * @return void
      */
     protected function checkLogSize(string $destination): void
@@ -207,7 +222,7 @@ class File
     /**
      * CLI日志解析
      * @access protected
-     * @param  array     $info 日志信息
+     * @param  array $info 日志信息
      * @return string
      */
     protected function parseCliLog(array $info): string
@@ -229,7 +244,7 @@ class File
     /**
      * 解析日志
      * @access protected
-     * @param  array     $info 日志信息
+     * @param  array $info 日志信息
      * @return string
      */
     protected function parseLog(array $info): string

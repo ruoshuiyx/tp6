@@ -13,8 +13,15 @@ namespace think\cache\driver;
 
 use think\cache\Driver;
 
+/**
+ * Memcache缓存类
+ */
 class Memcache extends Driver
 {
+    /**
+     * 配置参数
+     * @var array
+     */
     protected $options = [
         'host'       => '127.0.0.1',
         'port'       => 11211,
@@ -45,8 +52,8 @@ class Memcache extends Driver
         $this->handler = new \Memcache;
 
         // 支持集群
-        $hosts = explode(',', $this->options['host']);
-        $ports = explode(',', $this->options['port']);
+        $hosts = (array) $this->options['host'];
+        $ports = (array) $this->options['port'];
 
         if (empty($ports[0])) {
             $ports[0] = 11211;
@@ -125,8 +132,8 @@ class Memcache extends Driver
     /**
      * 自增缓存（针对数值缓存）
      * @access public
-     * @param  string    $name 缓存变量名
-     * @param  int       $step 步长
+     * @param  string $name 缓存变量名
+     * @param  int    $step 步长
      * @return false|int
      */
     public function inc(string $name, int $step = 1)
@@ -145,8 +152,8 @@ class Memcache extends Driver
     /**
      * 自减缓存（针对数值缓存）
      * @access public
-     * @param  string    $name 缓存变量名
-     * @param  int       $step 步长
+     * @param  string $name 缓存变量名
+     * @param  int    $step 步长
      * @return false|int
      */
     public function dec(string $name, int $step = 1)
