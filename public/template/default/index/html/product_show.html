@@ -44,6 +44,11 @@
                                				   <span><i class="zmdi zmdi-label"></i>{$info.source}</span>
                                             </div>
                                             {$info.content|raw}
+                                            {if $info.images}
+                                                {foreach $info.images as $key=>$vo} 
+                                                    <img src="{$vo.image}" alt="{$vo.title}">
+                                                {/foreach}
+                                            {/if}  
                                             <div class="tags-and-links">
                                                 <div class="related-tag">
                                                     <span>上一篇:</span>

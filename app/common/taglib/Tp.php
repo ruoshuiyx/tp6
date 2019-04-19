@@ -260,7 +260,7 @@ class Tp extends TagLib {
 
     //详情上一篇
     Public function tagPrev($tag){
-        $len = $tag['len']?$tag['len']:'';
+        $len = $tag['len']?$tag['len']:'500';
 
         $str  = '<?php ';
         $str .= '
@@ -279,6 +279,10 @@ class Tp extends TagLib {
                     ->order(\'sort ASC,id DESC\')
                     ->find();
                 if($__PREV__){
+                    //处理字数
+                    if('.$len.'<>500){
+                       $__PREV__[\'title\'] = mb_substr($__PREV__[\'title\'],0,'.$len.');
+                    }
                     //处理上一篇中的URL
                     $__PREV__[\'url\'] = getShowUrl($__PREV__);
                     $__PREV__ = "<a class=\"prev\" title=\" ".$__PREV__[\'title\']." \" href=\" ".$__PREV__[\'url\']." \">".$__PREV__[\'title\']."</a>";
@@ -293,7 +297,7 @@ class Tp extends TagLib {
 
     //详情下一篇
     Public function tagNext($tag){
-        $len = $tag['len']?$tag['len']:'';
+        $len = $tag['len']?$tag['len']:'500';
 
         $str  = '<?php ';
         $str .= '
@@ -312,6 +316,10 @@ class Tp extends TagLib {
                     ->order(\'sort ASC,id DESC\')
                     ->find();
                 if($__PREV__){
+                    //处理字数
+                    if('.$len.'<>500){
+                       $__PREV__[\'title\'] = mb_substr($__PREV__[\'title\'],0,'.$len.');
+                    }
                     //处理下一篇中的URL
                     $__PREV__[\'url\'] = getShowUrl($__PREV__);
                     $__PREV__ = "<a class=\"next\" title=\" ".$__PREV__[\'title\']." \" href=\" ".$__PREV__[\'url\']." \">".$__PREV__[\'title\']."</a>";

@@ -92,7 +92,7 @@ function changefield($info,$moduleid){
                     $info[$field]=explode(',',$info[$field]);
                     break;
                 case 'images'://多张图片
-                    $info[$field]=json_decode($info[$field]);
+                    $info[$field]=json_decode($info[$field],true);
                     break;
                 default:
             }
