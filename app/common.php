@@ -11,7 +11,7 @@
 
 // 应用公共文件
 
-//URL设置
+//获取列表链接地址
 function getUrl($v){
     //判断是否直接跳转
     if(trim($v['url'])!==''){
@@ -25,15 +25,10 @@ function getUrl($v){
             }
         }else{
             $moduleurl = \think\facade\Db::name('module')->where('id',$v['moduleid'])->value('name');
-
             if($v['catdir']){
-                //路由还没搞定先不管路由
-                //$v['url'] = url(request()->app().'/'.$v['catdir'].'/index', ['catId'=>$v['id']]);
-
-                $v['url'] = url(request()->app().'/'.$moduleurl.'/index', ['catId'=>$v['id']]);
-
+                $v['url'] = url($v['catdir'].'/index', ['catId'=>$v['id']]);
             }else{
-                $v['url'] = url(request()->app().'/'.$moduleurl.'/index', ['catId'=>$v['id']]);
+                $v['url'] = url($moduleurl.'/index', ['catId'=>$v['id']]);
             }
         }
     }
@@ -52,9 +47,9 @@ function getShowUrl($v){
             ->where('id',$cate['moduleid'])
             ->value('name');
         if($cate['catdir']){
-            $url = url(\think\facade\Request::app().'/'.$cate['catdir'].'/info', ['catId'=>$cate['id'],'id'=>$v['id']]);
+            $url = url($cate['catdir'].'/info', ['catId'=>$cate['id'],'id'=>$v['id']]);
         }else{
-            $url = url(\think\facade\Request::app().'/'.$moduleurl.'/info', ['catId'=>$cate['id'],'id'=>$v['id']] );
+            $url = url($moduleurl.'/info', ['catId'=>$cate['id'],'id'=>$v['id']] );
         }
     }
     return $url;
