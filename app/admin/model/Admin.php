@@ -60,16 +60,19 @@ class Admin extends Base {
             return json($data);
         }else{
             if ($result['status']==1){
+                $uid = $result['id'];
                 //更新登录IP和登录时间
-                $result = self::where('id', '=' ,$result['id'])
-                    ->update(['logintime' => time(),'loginip'=>request()->ip()]);
+                self::where('id', '=' ,$result['id'])
+                    ->update(['logintime' => time(),'loginip'=>Request::ip()]);
 
+                //查找规则
                 $rules = Db::name('auth_group_access')
                     ->alias('a')
                     ->leftJoin('auth_group ag','a.group_id = ag.id')
                     ->field('a.group_id,ag.rules,ag.title')
-                    ->where('uid',$result['id'])
+                    ->where('uid',$uid)
                     ->find();
+
                 //重新查询要赋值的数据[原因是toArray必须保证find的数据不为空，为空就报错]
                 $result = self::where(['username'=>$username,'password'=>md5($password)])->find();
                 Session::set('admin'         ,[
