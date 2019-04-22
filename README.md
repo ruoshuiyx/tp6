@@ -24,6 +24,12 @@ SIYUCMS 快速开发内容管理系统
 
 > 默认后台用户名：admin 密码:admin
 
+## 演示
+
+> [演示地址](http://v6.siyucms.com/admin)
+
+> 演示账户：test 密码：123456
+
 ## 版权信息
 
 > 请尊重SIYUCMS开发者的劳动成果，SIYUCMS提供免费使用，但未授权前请保留前台 Powered by SIYUCMS ，并不得修改后台版权信息。
