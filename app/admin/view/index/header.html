@@ -28,7 +28,7 @@
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="{$Think.session.admin.image ? $Think.session.admin.image : '/static/plugins/AdminLTE-2.4/dist/img/user2-160x160.jpg'}" class="img-circle">
+                <img src="{$admin.image ? $admin.image : '/static/plugins/AdminLTE-2.4/dist/img/user2-160x160.jpg'}" class="img-circle">
                 <h5>上次登录时间{$admin.logintime|date="Y-m-d H:i:s"}</h5>
                 <h5>上次登录IP：{$admin.loginip}</h5>
               </li>
