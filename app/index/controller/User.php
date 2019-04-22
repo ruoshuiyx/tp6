@@ -25,24 +25,25 @@
  */
 namespace app\index\controller;
 use app\common\model\Users;
-use think\Db;
+
+use think\facade\Db;
 use think\facade\Request;
 use think\facade\Session;
+use think\facade\View;
 
 class User extends Base
 {
     public function initialize()
     {
         parent::initialize();
-        //当前模块
-        $this->module = strtolower(Request::module());
-        $system = Db::name('system')->where('id',1)->find();
-        $this->view->assign('cate',         null);//
-        $this->view->assign('system',       $system);//系统信息
-        $this->view->assign('public',       '/template/'.$this->module.'/'.$system['template'].'/');//公共目录
-        $this->view->assign('title',        $system['title']);//seo信息
-        $this->view->assign('keywords' ,    $system['key']);//seo信息
-        $this->view->assign('description' , $system['des']);//seo信息
+        View::assign([
+            'cate'        => null,
+            'system'      => $this->system, //系统信息
+            'public'      => $this->public, //公共目录
+            'title'       => $this->system['title'] ? $this->system['title'] : $this->system['name'], //seo信息
+            'keywords'    => $this->system['key'],   //seo信息
+            'description' => $this->system['des'],   //seo信息
+        ]);
     }
 
     //用户中心首页
@@ -57,8 +58,11 @@ class User extends Base
             ->field('u.*,ut.name as type_name')
             ->where('u.id',session('user.id'))
             ->find();
-        $this->view->assign('user', $user);
-        return $this->view->fetch();
+        $view = [
+            'user' => $user,
+        ];
+        View::assign($view);
+        return View::fetch();
     }
 
     //登录
@@ -89,9 +93,13 @@ class User extends Base
                 $this->error($result['msg']);
             }else{
                 if ($user['status']==1){
-                    Session::set('user',$user);
+                    Session::set('user',[
+                        'id' =>$user['id'],
+                        'email' => $user['email'],
+                        'type_id' => $user['type_id'],
+                        'status' => $user['status'],
+                    ]);
                     //更新信息
-
                     Users::where('id', $user['id'])
                         ->update(['last_login_time' => time(),'last_login_ip' =>Request::ip()]);
 
@@ -109,7 +117,7 @@ class User extends Base
             if(Session::has('user.id')){
                 $this->redirect('index');
             }
-            return $this->view->fetch();
+            return View::fetch();
         }
     }
 
@@ -182,7 +190,7 @@ class User extends Base
             if(Session::has('user.id')){
                 $this->redirect('index');
             }
-            return $this->view->fetch();
+            return View::fetch();
         }
     }
 
@@ -250,8 +258,11 @@ class User extends Base
                 ->field('u.*,ut.name as type_name')
                 ->where('u.id',session('user.id'))
                 ->find();
-            $this->view->assign('user', $user);
-            return $this->view->fetch();
+            $view = [
+                'user'=>$user,
+            ];
+            View::assign($view);
+            return View::fetch();
         }
 
     }

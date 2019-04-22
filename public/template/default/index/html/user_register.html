@@ -35,7 +35,7 @@
                 </div>
                 <form action="{:url('register')}" method="post" class="form-validate">
                     <div class="form-group">
-                        <input type="text" name="email" class="form-control required" size="25" placeholder="邮箱" required="" >
+                        <input type="text" name="email" class="form-control required" size="25" placeholder="邮箱" required >
                     </div>
                     <div class="form-group">
                         <input type="password" name="password" placeholder="密码" class="form-control required" size="25" maxlength="99" >
@@ -47,7 +47,7 @@
                     <div class="clearfix"></div>
                     <div class="form-group message_code">
                         <input type="text" name="message_code" placeholder="验证码" class="form-control required   ">
-                        <img src="{:url('error/captcha')}" title="点击切换验证码">
+                        <img src="{:url('index/captcha')}" title="点击切换验证码">
                     </div>
                     {/if}
                     <div class="form-group mb-0">

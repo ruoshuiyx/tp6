@@ -22,7 +22,7 @@
             <a class="navbar-brand" href="/">{$system.name}</a>
         </div>
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="{:url('index')}">欢迎您：{$Think.session.user.email}</a></li>
+            <li><a href="{:url('index')}">欢迎您：{$user.email}</a></li>
             <li><a href="{:url('logout')}">退出</a></li>
         </ul>
     </div>
