@@ -71,8 +71,15 @@ class Admin extends Base {
                     ->where('uid',$result['id'])
                     ->find();
                 //重新查询要赋值的数据[原因是toArray必须保证find的数据不为空，为空就报错]
-                $result = self::where(['username'=>$username,'password'=>md5($password)])->find()->toArray();
-                Session::set('admin'         ,$result);
+                $result = self::where(['username'=>$username,'password'=>md5($password)])->find();
+                Session::set('admin'         ,[
+                    'id'=> $result['id'],
+                    'username'=> $result['username'],
+                    'logintime'=> $result['logintime'],
+                    'loginip'=>$result['loginip'],
+                    'nickname'=>$result['nickname'],
+                    'image'=>$result['image'],
+                ]);
                 Session::set('admin.group_id', $rules['group_id']);
                 Session::set('admin.rules'   , explode(',',$rules['rules']));
                 Session::set('admin.title'   , $rules['title']);
