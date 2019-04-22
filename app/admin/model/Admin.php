@@ -61,7 +61,7 @@ class Admin extends Base {
         }else{
             if ($result['status']==1){
                 //更新登录IP和登录时间
-                self::where('id', '=' ,$result['id'])
+                $result = self::where('id', '=' ,$result['id'])
                     ->update(['logintime' => time(),'loginip'=>request()->ip()]);
 
                 $rules = Db::name('auth_group_access')
