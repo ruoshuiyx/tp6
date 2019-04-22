@@ -507,12 +507,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/think-captcha.git",
-            "reference": "03bf97dee72fb7a7c3044f9e200ec558b711cb6e"
+            "reference": "66bde1635a5b4f45554a88857bc355aa17eb2180"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/think-captcha/zipball/03bf97dee72fb7a7c3044f9e200ec558b711cb6e",
-            "reference": "03bf97dee72fb7a7c3044f9e200ec558b711cb6e",
+            "url": "https://api.github.com/repos/top-think/think-captcha/zipball/66bde1635a5b4f45554a88857bc355aa17eb2180",
+            "reference": "66bde1635a5b4f45554a88857bc355aa17eb2180",
             "shasum": "",
             "mirrors": [
                 {
@@ -524,7 +524,7 @@
         "require": {
             "topthink/framework": "^6.0.0"
         },
-        "time": "2019-04-08T11:18:21+00:00",
+        "time": "2019-04-17T09:17:34+00:00",
         "type": "library",
         "extra": {
             "think": {
