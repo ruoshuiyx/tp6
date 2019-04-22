@@ -88,7 +88,7 @@
                 </div>
                 <div class="col-md-7">
                     <h4 class="contact-title">在线留言</h4>
-                    <form id="contact-form" action="{:url('add')}" method="post">
+                    <form id="contact-form" action="{:url('index/add')}" method="post">
                         <div class="row">
                         	<div class="col-md-12">
                                 <input type="text" name="title" placeholder="标题">
@@ -103,12 +103,12 @@
                             <div class="clearfix"></div>
                             <div class="col-md-6 message_code">
                             	<input type="text" name="message_code" placeholder="验证码">
-                            	<img src="{:url('captcha')}" title="点击切换验证码">
+                            	<img src="{:url('index/captcha')}" title="点击切换验证码">
                             </div>
                             {/if}
                             <div class="col-md-12">
                                 <textarea name="content" cols="30" rows="10" placeholder="留言内容"></textarea>
-                                <input type="hidden" name="catId" value="{$cate.id}">
+                                <input type="hidden" name="catid" value="{$cate.id}">
                                 <button type="submit" class="button-default">提交</button>
                             </div>
                         </div>

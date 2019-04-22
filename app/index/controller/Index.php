@@ -63,15 +63,15 @@ class Index extends Base
         if(Request::isPost()){
             $data = Request::post();
             $data['create_time'] = time();
-            $data['catid'] = $data['catId'];
             $data['status'] = 0;
-            unset($data['catId']);
+
 
             //是否开启验证码
             if($this->system['message_code']){
                 if( !captcha_check($data['message_code'] ))
                 {
-                    return json(['error' => '1', 'msg' => '验证码错误']);
+                    $this->error('验证码错误');
+                   // return json(['error' => '1', 'msg' => '验证码错误']);
                 }else{
                     unset($data['message_code']);
                 }
@@ -81,7 +81,6 @@ class Index extends Base
             $moduleId = Db::name('cate')
                 ->where('id','=',Request::param('catid'))
                 ->value('moduleid');
-
             //查询该模型所有必填字段
             $fields = Db::name('field')
                 ->where('moduleid',$moduleId)
@@ -114,7 +113,7 @@ class Index extends Base
                         $title = 'SIYUCMS提醒：您的网站有新的留言';
                         //拼接内容
                         $fields = Db::name('field')
-                            ->where('moduleid',$this->moduleid)
+                            ->where('moduleid',$moduleId)
                             ->field('field,name,type')
                             ->select();
                         $content = '';

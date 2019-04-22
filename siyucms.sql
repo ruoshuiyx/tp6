@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2019-04-19 10:59:47
+Date: 2019-04-22 17:25:54
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -80,7 +80,7 @@ CREATE TABLE `tp_admin_log` (
   `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '操作时间',
   PRIMARY KEY (`id`),
   KEY `name` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='管理员日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='管理员日志表';
 
 -- ----------------------------
 -- Records of tp_admin_log
@@ -93,6 +93,9 @@ INSERT INTO `tp_admin_log` VALUES ('5', '1', 'admin', '/admin/auth/groupselectde
 INSERT INTO `tp_admin_log` VALUES ('6', '1', 'admin', '/admin/auth/adminlist.html', '[权限管理] -> [管理员列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36', '1555642767');
 INSERT INTO `tp_admin_log` VALUES ('7', '1', 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [用户组列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36', '1555642768');
 INSERT INTO `tp_admin_log` VALUES ('9', '1', 'admin', '/admin/admin_log/selectdel.html', '[权限管理] -> [管理员日志] -> [操作-批量删除]', '{\"id\":\"8,7,6,5,4,3,2,1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36', '1555642773');
+INSERT INTO `tp_admin_log` VALUES ('10', '1', 'admin', '/admin/system/system.html', '[系统设置] -> [系统设置]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36', '1555925133');
+INSERT INTO `tp_admin_log` VALUES ('11', '1', 'admin', '/admin/system/systempost.html', '[系统设置] -> [系统设置] -> [操作-修改保存]', '{\"name\":\"SIYUCMS\",\"logo\":\"\\/uploads\\/20181226\\/a3a4245ec095da4903c6c81123fd480d.png\",\"file\":\"\",\"url\":\"www.xxx.com\",\"bah\":\"\\u8fbdICP\\u590712345678\\u53f7-1\",\"copyright\":\"Copyright \\u00a9 SIYUCMS 2019.All right reserved.Powered by SIYUCMS\",\"address\":\"\\u8fbd\\u5b81\\u7701\\u6c88\\u9633\\u5e02\\u94c1\\u897f\\u533a\\u91cd\\u5de5\\u8857XX\\u8defXX\\u53f71-1-1\",\"contacts\":\"X\\u5148\\u751f\",\"tel\":\"010-8888 7777\",\"mobile_phone\":\"158 4018 8888\",\"fax\":\"010-8888 9999\",\"email\":\"407593529@qq.com\",\"qq\":\"407593529\",\"qrcode\":\"\\/uploads\\/20181226\\/cb7a4c21d6443bc5e7a8d16ac2cbe242.png\",\"title\":\"SIYUCMS \\u5b98\\u7f51\",\"key\":\"SIYUCMS\\uff0cSIYUCMS\\u5185\\u5bb9\\u7ba1\\u7406\\u7cfb\\u7edf\\uff0cphp\\uff0cThinkPHP CMS\\uff0cThinkPHP\\u5efa\\u7ad9\\u7cfb\\u7edf\",\"des\":\"SIYUCMS \\u662f\\u4e00\\u6b3e\\u57fa\\u4e8e ThinkPHP5 + AdminLTE \\u7684\\u5185\\u5bb9\\u7ba1\\u7406\\u7cfb\\u7edf\\u3002\\u540e\\u53f0\\u754c\\u9762\\u91c7\\u7528\\u54cd\\u5e94\\u5f0f\\u5e03\\u5c40\\uff0c\\u6e05\\u723d\\u3001\\u6781\\u7b80\\u3001\\u7b80\\u5355\\u3001\\u6613\\u7528\\uff0c\\u662f\\u505a\\u5f00\\u53d1\\u7684\\u6700\\u4f73\\u9009\\u62e9\\u3002\",\"mobile\":\"0\",\"code\":\"0\",\"message_code\":\"1\",\"message_send_mail\":\"0\",\"template\":\"default\",\"html\":\"html\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36', '1555925137');
+INSERT INTO `tp_admin_log` VALUES ('12', '1', 'admin', '/admin/system/system.html', '[系统设置] -> [系统设置]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36', '1555925140');
 
 -- ----------------------------
 -- Table structure for tp_ad_type
@@ -859,7 +862,7 @@ CREATE TABLE `tp_system` (
 -- ----------------------------
 -- Records of tp_system
 -- ----------------------------
-INSERT INTO `tp_system` VALUES ('1', 'SIYUCMS', 'www.xxx.com', 'SIYUCMS 官网', 'SIYUCMS，SIYUCMS内容管理系统，php，ThinkPHP CMS，ThinkPHP建站系统', 'SIYUCMS 是一款基于 ThinkPHP5 + AdminLTE 的内容管理系统。后台界面采用响应式布局，清爽、极简、简单、易用，是做开发的最佳选择。', '辽ICP备12345678号-1', 'Copyright © SIYUCMS 2019.All right reserved.Powered by SIYUCMS', '辽宁省沈阳市铁西区重工街XX路XX号1-1-1', 'X先生', '158 4018 8888', '010-8888 9999', '010-8888 7777', '407593529@qq.com', '407593529', '/uploads/20181226/a3a4245ec095da4903c6c81123fd480d.png', '/uploads/20181226/cb7a4c21d6443bc5e7a8d16ac2cbe242.png', '0', '0', '1', '1', 'default', 'html');
+INSERT INTO `tp_system` VALUES ('1', 'SIYUCMS', 'www.xxx.com', 'SIYUCMS 官网', 'SIYUCMS，SIYUCMS内容管理系统，php，ThinkPHP CMS，ThinkPHP建站系统', 'SIYUCMS 是一款基于 ThinkPHP5 + AdminLTE 的内容管理系统。后台界面采用响应式布局，清爽、极简、简单、易用，是做开发的最佳选择。', '辽ICP备12345678号-1', 'Copyright © SIYUCMS 2019.All right reserved.Powered by SIYUCMS', '辽宁省沈阳市铁西区重工街XX路XX号1-1-1', 'X先生', '158 4018 8888', '010-8888 9999', '010-8888 7777', '407593529@qq.com', '407593529', '/uploads/20181226/a3a4245ec095da4903c6c81123fd480d.png', '/uploads/20181226/cb7a4c21d6443bc5e7a8d16ac2cbe242.png', '0', '0', '1', '0', 'default', 'html');
 
 -- ----------------------------
 -- Table structure for tp_team
