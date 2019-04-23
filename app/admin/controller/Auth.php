@@ -75,7 +75,7 @@ class Auth extends Base
     //管理员添加
     public function adminAdd(){
         if(Request::isPost()){
-            $data = Request::param();
+            $data = Request::post();
             if(empty($data['group_id'])){
                 $this->error('请选择用户组');
             }else{

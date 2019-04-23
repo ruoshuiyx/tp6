@@ -312,7 +312,7 @@ class module extends Base
                 return View::fetch('fieldAddType');
 
             }else{
-                $data = Request::param();
+                $data = Request::post();
                 $fieldName = $data['field'];
                 $prefix = Config::get('database.prefix');
                 $name = Db::name('module')

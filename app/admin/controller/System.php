@@ -74,7 +74,7 @@ class System extends Base
     //邮箱配置保存
     public function emailPost(){
         if(Request::isPost()) {
-            $data = Request::param();
+            $data = Request::post();
             foreach ($data as $k=>$v){
                 $result =  \app\common\model\Config::where([['name','=',$k],['inc_type','=','smtp']])->find();
                 $result -> value = $v;
@@ -122,7 +122,7 @@ class System extends Base
     //短信配置保存
     public function smsPost(){
         if(Request::isPost()) {
-            $data = Request::param();
+            $data = Request::post();
             foreach ($data as $k=>$v){
                 \app\common\model\Config::where([
                     ['name','=',$k],['inc_type','=','sms']

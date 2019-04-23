@@ -149,7 +149,7 @@ class Ad extends Base
     //排序
     public function sort(){
         if(Request::isPost()){
-            $data = Request::param();
+            $data = Request::post();
             return M::sort($data);
         }
     }

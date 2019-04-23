@@ -109,7 +109,7 @@ class Error extends Base
         if(Request::isPost()){
             //根据catid获取所有字段
             if(Request::post('catid')){
-                $data = Request::param();
+                $data = Request::post();
                 //去除上传图片和文件的无用字段
                 if(array_key_exists('file',$data)){
                     unset($data['file']);
@@ -323,7 +323,7 @@ class Error extends Base
         if(Request::isPost()){
             //根据catid获取所有字段
             if(Request::post('catid')){
-                $data = Request::param();
+                $data = Request::post();
                 //去除上传图片和文件的无用字段
                 if(array_key_exists('file',$data)){
                     unset($data['file']);
