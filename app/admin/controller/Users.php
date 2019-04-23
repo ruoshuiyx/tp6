@@ -89,7 +89,7 @@ class Users extends Base
     //添加保存
     public function addPost(){
         if(Request::isPost()) {
-            $data = Request::except(['file']);
+            $data = Request::except(['file'], 'post');
             $result = $this->validate($data,$this->validate);
             if (true !== $result) {
                 // 验证失败 输出错误信息
@@ -128,7 +128,7 @@ class Users extends Base
     //修改保存
     public function editPost(){
         if(Request::isPost()) {
-            $data = Request::except(['file']);
+            $data = Request::except(['file'], 'post');
             $result = $this->validate($data,$this->validate);
             if (true !== $result) {
                 // 验证失败 输出错误信息

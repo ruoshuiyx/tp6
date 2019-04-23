@@ -48,7 +48,7 @@ class System extends Base
     //系统设置保存
     public function systemPost(){
         if(Request::isPost()) {
-            $data = Request::except(['file']);
+            $data = Request::except(['file'], 'post');
             $result = \app\common\model\System::where('id',1)
                 ->update($data);
             if($result) {
