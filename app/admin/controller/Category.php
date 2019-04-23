@@ -72,10 +72,10 @@ class Category extends Base
         $template = getTemplate();
 
         //获取默认上级
-        $id = Request::param('id') ? Request::param('id') : 0;
+        $id = Request::param('id',0);
 
         //获取默认模型
-        $moduleid = Request::param('moduleid') ? Request::param('moduleid') : 0;
+        $moduleid = Request::param('moduleid',0);
 
         $view = [
             'module'=>$module,

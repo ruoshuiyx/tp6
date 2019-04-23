@@ -82,7 +82,7 @@ class Base extends Model
     //状态修改
     public static function state($id){
         $data = self::find($id);
-        $data->status = $data['status']==1?0:1;
+        $data->status = $data['status']==1 ? 0 : 1;
         $data -> save();
         return json(['error'=>0,'msg'=>'修改成功!']);
     }
