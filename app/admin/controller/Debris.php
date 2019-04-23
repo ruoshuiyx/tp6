@@ -46,7 +46,7 @@ class Debris extends Base
             $where[]=['name|title', 'like', '%'.$keyword.'%'];
         }
         //显示数量
-        $pageSize = Request::param('page_size') ? Request::param('page_size') : Config::get('app.page_size');
+        $pageSize = Request::param('page_size',Config::get('app.page_size'));
 
         //调取列表
         $list = M::where($where)

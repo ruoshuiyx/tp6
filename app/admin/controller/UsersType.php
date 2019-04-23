@@ -47,7 +47,7 @@ class UsersType extends Base
             $where[]=['name|description', 'like', '%'.$keyword.'%'];
         }
         //显示数量
-        $pageSize = Request::param('page_size') ? Request::param('page_size') : Config::get('app.page_size');
+        $pageSize = Request::param('page_size',Config::get('app.page_size'));
         //调取列表
         $list = M::where($where)
             ->order('sort ASC,id DESC')

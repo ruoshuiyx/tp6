@@ -49,7 +49,7 @@ class module extends Base
             $where[]=['title|name', 'like', '%'.$title.'%'];
         }
         //显示数量
-        $pageSize = Request::param('page_size') ? Request::param('page_size') : Config::get('app.page_size');
+        $pageSize = Request::param('page_size',Config::get('app.page_size'));
 
         //查出所有数据
         $list = $this->table

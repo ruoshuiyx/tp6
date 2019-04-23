@@ -73,7 +73,7 @@ class Error extends Base
             }
 
             //显示数量
-            $pageSize = Request::param('page_size') ? Request::param('page_size') : Config::get('app.page_size');
+            $pageSize = Request::param('page_size',Config::get('app.page_size'));
 
             //查出所有内容数据
             $list = Db::name($this->table)

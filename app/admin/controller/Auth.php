@@ -50,7 +50,7 @@ class Auth extends Base
             $where[]=['a.username|a.nickname', 'like', '%'.$username.'%'];
         }
         //显示数量
-        $pageSize = Request::param('page_size') ? Request::param('page_size') : Config::get('app.page_size');
+        $pageSize = Request::param('page_size',Config::get('app.page_size'));
 
         //查出所有数据
         $list = Db::name('admin')
@@ -220,7 +220,7 @@ class Auth extends Base
             $where[]=['title', 'like', '%'.$title.'%'];
         }
         //显示数量
-        $pageSize = Request::param('page_size') ? Request::param('page_size') : Config::get('app.page_size');
+        $pageSize = Request::param('page_size',Config::get('app.page_size'));
 
         //查出所有数据
         $list = AuthGroup::where($where)->paginate($pageSize,false,['query' => request()->param()]);
