@@ -26,6 +26,7 @@
 namespace app\admin\model;
 
 use think\facade\Db;
+use think\facade\Event;
 use think\facade\Request;
 use think\facade\Session;
 
@@ -86,6 +87,9 @@ class Admin extends Base {
                 Session::set('admin.group_id', $rules['group_id']);
                 Session::set('admin.rules'   , explode(',',$rules['rules']));
                 Session::set('admin.title'   , $rules['title']);
+
+                //触发登录成功事件
+                Event::trigger('AdminLogin',$result);
 
                 $data = ['error' => '0','href' => url('Index/index'), 'msg' => '登录成功'];
                 return json($data);

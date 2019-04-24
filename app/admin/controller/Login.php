@@ -28,6 +28,7 @@ use app\admin\model\Admin;
 use app\common\model\System;
 
 use think\captcha\facade\Captcha;
+use think\facade\Event;
 use think\facade\Request;
 use think\facade\Session;
 use think\facade\View;

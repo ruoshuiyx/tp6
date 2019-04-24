@@ -56,7 +56,6 @@ class AdminLog extends Base {
             $title = substr($title,0,strlen($title)-4);
         }
 
-
         //内容处理(过长的内容和涉及密码的内容不进行记录)
         if($content){
             foreach ($content as $k => $v)
@@ -66,6 +65,12 @@ class AdminLog extends Base {
                     unset($content[$k]);
                 }
             }
+        }
+
+        //登录处理
+        if(strpos($url,'login/checklogin') !== false){
+            $title = '登录成功';
+            $content = '';
         }
 
         //插入数据
