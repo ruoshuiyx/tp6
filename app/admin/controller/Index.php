@@ -25,6 +25,8 @@
  */
 namespace app\admin\controller;
 use app\admin\model\AuthRule;
+use app\common\model\Cate;
+use app\common\model\Module;
 use app\common\model\Users;
 use think\facade\App;
 use think\facade\Config;
@@ -98,10 +100,22 @@ class Index extends Base
         $user = Users::where('create_time','>',time()-60*60*24*7)->count();
         //查找待处理留言信息
         $message =  Db::name('message')->where('status','0')->count();
+        //查找是否有在线留言的模型id
+        $messageModuleId = Module::where('name','message')->value('id');
+        $messageCatUrl = url('category/index');
+        if($messageModuleId){
+            //查询采用该模型的第一个栏目ID
+            $messageCatId = Cate::where('moduleid',$messageModuleId)->value('id');
+            if(!is_null($messageCatId)){
+                //生成URL
+                $messageCatUrl = url('message/index',['catid'=>$messageCatId]);
+            }
+        }
         $view=[
             'config'  => $config,
             'user'    => $user,
-            'message' => $message
+            'message' => $message,
+            'messageCatUrl' => $messageCatUrl,
         ];
         View::assign($view);
         return View::fetch();

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2019-04-22 17:25:54
+Date: 2019-04-25 10:01:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -32,13 +32,13 @@ CREATE TABLE `tp_ad` (
   `create_time` int(11) DEFAULT '0' COMMENT '添加时间',
   `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tp_ad
 -- ----------------------------
 INSERT INTO `tp_ad` VALUES ('1', '1', 'banner_1 ', '/uploads/20181225/b671c6f234a72c2e6560c63ddd9dc0ff.jpg', '/uploads/20181225/b671c6f234a72c2e6560c63ddd9dc0ff.jpg', '', '免费、开源\r\n快速、简单', '1', '1', '1541128222', '1553154525');
-INSERT INTO `tp_ad` VALUES ('4', '1', 'banner_2', '/uploads/20181225/25670f5712b4acfb61c5d2a1bce79225.jpg', '/uploads/20181225/25670f5712b4acfb61c5d2a1bce79225.jpg', '', 'banner_2', '2', '1', '1545719151', '1551937531');
+INSERT INTO `tp_ad` VALUES ('2', '1', 'banner_2', '/uploads/20181225/25670f5712b4acfb61c5d2a1bce79225.jpg', '/uploads/20181225/25670f5712b4acfb61c5d2a1bce79225.jpg', '', 'banner_2', '2', '1', '1545719151', '1551937531');
 
 -- ----------------------------
 -- Table structure for tp_admin
@@ -56,13 +56,12 @@ CREATE TABLE `tp_admin` (
   `create_time` int(11) DEFAULT '0' COMMENT '添加时间',
   `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='管理员表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='管理员表';
 
 -- ----------------------------
 -- Records of tp_admin
 -- ----------------------------
 INSERT INTO `tp_admin` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '1555051306', '127.0.0.1', '1', 'admin', '/uploads/20181228/e5885dc546eb1369482cdf29fb07decd.jpg', '1553846932', '1553846932');
-INSERT INTO `tp_admin` VALUES ('2', 'test', 'e10adc3949ba59abbe56e057f20f883e', '1555047233', '127.0.0.1', '1', '123456', '', '1555047195', '1555047195');
 
 -- ----------------------------
 -- Table structure for tp_admin_log
@@ -80,22 +79,8 @@ CREATE TABLE `tp_admin_log` (
   `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '操作时间',
   PRIMARY KEY (`id`),
   KEY `name` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='管理员日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='管理员日志表';
 
--- ----------------------------
--- Records of tp_admin_log
--- ----------------------------
-INSERT INTO `tp_admin_log` VALUES ('1', '1', 'admin', '/admin/admin_log/index.html', '[权限管理] -> [管理员日志]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36', '1555642713');
-INSERT INTO `tp_admin_log` VALUES ('2', '1', 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [用户组列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36', '1555642722');
-INSERT INTO `tp_admin_log` VALUES ('3', '1', 'admin', '/admin/auth/groupaccess.html?id=5', '[权限管理] -> [用户组列表] -> [操作-权限]', '{\"id\":\"5\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36', '1555642724');
-INSERT INTO `tp_admin_log` VALUES ('4', '1', 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [用户组列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36', '1555642752');
-INSERT INTO `tp_admin_log` VALUES ('5', '1', 'admin', '/admin/auth/groupselectdel.html', '[权限管理] -> [用户组列表] -> [操作-批量删除]', '{\"id\":\"1,5\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36', '1555642763');
-INSERT INTO `tp_admin_log` VALUES ('6', '1', 'admin', '/admin/auth/adminlist.html', '[权限管理] -> [管理员列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36', '1555642767');
-INSERT INTO `tp_admin_log` VALUES ('7', '1', 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [用户组列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36', '1555642768');
-INSERT INTO `tp_admin_log` VALUES ('9', '1', 'admin', '/admin/admin_log/selectdel.html', '[权限管理] -> [管理员日志] -> [操作-批量删除]', '{\"id\":\"8,7,6,5,4,3,2,1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36', '1555642773');
-INSERT INTO `tp_admin_log` VALUES ('10', '1', 'admin', '/admin/system/system.html', '[系统设置] -> [系统设置]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36', '1555925133');
-INSERT INTO `tp_admin_log` VALUES ('11', '1', 'admin', '/admin/system/systempost.html', '[系统设置] -> [系统设置] -> [操作-修改保存]', '{\"name\":\"SIYUCMS\",\"logo\":\"\\/uploads\\/20181226\\/a3a4245ec095da4903c6c81123fd480d.png\",\"file\":\"\",\"url\":\"www.xxx.com\",\"bah\":\"\\u8fbdICP\\u590712345678\\u53f7-1\",\"copyright\":\"Copyright \\u00a9 SIYUCMS 2019.All right reserved.Powered by SIYUCMS\",\"address\":\"\\u8fbd\\u5b81\\u7701\\u6c88\\u9633\\u5e02\\u94c1\\u897f\\u533a\\u91cd\\u5de5\\u8857XX\\u8defXX\\u53f71-1-1\",\"contacts\":\"X\\u5148\\u751f\",\"tel\":\"010-8888 7777\",\"mobile_phone\":\"158 4018 8888\",\"fax\":\"010-8888 9999\",\"email\":\"407593529@qq.com\",\"qq\":\"407593529\",\"qrcode\":\"\\/uploads\\/20181226\\/cb7a4c21d6443bc5e7a8d16ac2cbe242.png\",\"title\":\"SIYUCMS \\u5b98\\u7f51\",\"key\":\"SIYUCMS\\uff0cSIYUCMS\\u5185\\u5bb9\\u7ba1\\u7406\\u7cfb\\u7edf\\uff0cphp\\uff0cThinkPHP CMS\\uff0cThinkPHP\\u5efa\\u7ad9\\u7cfb\\u7edf\",\"des\":\"SIYUCMS \\u662f\\u4e00\\u6b3e\\u57fa\\u4e8e ThinkPHP5 + AdminLTE \\u7684\\u5185\\u5bb9\\u7ba1\\u7406\\u7cfb\\u7edf\\u3002\\u540e\\u53f0\\u754c\\u9762\\u91c7\\u7528\\u54cd\\u5e94\\u5f0f\\u5e03\\u5c40\\uff0c\\u6e05\\u723d\\u3001\\u6781\\u7b80\\u3001\\u7b80\\u5355\\u3001\\u6613\\u7528\\uff0c\\u662f\\u505a\\u5f00\\u53d1\\u7684\\u6700\\u4f73\\u9009\\u62e9\\u3002\",\"mobile\":\"0\",\"code\":\"0\",\"message_code\":\"1\",\"message_send_mail\":\"0\",\"template\":\"default\",\"html\":\"html\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36', '1555925137');
-INSERT INTO `tp_admin_log` VALUES ('12', '1', 'admin', '/admin/system/system.html', '[系统设置] -> [系统设置]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36', '1555925140');
 
 -- ----------------------------
 -- Table structure for tp_ad_type
@@ -110,7 +95,7 @@ CREATE TABLE `tp_ad_type` (
   `create_time` int(11) DEFAULT '0' COMMENT '添加时间',
   `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tp_ad_type
@@ -182,13 +167,13 @@ CREATE TABLE `tp_auth_group` (
   `create_time` int(11) DEFAULT '0' COMMENT '添加时间',
   `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tp_auth_group
 -- ----------------------------
 INSERT INTO `tp_auth_group` VALUES ('1', '超级管理员', '1', '0,1,4,5,38,6,7,10,11,12,14,13,8,15,16,17,18,19,20,21,9,22,23,24,25,28,27,26,29,3', '1537944508', '1537944508');
-INSERT INTO `tp_auth_group` VALUES ('5', '测试组', '1', '1,4,5,107,6,152,153,154,155,29,30,34,32,33,31,35,36,39,40,41,42,44,45,46,47,48,49,51,52,53,54,60,61,62,63,64,67,68,70,71,74,73,69,76,77,137,80,95,96,97,131,132,109,138,100,101,102,103,105,81,82,84,85,88,94,83,89,91,120,121,', '1536304526', '1555642751');
+INSERT INTO `tp_auth_group` VALUES ('2', '测试组', '1', '1,4,5,107,6,152,153,154,155,29,30,34,32,33,31,35,36,39,40,41,42,44,45,46,47,48,49,51,52,53,54,60,61,62,63,64,67,68,70,71,74,73,69,76,77,137,80,95,96,97,131,132,109,138,100,101,102,103,105,81,82,84,85,88,94,83,89,91,120,121,', '1536304526', '1555642751');
 
 -- ----------------------------
 -- Table structure for tp_auth_group_access
@@ -208,10 +193,7 @@ CREATE TABLE `tp_auth_group_access` (
 -- Records of tp_auth_group_access
 -- ----------------------------
 INSERT INTO `tp_auth_group_access` VALUES ('1', '1', '1553846932', '1553846932');
-INSERT INTO `tp_auth_group_access` VALUES ('12', '1', '1536456218', '1536467724');
-INSERT INTO `tp_auth_group_access` VALUES ('13', '1', '1536467738', '1536468155');
-INSERT INTO `tp_auth_group_access` VALUES ('14', '1', '1536468227', '1536468284');
-INSERT INTO `tp_auth_group_access` VALUES ('2', '5', '0', '0');
+
 
 -- ----------------------------
 -- Table structure for tp_auth_rule
@@ -413,17 +395,17 @@ CREATE TABLE `tp_cate` (
 -- ----------------------------
 INSERT INTO `tp_cate` VALUES ('6', '关于我们', 'About Us', 'about', '0', '1', '1', '', null, '/uploads/20181224/65ea8dcb1cbd16c8dc46144069afeaf5.jpg', '', '', '', '', '', 'page_list.html', '', '0', '1', '0', '0', '1');
 INSERT INTO `tp_cate` VALUES ('7', '公司介绍', 'Company Introduction', 'introduction', '6', '1', '11', '', null, '', '', '', '', '', '', 'page_list.html', '', '0', '1', '0', '0', '1');
-INSERT INTO `tp_cate` VALUES ('8', '新闻中心', 'News Center', 'news', '0', '26', '2', '', null, '/uploads/20181224/65ea8dcb1cbd16c8dc46144069afeaf5.jpg', '', '', '', '', '', '', '', '0', '1', '0', '0', '1');
-INSERT INTO `tp_cate` VALUES ('9', '公司新闻', '', '', '8', '26', '21', '', null, '', '', '', '', '', '', null, null, '0', '1', '0', '0', '1');
+INSERT INTO `tp_cate` VALUES ('8', '新闻中心', 'News Center', 'news', '0', '2', '2', '', null, '/uploads/20181224/65ea8dcb1cbd16c8dc46144069afeaf5.jpg', '', '', '', '', '', '', '', '0', '1', '0', '0', '1');
+INSERT INTO `tp_cate` VALUES ('9', '公司新闻', '', '', '8', '2', '21', '', null, '', '', '', '', '', '', null, null, '0', '1', '0', '0', '1');
 INSERT INTO `tp_cate` VALUES ('10', '公司文化', '', 'culture', '6', '1', '12', '', null, '', '', '', '', '', '', null, null, '0', '1', '0', '0', '1');
 INSERT INTO `tp_cate` VALUES ('11', '资质荣誉', 'Qualifications & Honours', 'honours', '0', '3', '3', '', null, '/uploads/20181224/bf913edfcd8dcdeeec910860f12a0542.jpg', '', '', '', '', '', '', '', '0', '1', '0', '0', '1');
-INSERT INTO `tp_cate` VALUES ('13', '行业资讯', 'Industry Information', 'information', '8', '26', '22', '', null, '', '', '', '', '', '', 'article_list.html', 'article_show.html', '0', '1', '0', '0', '1');
+INSERT INTO `tp_cate` VALUES ('13', '行业资讯', 'Industry Information', 'information', '8', '2', '22', '', null, '', '', '', '', '', '', 'article_list.html', 'article_show.html', '0', '1', '0', '0', '1');
 INSERT INTO `tp_cate` VALUES ('14', '产品中心', 'Pdoduct  Center', 'product', '0', '4', '4', '', null, '/uploads/20181224/643f5b9e297a0bd3accd79981ce347a1.jpg', '', '', '', '', '', 'product_list.html', 'product_show.html', '0', '1', '0', '0', '1');
 INSERT INTO `tp_cate` VALUES ('15', '精选产品', '', '', '14', '4', '41', '', null, '', '', '', '', '', '', 'product_list.html', 'product_show.html', '0', '1', '0', '0', '1');
 INSERT INTO `tp_cate` VALUES ('16', '热销产品', '', '', '14', '4', '42', '', null, '', '', '', '', '', '', 'product_list.html', 'product_show.html', '0', '1', '0', '0', '1');
 INSERT INTO `tp_cate` VALUES ('17', '资料下载', 'Download', '', '0', '5', '5', '', null, '/uploads/20181224/f4ef6f5df6abac86e8c685b2f2549079.jpg', '', '', '', '', '', 'download_list.html', 'download_show.html', '0', '1', '0', '0', '1');
 INSERT INTO `tp_cate` VALUES ('18', '优秀团队', 'Team', 'team', '0', '6', '6', '', null, '/uploads/20181224/bf3d6e8ff8f21760572ac25dd216daf9.jpg', '', '', '', '', '', 'team_list.html', 'team_show.html', '0', '1', '0', '0', '1');
-INSERT INTO `tp_cate` VALUES ('19', '联系我们', 'Contact Us', 'contact', '0', '27', '7', '', null, '/uploads/20181224/65ea8dcb1cbd16c8dc46144069afeaf5.jpg', '', '', '', '', '', 'message_list.html', '', '0', '1', '0', '0', '1');
+INSERT INTO `tp_cate` VALUES ('19', '联系我们', 'Contact Us', 'contact', '0', '7', '7', '', null, '/uploads/20181224/65ea8dcb1cbd16c8dc46144069afeaf5.jpg', '', '', '', '', '', 'message_list.html', '', '0', '1', '0', '0', '1');
 
 -- ----------------------------
 -- Table structure for tp_config
@@ -472,7 +454,7 @@ CREATE TABLE `tp_debris` (
   `create_time` int(11) DEFAULT '0' COMMENT '添加时间',
   `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tp_debris
@@ -546,32 +528,32 @@ CREATE TABLE `tp_field` (
 -- ----------------------------
 -- Records of tp_field
 -- ----------------------------
-INSERT INTO `tp_field` VALUES ('1', '26', 'catid', '栏目', '', '1', '1', '6', '', '必须选择一个栏目', '', 'catid', '', '1', '', '1', '1', '1');
-INSERT INTO `tp_field` VALUES ('2', '26', 'title', '标题', '', '1', '1', '70', '', '标题必须为1-80个字符', '', 'title', '', '1', '', '2', '1', '1');
-INSERT INTO `tp_field` VALUES ('3', '26', 'keywords', '关键词', '', '0', '0', '80', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '1', '', '15', '1', '1');
-INSERT INTO `tp_field` VALUES ('4', '26', 'description', 'SEO简介', '', '0', '0', '1200', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'mediumtext\',\n  \'default\' => \'发3\',\n)', '1', '', '16', '1', '1');
-INSERT INTO `tp_field` VALUES ('5', '26', 'content', '内容', '', '0', '0', '0', '', '', '', 'editor', 'array (\n  \'edittype\' => \'wangEditor\',\n)', '1', '', '5', '1', '1');
-INSERT INTO `tp_field` VALUES ('6', '26', 'create_time', '发布时间', '', '1', '0', '0', 'date', '', 'createtime', 'datetime', '', '1', '', '10', '1', '1');
-INSERT INTO `tp_field` VALUES ('7', '26', 'status', '状态', '', '0', '0', '0', '', '', '', 'radio', 'array (\n  \'options\' => \'发布|1\r\n定时发布|0\',\n  \'fieldtype\' => \'tinyint\',\n  \'numbertype\' => \'1\',\n  \'labelwidth\' => \'75\',\n  \'default\' => \'1\',\n)', '1', '', '11', '1', '1');
-INSERT INTO `tp_field` VALUES ('8', '26', 'hits', '点击次数', '', '0', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'\',\n)', '1', '', '12', '1', '1');
-INSERT INTO `tp_field` VALUES ('10', '26', 'template', '模板', '', '0', '0', '0', '', '', '', 'template', '', '1', '', '14', '1', '1');
-INSERT INTO `tp_field` VALUES ('13', '26', 'image', '缩略图', '', '0', '0', '120', '', '', '', 'image', 'array (\n  \'upload_allowext\' => \'jpg|jpeg|gif|png\',\n)', '0', '', '7', '1', '0');
-INSERT INTO `tp_field` VALUES ('14', '26', 'images', '图片集', '', '0', '0', '0', '', '', '', 'images', 'array (\n  \'upload_allowext\' => \'jpg|jpeg|gif|png\',\n)', '0', '', '8', '1', '0');
-INSERT INTO `tp_field` VALUES ('15', '26', 'download', '文件下载', '', '0', '0', '0', '', '', '', 'file', 'array (\n  \'upload_allowext\' => \'zip|rar|doc|ppt\',\n)', '0', '', '9', '1', '0');
-INSERT INTO `tp_field` VALUES ('29', '26', 'source', '来源', '', '0', '0', '0', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '4', '1', '0');
-INSERT INTO `tp_field` VALUES ('28', '26', 'author', '作者', '', '0', '0', '50', '', '', '', 'text', 'array (\n  \'default\' => \'Admin\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '3', '1', '0');
-INSERT INTO `tp_field` VALUES ('21', '26', 'sort', '排序', '', '1', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'100\',\n)', '0', '', '13', '1', '1');
+INSERT INTO `tp_field` VALUES ('1', '2', 'catid', '栏目', '', '1', '1', '6', '', '必须选择一个栏目', '', 'catid', '', '1', '', '1', '1', '1');
+INSERT INTO `tp_field` VALUES ('2', '2', 'title', '标题', '', '1', '1', '70', '', '标题必须为1-80个字符', '', 'title', '', '1', '', '2', '1', '1');
+INSERT INTO `tp_field` VALUES ('3', '2', 'keywords', '关键词', '', '0', '0', '80', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '1', '', '15', '1', '1');
+INSERT INTO `tp_field` VALUES ('4', '2', 'description', 'SEO简介', '', '0', '0', '1200', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'mediumtext\',\n  \'default\' => \'发3\',\n)', '1', '', '16', '1', '1');
+INSERT INTO `tp_field` VALUES ('5', '2', 'content', '内容', '', '0', '0', '0', '', '', '', 'editor', 'array (\n  \'edittype\' => \'ckeditor\',\n)', '1', '', '5', '1', '1');
+INSERT INTO `tp_field` VALUES ('6', '2', 'create_time', '发布时间', '', '1', '0', '0', 'date', '', 'createtime', 'datetime', '', '1', '', '10', '1', '1');
+INSERT INTO `tp_field` VALUES ('7', '2', 'status', '状态', '', '0', '0', '0', '', '', '', 'radio', 'array (\n  \'options\' => \'发布|1\r\n定时发布|0\',\n  \'fieldtype\' => \'tinyint\',\n  \'numbertype\' => \'1\',\n  \'labelwidth\' => \'75\',\n  \'default\' => \'1\',\n)', '1', '', '11', '1', '1');
+INSERT INTO `tp_field` VALUES ('8', '2', 'hits', '点击次数', '', '0', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'\',\n)', '1', '', '12', '1', '1');
+INSERT INTO `tp_field` VALUES ('10', '2', 'template', '模板', '', '0', '0', '0', '', '', '', 'template', '', '1', '', '14', '1', '1');
+INSERT INTO `tp_field` VALUES ('13', '2', 'image', '缩略图', '', '0', '0', '120', '', '', '', 'image', 'array (\n  \'upload_allowext\' => \'jpg|jpeg|gif|png\',\n)', '0', '', '7', '1', '0');
+INSERT INTO `tp_field` VALUES ('14', '2', 'images', '图片集', '', '0', '0', '0', '', '', '', 'images', 'array (\n  \'upload_allowext\' => \'jpg|jpeg|gif|png\',\n)', '0', '', '8', '1', '0');
+INSERT INTO `tp_field` VALUES ('15', '2', 'download', '文件下载', '', '0', '0', '0', '', '', '', 'file', 'array (\n  \'upload_allowext\' => \'zip|rar|doc|ppt\',\n)', '0', '', '9', '1', '0');
+INSERT INTO `tp_field` VALUES ('29', '2', 'source', '来源', '', '0', '0', '0', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '4', '1', '0');
+INSERT INTO `tp_field` VALUES ('28', '2', 'author', '作者', '', '0', '0', '50', '', '', '', 'text', 'array (\n  \'default\' => \'Admin\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '3', '1', '0');
+INSERT INTO `tp_field` VALUES ('21', '2', 'sort', '排序', '', '1', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'100\',\n)', '0', '', '13', '1', '1');
 INSERT INTO `tp_field` VALUES ('22', '1', 'catid', '栏目', '', '1', '0', '0', '', '', '', 'catid', null, '0', '', '0', '1', '0');
 INSERT INTO `tp_field` VALUES ('23', '1', 'title', '标题', '', '1', '0', '0', '', '', '', 'title', null, '0', '', '0', '1', '0');
 INSERT INTO `tp_field` VALUES ('24', '1', 'keywords', '关键词', '', '0', '0', '0', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '0', '1', '0');
 INSERT INTO `tp_field` VALUES ('25', '1', 'description', 'SEO简介', '', '0', '0', '0', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'text\',\n  \'default\' => \'\',\n)', '0', '', '0', '1', '0');
-INSERT INTO `tp_field` VALUES ('26', '1', 'content', '内容', '', '0', '0', '0', '', '', '', 'editor', 'array (\n  \'edittype\' => \'UEditor\',\n)', '0', '', '0', '1', '0');
+INSERT INTO `tp_field` VALUES ('26', '1', 'content', '内容', '', '0', '0', '0', '', '', '', 'editor', 'array (\n  \'edittype\' => \'ckeditor\',\n)', '0', '', '0', '1', '0');
 INSERT INTO `tp_field` VALUES ('27', '1', 'hits', '点击次数', '', '1', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'100\',\n)', '0', '', '0', '1', '0');
 INSERT INTO `tp_field` VALUES ('30', '3', 'catid', '栏目', '', '1', '1', '6', '', '必须选择一个栏目', '', 'catid', '', '1', '', '1', '1', '1');
 INSERT INTO `tp_field` VALUES ('31', '3', 'title', '标题', '', '1', '1', '70', '', '标题必须为1-80个字符', '', 'title', '', '1', '', '2', '1', '1');
 INSERT INTO `tp_field` VALUES ('32', '3', 'keywords', '关键词', '', '0', '0', '80', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '1', '', '15', '1', '1');
 INSERT INTO `tp_field` VALUES ('33', '3', 'description', 'SEO简介', '', '0', '0', '1200', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'mediumtext\',\n  \'default\' => \'发3\',\n)', '1', '', '16', '1', '1');
-INSERT INTO `tp_field` VALUES ('34', '3', 'content', '内容', '', '0', '0', '0', '', '', '', 'editor', 'array (\n  \'edittype\' => \'UEditor\',\n)', '1', '', '5', '1', '1');
+INSERT INTO `tp_field` VALUES ('34', '3', 'content', '内容', '', '0', '0', '0', '', '', '', 'editor', 'array (\n  \'edittype\' => \'ckeditor\',\n)', '1', '', '5', '1', '1');
 INSERT INTO `tp_field` VALUES ('35', '3', 'create_time', '发布时间', '', '1', '0', '0', 'date', '', 'createtime', 'datetime', '', '1', '', '10', '1', '1');
 INSERT INTO `tp_field` VALUES ('36', '3', 'status', '状态', '', '0', '0', '0', '', '', '', 'radio', 'array (\n  \'options\' => \'发布|1\r\n定时发布|0\',\n  \'fieldtype\' => \'tinyint\',\n  \'numbertype\' => \'1\',\n  \'labelwidth\' => \'75\',\n  \'default\' => \'1\',\n)', '1', '', '11', '1', '1');
 INSERT INTO `tp_field` VALUES ('37', '3', 'hits', '点击次数', '', '0', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'\',\n)', '1', '', '12', '1', '1');
@@ -586,7 +568,7 @@ INSERT INTO `tp_field` VALUES ('45', '4', 'catid', '栏目', '', '1', '1', '6', 
 INSERT INTO `tp_field` VALUES ('46', '4', 'title', '标题', '', '1', '1', '70', '', '标题必须为1-80个字符', '', 'title', '', '1', '', '2', '1', '1');
 INSERT INTO `tp_field` VALUES ('47', '4', 'keywords', '关键词', '', '0', '0', '80', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '1', '', '15', '1', '1');
 INSERT INTO `tp_field` VALUES ('48', '4', 'description', 'SEO简介', '', '0', '0', '1200', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'mediumtext\',\n  \'default\' => \'发3\',\n)', '1', '', '16', '1', '1');
-INSERT INTO `tp_field` VALUES ('49', '4', 'content', '内容', '', '0', '0', '0', '', '', '', 'editor', 'array (\n  \'edittype\' => \'UEditor\',\n)', '1', '', '5', '1', '1');
+INSERT INTO `tp_field` VALUES ('49', '4', 'content', '内容', '', '0', '0', '0', '', '', '', 'editor', 'array (\n  \'edittype\' => \'ckeditor\',\n)', '1', '', '5', '1', '1');
 INSERT INTO `tp_field` VALUES ('50', '4', 'create_time', '发布时间', '', '1', '0', '0', 'date', '', 'createtime', 'datetime', '', '1', '', '10', '1', '1');
 INSERT INTO `tp_field` VALUES ('51', '4', 'status', '状态', '', '0', '0', '0', '', '', '', 'radio', 'array (\n  \'options\' => \'发布|1\r\n定时发布|0\',\n  \'fieldtype\' => \'tinyint\',\n  \'numbertype\' => \'1\',\n  \'labelwidth\' => \'75\',\n  \'default\' => \'1\',\n)', '1', '', '11', '1', '1');
 INSERT INTO `tp_field` VALUES ('52', '4', 'hits', '点击次数', '', '0', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'\',\n)', '1', '', '12', '1', '1');
@@ -601,7 +583,7 @@ INSERT INTO `tp_field` VALUES ('60', '5', 'catid', '栏目', '', '1', '1', '6', 
 INSERT INTO `tp_field` VALUES ('61', '5', 'title', '标题', '', '1', '1', '70', '', '标题必须为1-80个字符', '', 'title', '', '1', '', '2', '1', '1');
 INSERT INTO `tp_field` VALUES ('62', '5', 'keywords', '关键词', '', '0', '0', '80', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '1', '', '15', '1', '1');
 INSERT INTO `tp_field` VALUES ('63', '5', 'description', 'SEO简介', '', '0', '0', '1200', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'mediumtext\',\n  \'default\' => \'发3\',\n)', '1', '', '16', '1', '1');
-INSERT INTO `tp_field` VALUES ('64', '5', 'content', '内容', '', '0', '0', '0', '', '', '', 'editor', 'array (\n  \'edittype\' => \'UEditor\',\n)', '1', '', '5', '1', '1');
+INSERT INTO `tp_field` VALUES ('64', '5', 'content', '内容', '', '0', '0', '0', '', '', '', 'editor', 'array (\n  \'edittype\' => \'ckeditor\',\n)', '1', '', '5', '1', '1');
 INSERT INTO `tp_field` VALUES ('65', '5', 'create_time', '发布时间', '', '1', '0', '0', 'date', '', 'createtime', 'datetime', '', '1', '', '10', '1', '1');
 INSERT INTO `tp_field` VALUES ('66', '5', 'status', '状态', '', '0', '0', '0', '', '', '', 'radio', 'array (\n  \'options\' => \'发布|1\r\n定时发布|0\',\n  \'fieldtype\' => \'tinyint\',\n  \'numbertype\' => \'1\',\n  \'labelwidth\' => \'75\',\n  \'default\' => \'1\',\n)', '1', '', '11', '1', '1');
 INSERT INTO `tp_field` VALUES ('67', '5', 'hits', '点击次数', '', '0', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'\',\n)', '1', '', '12', '1', '1');
@@ -616,7 +598,7 @@ INSERT INTO `tp_field` VALUES ('75', '6', 'catid', '栏目', '', '1', '1', '6', 
 INSERT INTO `tp_field` VALUES ('76', '6', 'title', '标题', '', '1', '1', '70', '', '标题必须为1-80个字符', '', 'title', '', '1', '', '2', '1', '1');
 INSERT INTO `tp_field` VALUES ('77', '6', 'keywords', '关键词', '', '0', '0', '80', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '1', '', '15', '1', '1');
 INSERT INTO `tp_field` VALUES ('78', '6', 'description', 'SEO简介', '', '0', '0', '1200', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'mediumtext\',\n  \'default\' => \'发3\',\n)', '1', '', '16', '1', '1');
-INSERT INTO `tp_field` VALUES ('79', '6', 'content', '内容', '', '0', '0', '0', '', '', '', 'editor', 'array (\n  \'edittype\' => \'UEditor\',\n)', '1', '', '5', '1', '1');
+INSERT INTO `tp_field` VALUES ('79', '6', 'content', '内容', '', '0', '0', '0', '', '', '', 'editor', 'array (\n  \'edittype\' => \'ckeditor\',\n)', '1', '', '5', '1', '1');
 INSERT INTO `tp_field` VALUES ('80', '6', 'create_time', '发布时间', '', '1', '0', '0', 'date', '', 'createtime', 'datetime', '', '1', '', '10', '1', '1');
 INSERT INTO `tp_field` VALUES ('81', '6', 'status', '状态', '', '0', '0', '0', '', '', '', 'radio', 'array (\n  \'options\' => \'发布|1\r\n定时发布|0\',\n  \'fieldtype\' => \'tinyint\',\n  \'numbertype\' => \'1\',\n  \'labelwidth\' => \'75\',\n  \'default\' => \'1\',\n)', '1', '', '11', '1', '1');
 INSERT INTO `tp_field` VALUES ('82', '6', 'hits', '点击次数', '', '0', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'\',\n)', '1', '', '12', '1', '1');
@@ -627,20 +609,20 @@ INSERT INTO `tp_field` VALUES ('86', '6', 'download', '文件下载', '', '0', '
 INSERT INTO `tp_field` VALUES ('87', '6', 'source', '来源', '', '0', '0', '0', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '4', '1', '0');
 INSERT INTO `tp_field` VALUES ('88', '6', 'author', '作者', '', '0', '0', '50', '', '', '', 'text', 'array (\n  \'default\' => \'Admin\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '3', '1', '0');
 INSERT INTO `tp_field` VALUES ('89', '6', 'sort', '排序', '', '1', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'100\',\n)', '0', '', '13', '1', '1');
-INSERT INTO `tp_field` VALUES ('90', '26', 'summary', '摘要', '', '0', '0', '0', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'text\',\n  \'default\' => \'\',\n)', '0', '', '6', '1', '0');
+INSERT INTO `tp_field` VALUES ('90', '2', 'summary', '摘要', '', '0', '0', '0', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'text\',\n  \'default\' => \'\',\n)', '0', '', '6', '1', '0');
 INSERT INTO `tp_field` VALUES ('91', '3', 'summary', '摘要', '', '0', '0', '0', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'text\',\n  \'default\' => \'\',\n)', '0', '', '6', '1', '0');
 INSERT INTO `tp_field` VALUES ('92', '4', 'summary', '摘要', '', '0', '0', '0', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'text\',\n  \'default\' => \'\',\n)', '0', '', '6', '1', '0');
 INSERT INTO `tp_field` VALUES ('93', '5', 'summary', '摘要', '', '0', '0', '0', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'text\',\n  \'default\' => \'\',\n)', '0', '', '6', '1', '0');
 INSERT INTO `tp_field` VALUES ('94', '6', 'summary', '摘要', '', '0', '0', '0', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'text\',\n  \'default\' => \'\',\n)', '0', '', '6', '1', '0');
-INSERT INTO `tp_field` VALUES ('95', '27', 'catid', '栏目', '', '0', '1', '6', '', '必须选择一个栏目', '', 'catid', '', '1', '', '1', '1', '1');
-INSERT INTO `tp_field` VALUES ('96', '27', 'title', '标题', '', '1', '1', '80', '', '标题必须为1-80个字符', '', 'title', '', '1', '', '2', '1', '1');
-INSERT INTO `tp_field` VALUES ('106', '27', 'contact', '联系方式', '', '1', '0', '0', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '9', '1', '0');
-INSERT INTO `tp_field` VALUES ('99', '27', 'content', '内容', '', '0', '0', '0', '', '', '', 'editor', 'array (\n  \'edittype\' => \'UEditor\',\n)', '1', '', '3', '1', '1');
-INSERT INTO `tp_field` VALUES ('100', '27', 'create_time', '添加时间', '', '1', '0', '0', 'date', '', 'createtime', 'datetime', '', '1', '', '4', '1', '1');
-INSERT INTO `tp_field` VALUES ('101', '27', 'status', '状态', '', '0', '0', '0', '', '', '', 'radio', 'array (\n  \'options\' => \'已处理|1\r\n未处理|0\',\n  \'fieldtype\' => \'tinyint\',\n  \'default\' => \'1\',\n)', '1', '', '5', '1', '1');
-INSERT INTO `tp_field` VALUES ('104', '27', 'name', '姓名', '', '1', '0', '0', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '8', '1', '0');
-INSERT INTO `tp_field` VALUES ('105', '27', 'hits', '点击次数', '', '0', '0', '0', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'\',\n)', '0', '', '7', '1', '0');
-INSERT INTO `tp_field` VALUES ('103', '27', 'template', '模板', '', '0', '0', '0', '', '', '', 'template', '', '1', '', '6', '1', '1');
+INSERT INTO `tp_field` VALUES ('95', '7', 'catid', '栏目', '', '0', '1', '6', '', '必须选择一个栏目', '', 'catid', '', '1', '', '1', '1', '1');
+INSERT INTO `tp_field` VALUES ('96', '7', 'title', '标题', '', '1', '1', '80', '', '标题必须为1-80个字符', '', 'title', '', '1', '', '2', '1', '1');
+INSERT INTO `tp_field` VALUES ('106', '7', 'contact', '联系方式', '', '1', '0', '0', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '9', '1', '0');
+INSERT INTO `tp_field` VALUES ('99', '7', 'content', '内容', '', '0', '0', '0', '', '', '', 'editor', 'array (\n  \'edittype\' => \'ckeditor\',\n)', '1', '', '3', '1', '1');
+INSERT INTO `tp_field` VALUES ('100', '7', 'create_time', '添加时间', '', '1', '0', '0', 'date', '', 'createtime', 'datetime', '', '1', '', '4', '1', '1');
+INSERT INTO `tp_field` VALUES ('101', '7', 'status', '状态', '', '0', '0', '0', '', '', '', 'radio', 'array (\n  \'options\' => \'已处理|1\r\n未处理|0\',\n  \'fieldtype\' => \'tinyint\',\n  \'default\' => \'1\',\n)', '1', '', '5', '1', '1');
+INSERT INTO `tp_field` VALUES ('104', '7', 'name', '姓名', '', '1', '0', '0', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '8', '1', '0');
+INSERT INTO `tp_field` VALUES ('105', '7', 'hits', '点击次数', '', '0', '0', '0', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'\',\n)', '0', '', '7', '1', '0');
+INSERT INTO `tp_field` VALUES ('103', '7', 'template', '模板', '', '0', '0', '0', '', '', '', 'template', '', '1', '', '6', '1', '1');
 
 -- ----------------------------
 -- Table structure for tp_link
@@ -657,13 +639,12 @@ CREATE TABLE `tp_link` (
   `create_time` int(11) DEFAULT '0' COMMENT '添加时间',
   `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tp_link
 -- ----------------------------
-INSERT INTO `tp_link` VALUES ('2', '百度', 'http://www.baidu.com', '', '联系人：XXX', '1', '1', '1553837737', '1553837737');
-INSERT INTO `tp_link` VALUES ('5', 'SIYUCMS', 'http://www.siyucms.com', '', '', '2', '1', '1548727536', '1551930738');
+INSERT INTO `tp_link` VALUES ('1', 'SIYUCMS', 'http://www.siyucms.com', '', '', '2', '1', '1548727536', '1551930738');
 
 -- ----------------------------
 -- Table structure for tp_message
@@ -688,7 +669,7 @@ CREATE TABLE `tp_message` (
   KEY `status` (`id`,`status`,`sort`),
   KEY `catid` (`id`,`catid`,`status`),
   KEY `sort` (`id`,`catid`,`status`,`sort`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tp_message
@@ -709,18 +690,18 @@ CREATE TABLE `tp_module` (
   `sort` smallint(3) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tp_module
 -- ----------------------------
 INSERT INTO `tp_module` VALUES ('1', '单页模型', 'page', '单页面', '1', '0', '*', '0', '1');
-INSERT INTO `tp_module` VALUES ('26', '文章模型', 'article', '新闻文章', '1', '0', '*', '0', '1');
+INSERT INTO `tp_module` VALUES ('2', '文章模型', 'article', '新闻文章', '1', '0', '*', '0', '1');
 INSERT INTO `tp_module` VALUES ('3', '图片模型', 'picture', '图片展示', '1', '0', '*', '0', '1');
 INSERT INTO `tp_module` VALUES ('4', '产品模型', 'product', '产品展示', '1', '0', '*', '0', '1');
 INSERT INTO `tp_module` VALUES ('5', '下载模型', 'download', '文件下载', '1', '0', '*', '0', '1');
 INSERT INTO `tp_module` VALUES ('6', '团队模型', 'team', '员工展示', '1', '0', '*', '0', '1');
-INSERT INTO `tp_module` VALUES ('27', '在线留言', 'message', '在线留言', '1', '0', '*', '0', '1');
+INSERT INTO `tp_module` VALUES ('7', '在线留言', 'message', '在线留言', '1', '0', '*', '0', '1');
 
 -- ----------------------------
 -- Table structure for tp_page
@@ -950,7 +931,7 @@ CREATE TABLE `tp_users_type` (
   `create_time` int(10) DEFAULT '0' COMMENT '添加时间',
   `update_time` int(10) DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tp_users_type
