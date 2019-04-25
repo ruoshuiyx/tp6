@@ -29,7 +29,7 @@ class App extends Container
      * 应用调试模式
      * @var bool
      */
-    protected $appDebug = true;
+    protected $appDebug;
 
     /**
      * 应用开始时间
@@ -451,7 +451,7 @@ class App extends Container
     protected function debugModeInit(): void
     {
         // 应用调试模式
-        if (!$this->appDebug) {
+        if (is_null($this->appDebug)) {
             $this->appDebug = $this->env->get('app_debug') ? true : false;
             ini_set('display_errors', 'Off');
         }
