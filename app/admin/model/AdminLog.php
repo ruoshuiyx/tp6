@@ -37,8 +37,8 @@ class AdminLog extends Base {
     public static function record()
     {
         //入库信息
-        $admin_id   = Session::get('admin.id') ? Session::get('admin.id') : 0;
-        $username   = Session::get('admin.username') ? Session::get('admin.username') : 'Unknown';
+        $admin_id   = Session::get('admin.id',0);
+        $username   = Session::get('admin.username','Unknown') ;
         $url        = Request::url();
         $title      = '';
         $content    = Request::param();
