@@ -502,8 +502,8 @@
     },
     {
         "name": "topthink/think-captcha",
-        "version": "3.0.x-dev",
-        "version_normalized": "3.0.9999999.9999999-dev",
+        "version": "v3.0.0",
+        "version_normalized": "3.0.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/think-captcha.git",

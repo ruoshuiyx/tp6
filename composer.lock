@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5e6972b77991139090be3f81ed42d9d2",
+    "content-hash": "6467b4a58cc1e4cf193a0490ba45dec1",
     "packages": [
         {
             "name": "opis/closure",
@@ -493,7 +493,7 @@
         },
         {
             "name": "topthink/think-captcha",
-            "version": "3.0.x-dev",
+            "version": "v3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/think-captcha.git",
@@ -728,8 +728,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "topthink/framework": 20,
-        "topthink/think-captcha": 20
+        "topthink/framework": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
