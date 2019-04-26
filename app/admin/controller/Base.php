@@ -26,6 +26,7 @@
 namespace app\admin\controller;
 
 use think\Controller;
+use think\facade\Config;
 use think\facade\Request;
 use think\facade\Session;
 
@@ -34,9 +35,15 @@ class Base extends Controller
     //定义中间件
     protected $middleware = ['app\admin\middleware\Admin'];
 
+    protected $pageSize = '';
+
     //初始化方法
     public function initialize()
     {
+        //每页显示数据量
+        $this->pageSize = Request::param('page_size',Config::get('app.page_size'));
+
+        //获取当前用户
         $admin_id = Session::get('admin.id');
 
         //未登录用户跳转登录页
@@ -61,7 +68,6 @@ class Base extends Controller
         $route = Request::controller() . '/' . lcfirst(Request::action());
 
         //权限认证
-
         if(!in_array($route, $allow)){
             if($admin_id!=1){
                 //开始认证

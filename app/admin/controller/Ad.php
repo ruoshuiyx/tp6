@@ -39,6 +39,7 @@ class Ad extends Base
 
     //列表
     public function index(){
+
         //条件筛选
         $keyword = Request::param('keyword');
         //全局查询条件
@@ -46,21 +47,12 @@ class Ad extends Base
         if(!empty($keyword)){
             $where[]=['a.name|a.description', 'like', '%'.$keyword.'%'];
         }
-        //显示数量
-        $pageSize = Request::param('page_size',Config::get('app.page_size'));
 
-        //调取列表
-        $list = Db::name('ad')
-            ->alias('a')
-            ->leftJoin('ad_type at','a.type_id = at.id')
-            ->field('a.*,at.name as type_name')
-            ->order('a.sort ASC,a.id DESC')
-            ->where($where)
-            ->paginate($pageSize,false,['query' => request()->param()]);
+        $list = M::getList($where,$this->pageSize);
 
         $view = [
             'keyword'=>$keyword,
-            'pageSize' => page_size($pageSize,$list->total()),
+            'pageSize' => page_size($this->pageSize,$list->total()),
             'page' => $list->render(),
             'list' => $list,
             'empty'=> empty_list(12),

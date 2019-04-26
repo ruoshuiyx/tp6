@@ -46,17 +46,15 @@ class AdType extends Base
         if(!empty($keyword)){
             $where[]=['name|description', 'like', '%'.$keyword.'%'];
         }
-        //显示数量
-        $pageSize = Request::param('page_size',Config::get('app.page_size'));
 
         //调取列表
         $list = M::where($where)
             ->order('sort ASC,id DESC')
-            ->paginate($pageSize,false,['query' => request()->param()]);
+            ->paginate($this->pageSize,false,['query' => request()->param()]);
 
         $view = [
             'keyword'=>$keyword,
-            'pageSize' => page_size($pageSize,$list->total()),
+            'pageSize' => page_size($this->pageSize,$list->total()),
             'page' => $list->render(),
             'list' => $list,
             'empty'=> empty_list(12),

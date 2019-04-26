@@ -31,4 +31,9 @@ class AdType extends Base
     protected $createTime = 'create_time';
     protected $updateTime = 'update_time';
 
+    //一对多获取广告
+    public function ads()
+    {
+        return $this->hasMany('Ad','type_id');
+    }
 }
