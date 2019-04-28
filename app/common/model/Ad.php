@@ -39,9 +39,10 @@ class Ad extends Base
         return $this->belongsTo('AdType','type_id');
     }
 
-    //获取广告列表
-    public static function getList($where=array(),$pageSize){
+    //获取列表
+    public static function getList($where=array(),$pageSize,$order=['sort','id'=>'desc']){
         $list = self::where($where)
+            ->order($order)
             ->paginate($pageSize,false,['query' => Request::param()]);
         foreach($list as $k=>$v){
            $v['type_name'] = $v->adType['name'];

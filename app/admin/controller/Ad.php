@@ -38,22 +38,23 @@ class Ad extends Base
     //列表
     public function index(){
 
-        //条件筛选
-        $keyword = Request::param('keyword');
-        $typeId  = Request::param('type_id');
-        $dateran = Request::param('dateran');
         //全局查询条件
         $where=[];
+        $keyword = Request::param('keyword');
         if(!empty($keyword)){
             $where[]=['name|description', 'like', '%'.$keyword.'%'];
         }
+        $typeId  = Request::param('type_id');
         if(!empty($typeId)){
             $where[]=['type_id', '=', $typeId];
         }
+        $dateran = Request::param('dateran');
         if(!empty($dateran)){
             $getDateran = get_dateran($dateran);
             $where[]=['create_time', 'between', $getDateran];
         }
+
+
         //获取列表
         $list = M::getList($where,$this->pageSize);
         //获取广告位列表

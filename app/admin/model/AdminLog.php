@@ -33,6 +33,18 @@ class AdminLog extends Base {
     //关闭自动时间戳
     protected $autoWriteTimestamp = false;
 
+    //获取列表
+    public static function getList($where=array(),$pageSize,$order=['sort','id'=>'desc']){
+        $list = self::where($where)
+            ->order($order)
+            ->paginate($pageSize,false,['query' => Request::param()]);
+        foreach($list as $k=>$v){
+            $useragent = explode('(',$v['useragent']);
+            $list[$k]['useragent']=$useragent[0];
+        }
+        return $list;
+    }
+
     //管理员日志记录
     public static function record()
     {

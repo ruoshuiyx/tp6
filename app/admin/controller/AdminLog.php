@@ -27,7 +27,6 @@ namespace app\admin\controller;
 
 use app\admin\model\AdminLog as M;
 
-use think\facade\Config;
 use think\facade\Request;
 use think\facade\Session;
 use think\facade\View;
@@ -36,10 +35,10 @@ class AdminLog extends Base
 {
     //列表
     public function index(){
-        //条件筛选
-        $keyword = Request::param('keyword');
+
         //全局查询条件
         $where=[];
+        $keyword = Request::param('keyword');
         if(!empty($keyword)){
             $where[]=['username|title', 'like', '%'.$keyword.'%'];
         }
@@ -47,21 +46,19 @@ class AdminLog extends Base
         if(Session::get('admin.id')>1){
             $where[]=['admin_id', '=', Session::get('admin.id')];
         }
-        //显示数量
-        $pageSize = Request::param('page_size',Config::get('app.page_size'));
+        $dateran = Request::param('dateran');
+        if(!empty($dateran)){
+            $getDateran = get_dateran($dateran);
+            $where[]=['create_time', 'between', $getDateran];
+        }
 
         //调取列表
-        $list = M::where($where)
-            ->order('id DESC')
-            ->paginate($pageSize,false,['query' => request()->param()]);
-        foreach($list as $k=>$v){
-            $useragent = explode('(',$v['useragent']);
-            $list[$k]['useragent']=$useragent[0];
-        }
+        $list = M::getList($where,$this->pageSize,['id'=>'desc']);
 
         $view = [
             'keyword'=>$keyword,
-            'pageSize' => page_size($pageSize,$list->total()),
+            'dateran'=> $dateran,
+            'pageSize' => page_size($this->pageSize,$list->total()),
             'page' => $list->render(),
             'list' => $list,
             'empty'=> empty_list(9),
