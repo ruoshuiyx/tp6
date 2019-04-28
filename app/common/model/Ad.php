@@ -45,7 +45,7 @@ class Ad extends Base
             ->order($order)
             ->paginate($pageSize,false,['query' => Request::param()]);
         foreach($list as $k=>$v){
-           $v['type_name'] = $v->adType['name'];
+           $v['type_name'] = $v->adType->getData('name');
         }
         return $list;
     }

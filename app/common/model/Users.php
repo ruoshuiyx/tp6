@@ -45,7 +45,7 @@ class Users extends Base
             ->order($order)
             ->paginate($pageSize,false,['query' => Request::param()]);
         foreach($list as $k=>$v){
-            $v['type_name'] = $v->usersType['name'];
+            $v['type_name'] = $v->usersType->getData('name');
         }
         return $list;
     }
