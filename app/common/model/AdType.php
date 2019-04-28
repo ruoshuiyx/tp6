@@ -25,6 +25,8 @@
  */
 namespace app\common\model;
 
+use think\facade\Request;
+
 class AdType extends Base
 {
     // 定义时间戳字段名
@@ -35,5 +37,13 @@ class AdType extends Base
     public function ads()
     {
         return $this->hasMany('Ad','type_id');
+    }
+
+    //获取列表
+    public static function getList($where=array(),$pageSize,$order=['sort','id'=>'desc']){
+        $list = self::where($where)
+            ->order($order)
+            ->paginate($pageSize,false,['query' => Request::param()]);
+        return $list;
     }
 }
