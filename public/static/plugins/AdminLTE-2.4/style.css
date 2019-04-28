@@ -88,4 +88,8 @@ ul.ztree>li>a>span{font-size:15px;font-weight:700}
 @media screen and (max-width: 768px){
     .padding_0{ padding:0}
 	.uploader-list{ margin-top:10px;}
+	.search{padding: 10px;}
+	.search input,.search select{ margin-bottom:5px}
+	.search .m_10{ margin-top:0}
+	.search .f_r{ float:left; margin-left:0}
 }

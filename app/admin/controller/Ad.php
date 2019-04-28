@@ -41,6 +41,7 @@ class Ad extends Base
         //条件筛选
         $keyword = Request::param('keyword');
         $typeId  = Request::param('type_id');
+        $dateran = Request::param('dateran');
         //全局查询条件
         $where=[];
         if(!empty($keyword)){
@@ -48,6 +49,10 @@ class Ad extends Base
         }
         if(!empty($typeId)){
             $where[]=['type_id', '=', $typeId];
+        }
+        if(!empty($dateran)){
+            $getDateran = get_dateran($dateran);
+            $where[]=['create_time', 'between', $getDateran];
         }
         //获取列表
         $list = M::getList($where,$this->pageSize);
@@ -57,6 +62,7 @@ class Ad extends Base
         $view = [
             'keyword'=>$keyword,
             'typeId' => $typeId,
+            'dateran'=> $dateran,
             'adType'=> $adType,
             'pageSize' => page_size($this->pageSize,$list->total()),
             'page' => $list->render(),

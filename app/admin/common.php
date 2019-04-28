@@ -170,3 +170,19 @@ function make_editor($name, $conetnt = '', $editor = '' ,$height = '400px', $wid
     $result = '<textarea name="'.$name.'" id="'.$name.'">'.$conetnt.'</textarea><script>CKEDITOR.replace(\''.$name.'\', { height: \''.$height.'\', width: \''.$width.'\' });</script>';
     return $result;
 }
+
+/***
+ * 日期筛选格式化
+ * @param $dateran
+ * @return array
+ */
+function get_dateran($dateran){
+    if($dateran){
+        $dateran = explode(" 至 ",$dateran);
+    }
+    if(is_array($dateran) && count($dateran)==2){
+        $dateran[0] = strtotime($dateran[0]);
+        $dateran[1] = strtotime($dateran[1])+24*60*60-1;
+    }
+    return $dateran;
+}

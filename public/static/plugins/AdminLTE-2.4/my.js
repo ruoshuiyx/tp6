@@ -291,3 +291,36 @@ $(".juanzeng").click(function(){
 	  showConfirmButton: false,
 	})
 })
+
+$(function () {
+	//时间选取区间插件
+	$("input[name='dateran']").daterangepicker(
+		{
+			// autoApply: true,
+			autoUpdateInput: false,
+			// alwaysShowCalendars: true,
+			ranges: {
+				'今天': [moment(),moment()],
+				'昨天': [moment().subtract(1, 'days'),moment().subtract(1, 'days')],
+				'近7天': [moment().subtract(7, 'days'), moment()],
+				'这个月': [moment().startOf('month'), moment().endOf('month')],
+				'上个月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+			},
+			locale: {
+				format: "YYYY/MM/DD",
+				separator: " - ",
+				applyLabel: "确认",
+				cancelLabel: "清空",
+				fromLabel: "开始时间",
+				toLabel: "结束时间",
+				customRangeLabel: "自定义",
+				daysOfWeek: ["日","一","二","三","四","五","六"],
+				monthNames: ["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"]
+			}
+		}
+		).on('cancel.daterangepicker', function(ev, picker) {
+			$(this).val("");
+		}).on('apply.daterangepicker', function(ev, picker) {
+			$(this).val(picker.startDate.format('YYYY-MM-DD')+" 至 "+picker.endDate.format('YYYY-MM-DD'));
+		});
+})
