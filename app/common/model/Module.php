@@ -25,6 +25,8 @@
  */
 namespace app\common\model;
 
+use think\facade\Request;
+
 class Module extends Base
 {
     // 开启自动写入时间戳字段
@@ -34,5 +36,13 @@ class Module extends Base
     public function cates()
     {
         return $this->hasMany('Cate','moduleid');
+    }
+
+    // 获取模型列表
+    public static function getList($where=array(),$pageSize,$order=['sort','id'=>'desc']){
+        $list = self::where($where)
+            ->order($order)
+            ->paginate($pageSize,false,['query' => Request::param()]);
+        return $list;
     }
 }
