@@ -39,7 +39,7 @@ class Module extends Base
     }
 
     // 获取模型列表
-    public static function getList($where=array(),$pageSize,$order=['sort','id'=>'desc']){
+    public static function getList($where=array(),$pageSize,$order=['id'=>'asc']){
         $list = self::where($where)
             ->order($order)
             ->paginate($pageSize,false,['query' => Request::param()]);

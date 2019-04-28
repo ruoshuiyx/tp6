@@ -68,11 +68,10 @@ class module extends Base
         if(Request::isPost()){
             $id = Request::param('id');
 
-            $status = $this->table
-                ->where('id='.$id)
+            $status = M::where('id='.$id)
                 ->value('status');
             $status = $status==1?0:1;
-            if($this->table->where('id='.$id)->update(['status'=>$status])!==false){
+            if(M::where('id='.$id)->update(['status'=>$status])!==false){
                 return json(['error'=>0,'msg'=>'修改成功!']);
             }else{
                 return json(['error'=>1,'msg'=>'修改失败!']);
@@ -84,8 +83,7 @@ class module extends Base
     public function del(){
         if(Request::isPost()) {
             $id = Request::post('id');
-            $this->table
-                ->where('id','=',$id)
+            M::where('id','=',$id)
                 ->delete();
             return json(['error'=>0,'msg'=>'删除成功!']);
         }
@@ -95,8 +93,7 @@ class module extends Base
     public function selectDel(){
         if(Request::isPost()) {
             $id = Request::post('id');
-            $this->table
-                ->delete($id);
+            M::destroy($id);
             return json(['error'=>0,'msg'=>'删除成功!']);
 
         }
