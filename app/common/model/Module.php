@@ -29,4 +29,10 @@ class Module extends Base
 {
     // 开启自动写入时间戳字段
     protected $autoWriteTimestamp = false;
+
+    // 一对多获取栏目
+    public function cates()
+    {
+        return $this->hasMany('Cate','moduleid');
+    }
 }

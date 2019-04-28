@@ -29,4 +29,22 @@ class Cate extends Base
 {
     // 开启自动写入时间戳字段
     protected $autoWriteTimestamp = false;
+
+    // 一对一获取所属模型
+    public function module()
+    {
+        return $this->belongsTo('Module','moduleid');
+    }
+
+    // 获取列表
+    public static function getList($where=array(),$pageSize,$order=['sort','id'=>'desc']){
+        $list = self::where($where)
+            ->order($order)
+            ->select();
+        foreach($list as $k=>$v){
+            $v['modulename'] = $v->module['title'];
+            $v['moduleurl'] = $v->module['name'];
+        }
+        return $list;
+    }
 }

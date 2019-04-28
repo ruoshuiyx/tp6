@@ -28,8 +28,6 @@ namespace app\admin\controller;
 use app\common\model\Cate as M;
 use app\common\model\Module as MM;
 
-use think\facade\Config;
-use think\facade\Db;
 use think\facade\Request;
 use think\facade\View;
 
@@ -39,13 +37,9 @@ class Category extends Base
 
     //栏目列表
     public function index(){
-        //调取栏目列表，需关联模型表
-        $cate = Db::name('cate')
-            ->alias('a')
-            ->leftJoin('module m','a.moduleid = m.id')
-            ->field('a.id,a.catname,a.sort,a.is_menu,a.is_next,a.parentid,a.moduleid,m.title as modulename,m.name as moduleurl')
-            ->order('a.sort ASC,a.id ASC')
-            ->select();
+
+        //获取列表
+        $cate = M::getList([],$this->pageSize);
         $cate = tree_cate($cate);
         $view = [
             'list' => $cate,
