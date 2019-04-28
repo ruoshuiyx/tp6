@@ -44,13 +44,8 @@ class Ad extends Base
         $list = self::where($where)
             ->paginate($pageSize,false,['query' => Request::param()]);
         foreach($list as $k=>$v){
-
-            $list[$k]['type_name']=$v->adType->name;
-            //dump($v->adType);
-            //dump($v->adType->description);
-            //halt($v->adType->name);
+           $v['type_name'] = $v->adType['name'];
         }
-
         return $list;
     }
 

@@ -28,8 +28,6 @@ namespace app\admin\controller;
 use app\common\model\AdType;
 use app\common\model\Ad as M;
 
-use think\facade\Config;
-use think\facade\Db;
 use think\facade\Request;
 use think\facade\View;
 
@@ -42,16 +40,24 @@ class Ad extends Base
 
         //条件筛选
         $keyword = Request::param('keyword');
+        $typeId  = Request::param('type_id');
         //全局查询条件
         $where=[];
         if(!empty($keyword)){
-            $where[]=['a.name|a.description', 'like', '%'.$keyword.'%'];
+            $where[]=['name|description', 'like', '%'.$keyword.'%'];
         }
-
+        if(!empty($typeId)){
+            $where[]=['type_id', '=', $typeId];
+        }
+        //获取列表
         $list = M::getList($where,$this->pageSize);
+        //获取广告位列表
+        $adType = AdType::select();
 
         $view = [
             'keyword'=>$keyword,
+            'typeId' => $typeId,
+            'adType'=> $adType,
             'pageSize' => page_size($this->pageSize,$list->total()),
             'page' => $list->render(),
             'list' => $list,
