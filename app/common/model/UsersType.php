@@ -25,10 +25,26 @@
  */
 namespace app\common\model;
 
+use think\facade\Request;
+
 class UsersType extends Base
 {
-    //定义时间戳字段名
+    // 定义时间戳字段名
     protected $createTime = 'create_time';
     protected $updateTime = 'update_time';
+
+    // 一对多获取用户
+    public function users()
+    {
+        return $this->hasMany('Users','type_id');
+    }
+
+    // 获取列表
+    public static function getList($where=array(),$pageSize,$order=['sort','id'=>'desc']){
+        $list = self::where($where)
+            ->order($order)
+            ->paginate($pageSize,false,['query' => Request::param()]);
+        return $list;
+    }
 
 }

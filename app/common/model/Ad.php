@@ -33,13 +33,13 @@ class Ad extends Base
     protected $createTime = 'create_time';
     protected $updateTime = 'update_time';
 
-    //一对一获取所属广告位
+    // 一对一获取所属广告位
     public function adType()
     {
         return $this->belongsTo('AdType','type_id');
     }
 
-    //获取列表
+    // 获取列表
     public static function getList($where=array(),$pageSize,$order=['sort','id'=>'desc']){
         $list = self::where($where)
             ->order($order)

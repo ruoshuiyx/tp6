@@ -27,8 +27,6 @@ namespace app\admin\controller;
 
 use app\common\model\UsersType as M;
 
-use think\facade\Config;
-use think\facade\Db;
 use think\facade\Request;
 use think\facade\View;
 
@@ -39,23 +37,25 @@ class UsersType extends Base
     //列表
     public function index()
     {
-        //条件筛选
-        $keyword = Request::param('keyword');
         //全局查询条件
         $where=[];
+        $keyword = Request::param('keyword');
         if(!empty($keyword)){
             $where[]=['name|description', 'like', '%'.$keyword.'%'];
         }
-        //显示数量
-        $pageSize = Request::param('page_size',Config::get('app.page_size'));
-        //调取列表
-        $list = M::where($where)
-            ->order('sort ASC,id DESC')
-            ->paginate($pageSize,false,['query' => request()->param()]);
+        $dateran = Request::param('dateran');
+        if(!empty($dateran)){
+            $getDateran = get_dateran($dateran);
+            $where[]=['create_time', 'between', $getDateran];
+        }
+
+        //获取列表
+        $list = M::getList($where,$this->pageSize);
 
         $view = [
             'keyword'=>$keyword,
-            'pageSize' => page_size($pageSize,$list->total()),
+            'dateran'=> $dateran,
+            'pageSize' => page_size($this->pageSize,$list->total()),
             'page' => $list->render(),
             'list' => $list,
             'empty'=> empty_list(9),

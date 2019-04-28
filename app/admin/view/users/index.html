@@ -20,6 +20,13 @@
             <div class="search">
                <form class="form-inline" action="{:url('index')}">
                  <input type="text" class="form-control" name="keyword" placeholder="邮箱账号 | 电话" value="{$keyword}">
+                 <select name="type_id" class="form-control">
+                    <option value="0">请选择</option>
+                    {volist name="usersType" id="vo"}
+                        <option {if $typeId==$vo.id}selected{/if} value="{$vo.id}">{$vo.name}</option>
+                    {/volist}
+                   </select>
+                 <input type="text" class="form-control" name="dateran" autocomplete="off" placeholder="选择日期" value="{$dateran}">
                  <input class="btn btn-flat btn-primary" type="submit" value="搜索">
                  <input class="btn btn-flat btn-primary m_10" onclick="location.href='{:url('index')}'" type="button" value="显示全部">
                  <input class="btn btn-flat btn-warning m_10 select_del" type="button" value="批量删除">
