@@ -25,19 +25,27 @@
  */
 namespace app\index\controller;
 
+use think\App;
 use app\common\model\System;
-
-use think\Controller;
 use think\facade\Request;
 
 
-class Base extends Controller
+class Base
 {
     protected $appName;        //当前应用名称
     protected $controllerName; //获取当前的控制器名
     protected $system;         //系统信息
     protected $public;         //公共目录
     protected $template;       //模板目录
+
+    public function __construct(App $app)
+    {
+        $this->app     = $app;
+
+        // 控制器初始化
+        $this->initialize();
+    }
+    //初始化方法
     public function initialize()
     {
         $this->appName        = strtolower(Request::app());

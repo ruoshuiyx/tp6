@@ -25,6 +25,7 @@
  */
 namespace app\admin\controller;
 
+use think\facade\App;
 use think\facade\Request;
 use think\facade\View;
 
@@ -32,8 +33,9 @@ class System extends Base
 {
     //系统设置
     public function system(){
+
         //查找所有模版
-        $dir = $this->app->getRootPath() . 'public' .DIRECTORY_SEPARATOR. 'template';
+        $dir = App::getRootPath() . 'public' .DIRECTORY_SEPARATOR. 'template';
         $template = get_dir($dir);
         $system = \app\common\model\System::find(1);
         $view = [
@@ -51,9 +53,9 @@ class System extends Base
             $result = \app\common\model\System::where('id',1)
                 ->update($data);
             if($result) {
-                $this->success('修改成功', 'system');
+                success('修改成功', 'system');
             } else {
-                $this->error('修改失败');
+                error('修改失败');
             }
         }
     }
@@ -79,7 +81,7 @@ class System extends Base
                 $result -> value = $v;
                 $result->save();
             }
-            $this->success('修改成功', 'email');
+            success('修改成功', 'email');
         }
     }
 
@@ -128,7 +130,7 @@ class System extends Base
                 ])
                     ->update(['value'=>$v]);
             }
-            $this->success('保存成功', 'sms');
+            success('保存成功', 'sms');
         }
     }
 

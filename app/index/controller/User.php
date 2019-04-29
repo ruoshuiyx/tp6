@@ -50,7 +50,7 @@ class User extends Base
     public function index()
     {
         if(!Session::has('user.id')){
-            $this->redirect('login');
+            return redirect('login');
         }
         $user = Db::name('users')
             ->alias('u')
@@ -79,7 +79,7 @@ class User extends Base
                 {
                     $result['error']  = '1';
                     $result['msg']  .= '验证码错误';
-                    $this->error($result['msg']);
+                    error($result['msg']);
                 }
             }
             //校验用户名密码
@@ -90,7 +90,7 @@ class User extends Base
             if(empty($user)){
                 $result['error']  = '1';
                 $result['msg']  .= '帐号或密码错误';
-                $this->error($result['msg']);
+                error($result['msg']);
             }else{
                 if ($user['status']==1){
                     Session::set('user',[
@@ -105,17 +105,17 @@ class User extends Base
 
                     $result['error']  = '0';
                     $result['msg']  .= '登录成功';
-                    $this->success($result['msg'],'index');
+                    success($result['msg'],'index');
                 }else{
                     $result['error']  = '1';
                     $result['msg']  .= '用户已被禁用';
-                    $this->error($result['msg']);
+                    error($result['msg']);
                 }
             }
 
         }else{
             if(Session::has('user.id')){
-                $this->redirect('index');
+                return redirect('index');
             }
             return View::fetch();
         }
@@ -132,26 +132,26 @@ class User extends Base
 
             //密码长度不能低于6位
             if(strlen($password)<6){
-                $this->error('密码长度不能低于6位');
+                error('密码长度不能低于6位');
             }
 
             //非空判断
             if(empty($email) || empty($password) || empty($password2)){
                 $result['error'] = '1';
                 $result['msg']   = '请输入邮箱、密码和确认密码';
-                $this->error($result['msg']);
+                error($result['msg']);
             }
             //邮箱合法性判断
             if(!is_email($email)){
                 $result['error']= '1';
                 $result['msg']  = '邮箱格式错误';
-                $this->error($result['msg']);
+                error($result['msg']);
             }
             //确认密码
             if($password != $password2){
                 $result['error']  = '1';
                 $result['msg']    = '两次密码输入不一致';
-                $this->error($result['msg']);
+                error($result['msg']);
             }
 
             //检查是否开启了验证码
@@ -161,7 +161,7 @@ class User extends Base
                 {
                     $result['error'] = '1';
                     $result['msg']   = '验证码错误';
-                    $this->error($result['msg']);
+                    error($result['msg']);
                 }
             }
             //防止重复
@@ -169,7 +169,7 @@ class User extends Base
             if($id){
                 $result['error'] = '1';
                 $result['msg']   = '邮箱已被注册';
-                $this->error($result['msg']);
+                error($result['msg']);
             }
             //注册入库
             $data = [];
@@ -182,13 +182,13 @@ class User extends Base
             $data['sex'] = Request::post('sex') ? Request::post('sex') : 0;
             $id = Db::name('users')->insertGetId($data);
             if($id){
-                $this->success('注册成功!','login');
+                success('注册成功!','login');
             }else{
-                $this->error('注册失败!');
+                error('注册失败!');
             }
         }else{
             if(Session::has('user.id')){
-                $this->redirect('index');
+                return redirect('index');
             }
             return View::fetch();
         }
@@ -197,7 +197,7 @@ class User extends Base
     //用户中心设置页
     public function set(){
         if(!Session::has('user.id')){
-            $this->redirect('login');
+            return redirect('login');
         }
         if(Request::isPost()){
             $data=[];
@@ -205,7 +205,7 @@ class User extends Base
             if(Request::post("password") && Request::post("password2")){
                 //密码长度不能低于6位
                 if(strlen(trim(Request::post("password")))<6){
-                    $this->error('密码长度不能低于6位');
+                    error('密码长度不能低于6位');
                 }
                 //查看原密码是否正确
                 if(Request::post("nowpassword")){
@@ -214,22 +214,22 @@ class User extends Base
                         ->where('password',md5(trim(Request::post("nowpassword"))))
                         ->find();
                     if(!$id){
-                        $this->error('原密码输入有误');
+                        error('原密码输入有误');
                     }
                 }else{
-                    $this->error('请输入原密码');
+                    error('请输入原密码');
                 }
                 if(Request::post("password") == Request::post("password2")){
                     $data['password'] = md5(trim(Request::post("password")));
                 }else{
-                    $this->error('两次输入的密码不一致');
+                    error('两次输入的密码不一致');
                 }
                 //更新信息
                 db('users')
                     ->where('id', session('user.id'))
                     ->data($data)
                     ->update();
-                $this->success('密码修改成功');
+                success('密码修改成功');
             }
             //修改资料
             $data['sex'] = input("post.sex");
@@ -242,14 +242,14 @@ class User extends Base
                     ->where('id','<>',session('user.id'))
                     ->find();
                 if($id){
-                    $this->error('手机号已存在');
+                    error('手机号已存在');
                 }
             }
 
             //更新信息
             Users::where('id', session('user.id'))
                 ->update($data);
-            $this->success('修改成功');
+            success('修改成功');
 
         }else{
             $user = Db::name('users')
@@ -270,7 +270,7 @@ class User extends Base
     //退出
     public function logout(){
         Session::delete('user');
-        $this->redirect('login');
+        return redirect('login');
     }
 
 }

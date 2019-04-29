@@ -42,8 +42,8 @@ class Cate extends Base
             ->order($order)
             ->select();
         foreach($list as $k=>$v){
-            $v['modulename'] = $v->module['title'];
-            $v['moduleurl'] = $v->module['name'];
+            $v['modulename'] = $v->module->getData('title');
+            $v['moduleurl'] = $v->module->getData('name');
         }
         return $list;
     }

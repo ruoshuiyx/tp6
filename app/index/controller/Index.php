@@ -70,7 +70,7 @@ class Index extends Base
             if($this->system['message_code']){
                 if( !captcha_check($data['message_code'] ))
                 {
-                    $this->error('验证码错误');
+                    error('验证码错误');
                    // return json(['error' => '1', 'msg' => '验证码错误']);
                 }else{
                     unset($data['message_code']);
@@ -128,14 +128,14 @@ class Index extends Base
                         $this->trySend($email,$title,$content);
                     }
                     //邮件通知结束
-                    $this->success($result['msg']);
+                    success($result['msg']);
                 }else{
                     $result['error']  = '1';
                     $result['msg']  .= '留言失败;';
-                    $this->error($result['msg']);
+                    error($result['msg']);
                 }
             }else{
-                $this->error($result['msg']);
+                error($result['msg']);
             }
 
         }
@@ -164,7 +164,7 @@ class Index extends Base
     public function search(){
         $search = Request::param('search');//关键字
         if(empty($search)){
-            $this->error('请输入关键词');
+            error('请输入关键词');
         }
 
 

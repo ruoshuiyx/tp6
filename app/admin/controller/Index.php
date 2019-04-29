@@ -40,6 +40,7 @@ class Index extends Base
     //首页
     public function index()
     {
+
         $authRule = AuthRule::where('status',1)
             ->order('sort asc')
             ->select()
@@ -50,7 +51,7 @@ class Index extends Base
             $authRule[$key]['href'] = url($val['name']);
             if($val['pid']==0){
                 if(Session::get('admin.id')!=1){
-                    if(in_array($val['id'],Session::get('admin.rules'))){
+                    if(in_array($val['id'],Session::get('admin.rules',[]))){
                         $menus[] = $val;
                     }
                 }else{
