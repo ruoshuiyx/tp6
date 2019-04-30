@@ -24,7 +24,7 @@
  * +----------------------------------------------------------------------
  */
 namespace app\admin\controller;
-use app\common\model\module as M;
+use app\common\model\Module as M;
 
 use think\facade\Config;
 use think\facade\Db;
