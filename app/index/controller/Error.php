@@ -38,7 +38,7 @@ class Error extends Base
     public function initialize()
     {
         parent::initialize();
-        $this->moduleId = Cate::where('id','=',Request::param('catId'))
+        $this->moduleId = Cate::where('id','=',Request::param('cat'))
             ->value('moduleid');
         $this->tableName = Module::where('id','=',$this->moduleId)
             ->value('name');
@@ -47,11 +47,11 @@ class Error extends Base
     //列表
     public function index(){
         //栏目ID
-        $catId = Request::param('catId');
+        $catId = Request::param('cat');
 
         //设置顶级栏目，当顶级栏目不存在的时候顶级栏目为本身
         if($catId){
-            $cate = Cate::where('id','=',Request::param('catId'))
+            $cate = Cate::where('id','=',Request::param('cat'))
                 ->find();
             $cate['topid'] = $cate['parentid'] ? $cate['parentid'] : $cate['id'];
         }
@@ -64,7 +64,7 @@ class Error extends Base
         //单页模型
         if($this->tableName=='page'){
             $info = Db::name($this->tableName)
-                ->where('catid','=',Request::param('catId'))
+                ->where('catid','=',Request::param('cat'))
                 ->find();
             View::assign(['info'=>$info]);//单页内容
         }
@@ -86,7 +86,7 @@ class Error extends Base
     //详情
     public function info(){
         $id    = Request::param('id');
-        $catId = Request::param('catId');
+        $catId = Request::param('cat');
 
         //更新点击数
         if($id){

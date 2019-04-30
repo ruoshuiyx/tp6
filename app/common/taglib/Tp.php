@@ -100,7 +100,7 @@ class Tp extends TagLib {
 
     //通用栏目信息
     Public function tagCate($tag){
-        $id   = isset($tag['id'])?$tag['id']:"input('catId')";
+        $id   = isset($tag['id'])?$tag['id']:"input('cat')";
         $type = $tag['type']?$tag['type']:'catname';
 
         $str = '<?php ';
@@ -118,7 +118,7 @@ class Tp extends TagLib {
         $name   = $tag['name']?$tag['name']:'position';
         $parse  = '<?php ';
         $parse .= '$__CATE__ = \think\facade\Db::name(\'cate\')->select();';
-        $parse .= '$__LIST__ = getParents($__CATE__,input(\'catId\'));';
+        $parse .= '$__LIST__ = getParents($__CATE__,input(\'cat\'));';
         $parse .= ' ?>';
         $parse .= '{volist name="__LIST__" id="' . $name . '"}';
         $parse .= '<?php $' . $name . '[\'url\']=getUrl( $' . $name . '); ?>';
@@ -171,7 +171,7 @@ class Tp extends TagLib {
 
     //通用列表
     Public function tagList($tag,$content){
-        $id    = isset($tag['id'])    ? $tag['id']     : "input('catId')";                //可以为空
+        $id    = isset($tag['id'])    ? $tag['id']     : "input('cat')";                //可以为空
         $name  = isset($tag['name'])  ?  $tag['name']  : "list";                          //不可为空
         $order = isset($tag['order']) ?  $tag['order'] : 'sort ASC,id DESC';              //排序
         $limit = isset($tag['limit']) ?  $tag['limit'] : '0';                             //多少条数据,传递时不再进行分页
@@ -269,11 +269,11 @@ class Tp extends TagLib {
                     ->alias(\'c\')
                     ->leftJoin(\'module m\',\'c.moduleid = m.id\')
                     ->field(\'m.name as table_name\')
-                    ->where(\'c.id\',input(\'catId\'))
+                    ->where(\'c.id\',input(\'cat\'))
                     ->find();
                 //根据ID查找上一篇的信息
                 $__PREV__ = \think\facade\Db::name($__TABLENAME__[\'table_name\'])
-                    ->where(\'catid\',input(\'catId\'))
+                    ->where(\'catid\',input(\'cat\'))
                     ->where(\'id\',\'<\',input(\'id\'))
                     ->field(\'id,catid,title\')
                     ->order(\'sort ASC,id DESC\')
@@ -306,11 +306,11 @@ class Tp extends TagLib {
                     ->alias(\'c\')
                     ->leftJoin(\'module m\',\'c.moduleid = m.id\')
                     ->field(\'m.name as table_name\')
-                    ->where(\'c.id\',input(\'catId\'))
+                    ->where(\'c.id\',input(\'cat\'))
                     ->find();
                 //根据ID查找下一篇的信息
                 $__PREV__ = \think\facade\Db::name($__TABLENAME__[\'table_name\'])
-                    ->where(\'catid\',input(\'catId\'))
+                    ->where(\'catid\',input(\'cat\'))
                     ->where(\'id\',\'>\',input(\'id\'))
                     ->field(\'id,catid,title\')
                     ->order(\'sort ASC,id DESC\')

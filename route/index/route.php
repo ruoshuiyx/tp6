@@ -25,12 +25,12 @@ foreach ($cate as $k=>$v){
         if($v['moduleurl']=='page'){
             //单页模型
             //PC
-            Route::any(''.$v['catdir'].'-:catId', ''.$v['catdir'].'/index');
+            Route::any(''.$v['catdir'].'-<cat>', ''.$v['catdir'].'/index');
         }else{
             //列表+详情模型
             //PC
-            Route::any(''.$v['catdir'].'-:catId/:id', $v['catdir'].'/info');
-            Route::any(''.$v['catdir'].'-:catId', $v['catdir'].'/index');
+            Route::any(''.$v['catdir'].'-<cat>/<id>', $v['catdir'].'/info');
+            Route::any(''.$v['catdir'].'-<cat>', $v['catdir'].'/index');
         }
     }
 }

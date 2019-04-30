@@ -26,9 +26,9 @@ function getUrl($v){
         }else{
             $moduleurl = \think\facade\Db::name('module')->where('id',$v['moduleid'])->value('name');
             if($v['catdir']){
-                $v['url'] = url($v['catdir'].'/index', ['catId'=>$v['id']]);
+                $v['url'] = url($v['catdir'].'/index', ['cat'=>$v['id']]);
             }else{
-                $v['url'] = url($moduleurl.'/index', ['catId'=>$v['id']]);
+                $v['url'] = url($moduleurl.'/index', ['cat'=>$v['id']]);
             }
         }
     }
@@ -38,7 +38,7 @@ function getUrl($v){
 //获取详情URL
 function getShowUrl($v){
     if($v){
-        //$home_rote[''.$v['catdir'].'-:catId/:id'] = 'home/'.$v['catdir'].'/index';
+        //$home_rote[''.$v['catdir'].'-:cat/:id'] = 'home/'.$v['catdir'].'/index';
         $cate = \think\facade\Db::name('cate')
             ->field('id,catdir,moduleid')
             ->where('id',$v['catid'])
@@ -47,9 +47,9 @@ function getShowUrl($v){
             ->where('id',$cate['moduleid'])
             ->value('name');
         if($cate['catdir']){
-            $url = url($cate['catdir'].'/info', ['catId'=>$cate['id'],'id'=>$v['id']]);
+            $url = url($cate['catdir'].'/info', ['cat'=>$cate['id'],'id'=>$v['id']]);
         }else{
-            $url = url($moduleurl.'/info', ['catId'=>$cate['id'],'id'=>$v['id']] );
+            $url = url($moduleurl.'/info', ['cat'=>$cate['id'],'id'=>$v['id']] );
         }
     }
     return $url;
