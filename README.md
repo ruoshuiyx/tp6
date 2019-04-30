@@ -1,4 +1,4 @@
-SIYUCMS 快速开发内容管理系统
+SIYUCMS V6.0 快速开发内容管理系统
 ===============
 
 > 运行环境要求PHP7.1+。
@@ -14,11 +14,11 @@ SIYUCMS 快速开发内容管理系统
 
 > 下载SIYUCMS完整包解压到你本地
 
-> 将你的站点绑定到public目录
+> 将你的站点绑定到public目录(强烈建议绑定到public目录)
 
 > 将文件夹中siyucms.sql还原到你自己项目的数据库中（需自行创建数据库）
 
-> 打开config/database.php修改数据库配置信息
+> 修改.env 中数据库配置信息（调试模式也是在这个文件中进行打开和关闭）
 
 > 访问后台并登录查看是否正常，后台目录为http://www.yourwebsite.com/admin （如无法访问请尝试隐藏index.php https://www.kancloud.cn/ruoshuiyx/siyucms/1032705）
 
