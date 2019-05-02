@@ -79,7 +79,7 @@ class Index extends Base
 
             //查询当前提交的模型id
             $moduleId = Db::name('cate')
-                ->where('id','=',Request::param('catid'))
+                ->where('id','=',Request::param('cate_id'))
                 ->value('moduleid');
             //查询该模型所有必填字段
             $fields = Db::name('field')
@@ -106,7 +106,7 @@ class Index extends Base
                     //邮件通知开始
                     if(System::where('id',1)->value('message_send_mail')){
                         //去除无用字段
-                        unset($data['catid']);
+                        unset($data['cate_id']);
                         unset($data['status']);
                         //默认收件人为系统设置中的邮件
                         $email = $this->system['email'];

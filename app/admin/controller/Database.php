@@ -90,7 +90,7 @@ class Database extends Base
             $list[$k]['size'] = format_bytes($v['size']);
         }
         $statistics=['total'=>format_bytes($total),'count'=>count($list)];
-
+        array_multisort(array_column($list,'time'),SORT_DESC,$list);
         $view = [
             'statistics' => $statistics,
             'list'       => $list,

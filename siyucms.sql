@@ -109,7 +109,7 @@ INSERT INTO `tp_ad_type` VALUES ('2', '【内页】顶部通栏', '内页顶部�
 DROP TABLE IF EXISTS `tp_article`;
 CREATE TABLE `tp_article` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `catid` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
+  `cate_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
   `title` varchar(70) NOT NULL DEFAULT '' COMMENT '标题',
   `title_style` varchar(225) NOT NULL DEFAULT '' COMMENT '标题样式',
   `thumb` varchar(225) NOT NULL DEFAULT '' COMMENT '缩略图',
@@ -130,8 +130,8 @@ CREATE TABLE `tp_article` (
   `summary` text NOT NULL COMMENT '摘要',
   PRIMARY KEY (`id`),
   KEY `status` (`id`,`status`,`sort`),
-  KEY `catid` (`id`,`catid`,`status`),
-  KEY `sort` (`id`,`catid`,`status`,`sort`)
+  KEY `cate_id` (`id`,`cate_id`,`status`),
+  KEY `sort` (`id`,`cate_id`,`status`,`sort`)
 ) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -467,7 +467,7 @@ INSERT INTO `tp_debris` VALUES ('1', '关于我们', 'AboutUs', '<p>SIYUCMS内�
 DROP TABLE IF EXISTS `tp_download`;
 CREATE TABLE `tp_download` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `catid` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
+  `cate_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
   `title` varchar(70) NOT NULL DEFAULT '' COMMENT '标题',
   `title_style` varchar(225) NOT NULL DEFAULT '' COMMENT '标题样式',
   `thumb` varchar(225) NOT NULL DEFAULT '' COMMENT '缩略图',
@@ -488,8 +488,8 @@ CREATE TABLE `tp_download` (
   `summary` text NOT NULL COMMENT '摘要',
   PRIMARY KEY (`id`),
   KEY `status` (`id`,`status`,`sort`),
-  KEY `catid` (`id`,`catid`,`status`),
-  KEY `sort` (`id`,`catid`,`status`,`sort`)
+  KEY `cate_id` (`id`,`cate_id`,`status`),
+  KEY `sort` (`id`,`cate_id`,`status`,`sort`)
 ) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -528,7 +528,7 @@ CREATE TABLE `tp_field` (
 -- ----------------------------
 -- Records of tp_field
 -- ----------------------------
-INSERT INTO `tp_field` VALUES ('1', '2', 'catid', '栏目', '', '1', '1', '6', '', '必须选择一个栏目', '', 'catid', '', '1', '', '1', '1', '1');
+INSERT INTO `tp_field` VALUES ('1', '2', 'cate_id', '栏目', '', '1', '1', '6', '', '必须选择一个栏目', '', 'cate', '', '1', '', '1', '1', '1');
 INSERT INTO `tp_field` VALUES ('2', '2', 'title', '标题', '', '1', '1', '70', '', '标题必须为1-80个字符', '', 'title', '', '1', '', '2', '1', '1');
 INSERT INTO `tp_field` VALUES ('3', '2', 'keywords', '关键词', '', '0', '0', '80', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '1', '', '15', '1', '1');
 INSERT INTO `tp_field` VALUES ('4', '2', 'description', 'SEO简介', '', '0', '0', '1200', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'mediumtext\',\n  \'default\' => \'发3\',\n)', '1', '', '16', '1', '1');
@@ -543,13 +543,13 @@ INSERT INTO `tp_field` VALUES ('15', '2', 'download', '文件下载', '', '0', '
 INSERT INTO `tp_field` VALUES ('29', '2', 'source', '来源', '', '0', '0', '0', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '4', '1', '0');
 INSERT INTO `tp_field` VALUES ('28', '2', 'author', '作者', '', '0', '0', '50', '', '', '', 'text', 'array (\n  \'default\' => \'Admin\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '3', '1', '0');
 INSERT INTO `tp_field` VALUES ('21', '2', 'sort', '排序', '', '1', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'100\',\n)', '0', '', '13', '1', '1');
-INSERT INTO `tp_field` VALUES ('22', '1', 'catid', '栏目', '', '1', '0', '0', '', '', '', 'catid', null, '0', '', '0', '1', '0');
+INSERT INTO `tp_field` VALUES ('22', '1', 'cate_id', '栏目', '', '1', '0', '0', '', '', '', 'cate', null, '0', '', '0', '1', '0');
 INSERT INTO `tp_field` VALUES ('23', '1', 'title', '标题', '', '1', '0', '0', '', '', '', 'title', null, '0', '', '0', '1', '0');
 INSERT INTO `tp_field` VALUES ('24', '1', 'keywords', '关键词', '', '0', '0', '0', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '0', '1', '0');
 INSERT INTO `tp_field` VALUES ('25', '1', 'description', 'SEO简介', '', '0', '0', '0', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'text\',\n  \'default\' => \'\',\n)', '0', '', '0', '1', '0');
 INSERT INTO `tp_field` VALUES ('26', '1', 'content', '内容', '', '0', '0', '0', '', '', '', 'editor', 'array (\n  \'edittype\' => \'ckeditor\',\n)', '0', '', '0', '1', '0');
 INSERT INTO `tp_field` VALUES ('27', '1', 'hits', '点击次数', '', '1', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'100\',\n)', '0', '', '0', '1', '0');
-INSERT INTO `tp_field` VALUES ('30', '3', 'catid', '栏目', '', '1', '1', '6', '', '必须选择一个栏目', '', 'catid', '', '1', '', '1', '1', '1');
+INSERT INTO `tp_field` VALUES ('30', '3', 'cate_id', '栏目', '', '1', '1', '6', '', '必须选择一个栏目', '', 'cate', '', '1', '', '1', '1', '1');
 INSERT INTO `tp_field` VALUES ('31', '3', 'title', '标题', '', '1', '1', '70', '', '标题必须为1-80个字符', '', 'title', '', '1', '', '2', '1', '1');
 INSERT INTO `tp_field` VALUES ('32', '3', 'keywords', '关键词', '', '0', '0', '80', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '1', '', '15', '1', '1');
 INSERT INTO `tp_field` VALUES ('33', '3', 'description', 'SEO简介', '', '0', '0', '1200', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'mediumtext\',\n  \'default\' => \'发3\',\n)', '1', '', '16', '1', '1');
@@ -564,7 +564,7 @@ INSERT INTO `tp_field` VALUES ('41', '3', 'download', '文件下载', '', '0', '
 INSERT INTO `tp_field` VALUES ('42', '3', 'source', '来源', '', '0', '0', '0', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '4', '1', '0');
 INSERT INTO `tp_field` VALUES ('43', '3', 'author', '作者', '', '0', '0', '50', '', '', '', 'text', 'array (\n  \'default\' => \'Admin\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '3', '1', '0');
 INSERT INTO `tp_field` VALUES ('44', '3', 'sort', '排序', '', '1', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'100\',\n)', '0', '', '13', '1', '1');
-INSERT INTO `tp_field` VALUES ('45', '4', 'catid', '栏目', '', '1', '1', '6', '', '必须选择一个栏目', '', 'catid', '', '1', '', '1', '1', '1');
+INSERT INTO `tp_field` VALUES ('45', '4', 'cate_id', '栏目', '', '1', '1', '6', '', '必须选择一个栏目', '', 'cate', '', '1', '', '1', '1', '1');
 INSERT INTO `tp_field` VALUES ('46', '4', 'title', '标题', '', '1', '1', '70', '', '标题必须为1-80个字符', '', 'title', '', '1', '', '2', '1', '1');
 INSERT INTO `tp_field` VALUES ('47', '4', 'keywords', '关键词', '', '0', '0', '80', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '1', '', '15', '1', '1');
 INSERT INTO `tp_field` VALUES ('48', '4', 'description', 'SEO简介', '', '0', '0', '1200', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'mediumtext\',\n  \'default\' => \'发3\',\n)', '1', '', '16', '1', '1');
@@ -579,7 +579,7 @@ INSERT INTO `tp_field` VALUES ('56', '4', 'download', '文件下载', '', '0', '
 INSERT INTO `tp_field` VALUES ('57', '4', 'source', '来源', '', '0', '0', '0', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '4', '1', '0');
 INSERT INTO `tp_field` VALUES ('58', '4', 'author', '作者', '', '0', '0', '50', '', '', '', 'text', 'array (\n  \'default\' => \'Admin\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '3', '1', '0');
 INSERT INTO `tp_field` VALUES ('59', '4', 'sort', '排序', '', '1', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'100\',\n)', '0', '', '13', '1', '1');
-INSERT INTO `tp_field` VALUES ('60', '5', 'catid', '栏目', '', '1', '1', '6', '', '必须选择一个栏目', '', 'catid', '', '1', '', '1', '1', '1');
+INSERT INTO `tp_field` VALUES ('60', '5', 'cate_id', '栏目', '', '1', '1', '6', '', '必须选择一个栏目', '', 'cate', '', '1', '', '1', '1', '1');
 INSERT INTO `tp_field` VALUES ('61', '5', 'title', '标题', '', '1', '1', '70', '', '标题必须为1-80个字符', '', 'title', '', '1', '', '2', '1', '1');
 INSERT INTO `tp_field` VALUES ('62', '5', 'keywords', '关键词', '', '0', '0', '80', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '1', '', '15', '1', '1');
 INSERT INTO `tp_field` VALUES ('63', '5', 'description', 'SEO简介', '', '0', '0', '1200', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'mediumtext\',\n  \'default\' => \'发3\',\n)', '1', '', '16', '1', '1');
@@ -594,7 +594,7 @@ INSERT INTO `tp_field` VALUES ('71', '5', 'download', '文件下载', '', '0', '
 INSERT INTO `tp_field` VALUES ('72', '5', 'source', '来源', '', '0', '0', '0', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '4', '1', '0');
 INSERT INTO `tp_field` VALUES ('73', '5', 'author', '作者', '', '0', '0', '50', '', '', '', 'text', 'array (\n  \'default\' => \'Admin\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '3', '1', '0');
 INSERT INTO `tp_field` VALUES ('74', '5', 'sort', '排序', '', '1', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'100\',\n)', '0', '', '13', '1', '1');
-INSERT INTO `tp_field` VALUES ('75', '6', 'catid', '栏目', '', '1', '1', '6', '', '必须选择一个栏目', '', 'catid', '', '1', '', '1', '1', '1');
+INSERT INTO `tp_field` VALUES ('75', '6', 'cate_id', '栏目', '', '1', '1', '6', '', '必须选择一个栏目', '', 'cate', '', '1', '', '1', '1', '1');
 INSERT INTO `tp_field` VALUES ('76', '6', 'title', '标题', '', '1', '1', '70', '', '标题必须为1-80个字符', '', 'title', '', '1', '', '2', '1', '1');
 INSERT INTO `tp_field` VALUES ('77', '6', 'keywords', '关键词', '', '0', '0', '80', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '1', '', '15', '1', '1');
 INSERT INTO `tp_field` VALUES ('78', '6', 'description', 'SEO简介', '', '0', '0', '1200', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'mediumtext\',\n  \'default\' => \'发3\',\n)', '1', '', '16', '1', '1');
@@ -614,7 +614,7 @@ INSERT INTO `tp_field` VALUES ('91', '3', 'summary', '摘要', '', '0', '0', '0'
 INSERT INTO `tp_field` VALUES ('92', '4', 'summary', '摘要', '', '0', '0', '0', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'text\',\n  \'default\' => \'\',\n)', '0', '', '6', '1', '0');
 INSERT INTO `tp_field` VALUES ('93', '5', 'summary', '摘要', '', '0', '0', '0', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'text\',\n  \'default\' => \'\',\n)', '0', '', '6', '1', '0');
 INSERT INTO `tp_field` VALUES ('94', '6', 'summary', '摘要', '', '0', '0', '0', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'text\',\n  \'default\' => \'\',\n)', '0', '', '6', '1', '0');
-INSERT INTO `tp_field` VALUES ('95', '7', 'catid', '栏目', '', '0', '1', '6', '', '必须选择一个栏目', '', 'catid', '', '1', '', '1', '1', '1');
+INSERT INTO `tp_field` VALUES ('95', '7', 'cate_id', '栏目', '', '0', '1', '6', '', '必须选择一个栏目', '', 'cate', '', '1', '', '1', '1', '1');
 INSERT INTO `tp_field` VALUES ('96', '7', 'title', '标题', '', '1', '1', '80', '', '标题必须为1-80个字符', '', 'title', '', '1', '', '2', '1', '1');
 INSERT INTO `tp_field` VALUES ('106', '7', 'contact', '联系方式', '', '1', '0', '0', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '9', '1', '0');
 INSERT INTO `tp_field` VALUES ('99', '7', 'content', '内容', '', '0', '0', '0', '', '', '', 'editor', 'array (\n  \'edittype\' => \'ckeditor\',\n)', '1', '', '3', '1', '1');
@@ -652,7 +652,7 @@ INSERT INTO `tp_link` VALUES ('1', 'SIYUCMS', 'http://www.siyucms.com', '', '', 
 DROP TABLE IF EXISTS `tp_message`;
 CREATE TABLE `tp_message` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `catid` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
+  `cate_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
   `title` varchar(120) NOT NULL DEFAULT '' COMMENT '标题',
   `title_style` varchar(225) NOT NULL DEFAULT '' COMMENT '标题样式',
   `thumb` varchar(225) NOT NULL DEFAULT '' COMMENT '缩略图',
@@ -667,8 +667,8 @@ CREATE TABLE `tp_message` (
   `contact` varchar(255) NOT NULL DEFAULT '' COMMENT '联系方式',
   PRIMARY KEY (`id`),
   KEY `status` (`id`,`status`,`sort`),
-  KEY `catid` (`id`,`catid`,`status`),
-  KEY `sort` (`id`,`catid`,`status`,`sort`)
+  KEY `cate_id` (`id`,`cate_id`,`status`),
+  KEY `sort` (`id`,`cate_id`,`status`,`sort`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -709,7 +709,7 @@ INSERT INTO `tp_module` VALUES ('7', '在线留言', 'message', '在线留言', 
 DROP TABLE IF EXISTS `tp_page`;
 CREATE TABLE `tp_page` (
   `id` mediumint(8) NOT NULL AUTO_INCREMENT,
-  `catid` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
+  `cate_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
   `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
   `keywords` varchar(255) DEFAULT '' COMMENT '关键词',
   `description` text COMMENT 'SEO简介',
@@ -731,7 +731,7 @@ INSERT INTO `tp_page` VALUES ('3', '10', '公司文化', '', '', '', '100');
 DROP TABLE IF EXISTS `tp_picture`;
 CREATE TABLE `tp_picture` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `catid` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
+  `cate_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
   `title` varchar(70) NOT NULL DEFAULT '' COMMENT '标题',
   `title_style` varchar(225) NOT NULL DEFAULT '' COMMENT '标题样式',
   `thumb` varchar(225) NOT NULL DEFAULT '' COMMENT '缩略图',
@@ -752,8 +752,8 @@ CREATE TABLE `tp_picture` (
   `summary` text NOT NULL COMMENT '摘要',
   PRIMARY KEY (`id`),
   KEY `status` (`id`,`status`,`sort`),
-  KEY `catid` (`id`,`catid`,`status`),
-  KEY `sort` (`id`,`catid`,`status`,`sort`)
+  KEY `cate_id` (`id`,`cate_id`,`status`),
+  KEY `sort` (`id`,`cate_id`,`status`,`sort`)
 ) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -772,7 +772,7 @@ INSERT INTO `tp_picture` VALUES ('15', '11', '资质荣誉六', '', '', '', '', 
 DROP TABLE IF EXISTS `tp_product`;
 CREATE TABLE `tp_product` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `catid` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
+  `cate_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
   `title` varchar(70) NOT NULL DEFAULT '' COMMENT '标题',
   `title_style` varchar(225) NOT NULL DEFAULT '' COMMENT '标题样式',
   `thumb` varchar(225) NOT NULL DEFAULT '' COMMENT '缩略图',
@@ -793,8 +793,8 @@ CREATE TABLE `tp_product` (
   `summary` text NOT NULL COMMENT '摘要',
   PRIMARY KEY (`id`),
   KEY `status` (`id`,`status`,`sort`),
-  KEY `catid` (`id`,`catid`,`status`),
-  KEY `sort` (`id`,`catid`,`status`,`sort`)
+  KEY `cate_id` (`id`,`cate_id`,`status`),
+  KEY `sort` (`id`,`cate_id`,`status`,`sort`)
 ) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -851,7 +851,7 @@ INSERT INTO `tp_system` VALUES ('1', 'SIYUCMS', 'www.xxx.com', 'SIYUCMS 官网',
 DROP TABLE IF EXISTS `tp_team`;
 CREATE TABLE `tp_team` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `catid` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
+  `cate_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
   `title` varchar(70) NOT NULL DEFAULT '' COMMENT '标题',
   `title_style` varchar(225) NOT NULL DEFAULT '' COMMENT '标题样式',
   `thumb` varchar(225) NOT NULL DEFAULT '' COMMENT '缩略图',
@@ -872,8 +872,8 @@ CREATE TABLE `tp_team` (
   `summary` text NOT NULL COMMENT '摘要',
   PRIMARY KEY (`id`),
   KEY `status` (`id`,`status`,`sort`),
-  KEY `catid` (`id`,`catid`,`status`),
-  KEY `sort` (`id`,`catid`,`status`,`sort`)
+  KEY `cate_id` (`id`,`cate_id`,`status`),
+  KEY `sort` (`id`,`cate_id`,`status`,`sort`)
 ) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 -- ----------------------------

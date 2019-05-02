@@ -29,7 +29,7 @@
         <section class="content">
             <div class="search">
             	<form class="form-inline" action="">
-                 <input class="btn btn-flat btn-primary m_10_l_0" onclick="location.href='{:url('index',['catid'=>$catid])}'" type="button" value="显示全部">
+                 <input class="btn btn-flat btn-primary m_10_l_0" onclick="location.href='{:url('index',['cate'=>$cateId])}'" type="button" value="显示全部">
                  <a class="btn btn-flat btn-success m_10 f_r" onclick="javascript :history.back(-1)"><i class="fa fa-undo m-r-10"></i>返 回</a>  
             	</form> 
             </div>
@@ -43,7 +43,6 @@
                 		{else /}
                 		<form method="post" action="{:url('add')}">
                 		{/if}
-                        <input type="hidden" name="catid" value="{$catid}"/>
 		                	{volist name='field' id='field' }
 		                	<!---->
 		                	<div class="row dd_input_group">
@@ -56,12 +55,12 @@
                                            </div>
 				                 		   <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"} *{/eq}</div>
                                         {/case}
-                                    	{case catid}
+                                    	{case cate}
                                           <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$field.name}</label>
                                           <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
                                             <select name="{$field.field}" class="form-control" {if $moduleid ==1} disabled {/if}>
                                                 {volist name="cate" id="cate_list"}
-                                                <option {if $catid == $cate_list.id}selected{/if} value='{$cate_list.id}'
+                                                <option {if $cateId == $cate_list.id}selected{/if} value='{$cate_list.id}'
                                                 {if $moduleid !==$cate_list.moduleid} disabled {/if}
                                                  >{$cate_list.lcatname}</option>
                                                 {/volist}

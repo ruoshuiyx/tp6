@@ -109,7 +109,7 @@ class Index extends Base
             $messageCatId = Cate::where('moduleid',$messageModuleId)->value('id');
             if(!is_null($messageCatId)){
                 //生成URL
-                $messageCatUrl = url('message/index',['catid'=>$messageCatId]);
+                $messageCatUrl = url('message/index',['cate'=>$messageCatId]);
             }
         }
         $view=[

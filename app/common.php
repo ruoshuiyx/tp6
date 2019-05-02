@@ -26,9 +26,9 @@ function getUrl($v){
         }else{
             $moduleurl = \think\facade\Db::name('module')->where('id',$v['moduleid'])->value('name');
             if($v['catdir']){
-                $v['url'] = url($v['catdir'].'/index', ['cat'=>$v['id']]);
+                $v['url'] = url($v['catdir'].'/index', ['cate'=>$v['id']]);
             }else{
-                $v['url'] = url($moduleurl.'/index', ['cat'=>$v['id']]);
+                $v['url'] = url($moduleurl.'/index', ['cate'=>$v['id']]);
             }
         }
     }
@@ -41,15 +41,15 @@ function getShowUrl($v){
         //$home_rote[''.$v['catdir'].'-:cat/:id'] = 'home/'.$v['catdir'].'/index';
         $cate = \think\facade\Db::name('cate')
             ->field('id,catdir,moduleid')
-            ->where('id',$v['catid'])
+            ->where('id',$v['cate_id'])
             ->find();
         $moduleurl = \think\facade\Db::name('module')
             ->where('id',$cate['moduleid'])
             ->value('name');
         if($cate['catdir']){
-            $url = url($cate['catdir'].'/info', ['cat'=>$cate['id'],'id'=>$v['id']]);
+            $url = url($cate['catdir'].'/info', ['cate'=>$cate['id'],'id'=>$v['id']]);
         }else{
-            $url = url($moduleurl.'/info', ['cat'=>$cate['id'],'id'=>$v['id']] );
+            $url = url($moduleurl.'/info', ['cate'=>$cate['id'],'id'=>$v['id']] );
         }
     }
     return $url;

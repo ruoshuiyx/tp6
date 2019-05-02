@@ -139,7 +139,7 @@ class module extends Base
 
                 Db::execute("CREATE TABLE `".$tablename."` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-			  `catid` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '栏目ID',
+			  `cate_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '栏目ID',
 			  `title` varchar(120) NOT NULL DEFAULT '' COMMENT '标题',
 			  `title_style` varchar(225) NOT NULL DEFAULT '' COMMENT '标题样式',
 			  `thumb` varchar(225) NOT NULL DEFAULT '' COMMENT '缩略图',
@@ -154,10 +154,10 @@ class module extends Base
 			  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
 			  PRIMARY KEY (`id`),
 			  KEY `status` (`id`,`status`,`sort`),
-			  KEY `catid` (`id`,`catid`,`status`),
-			  KEY `sort` (`id`,`catid`,`status`,`sort`)
+			  KEY `cate_id` (`id`,`cate_id`,`status`),
+			  KEY `sort` (`id`,`cate_id`,`status`,`sort`)
 			) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8");
-                Db::execute("INSERT INTO `".$prefix."field` (`moduleid`,`field`,`name`,`tips`,`required`,`minlength`,`maxlength`,`pattern`,`errormsg`,`class`,`type`,`setup`,`ispost`,`unpostgroup`,`sort`,`status`,`issystem`) VALUES ( '".$moduleid."', 'catid', '栏目', '', '1', '1', '6', '', '必须选择一个栏目', '', 'catid', '','1','', '1', '1', '1')");
+                Db::execute("INSERT INTO `".$prefix."field` (`moduleid`,`field`,`name`,`tips`,`required`,`minlength`,`maxlength`,`pattern`,`errormsg`,`class`,`type`,`setup`,`ispost`,`unpostgroup`,`sort`,`status`,`issystem`) VALUES ( '".$moduleid."', 'cate_id', '栏目', '', '1', '1', '6', '', '必须选择一个栏目', '', 'cate', '','1','', '1', '1', '1')");
 
                 Db::execute("INSERT INTO `".$prefix."field` (`moduleid`,`field`,`name`,`tips`,`required`,`minlength`,`maxlength`,`pattern`,`errormsg`,`class`,`type`,`setup`,`ispost`,`unpostgroup`,`sort`,`status`,`issystem`) VALUES ( '".$moduleid."', 'title', '标题', '', '1', '1', '80', '', '标题必须为1-80个字符', '', 'title', '','1','',  '2', '1', '1')");
 
@@ -211,8 +211,8 @@ class module extends Base
 
     //字段列表
     public function field(){
-        $nodostatus = array('catid','title','status','create_time');
-        $sysfield = array('catid','title','thumb','keywords','description','status','create_time','url','template');
+        $nodostatus = array('cate_id','title','status','create_time');
+        $sysfield = array('cate_id','title','thumb','keywords','description','status','create_time','url','template');
 
         $list = Db::name('field')
             ->where("moduleid",'=',Request::param('id'))
@@ -459,7 +459,7 @@ class module extends Base
                 $sql[] = "ALTER TABLE `$tablename` $do `$field` VARCHAR( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
 
                 break;
-            case 'catid':
+            case 'cate':
                 $sql = "ALTER TABLE `$tablename` $do `$field` SMALLINT(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT '$comment'";
                 break;
 

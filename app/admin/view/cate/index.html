@@ -44,7 +44,7 @@
                         <tr>
                         	<td class="t_c"><input type="checkbox" name="key[]" value="{$list.id}"></td>
                           <td class="t_c">{$list.id}</td>
-                          <td ><a href="{:url($list.moduleurl.'/index',['catid'=>$list.id])}">{$list.lcatname}</a></td>
+                          <td ><a href="{:url($list.moduleurl.'/index',['cate'=>$list.id])}">{$list.lcatname}</a></td>
                           <td class="t_c">{$list.modulename}</td>
                           <td class="t_c">
                           	{if $list.is_menu==1}

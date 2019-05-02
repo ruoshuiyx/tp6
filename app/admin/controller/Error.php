@@ -39,48 +39,43 @@ class Error extends Base
         $this->table = strtolower(Request::controller());
         //模型ID
         $this->moduleid = Db::name('cate')
-            ->where('id','=',Request::param('catid'))
+            ->where('id','=',Request::param('cate'))
             ->value('moduleid');
     }
     //列表
     public function index(){
-        if(Request::param('catid')){
-            $catid = Request::param('catid');
+        if(Request::param('cate')){
+            $cateId = Request::param('cate');
             //单页直接跳转到单页修改页面，如无修改则先添加一条记录然后进行修改
             if($this->table == 'page'){
                 //查找是否有记录
                 $page_id=Db::name($this->table)
-                    ->where('catid','=',$catid)
+                    ->where('cate_id','=',$cateId)
                     ->value('id');
                 if(!$page_id){
                     $data['title'] = Db::name('cate')
-                        ->where('id','=',$catid)
+                        ->where('id','=',$cateId)
                         ->value('catname');
-                    $data['catid'] = $catid;
+                    $data['cate_id'] = $cateId;
                     $page_id = Db::name($this->table)
                         ->insertGetId($data);
                 }
                 //跳转编辑页
-                redirect($this->table.'/edit', ['catid' =>$catid,'id' => $page_id ]);
+                return redirect($this->table.'/edit', ['cate' =>$cateId,'id' => $page_id ]);
             }
 
-            $where[]=['catid','=',$catid];
+            $where[]=['cate_id','=',$cateId];
             if(Request::param('title')){
                 $where[]=['title','like','%'.Request::param('title').'%'];
                 $title = Request::param('title');
-            }else{
-                $title = null;
             }
-
-            //显示数量
-            $pageSize = Request::param('page_size',Config::get('app.page_size'));
 
             //查出所有内容数据
             $list = Db::name($this->table)
-                ->field('id,title,catid,hits,sort,status,create_time')
+                ->field('id,title,cate_id,hits,sort,status,create_time')
                 ->where($where)
                 ->order('sort ASC,id DESC')
-                ->paginate($pageSize);
+                ->paginate($this->pageSize,false,['query' => Request::param()]);
 
             //获取栏目列表
             $cate = Db::name('cate')
@@ -91,11 +86,11 @@ class Error extends Base
         }
 
         $view = [
-            'title'=> $title,
-            'pageSize' => page_size($pageSize,$list->total()),
+            'title'=> isset($title) ? $title : '',
+            'pageSize' => page_size($this->pageSize,$list->total()),
             'page' => $list->render(),
             'list' => $list,
-            'catid'=> $catid,
+            'cateId'=> $cateId,
             'cate' => $cate,
             'empty'=> empty_list(8),
         ];
@@ -107,8 +102,8 @@ class Error extends Base
     //添加
     public function add(){
         if(Request::isPost()){
-            //根据catid获取所有字段
-            if(Request::post('catid')){
+            //根据cate_id获取所有字段
+            if(Request::post('cate_id')){
                 $data = Request::post();
                 //去除上传图片和文件的无用字段
                 if(array_key_exists('file',$data)){
@@ -120,7 +115,7 @@ class Error extends Base
                     ->leftJoin('module m','c.moduleid = m.id')
                     ->leftJoin('field f','c.moduleid = f.moduleid')
                     ->field('c.moduleid,m.name as m_table,f.*')
-                    ->where('c.id','=',input('post.catid'))
+                    ->where('c.id','=',input('post.cate_id'))
                     ->order(['f.sort'=>'asc','f.id'=>'asc'])
                     ->select();
                 //循环判断数据合法性
@@ -140,7 +135,7 @@ class Error extends Base
                     $maxlength = $v['maxlength'];
                     switch ($v['type'])
                     {
-                        case 'catid'://栏目
+                        case 'cate'://栏目
                             $maxlength = $maxlength ? min($maxlength, 5) : 5;
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
@@ -271,13 +266,13 @@ class Error extends Base
             if($data){
                 $id = Db::name($this->table)->insertGetId($data);
                 if($id){
-                    success('添加成功!',url('index', ['catid' => $data['catid']]));
+                    success('添加成功!',url('index', ['cate' => $data['cate_id']]));
                 }else{
                     error('添加失败!');
                 }
             }
         }
-        if(Request::param('catid')){
+        if(Request::param('cate')){
             //获取栏目列表
             $cate = Db::name('cate')
                 ->field('id,catname,parentid,moduleid')
@@ -309,7 +304,7 @@ class Error extends Base
                 'template' => getTemplate(),//获取模版列表
                 'field'    => $field,
                 'moduleid' => $this->moduleid,
-                'catid'    => Request::param('catid'),
+                'cateId'    => Request::param('cate'),
                 'info'     => null,
                 'time'     => date("Y-m-d H:i:s"),
             ];
@@ -321,8 +316,8 @@ class Error extends Base
     //编辑
     public function edit(){
         if(Request::isPost()){
-            //根据catid获取所有字段
-            if(Request::post('catid')){
+            //根据cate_id获取所有字段
+            if(Request::post('cate_id')){
                 $data = Request::post();
                 //去除上传图片和文件的无用字段
                 if(array_key_exists('file',$data)){
@@ -334,7 +329,7 @@ class Error extends Base
                     ->leftJoin('module m','c.moduleid = m.id')
                     ->leftJoin('field f','c.moduleid = f.moduleid')
                     ->field('c.moduleid,m.name as m_table,f.*')
-                    ->where('c.id','=',input('post.catid'))
+                    ->where('c.id','=',input('post.cate_id'))
                     ->order(['f.sort'=>'asc','f.id'=>'asc'])
                     ->select();
                 //循环判断数据合法性
@@ -354,7 +349,7 @@ class Error extends Base
                     $maxlength = $v['maxlength'];
                     switch ($v['type'])
                     {
-                        case 'catid'://栏目
+                        case 'cate'://栏目
                             $maxlength = $maxlength ? min($maxlength, 5) : 5;
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
@@ -487,7 +482,7 @@ class Error extends Base
                     ->where('id',$data['id'])
                     ->update($data);
                 if($result){
-                    success('修改成功!',url('index', ['catid' => $data['catid']]));
+                    success('修改成功!',url('index', ['cate' => $data['cate_id']]));
                 }else{
                     error('修改失败!');
                 }
@@ -495,7 +490,7 @@ class Error extends Base
         }
         else{
             //展示数据
-            if(Request::param('catid')){
+            if(Request::param('cate')){
                 //获取栏目列表
                 $cate = Db::name('cate')
                     ->field('id,catname,parentid,moduleid')
@@ -543,10 +538,9 @@ class Error extends Base
                     'template'=>getTemplate(),
                     'field'=>$field,
                     'moduleid'=>$this->moduleid,
-                    'catid'=>Request::param('catid'),
+                    'cateId'=>Request::param('cate'),
                     'info'=>$info,
-                    'time'=>date("Y-m-d H:i:s"),
-                    'moduleid'=>$this->moduleid
+                    'time'=>date("Y-m-d H:i:s")
                 ];
                 View::assign($view);
                 return View::fetch('error/add');
@@ -597,10 +591,10 @@ class Error extends Base
         //判断选择的模型是否一致
         if(Request::post('check')==true){
             $moduleid = Db::name('cate')
-                ->where('id',Request::post('catid'))
+                ->where('id',Request::post('cate'))
                 ->value('moduleid');
             $moduleidmove = Db::name('cate')
-                ->where('id',Request::post('catidmove'))
+                ->where('id',Request::post('cate_id_move'))
                 ->value('moduleid');
             if($moduleid==$moduleidmove){
                 if(Request::param('id')){
@@ -611,7 +605,7 @@ class Error extends Base
                     //执行修改操作
                     $res = Db::name($table)
                         ->where('id', 'in' , Request::post('id'))
-                        ->update(['catid' => Request::post('catidmove')]);
+                        ->update(['cate_id' => Request::post('cate_id_move')]);
                     if($res){
                         $result['error'] = 0;
                         $result['msg'] = '移动完毕';
