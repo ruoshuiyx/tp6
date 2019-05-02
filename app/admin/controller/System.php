@@ -33,7 +33,6 @@ class System extends Base
 {
     //系统设置
     public function system(){
-
         //查找所有模版
         $dir = App::getRootPath() . 'public' .DIRECTORY_SEPARATOR. 'template';
         $template = get_dir($dir);

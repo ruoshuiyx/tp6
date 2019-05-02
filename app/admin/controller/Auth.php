@@ -59,7 +59,7 @@ class Auth extends Base
             ->leftJoin('auth_group ag','ac.group_id = ag.id')
             ->field('a.*,ac.group_id,ag.title')
             ->where($where)
-            ->paginate($pageSize,false,['query' => request()->param()]);
+            ->paginate($pageSize,false,['query' => request()->get()]);
 
         $view = [
             'username'=>$username,
@@ -223,7 +223,7 @@ class Auth extends Base
         $pageSize = Request::param('page_size',Config::get('app.page_size'));
 
         //查出所有数据
-        $list = AuthGroup::where($where)->paginate($pageSize,false,['query' => request()->param()]);
+        $list = AuthGroup::where($where)->paginate($pageSize,false,['query' => request()->get()]);
 
         $view = [
             'title'=>$title,

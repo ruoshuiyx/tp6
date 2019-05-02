@@ -37,7 +37,7 @@ class AdminLog extends Base {
     public static function getList($where=array(),$pageSize,$order=['sort','id'=>'desc']){
         $list = self::where($where)
             ->order($order)
-            ->paginate($pageSize,false,['query' => Request::param()]);
+            ->paginate($pageSize,false,['query' => Request::get()]);
         foreach($list as $k=>$v){
             $useragent = explode('(',$v['useragent']);
             $list[$k]['useragent']=$useragent[0];

@@ -54,7 +54,6 @@ class Ad extends Base
             $where[]=['create_time', 'between', $getDateran];
         }
 
-
         //获取列表
         $list = M::getList($where,$this->pageSize);
         //获取广告位列表

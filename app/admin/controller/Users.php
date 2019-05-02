@@ -41,7 +41,6 @@ class Users extends Base
 
     //列表
     public function index(){
-
         //全局查询条件
         $where=[];
         $keyword = Request::param('keyword');

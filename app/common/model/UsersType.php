@@ -43,7 +43,7 @@ class UsersType extends Base
     public static function getList($where=array(),$pageSize,$order=['sort','id'=>'desc']){
         $list = self::where($where)
             ->order($order)
-            ->paginate($pageSize,false,['query' => Request::param()]);
+            ->paginate($pageSize,false,['query' => Request::get()]);
         return $list;
     }
 

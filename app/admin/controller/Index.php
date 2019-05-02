@@ -40,7 +40,6 @@ class Index extends Base
     //首页
     public function index()
     {
-
         $authRule = AuthRule::where('status',1)
             ->order('sort asc')
             ->select()

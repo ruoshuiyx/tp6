@@ -75,7 +75,7 @@ class Error extends Base
                 ->field('id,title,cate_id,hits,sort,status,create_time')
                 ->where($where)
                 ->order('sort ASC,id DESC')
-                ->paginate($this->pageSize,false,['query' => Request::param()]);
+                ->paginate($this->pageSize,false,['query' => Request::get()]);
 
             //获取栏目列表
             $cate = Db::name('cate')
