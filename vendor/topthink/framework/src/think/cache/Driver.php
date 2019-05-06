@@ -13,6 +13,7 @@ declare (strict_types = 1);
 namespace think\cache;
 
 use think\Container;
+use think\exception\InvalidArgumentException;
 
 /**
  * 缓存基础类
@@ -92,6 +93,32 @@ abstract class Driver extends SimpleCache
     }
 
     /**
+     * 追加（数组）缓存
+     * @access public
+     * @param  string        $name 缓存变量名
+     * @param  mixed         $value  存储数据
+     * @param  int|\DateTime $expire  有效时间 0为永久
+     * @return array
+     */
+    public function push($name, $value, $expire = null): array
+    {
+        $item = $this->get($name, []);
+
+        if (!is_array($item)) {
+            throw new InvalidArgumentException('only array cache can be push');
+        }
+
+        $item[] = $value;
+        if (count($item) > 1000) {
+            array_shift($item);
+        }
+        $item = array_unique($item);
+
+        $this->set($name, $item, $expire);
+        return $item;
+    }
+
+    /**
      * 如果不存在则写入缓存
      * @access public
      * @param  string $name 缓存变量名
@@ -162,22 +189,8 @@ abstract class Driver extends SimpleCache
             $this->tag = null;
 
             foreach ($tags as $tag) {
-                $key = $this->getTagKey($tag);
-
-                if ($this->has($key)) {
-                    $value   = explode(',', $this->get($key));
-                    $value[] = $name;
-
-                    if (count($value) > 1000) {
-                        array_shift($value);
-                    }
-
-                    $value = implode(',', array_unique($value));
-                } else {
-                    $value = $name;
-                }
-
-                $this->set($key, $value, 0);
+                $key   = $this->getTagkey($tag);
+                $value = $this->push($key, $name, 0);
             }
         }
     }
@@ -190,10 +203,8 @@ abstract class Driver extends SimpleCache
      */
     protected function getTagItems(string $tag): array
     {
-        $key   = $this->getTagkey($tag);
-        $value = $this->get($key);
-
-        return $value ? array_filter(explode(',', $value)) : [];
+        $key = $this->getTagkey($tag);
+        return $this->get($key, []);
     }
 
     /**

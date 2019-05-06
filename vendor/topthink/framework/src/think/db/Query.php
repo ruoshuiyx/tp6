@@ -2435,7 +2435,7 @@ class Query
      * @param callable     $callback 闭包获取器
      * @return $this
      */
-    public function withAttr($name, callable $callback)
+    public function withAttr($name, callable $callback = null)
     {
         if (is_array($name)) {
             $this->options['with_attr'] = $name;
@@ -3127,7 +3127,7 @@ class Query
 
         // 关联查询
         if (!empty($options['relation'])) {
-            $result->relationQuery($options['relation']);
+            $result->relationQuery($options['relation'], $withRelationAttr);
         }
 
         // 预载入查询
