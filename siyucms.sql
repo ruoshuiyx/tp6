@@ -27,12 +27,12 @@ CREATE TABLE `tp_ad` (
   `thumb` varchar(250) DEFAULT NULL COMMENT '缩略图',
   `url` varchar(250) DEFAULT NULL COMMENT '链接地址',
   `description` varchar(250) DEFAULT NULL COMMENT '备注',
-  `sort` tinyint(5) DEFAULT NULL COMMENT '排序',
+  `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
   `status` tinyint(1) DEFAULT NULL COMMENT '状态',
   `create_time` int(11) DEFAULT '0' COMMENT '添加时间',
   `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='广告表';
 
 -- ----------------------------
 -- Records of tp_ad
@@ -90,12 +90,12 @@ CREATE TABLE `tp_ad_type` (
   `id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL COMMENT '名称',
   `description` varchar(255) DEFAULT NULL COMMENT '备注',
-  `sort` tinyint(5) DEFAULT NULL COMMENT '排序',
+  `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
   `status` int(1) DEFAULT '0' COMMENT '状态',
   `create_time` int(11) DEFAULT '0' COMMENT '添加时间',
   `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='广告位表';
 
 -- ----------------------------
 -- Records of tp_ad_type
@@ -132,7 +132,7 @@ CREATE TABLE `tp_article` (
   KEY `status` (`id`,`status`,`sort`),
   KEY `cate_id` (`id`,`cate_id`,`status`),
   KEY `sort` (`id`,`cate_id`,`status`,`sort`)
-) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COMMENT='文章模型表';
 
 -- ----------------------------
 -- Records of tp_article
@@ -370,7 +370,7 @@ CREATE TABLE `tp_cate` (
   `catdir` char(100) DEFAULT NULL COMMENT '目录',
   `parentid` int(20) NOT NULL DEFAULT '0' COMMENT '父栏目ID',
   `moduleid` int(20) DEFAULT '1' COMMENT '类型',
-  `sort` int(20) NOT NULL DEFAULT '50' COMMENT '排序',
+  `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
   `url` varchar(255) DEFAULT NULL COMMENT '跳转链接',
   `content` text COMMENT '内容',
   `image` char(255) DEFAULT NULL COMMENT '图片',
@@ -418,7 +418,7 @@ CREATE TABLE `tp_config` (
   `inc_type` varchar(64) DEFAULT NULL COMMENT '配置分组',
   `desc` varchar(50) DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=95 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=95 DEFAULT CHARSET=utf8 COMMENT='配置表';
 
 -- ----------------------------
 -- Records of tp_config
@@ -454,7 +454,7 @@ CREATE TABLE `tp_debris` (
   `create_time` int(11) DEFAULT '0' COMMENT '添加时间',
   `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='碎片表';
 
 -- ----------------------------
 -- Records of tp_debris
@@ -490,7 +490,7 @@ CREATE TABLE `tp_download` (
   KEY `status` (`id`,`status`,`sort`),
   KEY `cate_id` (`id`,`cate_id`,`status`),
   KEY `sort` (`id`,`cate_id`,`status`,`sort`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='下载模型表';
 
 -- ----------------------------
 -- Records of tp_download
@@ -523,7 +523,7 @@ CREATE TABLE `tp_field` (
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `issystem` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=107 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=107 DEFAULT CHARSET=utf8 COMMENT='模型字段表';
 
 -- ----------------------------
 -- Records of tp_field
@@ -639,7 +639,7 @@ CREATE TABLE `tp_link` (
   `create_time` int(11) DEFAULT '0' COMMENT '添加时间',
   `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='友情链接表';
 
 -- ----------------------------
 -- Records of tp_link
@@ -669,7 +669,7 @@ CREATE TABLE `tp_message` (
   KEY `status` (`id`,`status`,`sort`),
   KEY `cate_id` (`id`,`cate_id`,`status`),
   KEY `sort` (`id`,`cate_id`,`status`,`sort`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='留言表';
 
 -- ----------------------------
 -- Records of tp_message
@@ -690,7 +690,7 @@ CREATE TABLE `tp_module` (
   `sort` smallint(3) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='模型表';
 
 -- ----------------------------
 -- Records of tp_module
@@ -716,7 +716,7 @@ CREATE TABLE `tp_page` (
   `content` text COMMENT '内容',
   `hits` int(10) unsigned NOT NULL DEFAULT '100' COMMENT '点击次数',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='单页模型表';
 
 -- ----------------------------
 -- Records of tp_page
@@ -754,7 +754,7 @@ CREATE TABLE `tp_picture` (
   KEY `status` (`id`,`status`,`sort`),
   KEY `cate_id` (`id`,`cate_id`,`status`),
   KEY `sort` (`id`,`cate_id`,`status`,`sort`)
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COMMENT='图片模型表';
 
 -- ----------------------------
 -- Records of tp_picture
@@ -795,7 +795,7 @@ CREATE TABLE `tp_product` (
   KEY `status` (`id`,`status`,`sort`),
   KEY `cate_id` (`id`,`cate_id`,`status`),
   KEY `sort` (`id`,`cate_id`,`status`,`sort`)
-) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='产品模型表';
 
 -- ----------------------------
 -- Records of tp_product
@@ -838,7 +838,7 @@ CREATE TABLE `tp_system` (
   `template` varchar(200) DEFAULT NULL COMMENT '模版选择',
   `html` varchar(200) DEFAULT NULL COMMENT 'Html目录',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='系统设置表';
 
 -- ----------------------------
 -- Records of tp_system
@@ -874,7 +874,7 @@ CREATE TABLE `tp_team` (
   KEY `status` (`id`,`status`,`sort`),
   KEY `cate_id` (`id`,`cate_id`,`status`),
   KEY `sort` (`id`,`cate_id`,`status`,`sort`)
-) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='团队模型表';
 
 -- ----------------------------
 -- Records of tp_team
@@ -905,7 +905,7 @@ CREATE TABLE `tp_users` (
   `update_time` int(10) DEFAULT '0' COMMENT '修改时间',
   `create_time` int(10) DEFAULT '0' COMMENT '注册时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='会员表';
 
 -- ----------------------------
 -- Records of tp_users
@@ -926,12 +926,12 @@ CREATE TABLE `tp_users_type` (
   `id` smallint(4) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL COMMENT '会员组名称',
   `description` varchar(255) DEFAULT NULL COMMENT '描述',
-  `sort` int(3) DEFAULT NULL COMMENT '排序',
+  `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
   `status` tinyint(1) DEFAULT '1' COMMENT '状态',
   `create_time` int(10) DEFAULT '0' COMMENT '添加时间',
   `update_time` int(10) DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='会员类型表';
 
 -- ----------------------------
 -- Records of tp_users_type

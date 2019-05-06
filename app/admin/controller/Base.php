@@ -29,11 +29,9 @@ use think\App;
 use think\exception\HttpResponseException;
 use think\exception\ValidateException;
 use think\Response;
-use think\response\Redirect;
 
 use think\facade\Config;
 use think\facade\Request;
-use think\facade\Session;
 
 
 
