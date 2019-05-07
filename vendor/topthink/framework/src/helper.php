@@ -391,6 +391,19 @@ if (!function_exists('input')) {
     }
 }
 
+if (!function_exists('invoke')) {
+    /**
+     * 调用反射实例化对象 支持依赖注入
+     * @param  string $class 类名
+     * @param  array  $args  参数
+     * @return mixed
+     */
+    function invoke(string $class, array $args = [])
+    {
+        return Container::getInstance()->invokeClass($class, $args);
+    }
+}
+
 if (!function_exists('json')) {
     /**
      * 获取\think\response\Json对象实例
@@ -620,16 +633,44 @@ if (!function_exists('success')) {
 
 if (!function_exists('token')) {
     /**
-     * 生成表单令牌
+     * 获取Token令牌
      * @param  string $name 令牌名称
      * @param  mixed  $type 令牌生成方法
      * @return string
      */
     function token(string $name = '__token__', string $type = 'md5'): string
     {
+        return Request::buildToken($name, $type);
+    }
+}
+
+if (!function_exists('token_field')) {
+    /**
+     * 生成令牌隐藏表单
+     * @param  string $name 令牌名称
+     * @param  mixed  $type 令牌生成方法
+     * @return string
+     */
+    function token_field(string $name = '__token__', string $type = 'md5'): string
+    {
         $token = Request::buildToken($name, $type);
 
         return '<input type="hidden" name="' . $name . '" value="' . $token . '" />';
+    }
+}
+
+if (!function_exists('token_meta')) {
+    /**
+     * 生成令牌meta
+     * @param  string $name 令牌名称
+     * @param  mixed  $type 令牌生成方法
+     * @return string
+     */
+    function token_meta(string $name = '__token__', string $type = 'md5'): string
+    {
+        $token = Request::buildToken($name, $type);
+
+        return '<meta name="csrf-token" content="' . $token . '">';
     }
 }
 
