@@ -8,7 +8,6 @@ SIYUCMS V6.0 快速开发内容管理系统
 ## 在线手册
 
 + [完全开发手册](https://www.kancloud.cn/ruoshuiyx/siyucms/)
-+ [ThinkPHP5.1 实战指南](https://www.kancloud.cn/ruoshuiyx/thinkphp5)
 
 ## 安装
 

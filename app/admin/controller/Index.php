@@ -130,7 +130,7 @@ class Index extends Base
                 // 获取表单上传文件
                 $file = request()->file($fileKey[$i]);
                 // 移动到框架应用根目录/public/uploads/ 目录下
-                $info = $file->validate(['ext' => 'jpg,png,gif,jpeg'])->move('uploads');
+                $info = $file->validate(['ext' => 'jpg,png,gif,jpeg,rar,zip,avi,rmvb,3gp,flv,mp3,txt,doc,xls,ppt,pdf,xls,docx,xlsx,doc'])->move('uploads');
                 if($info){
                     $path[]='/uploads/'.str_replace('\\','/',$info->getSaveName());
                 }
