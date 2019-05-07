@@ -70,9 +70,18 @@ class Error extends Base
                 $title = Request::param('title');
             }
 
+            //查询是否包含图片字段,包含则展示
+            $prefix = Config::get('database.prefix');
+            $tablename=$prefix.$this->table;
+            $Fields=Db::getTableFields($tablename);
+            if(in_array('image',$Fields)){
+                $image = ',image';
+            }else{
+                $image = '';
+            }
             //查出所有内容数据
             $list = Db::name($this->table)
-                ->field('id,title,cate_id,hits,sort,status,create_time')
+                ->field('id,title,cate_id,hits,sort,status,create_time'.$image)
                 ->where($where)
                 ->order('sort ASC,id DESC')
                 ->paginate($this->pageSize,false,['query' => Request::get()]);

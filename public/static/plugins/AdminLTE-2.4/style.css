@@ -93,3 +93,6 @@ ul.ztree>li>a>span{font-size:15px;font-weight:700}
 	.search .m_10{ margin-top:0}
 	.search .f_r{ float:left; margin-left:0;margin-right: 10px;}
 }
+.js_show_img{ cursor:pointer; color:#333}
+.js_show_img:hover{ color:#3c8dbc}
+#zoomView{ position:absolute; display:none; border: 6px solid #eee; max-width:150px; max-height:150px;border-radius: 4px;box-shadow: 0 7px 20px rgba(0,0,0,.5);}

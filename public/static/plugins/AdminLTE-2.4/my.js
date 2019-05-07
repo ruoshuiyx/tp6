@@ -324,3 +324,24 @@ $(function () {
 			$(this).val(picker.startDate.format('YYYY-MM-DD')+" 至 "+picker.endDate.format('YYYY-MM-DD'));
 		});
 })
+
+//缩略图鼠标跟随
+$(".js_show_img").mouseover(function(e){
+	var image=$(this).data("image");
+	if(image!=""){
+		var zoomView=$('<img src="'+image+'" id="zoomView" />'); //建立图片查看框
+		$(this).append(zoomView);
+		$("#zoomView").fadeIn(100);
+		$("#zoomView").css({"top":(e.pageY-180)+"px","left":(e.pageX+10)+"px"});  //注意得在CSS文件中将其设置为绝对定位
+	}
+}).mousemove(function(e){
+	var image=$(this).data("image");
+	if(image!=""){
+		$("#zoomView").css({"top":(e.pageY-180)+"px","left":(e.pageX+10)+"px"}); //鼠标移动时及时更新图片查看框的坐标
+	}
+}).mouseout(function(){
+	var image=$(this).data("image");
+	if(image!=""){
+		$("#zoomView").remove();    //鼠标移出时删除之前建立的图片查看框
+	}
+});

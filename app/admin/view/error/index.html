@@ -50,7 +50,7 @@
                         <tr>
                           <td class="t_c"><input type="checkbox" name="key[]" value="{$list.id}"></td>
                           <td class="t_c">{$list.id}</td>
-                          <td>{$list.title}</td>
+                          <td>{$list.image ? '<a href="'.$list.image.'" target="_blank"><i class="fa fa-fw fa-image js_show_img" data-image="'.$list.image.'"></i></a> ' : ''}{$list.title}</td>
                           <td class="t_c">{$list.hits}</td>
                           <td class="t_c">{$list.create_time|date='Y-m-d H:i:s'}</td>
                           <td class="t_c">
