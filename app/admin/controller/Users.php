@@ -219,7 +219,7 @@ class Users extends Base
 
         //获取列表
         $list = M::getDownList($where,$this->pageSize,['id'=>'desc']);
-        
+
         foreach ($list as $k=>$v){
             $v['sex']              = $v['sex']=='1'              ? '男'    : '女';
             $v['mobile_validated'] = $v['mobile_validated']=='1' ? '已认证' : '未认证';

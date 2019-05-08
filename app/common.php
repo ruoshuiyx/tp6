@@ -14,9 +14,7 @@
 //获取列表链接地址
 function getUrl($v){
     //判断是否直接跳转
-    if(trim($v['url'])!==''){
-
-    }else{
+    if(trim($v['url'])==''){
         //判断是否跳转到下级栏目
         if($v['is_next']==1){
             $is_next = \think\facade\Db::name('cate')->where('parentid',$v['id'])->order('sort ASC,id DESC')->find();
@@ -55,8 +53,6 @@ function getShowUrl($v){
     return $url;
 }
 
-
-
 function changeFields($list,$moduleid){
     $info = [];
     foreach ($list as $k=>$v){
@@ -67,6 +63,7 @@ function changeFields($list,$moduleid){
     }
     return $info;
 }
+
 function changefield($info,$moduleid){
     $fields = \think\facade\Db::name('field')->where('moduleid','=',$moduleid)->select();
     foreach ($fields as $k=>$v){
@@ -97,8 +94,6 @@ function changefield($info,$moduleid){
     return $info;
 }
 
-
-//==============================================以上为未校验的函数
 /**
  * 邮件发送
  * @param $to    接收人
@@ -153,6 +148,7 @@ function send_email($to,$subject='',$content=''){
     $mail->msgHTML($content);
     return $mail->send();
 }
+
 /**
  * 验证输入的邮件地址是否合法
  * @param $user_email 邮箱
@@ -216,6 +212,7 @@ function string2array($info) {
     eval("\$r = $info;");
     return $r;
 }
+
 function array2string($info) {
     if($info == '') return '';
     if(!is_array($info)){

@@ -40,7 +40,8 @@
                           <th class="t_c"><input type="checkbox" id="check"></th>
                           <th class="t_c">编号</th>
                           <th class="t_c">标题</th>
-                          <th class="t_c">点击</th>
+                          <th class="t_c">所属栏目</th>
+                          <th class="t_c">浏览量</th>
                           <th class="t_c">添加时间</th>
                           <th class="t_c">状态</th>
                           <th class="t_c">排序</th>
@@ -50,7 +51,8 @@
                         <tr>
                           <td class="t_c"><input type="checkbox" name="key[]" value="{$list.id}"></td>
                           <td class="t_c">{$list.id}</td>
-                          <td>{$list.image ? '<a href="'.$list.image.'" target="_blank"><i class="fa fa-fw fa-image js_show_img" data-image="'.$list.image.'"></i></a> ' : ''}{$list.title}</td>
+                          <td>{$list.image ? '<a href="'.$list.image.'" target="_blank"><i class="fa fa-fw fa-image js_show_img" data-image="'.$list.image.'"></i></a> ' : ''}<a href="{:url('edit',['cate'=>$cateId,'id'=>$list.id])}">{$list.title}</a></td>
+                          <td class="t_c"><a href="{:url('index',['cate'=>$list.cate_id])}">{$list.catname}</a></td>
                           <td class="t_c">{$list.hits}</td>
                           <td class="t_c">{$list.create_time|date='Y-m-d H:i:s'}</td>
                           <td class="t_c">

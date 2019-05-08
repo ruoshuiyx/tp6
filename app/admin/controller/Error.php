@@ -75,15 +75,17 @@ class Error extends Base
             $tablename=$prefix.$this->table;
             $Fields=Db::getTableFields($tablename);
             if(in_array('image',$Fields)){
-                $image = ',image';
+                $image = ',a.image';
             }else{
                 $image = '';
             }
             //查出所有内容数据
             $list = Db::name($this->table)
-                ->field('id,title,cate_id,hits,sort,status,create_time'.$image)
+                ->alias('a')
+                ->leftJoin('cate c','a.cate_id = c.id')
+                ->field('a.id,a.title,a.cate_id,a.hits,a.sort,a.status,a.create_time'.$image.',c.catname')
                 ->where($where)
-                ->order('sort ASC,id DESC')
+                ->order('a.sort ASC,a.id DESC')
                 ->paginate($this->pageSize,false,['query' => Request::get()]);
 
             //获取栏目列表
@@ -93,7 +95,6 @@ class Error extends Base
                 ->select();
             $cate = tree_cate($cate);
         }
-
         $view = [
             'title'=> isset($title) ? $title : '',
             'pageSize' => page_size($this->pageSize,$list->total()),
