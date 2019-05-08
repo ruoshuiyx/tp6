@@ -1779,3 +1779,6 @@
     border-left: 1px solid #d2d6de;
   }
 }
+
+/*自定义颜色*/
+.skin-green-light .search{border-color: #00a65a;}

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2019-04-25 10:01:32
+Date: 2019-05-08 08:30:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -79,8 +79,11 @@ CREATE TABLE `tp_admin_log` (
   `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '操作时间',
   PRIMARY KEY (`id`),
   KEY `name` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='管理员日志表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='管理员日志表';
 
+-- ----------------------------
+-- Records of tp_admin_log
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for tp_ad_type
@@ -194,7 +197,6 @@ CREATE TABLE `tp_auth_group_access` (
 -- ----------------------------
 INSERT INTO `tp_auth_group_access` VALUES ('1', '1', '1553846932', '1553846932');
 
-
 -- ----------------------------
 -- Table structure for tp_auth_rule
 -- ----------------------------
@@ -214,14 +216,14 @@ CREATE TABLE `tp_auth_rule` (
   `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=156 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=157 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tp_auth_rule
 -- ----------------------------
 INSERT INTO `tp_auth_rule` VALUES ('1', '0', 'System', '系统设置', '1', '1', '', '1', '1', 'fa fa-cogs', '1536819134', '1536819134');
 INSERT INTO `tp_auth_rule` VALUES ('4', '1', 'System/system', '系统设置', '1', '1', '', '11', '1', 'fa fa-cog', '1536327129', '1547520976');
-INSERT INTO `tp_auth_rule` VALUES ('5', '1', 'System/email', '邮箱配置', '1', '1', '', '12', '1', '', '1536327444', '1536327838');
+INSERT INTO `tp_auth_rule` VALUES ('5', '1', 'System/email', '邮箱配置', '1', '1', '', '12', '1', 'fa  fa-mail-forward', '1536327444', '1536327838');
 INSERT INTO `tp_auth_rule` VALUES ('6', '0', 'Auth', '权限管理', '1', '1', '', '2', '1', 'fa fa-group', '1536327468', '1547520856');
 INSERT INTO `tp_auth_rule` VALUES ('7', '6', 'Auth/adminList', '管理员列表', '1', '1', '', '21', '1', 'fa fa-user', '1536327753', '1547523425');
 INSERT INTO `tp_auth_rule` VALUES ('8', '6', 'Auth/adminGroup', '用户组列表', '1', '1', '', '22', '1', 'fa fa-group', '1536327787', '1547520881');
@@ -246,8 +248,8 @@ INSERT INTO `tp_auth_rule` VALUES ('26', '9', 'Auth/ruleState', '操作-菜单�
 INSERT INTO `tp_auth_rule` VALUES ('27', '9', 'Auth/ruleOpen', ' 操作-是否验证', '1', '1', '', '236', '1', '', '1536330318', '1536330480');
 INSERT INTO `tp_auth_rule` VALUES ('28', '9', 'Auth/ruleSort', '操作-排序', '1', '1', '', '235', '1', '', '1536330434', '1536330478');
 INSERT INTO `tp_auth_rule` VALUES ('29', '0', 'Database', '数据库管理', '1', '1', '', '3', '1', 'fa fa-database', '1536635655', '1536636028');
-INSERT INTO `tp_auth_rule` VALUES ('30', '29', 'Database/database', '数据库备份', '1', '1', '', '31', '1', '', '1536635724', '1536635724');
-INSERT INTO `tp_auth_rule` VALUES ('31', '29', 'Database/restore', '还原数据库', '1', '1', '', '32', '1', '', '1536635740', '1536635740');
+INSERT INTO `tp_auth_rule` VALUES ('30', '29', 'Database/database', '数据库备份', '1', '1', '', '31', '1', 'fa fa-server', '1536635724', '1536635724');
+INSERT INTO `tp_auth_rule` VALUES ('31', '29', 'Database/restore', '还原数据库', '1', '1', '', '32', '1', 'fa fa-recycle', '1536635740', '1536635740');
 INSERT INTO `tp_auth_rule` VALUES ('32', '30', 'Database/repair', '操作-修复', '1', '1', '', '311', '1', '', '1536635767', '1536635767');
 INSERT INTO `tp_auth_rule` VALUES ('33', '30', 'Database/optimize', '操作-优化', '1', '1', '', '312', '1', '', '1536635780', '1536635780');
 INSERT INTO `tp_auth_rule` VALUES ('34', '30', 'Database/backup', '操作-备份', '1', '1', '', '50', '1', '', '1536635798', '1553763716');
@@ -256,7 +258,7 @@ INSERT INTO `tp_auth_rule` VALUES ('36', '31', 'Database/downFile', '操作-下�
 INSERT INTO `tp_auth_rule` VALUES ('37', '31', 'Database/delSqlFiles', '操作-删除', '1', '1', '', '323', '1', '', '1536635871', '1536635871');
 INSERT INTO `tp_auth_rule` VALUES ('38', '5', 'System/trySend', '操作-测试邮件发送', '1', '1', '', '122', '1', '', '1536653622', '1551863852');
 INSERT INTO `tp_auth_rule` VALUES ('39', '0', 'Module', '模型管理', '1', '1', '', '4', '1', 'fa fa-th-list', '1536806647', '1536807712');
-INSERT INTO `tp_auth_rule` VALUES ('40', '39', 'Module/index', '模型列表', '1', '1', '', '41', '1', '', '1536806669', '1536806669');
+INSERT INTO `tp_auth_rule` VALUES ('40', '39', 'Module/index', '模型列表', '1', '1', '', '41', '1', 'fa fa-bolt', '1536806669', '1536806669');
 INSERT INTO `tp_auth_rule` VALUES ('41', '40', 'Module/add', '操作-添加', '1', '1', '', '411', '1', '', '1536806738', '1536806738');
 INSERT INTO `tp_auth_rule` VALUES ('42', '40', 'Module/edit', '操作-修改', '1', '1', '', '413', '1', '', '1536806774', '1553760852');
 INSERT INTO `tp_auth_rule` VALUES ('43', '40', 'Module/del', '操作-删除', '1', '1', '', '415', '1', '', '1536806788', '1553760858');
@@ -268,7 +270,7 @@ INSERT INTO `tp_auth_rule` VALUES ('48', '45', 'Module/listOrder', '操作-排�
 INSERT INTO `tp_auth_rule` VALUES ('49', '45', 'Module/fieldStatus', '操作-状态', '1', '1', '', '4176', '1', '', '1536806921', '1553761059');
 INSERT INTO `tp_auth_rule` VALUES ('50', '45', 'Module/fieldDel', '操作-删除', '1', '1', '', '4177', '1', '', '1536806938', '1553761061');
 INSERT INTO `tp_auth_rule` VALUES ('51', '0', 'Cate', '栏目管理', '1', '1', '', '5', '1', 'fa fa-th', '1537932344', '1537932720');
-INSERT INTO `tp_auth_rule` VALUES ('52', '51', 'Cate/index', '栏目列表', '1', '1', '', '51', '1', '', '1537932760', '1537932760');
+INSERT INTO `tp_auth_rule` VALUES ('52', '51', 'Cate/index', '栏目列表', '1', '1', '', '51', '1', 'fa  fa-navicon', '1537932760', '1537932760');
 INSERT INTO `tp_auth_rule` VALUES ('53', '52', 'Cate/add', '操作-添加', '1', '1', '', '511', '1', '', '1537932869', '1537932869');
 INSERT INTO `tp_auth_rule` VALUES ('54', '52', 'Cate/edit', '操作-修改', '1', '1', '', '513', '1', '', '1537932909', '1553760586');
 INSERT INTO `tp_auth_rule` VALUES ('55', '52', 'Cate/del', '操作-删除', '1', '1', '', '515', '1', '', '1537932950', '1553760595');
@@ -277,15 +279,15 @@ INSERT INTO `tp_auth_rule` VALUES ('57', '52', 'Cate/sort', '操作-排序', '1'
 INSERT INTO `tp_auth_rule` VALUES ('58', '52', 'Cate/isMenu', '操作-导航显示', '1', '1', '', '518', '1', '', '1537933076', '1553760602');
 INSERT INTO `tp_auth_rule` VALUES ('59', '52', 'Cate/isNext', '操作-跳转下级', '1', '1', '', '519', '1', '', '1537933111', '1553760603');
 INSERT INTO `tp_auth_rule` VALUES ('60', '0', 'Function', '网站功能', '1', '1', '', '6', '1', 'fa fa-gear', '1540965627', '1540966350');
-INSERT INTO `tp_auth_rule` VALUES ('61', '60', 'Link/index', '友情链接', '1', '1', '', '61', '1', '', '1540966407', '1540966418');
+INSERT INTO `tp_auth_rule` VALUES ('61', '60', 'Link/index', '友情链接', '1', '1', '', '61', '1', 'fa fa-link', '1540966407', '1540966418');
 INSERT INTO `tp_auth_rule` VALUES ('62', '61', 'Link/add', '操作-添加', '1', '1', '', '611', '1', '', '1540966465', '1540966465');
 INSERT INTO `tp_auth_rule` VALUES ('63', '61', 'Link/edit', '操作-修改', '1', '1', '', '613', '1', '', '1540966488', '1551929946');
 INSERT INTO `tp_auth_rule` VALUES ('64', '61', 'Link/state', '操作-状态', '1', '1', '', '615', '1', '', '1540966534', '1551930026');
 INSERT INTO `tp_auth_rule` VALUES ('65', '61', 'Link/del', '操作-删除', '1', '1', '', '616', '1', '', '1540966564', '1551930029');
 INSERT INTO `tp_auth_rule` VALUES ('66', '61', 'Link/selectDel', '操作-批量删除', '1', '1', '', '617', '1', '', '1540966605', '1551930033');
 INSERT INTO `tp_auth_rule` VALUES ('67', '61', 'Link/sort', '操作-排序', '1', '1', '', '616', '1', '', '1540967631', '1540967631');
-INSERT INTO `tp_auth_rule` VALUES ('68', '60', 'Ad/index', ' 广告管理', '1', '1', '', '62', '1', '', '1541120280', '1551936480');
-INSERT INTO `tp_auth_rule` VALUES ('69', '60', 'AdType/index', '广告位管理', '1', '1', '', '63', '1', '', '1541120316', '1551936598');
+INSERT INTO `tp_auth_rule` VALUES ('68', '60', 'Ad/index', ' 广告管理', '1', '1', '', '62', '1', 'fa fa-tv', '1541120280', '1551936480');
+INSERT INTO `tp_auth_rule` VALUES ('69', '60', 'AdType/index', '广告位管理', '1', '1', '', '63', '1', 'fa  fa-desktop', '1541120316', '1551936598');
 INSERT INTO `tp_auth_rule` VALUES ('70', '68', 'Ad/add', '操作-添加', '1', '1', '', '621', '1', '', '1541120344', '1551936492');
 INSERT INTO `tp_auth_rule` VALUES ('71', '68', 'Ad/edit', '操作-修改', '1', '1', '', '623', '1', '', '1541120377', '1551936511');
 INSERT INTO `tp_auth_rule` VALUES ('72', '68', 'Ad/del', '操作-删除', '1', '1', '', '625', '1', '', '1541120423', '1551936530');
@@ -298,8 +300,8 @@ INSERT INTO `tp_auth_rule` VALUES ('78', '69', 'AdType/del', '操作-删除', '1
 INSERT INTO `tp_auth_rule` VALUES ('79', '69', 'AdType/selectDel', '操作-批量删除', '1', '1', '', '636', '1', '', '1541120754', '1551936734');
 INSERT INTO `tp_auth_rule` VALUES ('80', '69', 'AdType/sort', '操作-排序', '1', '1', '', '638', '1', '', '1541120809', '1551936816');
 INSERT INTO `tp_auth_rule` VALUES ('81', '0', 'Users', '会员管理', '1', '1', '', '9', '1', 'fa fa-user', '1541399456', '1551774271');
-INSERT INTO `tp_auth_rule` VALUES ('82', '81', 'Users/index', '会员列表', '1', '1', '', '91', '1', '', '1541399506', '1551774272');
-INSERT INTO `tp_auth_rule` VALUES ('83', '81', 'UsersType/index', '会员组', '1', '1', '', '92', '1', '', '1541399529', '1551835915');
+INSERT INTO `tp_auth_rule` VALUES ('82', '81', 'Users/index', '会员列表', '1', '1', '', '91', '1', 'fa fa-user', '1541399506', '1551774272');
+INSERT INTO `tp_auth_rule` VALUES ('83', '81', 'UsersType/index', '会员组', '1', '1', '', '92', '1', 'fa fa-users', '1541399529', '1551835915');
 INSERT INTO `tp_auth_rule` VALUES ('84', '82', 'Users/add', '操作-添加', '1', '1', '', '911', '1', '', '1541399593', '1551774275');
 INSERT INTO `tp_auth_rule` VALUES ('85', '82', 'Users/edit', '操作-修改', '1', '1', '', '913', '1', '', '1541399618', '1551849024');
 INSERT INTO `tp_auth_rule` VALUES ('86', '82', 'Users/del', '操作-删除', '1', '1', '', '915', '1', '', '1541399639', '1551849072');
@@ -311,19 +313,19 @@ INSERT INTO `tp_auth_rule` VALUES ('91', '83', 'UsersType/edit', '操作-修改'
 INSERT INTO `tp_auth_rule` VALUES ('92', '83', 'UsersType/editPost', '操作-修改保存', '1', '1', '', '924', '1', '', '1541399799', '1551836049');
 INSERT INTO `tp_auth_rule` VALUES ('93', '83', 'UsersType/del', '操作-删除', '1', '1', '', '925', '1', '', '1541399809', '1551836070');
 INSERT INTO `tp_auth_rule` VALUES ('94', '82', 'Users/download', '操作-下载', '1', '1', '', '917', '1', '', '1541482111', '1551849111');
-INSERT INTO `tp_auth_rule` VALUES ('95', '60', 'Debris/index', '碎片管理', '1', '1', '', '64', '1', '', '1545728477', '1545728477');
+INSERT INTO `tp_auth_rule` VALUES ('95', '60', 'Debris/index', '碎片管理', '1', '1', '', '64', '1', 'fa fa-gift', '1545728477', '1545728477');
 INSERT INTO `tp_auth_rule` VALUES ('96', '95', 'Debris/add', '操作-添加', '1', '1', '', '641', '1', '', '1545728513', '1545728513');
 INSERT INTO `tp_auth_rule` VALUES ('97', '95', 'Debris/edit', '  操作-修改', '1', '1', '', '643', '1', '', '1545728548', '1551930413');
 INSERT INTO `tp_auth_rule` VALUES ('98', '95', 'Debris/del', '操作-删除', '1', '1', '', '645', '1', '', '1545728564', '1551930402');
 INSERT INTO `tp_auth_rule` VALUES ('99', '95', 'Debris/selectDel', '操作-批量删除', '1', '1', '', '646', '1', '', '1545728706', '1551930405');
 INSERT INTO `tp_auth_rule` VALUES ('100', '0', 'Template', '模板管理', '1', '1', '', '8', '1', 'fa fa-code', '1545898118', '1551774253');
-INSERT INTO `tp_auth_rule` VALUES ('101', '100', 'Template/index', '模板管理', '1', '1', '', '81', '1', '', '1545898150', '1551774256');
+INSERT INTO `tp_auth_rule` VALUES ('101', '100', 'Template/index', '模板管理', '1', '1', '', '81', '1', 'fa fa-file-code-o', '1545898150', '1551774256');
 INSERT INTO `tp_auth_rule` VALUES ('102', '101', 'Template/add', '  操作-添加', '1', '1', '', '811', '1', '', '1545898173', '1553760044');
 INSERT INTO `tp_auth_rule` VALUES ('103', '101', 'Template/edit', '操作-修改', '1', '1', '', '813', '1', '', '1545898195', '1553760052');
 INSERT INTO `tp_auth_rule` VALUES ('104', '101', 'Template/delete', '操作-删除', '1', '1', '', '815', '1', '', '1545898234', '1553760059');
 INSERT INTO `tp_auth_rule` VALUES ('105', '101', 'Template/img', '媒体文件-列表', '1', '1', '', '816', '1', '', '1545962259', '1553760061');
 INSERT INTO `tp_auth_rule` VALUES ('106', '101', 'Template/imgDel', '媒体文件-删除', '1', '1', '', '817', '1', '', '1545962287', '1553760065');
-INSERT INTO `tp_auth_rule` VALUES ('107', '1', 'System/sms', '短信配置', '1', '1', '', '13', '1', '', '1548400960', '1548400980');
+INSERT INTO `tp_auth_rule` VALUES ('107', '1', 'System/sms', '短信配置', '1', '1', '', '13', '1', 'fa fa-send', '1548400960', '1548400980');
 INSERT INTO `tp_auth_rule` VALUES ('108', '107', 'System/trySms', '操作-测试短信发送', '1', '1', '', '132', '1', '', '1548401007', '1551864103');
 INSERT INTO `tp_auth_rule` VALUES ('109', '0', 'Addons', '插件管理', '1', '0', '', '7', '1', 'fa fa-plug', '1551774339', '1551774539');
 INSERT INTO `tp_auth_rule` VALUES ('119', '83', 'UsersType/selectDel', '操作-批量删除', '1', '1', '', '926', '1', '', '1551836092', '1551836092');
@@ -354,10 +356,11 @@ INSERT INTO `tp_auth_rule` VALUES ('148', '40', 'Module/addPost', '操作-添加
 INSERT INTO `tp_auth_rule` VALUES ('149', '40', 'Module/editPost', '操作-修改保存', '1', '1', '', '414', '1', '', '1553760841', '1553760855');
 INSERT INTO `tp_auth_rule` VALUES ('150', '45', 'Module/fieldAddPost', '操作-添加保存', '1', '1', '', '4172', '1', '', '1553761010', '1553761046');
 INSERT INTO `tp_auth_rule` VALUES ('151', '45', 'Module/fieldEditPost', '操作-修改保存', '1', '1', '', '4174', '1', '', '1553761029', '1553761053');
-INSERT INTO `tp_auth_rule` VALUES ('152', '6', 'AdminLog/index', '管理员日志', '1', '1', '', '24', '1', '', '1553845141', '1553845141');
+INSERT INTO `tp_auth_rule` VALUES ('152', '6', 'AdminLog/index', '管理员日志', '1', '1', '', '24', '1', ' fa fa-book', '1553845141', '1553845141');
 INSERT INTO `tp_auth_rule` VALUES ('153', '152', 'AdminLog/del', '操作-删除', '1', '1', '', '241', '1', '', '1553845181', '1553845181');
 INSERT INTO `tp_auth_rule` VALUES ('154', '152', 'AdminLog/selectDel', '操作-批量删除', '1', '1', '', '242', '1', '', '1553845204', '1553845204');
 INSERT INTO `tp_auth_rule` VALUES ('155', '152', 'AdminLog/edit', '操作-查看', '1', '1', '', '243', '1', '', '1553848110', '1553848110');
+INSERT INTO `tp_auth_rule` VALUES ('156', '152', 'AdminLog/download', '操作-下载', '1', '1', '', '244', '1', '', '0', '0');
 
 -- ----------------------------
 -- Table structure for tp_cate
@@ -669,7 +672,7 @@ CREATE TABLE `tp_message` (
   KEY `status` (`id`,`status`,`sort`),
   KEY `cate_id` (`id`,`cate_id`,`status`),
   KEY `sort` (`id`,`cate_id`,`status`,`sort`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='留言表';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='留言表';
 
 -- ----------------------------
 -- Records of tp_message

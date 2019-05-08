@@ -45,6 +45,19 @@ class AdminLog extends Base {
         return $list;
     }
 
+    //获取下载列表
+    public static function getDownList($where=array(),$order=['sort','id'=>'desc']){
+        $list = self::where($where)
+            ->order($order)
+            ->select();
+        foreach($list as $k=>$v){
+            $list[$k]['useragent_all']=$list[$k]['useragent'];
+            $useragent = explode('(',$v['useragent']);
+            $list[$k]['useragent']=$useragent[0];
+        }
+        return $list;
+    }
+
     //管理员日志记录
     public static function record()
     {

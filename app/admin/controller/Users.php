@@ -28,7 +28,6 @@ namespace app\admin\controller;
 use app\common\model\UsersType;
 use app\common\model\Users as M;
 
-use think\facade\Db;
 use think\facade\Request;
 use think\facade\View;
 
@@ -178,7 +177,6 @@ class Users extends Base
         }
     }
 
-
     //下载
     public function download(){
         $PHPExcel = new PHPExcel(); //实例化PHPExcel类
@@ -203,18 +201,30 @@ class Users extends Base
         ;
 
         //调取列表
-        $list = Db::name('users')
-            ->alias('u')
-            ->leftJoin('users_type ut','u.type_id = ut.id')
-            ->field('u.*,ut.name as type_name')
-            ->order('u.id DESC')
-            ->select();
+        //全局查询条件
+        $where=[];
+        $keyword = Request::param('keyword');
+        if(!empty($keyword)){
+            $where[]=['email|mobile', 'like', '%'.$keyword.'%'];
+        }
+        $typeId  = Request::param('type_id');
+        if(!empty($typeId)){
+            $where[]=['type_id', '=', $typeId];
+        }
+        $dateran = Request::param('dateran');
+        if(!empty($dateran)){
+            $getDateran = get_dateran($dateran);
+            $where[]=['create_time', 'between', $getDateran];
+        }
+
+        //获取列表
+        $list = M::getDownList($where,$this->pageSize,['id'=>'desc']);
+        
         foreach ($list as $k=>$v){
             $v['sex']              = $v['sex']=='1'              ? '男'    : '女';
             $v['mobile_validated'] = $v['mobile_validated']=='1' ? '已认证' : '未认证';
             $v['email_validated']  = $v['email_validated']=='1'  ? '已认证' : '未认证';
             $v['status']           = $v['status']=='1'           ? '正常'   : '禁用';
-            $v['create_time']      = date("Y-m-d H:i",$v['create_time']);
             $v['last_login_time']  = date("Y-m-d H:i",$v['last_login_time']);
             $PHPSheet
                 ->setCellValue('A'.($k+2),$v['id'])

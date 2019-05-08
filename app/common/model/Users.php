@@ -50,4 +50,15 @@ class Users extends Base
         return $list;
     }
 
+    // 获取下载列表
+    public static function getDownList($where=array(),$order=['sort','id'=>'desc']){
+        $list = self::where($where)
+            ->order($order)
+            ->select();
+        foreach($list as $k=>$v){
+            $v['type_name'] = $v->usersType->getData('name');
+        }
+        return $list;
+    }
+
 }
