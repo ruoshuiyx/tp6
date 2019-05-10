@@ -85,6 +85,7 @@ ul.ztree>li>a>span{font-size:15px;font-weight:700}
 .user-panel>.info>p{ font-weight:normal}
 .user-header h5{ color:#ffffff}
 .juanzeng{ cursor:pointer}
+.study a{display:block; width:48%; float:left; margin:0 1%}
 @media screen and (max-width: 768px){
     .padding_0{ padding:0}
 	.uploader-list{ margin-top:10px;}
@@ -92,6 +93,7 @@ ul.ztree>li>a>span{font-size:15px;font-weight:700}
 	.search input,.search select{ margin-bottom:5px}
 	.search .m_10{ margin-top:0}
 	.search .f_r{ float:left; margin-left:0;margin-right: 10px;}
+	.study a{display:block; width:100%; margin:3px 0}
 }
 .js_show_img{ cursor:pointer; color:#333}
 .js_show_img:hover{ color:#3c8dbc}
@@ -100,3 +102,6 @@ ul.ztree>li>a>span{font-size:15px;font-weight:700}
 .boot-col-space15{margin: -7.5px;}
 .boot-col-space15>*{padding: 7.5px;}
 .boot-col-space15 .box{ margin-bottom:0}
+.main_ad ul{ padding:0; margin:0}
+.main_ad ul li{ list-style:none; padding:0; margin:0}
+.main_ad ul li a{ color:#333; line-height:28px}
