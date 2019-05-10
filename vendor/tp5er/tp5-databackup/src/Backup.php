@@ -252,11 +252,12 @@ class Backup
             $size = filesize($this->file[1]);
             $gz = fopen($this->file[1], 'r');
         }
+        $line = count(file($this->file[1]))+1;
         $sql = '';
         if ($start) {
             $this->config['compress'] ? gzseek($gz, $start) : fseek($gz, $start);
         }
-        for ($i = 0; $i < 1000; $i++) {
+        for ($i = 0; $i < $line; $i++) {
             $sql .= $this->config['compress'] ? gzgets($gz) : fgets($gz);
             if (preg_match('/.*;$/', trim($sql))) {
                 if (false !== $db->execute($sql)) {
