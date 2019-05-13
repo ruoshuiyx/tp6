@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInite216d12aba57a06aff93f3fee98f88aa
+class ComposerStaticInit2b6d27c7c9442c4b1eb2d9fc93b24417
 {
     public static $files = array (
         '538ca81a9a966a6716601ecf48f4eaef' => __DIR__ . '/..' . '/opis/closure/functions.php',
@@ -16,7 +16,6 @@ class ComposerStaticInite216d12aba57a06aff93f3fee98f88aa
         array (
             'tp5er\\' => 6,
             'think\\view\\driver\\' => 18,
-            'think\\composer\\' => 15,
             'think\\captcha\\' => 14,
             'think\\' => 6,
         ),
@@ -46,10 +45,6 @@ class ComposerStaticInite216d12aba57a06aff93f3fee98f88aa
         'think\\view\\driver\\' => 
         array (
             0 => __DIR__ . '/..' . '/topthink/think-view/src',
-        ),
-        'think\\composer\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/topthink/think-installer/src',
         ),
         'think\\captcha\\' => 
         array (
@@ -107,10 +102,10 @@ class ComposerStaticInite216d12aba57a06aff93f3fee98f88aa
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInite216d12aba57a06aff93f3fee98f88aa::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInite216d12aba57a06aff93f3fee98f88aa::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInite216d12aba57a06aff93f3fee98f88aa::$prefixesPsr0;
-            $loader->fallbackDirsPsr0 = ComposerStaticInite216d12aba57a06aff93f3fee98f88aa::$fallbackDirsPsr0;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit2b6d27c7c9442c4b1eb2d9fc93b24417::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit2b6d27c7c9442c4b1eb2d9fc93b24417::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit2b6d27c7c9442c4b1eb2d9fc93b24417::$prefixesPsr0;
+            $loader->fallbackDirsPsr0 = ComposerStaticInit2b6d27c7c9442c4b1eb2d9fc93b24417::$fallbackDirsPsr0;
 
         }, null, ClassLoader::class);
     }

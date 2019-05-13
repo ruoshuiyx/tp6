@@ -80,7 +80,7 @@ class Users extends Base
         $usersType = UsersType::where('status','=',1)
             ->select();
         if(!count($usersType)){
-            error('请先添加会员组');
+            $this->error('请先添加会员组');
         }
         $view = [
             'usersType' => $usersType,
@@ -97,19 +97,19 @@ class Users extends Base
             $result = $this->validate($data,$this->validate);
             if (true !== $result) {
                 // 验证失败 输出错误信息
-                error($result);
+                $this->error($result);
             }else{
                 if(empty($data['password'])){
-                    error('请填写密码');
+                    $this->error('请填写密码');
                 }
                 $data['last_login_time'] = time();
                 $data['create_ip'] = $data['last_login_ip'] = Request::ip();
                 $data['password'] = md5($data['password']);
                 $result =  M::addPost($data);
                 if($result['error']){
-                    error($result['msg']);
+                    $this->error($result['msg']);
                 }else{
-                    success($result['msg'],'index');
+                    $this->success($result['msg'],'index');
                 }
             }
         }
@@ -136,7 +136,7 @@ class Users extends Base
             $result = $this->validate($data,$this->validate);
             if (true !== $result) {
                 // 验证失败 输出错误信息
-                error($result);
+                $this->error($result);
             }else{
                 if($data['password']) {
                     $data['password'] = md5($data['password']);
@@ -145,9 +145,9 @@ class Users extends Base
                 }
                 $result = M::editPost($data);
                 if($result['error']){
-                    error($result['msg']);
+                    $this->error($result['msg']);
                 }else{
-                    success($result['msg'],'index');
+                    $this->success($result['msg'],'index');
                 }
             }
         }

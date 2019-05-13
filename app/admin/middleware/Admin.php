@@ -62,7 +62,7 @@ class Admin
                 $auth = new \Auth();
                 $result = $auth->check($route,$admin_id);
                 if(!$result){
-                    error('您无此操作权限!');
+                    $this->error('您无此操作权限!');
                 }
             }
         }

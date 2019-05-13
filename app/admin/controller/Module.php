@@ -118,7 +118,7 @@ class module extends Base
             $tablename = $prefix.Request::param('name');
             //判断表名是否已经存在
             if(in_array($tablename,$tables)){
-                error('该表已经存在！');
+                $this->error('该表已经存在！');
             }
             //$name = ucfirst(Request::post('name'));
 
@@ -130,7 +130,7 @@ class module extends Base
             $moduleid = $moduleid['id'];
 
             if(empty($moduleid)){
-                error('添加模型失败！');
+                $this->error('添加模型失败！');
             }
             //暂时只提供文章模型
             $emptytable = Request::post('emptytable');
@@ -174,9 +174,9 @@ class module extends Base
             }
 
             if ($moduleid !==false) {
-                success('添加模型成功', 'index');
+                $this->success('添加模型成功', 'index');
             }else{
-                error('添加模型失败');
+                $this->error('添加模型失败');
             }
         }
     }
@@ -200,9 +200,9 @@ class module extends Base
         if(Request::isPost()){
             $data = Request::except(['name']);
             if(Db::name('module')->update($data)!==false){
-                success('修改成功!', 'index');
+                $this->success('修改成功!', 'index');
             }else{
-                error('修改失败！');
+                $this->error('修改失败！');
             }
         }
     }
@@ -313,14 +313,14 @@ class module extends Base
                 $tablename=$prefix.$name;
                 $Fields=Db::getTableFields($tablename);
                 if(in_array($fieldName,$Fields)){
-                    error('字段名已经存在！');
+                    $this->error('字段名已经存在！');
                 }
                 if(empty($data['type']))
-                    error('请选择字段类型！');
+                    $this->error('请选择字段类型！');
                 if(empty($data['field']))
-                    error('请填写字段名！');
+                    $this->error('请填写字段名！');
                 if(empty($data['name']))
-                    error('请填写别名！');
+                    $this->error('请填写别名！');
                 $addfieldsql =$this->get_tablesql($data,'add');
                 if(isset($data['setup'])) {
                     $data['setup'] = array2string($data['setup']);
@@ -335,9 +335,9 @@ class module extends Base
                     }else{
                         $model->execute($addfieldsql);
                     }
-                    success('添加成功！', url('field',array('id'=>input('post.moduleid'))));
+                    $this->success('添加成功！', url('field',array('id'=>input('post.moduleid'))));
                 } else {
-                    error('添加失败！');
+                    $this->error('添加失败！');
                 }
             }
         }
@@ -372,7 +372,7 @@ class module extends Base
                 ->value('name');
             $prefix = Config::get('database.prefix');
             if($this->_iset_field($prefix.$name,$fieldName) && $oldfield!=$fieldName){
-                error('字段名重复！');
+                $this->error('字段名重复！');
             }
 
             $editfieldsql =$this->get_tablesql(Request::post(),'edit');
@@ -390,9 +390,9 @@ class module extends Base
                 }else{
                     $model->execute($editfieldsql);
                 }
-                success('修改成功！',url('field',array('id'=>Request::post('moduleid'))));
+                $this->success('修改成功！',url('field',array('id'=>Request::post('moduleid'))));
             } else {
-                error('修改失败！');
+                $this->error('修改失败！');
             }
         }
     }

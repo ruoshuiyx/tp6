@@ -52,9 +52,9 @@ class System extends Base
             $result = \app\common\model\System::where('id',1)
                 ->update($data);
             if($result) {
-                success('修改成功', 'system');
+                $this->success('修改成功', 'system');
             } else {
-                error('修改失败');
+                $this->error('修改失败');
             }
         }
     }
@@ -80,7 +80,7 @@ class System extends Base
                 $result -> value = $v;
                 $result->save();
             }
-            success('修改成功', 'email');
+            $this->success('修改成功', 'email');
         }
     }
 
@@ -129,7 +129,7 @@ class System extends Base
                 ])
                     ->update(['value'=>$v]);
             }
-            success('保存成功', 'sms');
+            $this->success('保存成功', 'sms');
         }
     }
 

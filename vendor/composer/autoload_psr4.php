@@ -8,7 +8,6 @@ $baseDir = dirname($vendorDir);
 return array(
     'tp5er\\' => array($vendorDir . '/tp5er/tp5-databackup/src'),
     'think\\view\\driver\\' => array($vendorDir . '/topthink/think-view/src'),
-    'think\\composer\\' => array($vendorDir . '/topthink/think-installer/src'),
     'think\\captcha\\' => array($vendorDir . '/topthink/think-captcha/src'),
     'think\\' => array($vendorDir . '/topthink/framework/src/think', $vendorDir . '/topthink/think-template/src'),
     'app\\' => array($baseDir . '/app'),

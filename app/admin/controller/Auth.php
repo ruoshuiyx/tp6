@@ -77,20 +77,20 @@ class Auth extends Base
         if(Request::isPost()){
             $data = Request::post();
             if(empty($data['group_id'])){
-                error('请选择用户组');
+                $this->error('请选择用户组');
             }else{
                 $group_id = $data['group_id'];
                 unset($data['group_id']);
             }
             //单独验证密码
             if (empty($data['password'])) {
-                error('密码不能为空');
+                $this->error('密码不能为空');
             }
             //验证
             $result = $this->validate($data,'Admin');
             if (true !== $result) {
                 // 验证失败 输出错误信息
-                error($result);
+                $this->error($result);
             }
 
             $data['password'] = md5(trim($data['password']));
@@ -104,9 +104,9 @@ class Auth extends Base
                     'uid'  =>  $result->id,
                     'group_id' =>  $group_id
                 ]);
-                success('管理员添加成功', 'adminList');
+                $this->success('管理员添加成功', 'adminList');
             }else{
-                error('管理员添加失败');
+                $this->error('管理员添加失败');
             }
         }else{
             $auth_group = AuthGroup::where('status','=',1)
@@ -176,7 +176,7 @@ class Auth extends Base
 
             $result = $this->validate($data,'Admin');
             if (true !== $result) {
-                error($result);
+                $this->error($result);
             }
 
             if ($password){
@@ -189,7 +189,7 @@ class Auth extends Base
             AuthGroupAccess::update([
                 'group_id' =>  $group_id
             ],['uid'=>$data['id']]);
-            success('管理员修改成功!','Auth/adminList');
+            $this->success('管理员修改成功!','Auth/adminList');
 
         }else{
             if(Request::param('id')){
@@ -258,13 +258,13 @@ class Auth extends Base
             $result = $this->validate($data,'AuthGroup');
             if (true !== $result) {
                 // 验证失败 输出错误信息
-                error($result);
+                $this->error($result);
             }else{
                 $result =  AuthGroup::create($data);
                 if($result){
-                    success('用户组添加成功', 'Auth/adminGroup');
+                    $this->success('用户组添加成功', 'Auth/adminGroup');
                 }else{
-                    error('用户组添加失败');
+                    $this->error('用户组添加失败');
                 }
             }
         }else{
@@ -283,11 +283,11 @@ class Auth extends Base
             $result = $this->validate($data,'AuthGroup');
             if (true !== $result) {
                 // 验证失败 输出错误信息
-                error($result);
+                $this->error($result);
             }else{
                 $where['id'] = $data['id'];
                 AuthGroup::update($data,$where);
-                success('修改成功!','Auth/adminGroup');
+                $this->success('修改成功!','Auth/adminGroup');
             }
         }else{
             $id = Request::param('id');
@@ -433,15 +433,15 @@ class Auth extends Base
         if(Request::isPost()){
             $data=Request::post();
             if(empty($data['title'])){
-                error('权限名称不可为空');
+                $this->error('权限名称不可为空');
             }
             if(empty($data['sort'])){
-                error('排序不可为空');
+                $this->error('排序不可为空');
             }
             if(AuthRule::create($data)){
-                success('权限添加成功', 'Auth/adminRule');
+                $this->success('权限添加成功', 'Auth/adminRule');
             }else{
-                error('权限添加失败');
+                $this->error('权限添加失败');
             }
         }else{
             $list = Db::name('auth_rule')
@@ -465,7 +465,7 @@ class Auth extends Base
             $data=Request::param();
             $where['id'] = $data['id'];
             AuthRule::update($data,$where);
-            success('修改成功!','Auth/adminRule');
+            $this->success('修改成功!','Auth/adminRule');
         }else{
             $list = Db::name('auth_rule')
                 ->order('sort ASC')

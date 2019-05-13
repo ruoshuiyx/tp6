@@ -79,13 +79,13 @@ class UsersType extends Base
         $result = $this->validate($data,$this->validate);
         if (true !== $result) {
             // 验证失败 输出错误信息
-            error($result);
+            $this->error($result);
         }else{
             $result =  M::addPost($data);
             if($result['error']){
-                error($result['msg']);
+                $this->error($result['msg']);
             }else{
-                success($result['msg'],'index');
+                $this->success($result['msg'],'index');
             }
         }
     }
@@ -107,13 +107,13 @@ class UsersType extends Base
         $result = $this->validate($data,$this->validate);
         if (true !== $result) {
             // 验证失败 输出错误信息
-            error($result);
+            $this->error($result);
         }else{
             $result = M::editPost($data);
             if($result['error']){
-                error($result['msg']);
+                $this->error($result['msg']);
             }else{
-                success($result['msg'],'index');
+                $this->success($result['msg'],'index');
             }
         }
     }

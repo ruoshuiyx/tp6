@@ -114,13 +114,13 @@ class Template extends Base
             }
             $file = $path.$filename.'.'.$type;
             if(file_exists($file)){
-                error('文件已经存在!');
+                $this->error('文件已经存在!');
             }else{
                 file_put_contents($file,stripslashes(input('post.content')));
                 if($type=='html'){
-                    success('添加成功!',url('index', ['type' => 'html']));
+                    $this->success('添加成功!',url('index', ['type' => 'html']));
                 }else{
-                    success('添加成功!',url('index', ['type' => $type]));
+                    $this->success('添加成功!',url('index', ['type' => $type]));
                 }
             }
         }
@@ -146,7 +146,7 @@ class Template extends Base
                 'type'=>$type
             ];
         }else{
-            error('文件不存在！');
+            $this->error('文件不存在！');
         }
         $view = [
             'info'=>$info,
@@ -170,13 +170,13 @@ class Template extends Base
             if(file_exists($file)){
                 file_put_contents($file,stripslashes(input('content')));
                 if($type=='html'){
-                    success('修改成功!',url('index', ['type' => 'html']));
+                    $this->success('修改成功!',url('index', ['type' => 'html']));
                 }else{
-                    success('修改成功!',url('index', ['type' => $type]));
+                    $this->success('修改成功!',url('index', ['type' => $type]));
                 }
 
             }else{
-                error('文件不存在!');
+                $this->error('文件不存在!');
             }
         }
     }

@@ -134,10 +134,10 @@ class Error extends Base
                     if($v['required']==1 ){
                         if(array_key_exists($v['field'],$data)){
                             if(!$data[$v['field']]){
-                                error($v['name'].'为必填项!');
+                                $this->error($v['name'].'为必填项!');
                             }
                         }else{
-                            error($v['name'].'为必填项!');
+                            $this->error($v['name'].'为必填项!');
                         }
 
                     }
@@ -150,7 +150,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if(! ($length>= $minlength && $length<=$maxlength) ){
-                                error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
                             }
                             break;
                         case 'title'://标题
@@ -158,7 +158,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if(! ($length>= $minlength && $length<=$maxlength) ){
-                                error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
                             }
                             break;
                         case 'text'://单行文本
@@ -166,7 +166,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if(! ($length>= $minlength && $length<=$maxlength) ){
-                                error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
                             }
                             break;
                         case 'textarea'://多行文本
@@ -176,7 +176,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if(! ($length>= $minlength && $length<=$maxlength) ){
-                                error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
                             }
                             break;
                         case 'editor'://编辑器
@@ -184,7 +184,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if(! ($length>= $minlength && $length<=$maxlength) ){
-                                error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
                             }
                             break;
                         case 'select'://下拉列表
@@ -192,7 +192,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if(! ($length>= $minlength && $length<=$maxlength) ){
-                                error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
                             }
                             break;
                         case 'radio'://单选按钮
@@ -200,7 +200,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if(! ($length>= $minlength && $length<=$maxlength) ){
-                                error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
                             }
                             break;
                         case 'checkbox'://复选框
@@ -211,7 +211,7 @@ class Error extends Base
                                 $length = strlen($data[$v['field']]);
                                 //判断长度是否合法
                                 if(! ($length>= $minlength && $length<=$maxlength) ){
-                                    error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                    $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
                                 }
                             }
 
@@ -221,7 +221,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if(! ($length>= $minlength && $length<=$maxlength) ){
-                                error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
                             }
                             break;
                         case 'images'://多张图片
@@ -235,7 +235,7 @@ class Error extends Base
                                 $length = strlen($data[$v['field']]);
                                 //判断长度是否合法
                                 if(! ($length>= $minlength && $length<=$maxlength) ){
-                                    error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                    $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
                                 }
                                 //去除上传图片和文件的无用字段
                                 unset($data[$v['field'].'_title']);
@@ -248,7 +248,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if(! ($length>= $minlength && $length<=$maxlength) ){
-                                error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
                             }
                             break;
                         case 'number'://数字
@@ -256,7 +256,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if(! ($length>= $minlength && $length<=$maxlength) ){
-                                error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
                             }
                             break;
                         case 'datetime'://时间
@@ -265,7 +265,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if(! ($length>= $minlength && $length<=$maxlength) ){
-                                error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
                             }
                             break;
                         default:
@@ -276,9 +276,9 @@ class Error extends Base
             if($data){
                 $id = Db::name($this->table)->insertGetId($data);
                 if($id){
-                    success('添加成功!',url('index', ['cate' => $data['cate_id']]));
+                    $this->success('添加成功!',url('index', ['cate' => $data['cate_id']]));
                 }else{
-                    error('添加失败!');
+                    $this->error('添加失败!');
                 }
             }
         }
@@ -348,10 +348,10 @@ class Error extends Base
                     if($v['required']==1 ){
                         if(array_key_exists($v['field'],$data)){
                             if(!$data[$v['field']]){
-                                error($v['name'].'为必填项!');
+                                $this->error($v['name'].'为必填项!');
                             }
                         }else{
-                            error($v['name'].'为必填项!');
+                            $this->error($v['name'].'为必填项!');
                         }
 
                     }
@@ -364,7 +364,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if(! ($length>= $minlength && $length<=$maxlength) ){
-                                error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
                             }
                             break;
                         case 'title'://标题
@@ -372,7 +372,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if(! ($length>= $minlength && $length<=$maxlength) ){
-                                error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
                             }
                             break;
                         case 'text'://单行文本
@@ -380,7 +380,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if(! ($length>= $minlength && $length<=$maxlength) ){
-                                error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
                             }
                             break;
                         case 'textarea'://多行文本
@@ -390,7 +390,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if(! ($length>= $minlength && $length<=$maxlength) ){
-                                error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
                             }
                             break;
                         case 'editor'://编辑器
@@ -398,7 +398,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if(! ($length>= $minlength && $length<=$maxlength) ){
-                                error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
                             }
                             break;
                         case 'select'://下拉列表
@@ -406,7 +406,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if(! ($length>= $minlength && $length<=$maxlength) ){
-                                error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
                             }
                             break;
                         case 'radio'://单选按钮
@@ -414,7 +414,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if(! ($length>= $minlength && $length<=$maxlength) ){
-                                error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
                             }
                             break;
                         case 'checkbox'://复选框
@@ -425,7 +425,7 @@ class Error extends Base
                                 $length = strlen($data[$v['field']]);
                                 //判断长度是否合法
                                 if(! ($length>= $minlength && $length<=$maxlength) ){
-                                    error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                    $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
                                 }
                             }
 
@@ -435,7 +435,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if(! ($length>= $minlength && $length<=$maxlength) ){
-                                error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
                             }
                             break;
                         case 'images'://多张图片
@@ -449,7 +449,7 @@ class Error extends Base
                                 $length = strlen($data[$v['field']]);
                                 //判断长度是否合法
                                 if(! ($length>= $minlength && $length<=$maxlength) ){
-                                    error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                    $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
                                 }
                                 //去除上传图片和文件的无用字段
                                 unset($data[$v['field'].'_title']);
@@ -462,7 +462,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if(! ($length>= $minlength && $length<=$maxlength) ){
-                                error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
                             }
                             break;
                         case 'number'://数字
@@ -470,7 +470,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if(! ($length>= $minlength && $length<=$maxlength) ){
-                                error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
                             }
                             break;
                         case 'datetime'://时间
@@ -479,7 +479,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if(! ($length>= $minlength && $length<=$maxlength) ){
-                                error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
                             }
                             break;
                         default:
@@ -492,9 +492,9 @@ class Error extends Base
                     ->where('id',$data['id'])
                     ->update($data);
                 if($result){
-                    success('修改成功!',url('index', ['cate' => $data['cate_id']]));
+                    $this->success('修改成功!',url('index', ['cate' => $data['cate_id']]));
                 }else{
-                    error('修改失败!');
+                    $this->error('修改失败!');
                 }
             }
         }

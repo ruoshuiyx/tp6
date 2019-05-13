@@ -10,8 +10,6 @@
 // +----------------------------------------------------------------------
 use think\facade\Route;
 
-//Route::any('hello', 'index/index');
-
 //前台路由部分
 $cate = \think\facade\Db::name('cate')
     ->alias('a')
