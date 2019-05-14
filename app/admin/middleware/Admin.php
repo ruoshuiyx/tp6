@@ -27,6 +27,8 @@ namespace app\admin\middleware;
 
 use think\facade\Session;
 use think\facade\Request;
+use think\Response;
+use think\exception\HttpResponseException;
 
 class Admin
 {
@@ -72,5 +74,40 @@ class Admin
 
         //中间件handle方法的返回值必须是一个Response对象。
         return $next($request);
+    }
+
+    /**
+     * 操作错误跳转
+     * @param  mixed   $msg 提示信息
+     * @param  string  $url 跳转的URL地址
+     * @param  mixed   $data 返回的数据
+     * @param  integer $wait 跳转等待时间
+     * @param  array   $header 发送的Header信息
+     * @return void
+     */
+    protected function error($msg = '', string $url = null, $data = '', int $wait = 3, array $header = []): Response
+    {
+        if (is_null($url)) {
+            $url = request()->isAjax() ? '' : 'javascript:history.back(-1);';
+        } elseif ($url) {
+            $url = (strpos($url, '://') || 0 === strpos($url, '/')) ? $url : app('route')->buildUrl($url);
+        }
+
+        $result = [
+            'code' => 0,
+            'msg'  => $msg,
+            'data' => $data,
+            'url'  => $url,
+            'wait' => $wait,
+        ];
+
+        $type = (request()->isJson() || request()->isAjax()) ? 'json' : 'html';
+        if ('html' == strtolower($type)) {
+            $type = 'jump';
+        }
+
+        $response = Response::create($result, $type)->header($header)->options(['jump_template' => app('config')->get('app.dispatch_error_tmpl')]);
+
+        throw new HttpResponseException($response);
     }
 }
