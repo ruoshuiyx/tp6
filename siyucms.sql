@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2019-05-15 15:41:43
+Date: 2019-05-15 15:54:09
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -176,7 +176,7 @@ CREATE TABLE `tp_auth_group` (
 -- Records of tp_auth_group
 -- ----------------------------
 INSERT INTO `tp_auth_group` VALUES ('1', '超级管理员', '1', '0,1,4,5,38,6,7,10,11,12,14,13,8,15,16,17,18,19,20,21,9,22,23,24,25,28,27,26,29,3', '1537944508', '1537944508');
-INSERT INTO `tp_auth_group` VALUES ('2', '测试组', '1', '1,4,5,107,6,152,153,154,155,29,30,34,32,33,31,35,36,39,40,41,42,44,45,46,47,48,49,51,52,53,54,60,61,62,63,64,67,68,70,71,74,73,69,76,77,137,80,95,96,97,131,132,109,138,100,101,102,103,105,81,82,84,85,88,94,83,89,91,120,121,', '1536304526', '1555642751');
+INSERT INTO `tp_auth_group` VALUES ('2', '测试组', '1', '0,1,4,5,107,157,158,160,6,152,153,154,155,29,30,34,32,33,31,35,36,39,40,41,42,44,45,46,47,48,49,51,52,53,54,60,61,62,63,64,67,68,70,71,74,73,69,76,77,137,80,95,96,97,131,132,109,138,100,101,102,103,105,81,82,84,85,88,94,83,89,91,120,121,', '1536304526', '1557906836');
 
 -- ----------------------------
 -- Table structure for tp_auth_group_access
@@ -216,7 +216,7 @@ CREATE TABLE `tp_auth_rule` (
   `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=157 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=166 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tp_auth_rule
@@ -361,6 +361,15 @@ INSERT INTO `tp_auth_rule` VALUES ('153', '152', 'AdminLog/del', '操作-删除'
 INSERT INTO `tp_auth_rule` VALUES ('154', '152', 'AdminLog/selectDel', '操作-批量删除', '1', '1', '', '242', '1', '', '1553845204', '1553845204');
 INSERT INTO `tp_auth_rule` VALUES ('155', '152', 'AdminLog/edit', '操作-查看', '1', '1', '', '243', '1', '', '1553848110', '1553848110');
 INSERT INTO `tp_auth_rule` VALUES ('156', '152', 'AdminLog/download', '操作-下载', '1', '1', '', '244', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('157', '1', 'SystemGroup/index', '系统设置分组', '1', '1', '', '14', '1', 'fa  fa-cubes', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('158', '157', 'SystemGroup/add', '操作-添加', '1', '1', '', '141', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('159', '157', 'SystemGroup/addPost', '操作-添加保存', '1', '1', '', '142', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('160', '157', 'SystemGroup/edit', '操作-修改', '1', '1', '', '143', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('161', '157', 'SystemGroup/editPost', '操作-修改保存', '1', '1', '', '144', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('162', '157', 'SystemGroup/del', '修改-删除', '1', '1', '', '145', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('163', '157', 'SystemGroup/selectDel', '修改-批量删除', '1', '1', '', '146', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('164', '157', 'SystemGroup/sort', '修改-排序', '1', '1', '', '147', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('165', '157', 'SystemGroup/state', '修改-状态', '1', '1', '', '147', '1', '', '0', '0');
 
 -- ----------------------------
 -- Table structure for tp_cate
@@ -870,7 +879,7 @@ INSERT INTO `tp_system_group` VALUES ('1', '基础设置', '基础设置', '1', 
 INSERT INTO `tp_system_group` VALUES ('2', 'SEO设置', 'SEO设置', '2', '1', '1557903521', '1557903521');
 INSERT INTO `tp_system_group` VALUES ('3', '开关设置', '开关设置', '3', '1', '1557903537', '1557903537');
 INSERT INTO `tp_system_group` VALUES ('4', '模板设置', '模板设置', '4', '1', '1557903562', '1557903567');
-INSERT INTO `tp_system_group` VALUES ('5', '自定义', '自定义系统设置信息', '5', '1', '1557905966', '1557905974');
+INSERT INTO `tp_system_group` VALUES ('5', '自定义', '自定义系统设置信息', '5', '1', '1557905966', '1557906261');
 
 -- ----------------------------
 -- Table structure for tp_team
