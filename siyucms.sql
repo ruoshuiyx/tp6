@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2019-05-08 08:30:19
+Date: 2019-05-15 15:41:43
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -61,7 +61,7 @@ CREATE TABLE `tp_admin` (
 -- ----------------------------
 -- Records of tp_admin
 -- ----------------------------
-INSERT INTO `tp_admin` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '1555051306', '127.0.0.1', '1', 'admin', '/uploads/20181228/e5885dc546eb1369482cdf29fb07decd.jpg', '1553846932', '1553846932');
+INSERT INTO `tp_admin` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '1557900047', '127.0.0.1', '1', 'admin', '/uploads/20181228/e5885dc546eb1369482cdf29fb07decd.jpg', '1553846932', '1553846932');
 
 -- ----------------------------
 -- Table structure for tp_admin_log
@@ -847,6 +847,30 @@ CREATE TABLE `tp_system` (
 -- Records of tp_system
 -- ----------------------------
 INSERT INTO `tp_system` VALUES ('1', 'SIYUCMS', 'www.xxx.com', 'SIYUCMS 官网', 'SIYUCMS，SIYUCMS内容管理系统，php，ThinkPHP CMS，ThinkPHP建站系统', 'SIYUCMS 是一款基于 ThinkPHP5 + AdminLTE 的内容管理系统。后台界面采用响应式布局，清爽、极简、简单、易用，是做开发的最佳选择。', '辽ICP备12345678号-1', 'Copyright © SIYUCMS 2019.All right reserved.Powered by SIYUCMS', '辽宁省沈阳市铁西区重工街XX路XX号1-1-1', 'X先生', '158 4018 8888', '010-8888 9999', '010-8888 7777', '407593529@qq.com', '407593529', '/uploads/20181226/a3a4245ec095da4903c6c81123fd480d.png', '/uploads/20181226/cb7a4c21d6443bc5e7a8d16ac2cbe242.png', '0', '0', '1', '0', 'default', 'html');
+
+-- ----------------------------
+-- Table structure for tp_system_group
+-- ----------------------------
+DROP TABLE IF EXISTS `tp_system_group`;
+CREATE TABLE `tp_system_group` (
+  `id` int(8) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL COMMENT '分组名称',
+  `description` text COMMENT '备注',
+  `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
+  `status` int(1) DEFAULT '0' COMMENT '状态（1 正常，0 锁定）',
+  `create_time` int(11) DEFAULT '0' COMMENT '添加时间',
+  `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='系统设置分组表';
+
+-- ----------------------------
+-- Records of tp_system_group
+-- ----------------------------
+INSERT INTO `tp_system_group` VALUES ('1', '基础设置', '基础设置', '1', '1', '1557903491', '1557903491');
+INSERT INTO `tp_system_group` VALUES ('2', 'SEO设置', 'SEO设置', '2', '1', '1557903521', '1557903521');
+INSERT INTO `tp_system_group` VALUES ('3', '开关设置', '开关设置', '3', '1', '1557903537', '1557903537');
+INSERT INTO `tp_system_group` VALUES ('4', '模板设置', '模板设置', '4', '1', '1557903562', '1557903567');
+INSERT INTO `tp_system_group` VALUES ('5', '自定义', '自定义系统设置信息', '5', '1', '1557905966', '1557905974');
 
 -- ----------------------------
 -- Table structure for tp_team
