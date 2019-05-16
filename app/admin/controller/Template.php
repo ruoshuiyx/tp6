@@ -36,7 +36,7 @@ class Template extends Base
     function initialize()
     {
         parent::initialize();
-        //查找所有数据
+        //查找所有系统设置表数据
         $system = System::getListField()->toArray();
         //格式化设置字段
         $system = sysgem_setup($system);

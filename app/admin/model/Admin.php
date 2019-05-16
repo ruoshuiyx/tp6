@@ -25,6 +25,7 @@
  */
 namespace app\admin\model;
 
+use app\common\model\System;
 use think\facade\Db;
 use think\facade\Event;
 use think\facade\Request;
@@ -44,9 +45,19 @@ class Admin extends Base {
      */
     public static function checkLogin()
     {
+        //查找所有系统设置表数据
+        $system = System::getListField()->toArray();
+        //格式化设置字段
+        $system = sysgem_setup($system);
+        $systemArr = [];
+        foreach($system as $k=>$v){
+            $systemArr[$v['field']] = $v['value'];
+        }
+        $system = $systemArr;
+
         $username = Request::param("username");
         $password = Request::param("password");
-        $open_code = Db::name('system')->where('id',1)->value('code');
+        $open_code = $system['code'];
         if ($open_code){
             $code = Request::param("vercode");
             if( !captcha_check($code ))

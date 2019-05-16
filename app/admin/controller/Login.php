@@ -37,8 +37,19 @@ class Login
     //登录页面
     public function index()
     {
+        //查找所有系统设置表数据
+        $system = System::getListField()->toArray();
+        //格式化设置字段
+        $system = sysgem_setup($system);
+        $systemArr = [];
+        foreach($system as $k=>$v){
+            $systemArr[$v['field']] = $v['value'];
+        }
+        $system = $systemArr;
+
+
         $view['mobile'] = Request::isMobile();
-        $view['system'] = System::find(1);
+        $view['system'] = $system;
         View::assign($view);
         return View::fetch();
     }
