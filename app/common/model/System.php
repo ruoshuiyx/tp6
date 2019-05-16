@@ -39,7 +39,18 @@ class System extends Base
         return $this->belongsTo('SystemGroup','group_id');
     }
 
-    // 获取列表
+    //格式化获取所有字段(后台列表)
+    public static function getListField($order=['sort','id'=>'desc']){
+        $list = self::order($order)
+            ->select();
+        foreach($list as $k=>$v){
+            $v['type_name']  = self::getType($v['type']);
+            $v['group_name'] = $v->systemGroup->getData('name');
+        }
+        return $list;
+    }
+
+    // 获取字段列表
     public static function getList($where=array(),$pageSize,$order=['sort','id'=>'desc']){
         $list = self::where($where)
             ->order($order)

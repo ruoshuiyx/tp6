@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2019-05-16 10:29:54
+Date: 2019-05-16 13:58:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -849,32 +849,33 @@ CREATE TABLE `tp_system` (
   `create_time` int(11) DEFAULT '0' COMMENT '添加时间',
   `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COMMENT='系统设置表';
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COMMENT='系统设置表';
 
 -- ----------------------------
 -- Records of tp_system
 -- ----------------------------
-INSERT INTO `tp_system` VALUES ('1', '1', 'name', '网站名称', '0', null, 'text', 'array (\n  \'upload_allowext\' => \'\',\n)', '1', '1', null, '1557964941', '1557971301');
-INSERT INTO `tp_system` VALUES ('2', '1', 'logo', ' 网站LOGO', '0', null, 'image', 'array (\n  \'upload_allowext\' => \'jpg|jpeg|gif|png\',\n)', '2', '1', null, '1557968436', '1557968436');
-INSERT INTO `tp_system` VALUES ('3', '1', 'icp', '备案号', '0', '', 'text', null, '3', '1', null, '1557968883', '1557968883');
-INSERT INTO `tp_system` VALUES ('4', '1', 'copyright', '版权信息', '0', '', 'textarea', null, '4', '1', null, '1557968923', '1557968923');
-INSERT INTO `tp_system` VALUES ('5', '1', 'address', '公司地址', '0', '', 'text', null, '5', '1', null, '1557968979', '1557968979');
-INSERT INTO `tp_system` VALUES ('6', '1', 'contacts', '联系人', '0', '', 'text', null, '6', '1', null, '1557969011', '1557969011');
-INSERT INTO `tp_system` VALUES ('7', '1', 'tel', '联系电话', '0', '', 'text', null, '7', '1', null, '1557969048', '1557969048');
-INSERT INTO `tp_system` VALUES ('8', '1', 'mobile_phone', '手机号码', '0', '', 'text', null, '8', '1', null, '1557969066', '1557969066');
-INSERT INTO `tp_system` VALUES ('9', '1', 'fax', '传真号码', '0', '', 'text', null, '9', '1', null, '1557969093', '1557969093');
-INSERT INTO `tp_system` VALUES ('10', '1', 'email', '邮箱账号', '0', '', 'text', null, '10', '1', null, '1557969113', '1557969113');
-INSERT INTO `tp_system` VALUES ('11', '1', 'qq', 'QQ', '0', '', 'text', null, '11', '1', null, '1557969147', '1557969147');
-INSERT INTO `tp_system` VALUES ('12', '1', 'qrcode', '二维码', '0', '', 'text', null, '12', '1', null, '1557969170', '1557969170');
-INSERT INTO `tp_system` VALUES ('13', '2', 'title', 'SEO标题', '0', '', 'text', null, '21', '1', null, '1557969266', '1557969266');
-INSERT INTO `tp_system` VALUES ('14', '2', 'key', 'SEO关键字', '0', '', 'textarea', null, '22', '1', null, '1557969297', '1557969297');
-INSERT INTO `tp_system` VALUES ('15', '2', 'des', 'SEO描述', '0', '', 'textarea', null, '23', '1', null, '1557969320', '1557969320');
-INSERT INTO `tp_system` VALUES ('16', '3', 'mobile', '手机端', '0', '开启后自动跳转到mobile，自适应网站或无手机端网站请关闭', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', '31', '1', null, '1557969425', '1557969425');
-INSERT INTO `tp_system` VALUES ('17', '3', 'code', '后台验证码', '0', '后台登录时是否需要验证码', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', '32', '1', null, '1557969468', '1557969539');
-INSERT INTO `tp_system` VALUES ('18', '3', 'message_code', '前台验证码', '0', '前台留言等是否需要验证码', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', '33', '1', null, '1557969501', '1557969501');
-INSERT INTO `tp_system` VALUES ('19', '3', 'message_send_mail', '留言邮件提醒', '0', '前台留言时是否需要邮件提醒，如开启请先进行配置。', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', '34', '1', null, '1557969526', '1557969526');
-INSERT INTO `tp_system` VALUES ('20', '4', 'template', '选择模板', '0', 'PC , MOBILE 等都会在该模板中', 'template', null, '41', '1', null, '1557969864', '1557969864');
-INSERT INTO `tp_system` VALUES ('21', '4', 'html', 'Html目录', '0', '用于模板文件防盗', 'text', null, '42', '1', null, '1557969903', '1557969903');
+INSERT INTO `tp_system` VALUES ('1', '1', 'name', '网站名称', '0', '', 'text', 'array (\n  \'edittype\' => \'ckeditor\',\n)', '1', '1', 'SIYUCMS', '1557964941', '1557986040');
+INSERT INTO `tp_system` VALUES ('2', '1', 'logo', ' 网站LOGO', '0', '', 'file', 'array (\n  \'upload_allowext\' => \'zip|rar|doc|ppt\',\n)', '2', '1', '/uploads/20181226/a3a4245ec095da4903c6c81123fd480d.png', '1557968436', '1557986040');
+INSERT INTO `tp_system` VALUES ('3', '1', 'icp', '备案号', '0', '', 'text', null, '3', '1', '辽ICP备12345678号-1', '1557968883', '1557986040');
+INSERT INTO `tp_system` VALUES ('4', '1', 'copyright', '版权信息', '0', '', 'textarea', null, '4', '1', 'Copyright © SIYUCMS 2019.All right reserved.Powered by SIYUCMS', '1557968923', '1557986040');
+INSERT INTO `tp_system` VALUES ('5', '1', 'address', '公司地址', '0', '', 'text', null, '6', '1', '辽宁省沈阳市铁西区重工街XX路XX号1-1-1', '1557968979', '1557986095');
+INSERT INTO `tp_system` VALUES ('6', '1', 'contacts', '联系人', '0', '', 'text', null, '7', '1', 'X先生', '1557969011', '1557986096');
+INSERT INTO `tp_system` VALUES ('7', '1', 'tel', '联系电话', '0', '', 'text', null, '8', '1', '010-8888 7777', '1557969048', '1557986097');
+INSERT INTO `tp_system` VALUES ('8', '1', 'mobile_phone', '手机号码', '0', '', 'text', null, '9', '1', '158 4018 8888', '1557969066', '1557986098');
+INSERT INTO `tp_system` VALUES ('9', '1', 'fax', '传真号码', '0', '', 'text', null, '10', '1', '010-8888 9999', '1557969093', '1557986099');
+INSERT INTO `tp_system` VALUES ('10', '1', 'email', '邮箱账号', '0', '', 'text', null, '11', '1', '407593529@qq.com', '1557969113', '1557986109');
+INSERT INTO `tp_system` VALUES ('11', '1', 'qq', 'QQ', '0', '', 'text', null, '12', '1', '407593529', '1557969147', '1557986110');
+INSERT INTO `tp_system` VALUES ('12', '1', 'qrcode', '二维码', '0', '', 'image', 'array (\n  \'upload_allowext\' => \'jpg|jpeg|gif|png\',\n)', '13', '1', '/uploads/20181226/cb7a4c21d6443bc5e7a8d16ac2cbe242.png', '1557969170', '1557986111');
+INSERT INTO `tp_system` VALUES ('13', '2', 'title', 'SEO标题', '0', '', 'text', null, '21', '1', 'SIYUCMS 官网', '1557969266', '1557986147');
+INSERT INTO `tp_system` VALUES ('14', '2', 'key', 'SEO关键字', '0', '', 'textarea', null, '22', '1', 'SIYUCMS，SIYUCMS内容管理系统，php，ThinkPHP CMS，ThinkPHP建站系统', '1557969297', '1557986147');
+INSERT INTO `tp_system` VALUES ('15', '2', 'des', 'SEO描述', '0', '', 'textarea', null, '23', '1', 'SIYUCMS 是一款基于 ThinkPHP + AdminLTE 的内容管理系统。后台界面采用响应式布局，清爽、极简、简单、易用，是做开发的最佳选择。', '1557969320', '1557986147');
+INSERT INTO `tp_system` VALUES ('16', '3', 'mobile', '手机端', '0', '开启后自动跳转到mobile，自适应网站或无手机端网站请关闭', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', '31', '1', '0', '1557969425', '1557986182');
+INSERT INTO `tp_system` VALUES ('17', '3', 'code', '后台验证码', '0', '后台登录时是否需要验证码', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', '32', '1', '0', '1557969468', '1557986161');
+INSERT INTO `tp_system` VALUES ('18', '3', 'message_code', '前台验证码', '0', '前台留言等是否需要验证码', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', '33', '1', '0', '1557969501', '1557986161');
+INSERT INTO `tp_system` VALUES ('19', '3', 'message_send_mail', '留言邮件提醒', '0', '前台留言时是否需要邮件提醒，如开启请先进行配置。', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', '34', '1', '0', '1557969526', '1557986161');
+INSERT INTO `tp_system` VALUES ('20', '4', 'template', '选择模板', '0', 'PC , MOBILE 等都会在该模板中', 'template', null, '41', '1', 'default', '1557969864', '1557985790');
+INSERT INTO `tp_system` VALUES ('21', '4', 'html', 'Html目录', '0', '用于模板文件防盗', 'text', null, '42', '1', 'html', '1557969903', '1557986194');
+INSERT INTO `tp_system` VALUES ('22', '1', 'url', '网站地址', '0', '', 'text', null, '5', '1', 'www.xxx.com', '1557986088', '1557986120');
 
 -- ----------------------------
 -- Table structure for tp_system_group

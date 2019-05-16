@@ -205,10 +205,31 @@ class System extends Base
         //查找所有模版
         $dir = App::getRootPath() . 'public' .DIRECTORY_SEPARATOR. 'template';
         $template = get_dir($dir);
-        $system = \app\common\model\System::find(1);
+        //查找所有数据
+        $system = M::getListField()->toArray();
+        //格式化设置字段
+        foreach($system as $k=>$v){
+            if($system[$k]['setup']){
+                $system[$k]['setup'] = string2array($v['setup']);
+                if(array_key_exists('options',$system[$k]['setup'])){
+                    $system[$k]['setup']['options'] = explode("\n",$system[$k]['setup']['options']);
+                    foreach ($system[$k]['setup']['options'] as $kk=>$vv){
+                        $system[$k]['setup']['options'][$kk] = trim_array_element(explode("|",$system[$k]['setup']['options'][$kk]));
+
+                    }
+                }
+            }
+        }
+        //将数据重新分组
+        $system = array_group($system,'group_id');
+
+        //查找所有分组名称
+        $systemGroup = SystemGroup::where(['status'=>1])
+            ->select();
         $view = [
-            'template'=>$template,
-            'system' => $system,
+            'template'    => $template,
+            'system'      => $system,
+            'systemGroup' => $systemGroup,
         ];
         View::assign($view);
         return View::fetch();
@@ -218,13 +239,52 @@ class System extends Base
     public function systemPost(){
         if(Request::isPost()) {
             $data = Request::except(['file'], 'post');
-            $result = \app\common\model\System::where('id',1)
-                ->update($data);
-            if($result) {
-                $this->success('修改成功', 'system');
-            } else {
-                $this->error('修改失败');
+
+            //查找所有显示的数据（隐藏的数据无法修改，不再显示）
+            $list = M::where([
+                'status' => 1,
+            ])->select();
+            //循环判断数据合法性
+            foreach ($list as $k=>$v){
+                $systemGroupStatus = SystemGroup::where(['id'=>$v['group_id']])->field('status')->find();
+                if($systemGroupStatus['status']==0){
+                    continue;// 当分组为隐藏状态时，不再进行修改
+                }
+                //判断是否必填
+                if($v['required']==1 ){
+                    if(array_key_exists($v['field'],$data)){
+                        if(!$data[$v['field']]){
+                            $this->error($v['name'].'为必填项!');
+                        }
+                    }else{
+                        $this->error($v['name'].'为必填项!');
+                    }
+                }
+                //数据处理
+                switch ($v['type'])
+                {
+                    case 'checkbox'://复选框
+                        if(array_key_exists($v['field'],$data)){
+                            //dump($data[$v['field']]);exit;
+                            $data[$v['field']] = is_array($data[$v['field']]) ? implode(",", $data[$v['field']]) : $data[$v['field']];
+                        }
+                        break;
+                    case 'datetime'://时间
+                        $data[$v['field']] = strtotime($data[$v['field']]);
+                        break;
+                }
             }
+
+            foreach ($data as $k=>$v){
+                //查找并进行修改
+                $info = \app\common\model\System::where(['field'=>$k])->find();
+                if($info){
+                    $info -> value = $v;
+                    $info -> save();
+                }
+            }
+            
+            $this->success('修改成功', 'system');
         }
     }
 

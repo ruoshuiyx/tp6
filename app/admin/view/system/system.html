@@ -7,6 +7,9 @@
   <!-- 告诉浏览器该页面是自适应布局 -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
    {include file="index/top" /}
+   <!--引入JS-->
+  <script type="text/javascript" src="/static/plugins/webuploader-0.1.5/webuploader.js"></script>
+  {include file="index/webuploader" /}
 </head>
 <body class="hold-transition skin-blue sidebar-mini">	
 <div class="wrapper">
@@ -26,275 +29,185 @@
                     <div class="box-body no-padding">
                      <div class="nav-tabs-custom">
                         <ul class="nav nav-tabs">
-                          <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="false">基础设置</a></li>
-                          <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false">SEO管理</a></li>
-                          <li class=""><a href="#tab_3" data-toggle="tab" aria-expanded="true">开关设置</a></li>
-                          <li class=""><a href="#tab_4" data-toggle="tab" aria-expanded="true">模板设置</a></li>
+                          {volist name="systemGroup" id="vo"}
+                          <li {if $key+1 == 1}class="active"{/if}><a href="#tab_{$key+1}" data-toggle="tab" aria-expanded="false">{$vo.name}</a></li>
+                          {/volist} 
                         </ul>
                         <form method="post" action="{:url('systemPost')}">
-                        <div class="tab-content">
-                          <div class="tab-pane active" id="tab_1">
-                            <!---->
-		                	<div class="row dd_input_group">
-			                	<div class="form-group">
-				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">网站名称</label>
-				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-				                    <input type="text" name="name" class="form-control" placeholder="请输入网站名称" value="{$system.name}">
-				                  </div>
-				                </div>
-			                </div>
-			                <!---->
-			                <div class="row dd_input_group">
-			                	<div class="form-group">
-				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">网站LOGO</label>
-				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-				                    <input type="text" name="logo" class="form-control" placeholder="请点击按钮上传或手动输入地址" value="{$system.logo}">
-				                  </div>
-				                  <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">
-				                  	<!--上传图片-->
-                                    <!--用来存放item-->
-                                    <div id="fileList_logo" class="uploader-list">
+                            <div class="tab-content">
+                              <!--循环所有分组-->
+                              {foreach $systemGroup as $key=>$vo } 
+                              <div class="tab-pane {if $key+1 == 1}active{/if}" id="tab_{$key+1}">
+                                <!--调用该分组下所有字段-->
+                                {if array_key_exists($key+1,$system)}
+                                {foreach $system[($key+1)] as $k=>$v } 
+                                    {if $v['type'] =='text'}
+                                    <!---->
+                                    <div class="row dd_input_group">
+                                        <div class="form-group">
+                                          <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$v.name}</label>
+                                          <div class="col-xs-8 col-sm-6 col-md-4 col-lg-4">
+                                            <input type="text" name="{$v.field}" class="form-control" placeholder="请输入{$v.name}" value="{$v.value}">
+                                          </div>
+                                          <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">{if $v['required']==1}*{/if} {$v.tips}</div>
+                                        </div>
                                     </div>
-                                    <div id="filePicker_logo"><i class="fa fa-upload m-r-10"></i>选择图片</div>
-                                    <img class="image_preview" src="{$system['logo']?$system['logo']:'/static/admin/images/nopic.png'}" id="logo_preview">
-				                  	<!--上传图片-->
-				                  </div>
-				                </div>
-			                </div>
-			                <!---->
-                            <div class="row dd_input_group">
-			                	<div class="form-group">
-				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">网站地址</label>
-				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-				                    <input type="text" name="url" class="form-control" placeholder="请输入网站地址" value="{$system.url}">
-				                  </div>
-				                </div>
-			                </div>
-			                <!---->
-                            <div class="row dd_input_group">
-			                	<div class="form-group">
-				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">备案号</label>
-				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-				                    <input type="text" name="bah" class="form-control" placeholder="请输入备案号" value="{$system.bah}">
-				                  </div>
-				                </div>
-			                </div>
-			                <!---->
-                             <div class="row dd_input_group">
-			                	<div class="form-group">
-				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">版权信息</label>
-				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-				                    <input type="text" name="copyright" class="form-control" placeholder="请输入版权信息" value="{$system.copyright}">
-				                  </div>
-				                </div>
-			                </div>
-			                <!---->
-                            <div class="row dd_input_group">
-			                	<div class="form-group">
-				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">公司地址</label>
-				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-				                    <input type="text" name="address" class="form-control" placeholder="请输入公司地址" value="{$system.address}">
-				                  </div>
-				                </div>
-			                </div>
-                            <!---->
-                            <div class="row dd_input_group">
-			                	<div class="form-group">
-				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">联系人</label>
-				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-				                    <input type="text" name="contacts" class="form-control" placeholder="请输入联系人" value="{$system.contacts}">
-				                  </div>
-				                </div>
-			                </div>
-			                <!---->
-                            <div class="row dd_input_group">
-			                	<div class="form-group">
-				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">联系电话</label>
-				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-				                    <input type="text" name="tel" class="form-control" placeholder="请输入联系电话" value="{$system.tel}">
-				                  </div>
-				                </div>
-			                </div>
-			                <!---->
-                            <div class="row dd_input_group">
-			                	<div class="form-group">
-				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">手机号码</label>
-				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-				                    <input type="text" name="mobile_phone" class="form-control" placeholder="请输入手机号码" value="{$system.mobile_phone}">
-				                  </div>
-				                </div>
-			                </div>
-			                <!---->
-                            <div class="row dd_input_group">
-			                	<div class="form-group">
-				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">传真号码</label>
-				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-				                    <input type="text" name="fax" class="form-control" placeholder="请输入传真号码" value="{$system.fax}">
-				                  </div>
-				                </div>
-			                </div>
-			                <!---->
-                            <div class="row dd_input_group">
-			                	<div class="form-group">
-				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">邮箱账号</label>
-				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-				                    <input type="text" name="email" class="form-control" placeholder="请输入邮箱账号" value="{$system.email}">
-				                  </div>
-				                </div>
-			                </div>
-			                <!---->
-                            <div class="row dd_input_group">
-			                	<div class="form-group">
-				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">QQ</label>
-				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-				                    <input type="text" name="qq" class="form-control" placeholder="请输入QQ" value="{$system.qq}">
-				                  </div>
-				                </div>
-			                </div>
-			                <!---->
-                            <div class="row dd_input_group">
-			                	<div class="form-group">
-				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">二维码</label>
-				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-				                    <input type="text" name="qrcode" class="form-control" placeholder="请点击按钮上传或手动输入地址" value="{$system.qrcode}">
-				                  </div>
-				                  <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">
-				                  	<!--上传图片-->
-                                    <!--用来存放item-->
-                                    <div id="fileList_qrcode" class="uploader-list"></div>
-                                    <div id="filePicker_qrcode"><i class="fa fa-upload m-r-10"></i>选择图片</div>
-                                    <img class="image_preview" src="{$system['qrcode']?$system['qrcode']:'/static/admin/images/nopic.png'}" id="qrcode_preview">
-				                  	<!--上传图片-->
-				                  </div>
-				                </div>
-			                </div>
-			                <!---->
-                          </div>
-                          <!-- /.tab-pane -->
-                          <div class="tab-pane" id="tab_2">
-                           <!---->
-		                	<div class="row dd_input_group">
-			                	<div class="form-group">
-				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">SEO标题</label>
-				                  <div class="col-xs-8 col-sm-6 col-md-4 col-lg-4">
-				                    <input type="text" name="title" class="form-control" placeholder="请输入SEO标题" value="{$system.title}">
-				                  </div>
-				                </div>
-			                </div>
-			                <!---->
-                            <div class="row dd_input_group">
-                                <div class="form-group">
-                                  <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5">
-                                  <label class="text-lable">SEO关键字</label>
-                                  <textarea class="form-control" name="key" rows="3" placeholder="请输入SEO关键字">{$system.key}</textarea>
-                                  </div>
-                                </div>
-                            </div>
-                            <!---->
-                            <div class="row dd_input_group">
-                                <div class="form-group">
-                                  <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5">
-                                  <label class="text-lable">SEO描述</label>
-                                  <textarea class="form-control" name="des" rows="3" placeholder="请输入SEO描述">{$system.des}</textarea>
-                                  </div>
-                                </div>
-                            </div>
-                            <!---->
-                          </div>
-                          <!-- /.tab-pane -->
-                          <div class="tab-pane" id="tab_3">
-                             <!---->
-                             <div class="row dd_input_group">
-			                	<div class="form-group">
-				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">手机端</label>
-				                  <div class="col-sm-4 col-xs-8 dd_radio_lable_left">
-				                    <label class="dd_radio_lable">
-                                      <input type="radio" name="mobile" value="1" class="dd_radio" {$system.mobile?'checked':''}><span>开启</span>
-                                    </label>
-                                    <label class="dd_radio_lable">
-                                      <input type="radio" name="mobile" value="0" class="dd_radio" {$system.mobile?'':'checked'}><span>关闭</span>
-                                    </label>
-				                  </div>
-								  <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">&nbsp;&nbsp;开启后自动跳转到mobile，自适应网站或无手机端网站请关闭</div>
-				                </div>
-			                </div>
-                            <!---->
-                            <div class="row dd_input_group">
-			                	<div class="form-group">
-				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">后台验证码</label>
-				                  <div class="col-sm-4 col-xs-8 dd_radio_lable_left">
-				                    <label class="dd_radio_lable">
-                                      <input type="radio" name="code" value="1" class="dd_radio" {$system.code?'checked':''}><span>开启</span>
-                                    </label>
-                                    <label class="dd_radio_lable">
-                                      <input type="radio" name="code" value="0" class="dd_radio" {$system.code?'':'checked'}><span>关闭</span>
-                                    </label>
-				                  </div>
-                                  <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">&nbsp;&nbsp;后台登录时是否需要验证码</div>
-				                </div>
-			                </div>
-                            <!---->
-                            <div class="row dd_input_group">
-			                	<div class="form-group">
-				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">前台验证码</label>
-				                  <div class="col-sm-4 col-xs-8 dd_radio_lable_left">
-				                    <label class="dd_radio_lable">
-                                      <input type="radio" name="message_code" value="1" class="dd_radio" {$system.message_code?'checked':''}><span>开启</span>
-                                    </label>
-                                    <label class="dd_radio_lable">
-                                      <input type="radio" name="message_code" value="0" class="dd_radio" {$system.message_code?'':'checked'}><span>关闭</span>
-                                    </label>
-				                  </div>
-                                  <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">&nbsp;&nbsp;前台留言等是否需要验证码</div>
-				                </div>
-			                </div>
-                            <!---->
-                            <div class="row dd_input_group">
-                              <div class="form-group">
-                                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">留言邮件提醒</label>
-                                  <div class="col-sm-4 col-xs-8 dd_radio_lable_left">
-                                      <label class="dd_radio_lable">
-                                          <input type="radio" name="message_send_mail" value="1" class="dd_radio" {$system.message_send_mail?'checked':''}><span>开启</span>
-                                      </label>
-                                      <label class="dd_radio_lable">
-                                          <input type="radio" name="message_send_mail" value="0" class="dd_radio" {$system.message_send_mail?'':'checked'}><span>关闭</span>
-                                      </label>
-                                  </div>
-                                  <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">&nbsp;&nbsp;前台留言时是否需要邮件提醒，如开启请先进行配置。</div>
+                                    {elseif $v['type'] =='textarea'/}
+                                    <!---->
+                                    <div class="row dd_input_group">
+                                        <div class="form-group">
+                                          <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5">
+                                          <label class="text-lable">{$v.name}</label>
+                                          <textarea class="form-control" name="{$v.field}" rows="3" placeholder="请输入{$v.name}">{$v.value}</textarea>
+                                          </div>
+                                          <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">{if $v['required']==1}*{/if} {$v.tips}</div>
+                                        </div>
+                                    </div>
+                                    {elseif $v['type'] =='editor'/}
+                                    <!---->
+                                    <div class="row dd_input_group">
+                                        <div class="form-group">
+                                          <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5">
+                                          <label class="text-lable">{$v.name}</label>
+                                          {:make_editor($v.field,$v.value)}
+                                          </div>
+                                          <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">{if $v['required']==1}*{/if} {$v.tips}</div>
+                                        </div>
+                                    </div>
+                                    {elseif $v['type'] =='select'/}
+                                    <!---->
+                                    <div class="row dd_input_group">
+                                        <div class="form-group">
+                                          <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$v.name}</label>
+                                          <div class="col-xs-8 col-sm-6 col-md-4 col-lg-4">
+                                            <select name="{$v.field}" class="form-control" >
+                                            	<option value='' >请选择</option>
+                                                {foreach $v.setup.options as $kk=>$vv }
+                                                <option {if $v.value == trim($vv.1)}selected{/if} value='{$vv.1}' >{$vv.0}</option>
+                                                {/foreach}
+                                          	</select>
+                                          </div>
+                                          <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">{if $v['required']==1}*{/if} {$v.tips}</div>
+                                        </div>
+                                    </div>
+                                    {elseif $v['type'] =='radio'/}
+                                    <!---->
+                                    <div class="row dd_input_group">
+                                        <div class="form-group">
+                                          <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$v.name}</label>
+                                          <div class="col-sm-4 col-xs-8 dd_radio_lable_left">
+                                          {foreach $v.setup.options as $kk=>$vv }
+                                            <label class="dd_radio_lable">
+                                              <input type="radio" name="{$v.field}" value="{$vv.1}" class="dd_radio" {if $v.value == trim($vv.1)}checked{/if}><span>{$vv.0}</span>
+                                               
+                                            </label>
+                                            {/foreach}
+                                          </div>
+                                          <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">&nbsp;&nbsp;{if $v['required']==1}*{/if} {$v.tips}</div>
+                                        </div>
+                                    </div>
+                                    {elseif $v['type'] =='checkbox'/}
+                                    <!---->
+                                    <div class="row dd_input_group">
+                                        <div class="form-group">
+                                          <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$v.name}</label>
+                                          <div class="col-sm-4 col-xs-8 dd_radio_lable_left">
+                                          {foreach $v.setup.options as $kk=>$vv }
+                                            <label class="dd_radio_lable">
+                                               <input type="checkbox" name="{$v.field}[]" value="{$vv.1}" class="dd_radio"
+                                              {in name="$vv.1" value="$v.value"}checked{/in}
+                                               ><span>{$vv.0}</span>
+                                               
+                                            </label>
+                                            {/foreach}
+                                          </div>
+                                          <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">&nbsp;&nbsp;{if $v['required']==1}*{/if} {$v.tips}</div>
+                                        </div>
+                                    </div>
+                                    {elseif $v['type'] =='image'/}
+                                    <!---->
+                                     <div class="row dd_input_group">
+                                        <div class="form-group">
+                                          <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$v.name}</label>
+                                          <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+                                            <input type="text" name="{$v.field}" class="form-control" placeholder="请点击按钮上传或手动输入地址" value="{$v.value}">
+                                          </div>
+                                          <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">
+                                            <!--上传图片-->
+                                            <!--用来存放item-->
+                                            <div id="fileList_{$v.field}" class="uploader-list">
+                                            </div>
+                                            <div id="filePicker_{$v.field}"><i class="fa fa-upload m-r-10"></i>选择图片</div>
+                                            <img class="image_preview" src="{$v['value'] ? $v['value'] : '/static/admin/images/nopic.png'}" id="image_preview{$v.field}">
+                                            <!--上传图片-->
+                                            {eq name="$v.required" value="1"}<span class="image_preview"> *</span>{/eq}
+                                          </div>
+                                        </div>
+                                    </div>
+                                     <script>webupload('fileList_image{$v.field}','filePicker_image{$v.field}','image_preview{$v.field}','{$v.field}',false ,'{$v.setup.upload_allowext}');	</script>
+                                    {elseif $v['type'] =='file'/}
+                                    <!---->
+                                     <div class="row dd_input_group">
+                                        <div class="form-group">
+                                          <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$v.name}</label>
+                                          <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+                                            <input type="text" name="{$v.field}" class="form-control" placeholder="请点击按钮上传或手动输入地址" value="{$v.value}">
+                                          </div>
+                                          <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">
+                                            <!--上传文件-->
+                                            <!--用来存放item-->
+                                            <div id="fileList_{$v.field}" class="uploader-list">
+                                            </div>
+                                            <div id="filePicker_{$v.field}"><i class="fa fa-upload m-r-10"></i>选择文件</div>
+                                            <!--上传文件-->
+                                            {eq name="$v.required" value="1"}<span class="image_preview"> *</span>{/eq}
+                                          </div>
+                                        </div>
+                                    </div>
+                                     <script>webupload('fileList_image{$v.field}','filePicker_image{$v.field}','image_preview{$v.field}','{$v.field}',false ,'{$v.setup.upload_allowext}');	</script>
+                                    {elseif $v['type'] =='datetime'/}
+                                    <!---->
+                                    <div class="row dd_input_group">
+                                        <div class="form-group">
+                                          <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$v.name}</label>
+                                          <div class="col-xs-8 col-sm-6 col-md-4 col-lg-4">
+                                            <input type="text" name="{$v.field}" class="form-control" placeholder="请输入{$v.name}" value="{if $v.value}{$v.value|date="Y-m-d H:i"}{else/}{/if}" id="datepicker_{$v.field}">
+                                          </div>
+                                          <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">{if $v['required']==1}*{/if} {$v.tips}</div>
+                                        </div>
+                                    </div>
+                                    <script>
+									$(function(){
+										$('#datepicker_{$v.field}').datetimepicker({
+										  autoclose: 1,
+										  format:"yyyy-mm-dd hh:ii:ss",
+										  language: "zh-CN",
+										  todayHighlight: 1,//今天高亮
+										})	
+									})
+									</script>
+                                    {elseif $v['type'] =='template'/}
+                                    <!---->
+                                     <div class="row dd_input_group">
+                                        <div class="form-group">
+                                          <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$v.name}</label>
+                                          <div class="col-xs-8 col-sm-6 col-md-4 col-lg-4">
+                                            <select name="{$v.field}" class="form-control">
+                                                {volist name="template" id="voo"}
+                                                <option {if $v['value']==$voo}selected{/if} value="{$voo}">{$voo}</option>
+                                                {/volist}
+                                            </select>
+                                          </div>
+                                          <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">* PC , MOBILE 等都会在该模板中</div>
+                                        </div>
+                                    </div>
+                                    {/if}
+                                {/foreach}
+                                {/if}
                               </div>
+                              {/foreach}
+                              <!-- /.tab-pane -->
                             </div>
-                          <!---->
-                          </div>
-                          <!-- /.tab-pane -->
-                          <div class="tab-pane" id="tab_4">
-                             <!---->
-                             <div class="row dd_input_group">
-			                	<div class="form-group">
-				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">选择模版</label>
-				                  <div class="col-xs-8 col-sm-6 col-md-4 col-lg-4">
-				                    <select name="template" class="form-control">
-						                    {volist name="template" id="vo"}
-						                    <option {if $system['template']==$vo}selected{/if} value="{$vo}">{$vo}</option>
-						                    {/volist}
-						                </select>
-				                  </div>
-                                  <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">* PC , MOBILE 等都会在该模板中</div>
-				                </div>
-			                </div>
-                            <!---->
-                            <div class="row dd_input_group">
-			                	<div class="form-group">
-				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">Html目录</label>
-				                  <div class="col-xs-8 col-sm-6 col-md-4 col-lg-4">
-				                    <input type="text" name="html" class="form-control" placeholder="请输入Html目录" value="{$system.html}">
-				                  </div>
-                                  <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">* 用于模板文件防盗</div>
-				                </div>
-			                </div>
-                            <!---->
-                          </div>
-                          <!-- /.tab-pane -->
-                        </div>
                         	<div class="row dd_input_group">
 			                	<div class="form-group">
 				                  <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5 text-center">

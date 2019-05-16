@@ -186,3 +186,17 @@ function get_dateran($dateran){
     }
     return $dateran;
 }
+
+/**
+ * 根据数组中某个字段重新分组
+ * @param {dataArr:需要分组的数据；keyStr:分组依据}
+ * @return: array
+ */
+function array_group(array $dataArr,string $keyStr)   :array
+{
+    $newArr=[];
+    foreach ($dataArr as $k => $val) {
+        $newArr[$val[$keyStr]][] = $val;
+    }
+    return $newArr;
+}
