@@ -9,6 +9,13 @@
    {include file="index/top" /}
    <!--引入JS-->
   <script type="text/javascript" src="/static/plugins/webuploader-0.1.5/webuploader.js"></script>
+  <script type="text/javascript">
+    //多图删除
+	$(document).on('click','.remove_images',function(){
+		var remove = $(this).parent().parent(); 
+			remove.remove();
+	})
+  </script>
   {include file="index/webuploader" /}
 </head>
 <body class="hold-transition skin-blue sidebar-mini">	
@@ -95,15 +102,17 @@
                                     <div class="row dd_input_group">
                                         <div class="form-group">
                                           <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$v.name}</label>
-                                          <div class="col-sm-4 col-xs-8 dd_radio_lable_left">
+                                          <div class="col-xs-8 col-sm-6 col-md-4 col-lg-4">
+                                          <div class="dd_radio_lable_left">
                                           {foreach $v.setup.options as $kk=>$vv }
                                             <label class="dd_radio_lable">
                                               <input type="radio" name="{$v.field}" value="{$vv.1}" class="dd_radio" {if $v.value == trim($vv.1)}checked{/if}><span>{$vv.0}</span>
                                                
                                             </label>
                                             {/foreach}
+                                            </div>
                                           </div>
-                                          <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">&nbsp;&nbsp;{if $v['required']==1}*{/if} {$v.tips}</div>
+                                          <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">{if $v['required']==1}*{/if} {$v.tips}</div>
                                         </div>
                                     </div>
                                     {elseif $v['type'] =='checkbox'/}
@@ -111,7 +120,8 @@
                                     <div class="row dd_input_group">
                                         <div class="form-group">
                                           <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$v.name}</label>
-                                          <div class="col-sm-4 col-xs-8 dd_radio_lable_left">
+                                          <div class="col-xs-8 col-sm-6 col-md-4 col-lg-4">
+                                          <div class="dd_radio_lable_left">
                                           {foreach $v.setup.options as $kk=>$vv }
                                             <label class="dd_radio_lable">
                                                <input type="checkbox" name="{$v.field}[]" value="{$vv.1}" class="dd_radio"
@@ -120,8 +130,9 @@
                                                
                                             </label>
                                             {/foreach}
+                                            </div>
                                           </div>
-                                          <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">&nbsp;&nbsp;{if $v['required']==1}*{/if} {$v.tips}</div>
+                                          <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">{if $v['required']==1}*{/if} {$v.tips}</div>
                                         </div>
                                     </div>
                                     {elseif $v['type'] =='image'/}
@@ -138,13 +149,14 @@
                                             <div id="fileList_{$v.field}" class="uploader-list">
                                             </div>
                                             <div id="filePicker_{$v.field}"><i class="fa fa-upload m-r-10"></i>选择图片</div>
-                                            <img class="image_preview" src="{$v['value'] ? $v['value'] : '/static/admin/images/nopic.png'}" id="image_preview{$v.field}">
+                                            <img class="image_preview" src="{$v['value'] ? $v['value'] : '/static/admin/images/nopic.png'}" id="image_preview_{$v.field}">
                                             <!--上传图片-->
                                             {eq name="$v.required" value="1"}<span class="image_preview"> *</span>{/eq}
                                           </div>
                                         </div>
                                     </div>
-                                     <script>webupload('fileList_image{$v.field}','filePicker_image{$v.field}','image_preview{$v.field}','{$v.field}',false ,'{$v.setup.upload_allowext}');	</script>
+                                    <script>webupload('fileList_{$v.field}','filePicker_{$v.field}','image_preview_{$v.field}','{$v.field}',false ,'{$v.setup.upload_allowext}');	</script>
+                                    
                                     {elseif $v['type'] =='file'/}
                                     <!---->
                                      <div class="row dd_input_group">
@@ -159,12 +171,13 @@
                                             <div id="fileList_{$v.field}" class="uploader-list">
                                             </div>
                                             <div id="filePicker_{$v.field}"><i class="fa fa-upload m-r-10"></i>选择文件</div>
+                                            <img class="image_preview" src="{$v['value'] ? $v['value'] : '/static/admin/images/nopic.png'}" id="image_preview_{$v.field}">
                                             <!--上传文件-->
                                             {eq name="$v.required" value="1"}<span class="image_preview"> *</span>{/eq}
                                           </div>
                                         </div>
                                     </div>
-                                     <script>webupload('fileList_image{$v.field}','filePicker_image{$v.field}','image_preview{$v.field}','{$v.field}',false ,'{$v.setup.upload_allowext}');	</script>
+                                    <script>webupload('fileList_{$v.field}','filePicker_{$v.field}','image_preview_{$v.field}','{$v.field}',false ,'{$v.setup.upload_allowext}');	</script>
                                     {elseif $v['type'] =='datetime'/}
                                     <!---->
                                     <div class="row dd_input_group">
@@ -238,12 +251,5 @@
 </div>
 {include file="index/bottom" /} 
 
-<!--引入JS-->
-<script type="text/javascript" src="/static/plugins/webuploader-0.1.5/webuploader.js"></script>
-{include file="index/webuploader" /}
-<script type="text/javascript">
-	webupload('fileList_logo','filePicker_logo','logo_preview','logo');	
-	webupload('fileList_qrcode','filePicker_qrcode','qrcode_preview','qrcode');
-</script>
 </body>
 </html>    

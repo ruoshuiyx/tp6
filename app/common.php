@@ -214,8 +214,15 @@ function string2array($info) {
 }
 
 function array2string($info) {
+    //删除空格，某些情况下字段的设置会出现换行和空格的情况
+    if(is_array($info)){
+        if(array_key_exists('options', $info)){
+            $info['options'] = trim($info['options']);
+        }
+    }
     if($info == '') return '';
     if(!is_array($info)){
+        //删除反斜杠
         $string = stripslashes($info);
     }
     foreach($info as $key => $val){
