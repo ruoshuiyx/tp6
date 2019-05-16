@@ -407,9 +407,14 @@ function get_file_folder_List($pathname,$fileFlag = 0, $pattern='*') {
  * @return mixed
  */
 function getTemplate(){
-    //查找设置的模版
-    $system = \think\facade\Db::name('system')->where('id',1)->find();
-    $path = './template/'.$system['template'].'/index/'.$system['html'].'/';
+    //查找系统设置
+    $system = \think\facade\Db::name('system')->select();
+    $systemArr = [];
+    foreach($system as $k=>$v){
+        $systemArr[$v['field']] = $v['value'];
+    }
+
+    $path = './template/'.$systemArr['template'].'/index/'.$systemArr['html'].'/';
     $tpl['list'] = get_file_folder_List($path , 2, '*_list*');
     $tpl['show'] = get_file_folder_List($path , 2, '*_show*');
     return $tpl;

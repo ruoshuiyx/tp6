@@ -14,14 +14,16 @@
 // +----------------------------------------------------------------------
 
 //查找设置的模版
-$system = \think\facade\Db::name('system')
-    ->where('id',1)
-    ->find();
+$system = \think\facade\Db::name('system')->select();
+$systemArr = [];
+foreach($system as $k=>$v){
+    $systemArr[$v['field']] = $v['value'];
+}
 
 return [
 
     // 模板路径
-    'view_path'    => './template/'.$system['template'].'/'.\think\facade\Request::app().'/'.$system['html'].'/',
+    'view_path'    => './template/'.$systemArr['template'].'/'.\think\facade\Request::app().'/'.$systemArr['html'].'/',
     // 模板文件名分隔符
     'view_depr'    => '_',
 
