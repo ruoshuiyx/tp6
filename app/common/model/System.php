@@ -25,13 +25,51 @@
  */
 namespace app\common\model;
 
+use think\facade\Request;
+
 class System extends Base
 {
-    //不需要使用自动时间戳
-    protected $autoWriteTimestamp = false;
-
     // 定义时间戳字段名
-    //protected $createTime = 'create_time';
-    //protected $updateTime = 'update_time';
+    protected $createTime = 'create_time';
+    protected $updateTime = 'update_time';
+
+    // 一对一获取所属分组
+    public function systemGroup()
+    {
+        return $this->belongsTo('SystemGroup','group_id');
+    }
+
+    // 获取列表
+    public static function getList($where=array(),$pageSize,$order=['sort','id'=>'desc']){
+        $list = self::where($where)
+            ->order($order)
+            ->paginate($pageSize,false,['query' => Request::get()]);
+        foreach($list as $k=>$v){
+            $v['type_name']  = self::getType($v['type']);
+            $v['group_name'] = $v->systemGroup->getData('name');
+        }
+        return $list;
+    }
+
+    // 字段类型
+    public static function getType($type=''){
+        $arr=[
+            'text'      => '单行文本',
+            'textarea'  => '多行文本',
+            'editor'    => '编辑器',
+            'select'    => '下拉列表',
+            'radio'     => '单选按钮',
+            'checkbox'  => '复选框',
+            'image'     => '单张图片',
+            'file'      => '文件上传',
+            'datetime'  => '日期和时间',
+            'template'  => '选择模板',
+        ];
+        if($type){
+            return $arr[$type];
+        }else{
+            return $arr;
+        }
+    }
 
 }

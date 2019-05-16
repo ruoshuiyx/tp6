@@ -1,7 +1,7 @@
 <?php
 /**
  * +----------------------------------------------------------------------
- * | 系统设置分组模型
+ * | 系统设置验证器
  * +----------------------------------------------------------------------
  *                      .::::.
  *                    .::::::::.            | AUTHOR: siyu
@@ -23,28 +23,32 @@
  *                      '.:::::'                    ':'````..
  * +----------------------------------------------------------------------
  */
-namespace app\common\model;
+namespace app\admin\validate;
 
-use think\facade\Request;
+use think\Validate;
 
-class SystemGroup extends Base
+class System extends Validate
 {
-    // 定义时间戳字段名
-    protected $createTime = 'create_time';
-    protected $updateTime = 'update_time';
-
-    // 一对多获取系统设置
-    public function systems()
-    {
-        return $this->hasMany('System','group_id');
-    }
-
-    // 获取列表
-    public static function getList($where=array(),$pageSize,$order=['sort','id'=>'desc']){
-        $list = self::where($where)
-            ->order($order)
-            ->paginate($pageSize,false,['query' => Request::get()]);
-        return $list;
-    }
-
+    protected $rule = [
+        'group_id|所属分组' => [
+            'require' => 'require',
+        ],
+        'type|字段类型' => [
+            'require' => 'require',
+        ],
+        'field|字段名' => [
+            'require' => 'require',
+            'max'     => '255',
+            'unique'  => 'system',
+        ],
+        'name|别名' => [
+            'require' => 'require',
+            'max'     => '255',
+            'unique'  => 'system',
+        ],
+        'sort|排序' => [
+            'require' => 'require',
+            'number'  => 'number',
+        ],
+    ];
 }

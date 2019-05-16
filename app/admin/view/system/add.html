@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>后台管理面板</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    {include file="index/top" /}
+</head>
+<body class="hold-transition skin-blue sidebar-mini">	
+<div class="wrapper">
+    <div class="content-wrapper" style="margin-left: 0 !important;">
+        <!--页眉-->
+        <section class="content-header">
+            <h1>{$info?'修改':'添加'}系统设置字段</h1>
+        </section>
+        <!--内容开始-->
+        <section class="content">
+            <div class="search">
+                <form class="form-inline" action="">
+                    <input class="btn btn-flat btn-primary m_10_l_0" onclick="location.href='{:url('index')}'" type="button" value="显示全部">
+                    <a class="btn btn-flat btn-success m_10 f_r" onclick="javascript :history.back(-1)"><i class="fa fa-undo m-r-10"></i>返 回</a>
+            	</form> 
+            </div>
+            <!--数据表开始-->
+            {if $info}
+            <form method="post" action="{:url('editPost')}">
+                <input type="hidden" name="id" value="{$info.id}"/>
+            {else /}
+            <form method="post" action="{:url('addPost')}">
+            {/if}
+            <!---->
+            <div class="row">
+                <div class="col-sm-12 col-xs-12">
+                	<div class="box box-body">
+                        <!---->
+                        <div class="row dd_input_group">
+                            <div class="form-group">
+                                <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">所属分组</label>
+                                <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+                                    <select name="group_id" class="form-control">
+                                        <option value="">请选择所属分组</option>
+                                        {volist name="systemGroup" id="vo"}
+                                         <option {if $info['group_id']==$vo.id}selected{/if} value="{$vo.id}">{$vo.name}</option>
+                                        {/volist}
+                                    </select>
+                                </div>
+                                <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">* 系统设置中所属的分组</div>
+                            </div>
+                        </div>
+                        <!---->
+                        <div class="row dd_input_group">
+                            <div class="form-group">
+                              <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">字段类型</label>
+                              <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+                                <select id="type" name="type" class="form-control">
+                                    <option value='' >请选择字段类型</option>
+                                    {volist name="fildType" id="vo"}
+                                    <option value="{$key}" {$info.type==$key?'selected="selected" ':''} >{$vo}</option>
+                                    {/volist}
+                              </select>
+                              
+                              </div>
+                              <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">*  系统设置中字段的显示样式</div>
+                            </div>
+                        </div>
+                        <!---->
+                        <div class="row dd_input_group">
+                            <div class="form-group">
+                              <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">字段名</label>
+                              <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+                                <input type="text" name="field" class="form-control" placeholder="必填：字段名" value="{$info.field?$info.field:''}">
+                              </div>
+                              <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">* 字段英文名称，如 title ，用于调用,请勿包含特殊字符和空格</div>
+                            </div>
+                        </div>
+                        <!---->
+                        <div class="row dd_input_group">
+                            <div class="form-group">
+                              <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">别名</label>
+                              <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+                                <input type="text" name="name" class="form-control" placeholder="必填：别名" value="{$info.name?$info.name:''}">
+                              </div>
+                              <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">* 字段中文名称，如 标题 </div>
+                            </div>
+                        </div>
+                        <!---->
+                        <div class="row dd_input_group">
+                            <div class="form-group">
+                              <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">提示</label>
+                              <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+                                <input type="text" name="tips" class="form-control" placeholder="请输入提示信息" value="{$info.tips?$info.tips:''}">
+                              </div>
+                              <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts"> 系统设置中字段右侧的温馨提示</div>
+                            </div>
+                        </div>
+                        <!---->
+                        <div class="row dd_input_group">
+                            <div class="form-group">
+                              <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">必填</label>
+                              <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+                                <div class="dd_radio_lable_left">
+                                    <label class="dd_radio_lable">
+                                      <input type="radio" name="required" value="1" class="dd_radio" {$info.required==1?'checked':''}><span>是</span>
+                                    </label>
+                                    <label class="dd_radio_lable">
+                                      <input type="radio" name="required" value="0" class="dd_radio" {$info.required==0?'checked':''}><span>否</span>
+                                    </label>
+                                 </div>  
+                              </div>
+                            </div>
+                        </div>
+                        <!---->
+                        <div class="row dd_input_group">
+                            <div class="form-group">
+                                <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">状态</label>
+                                <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+                                    <div class="dd_radio_lable_left">
+                                        {if $info}
+                                        <label class="dd_radio_lable">
+                                            <input type="radio" name="status" value="1" class="dd_radio" {$info.status?'checked':''}><span>显示</span>
+                                        </label>
+                                        <label class="dd_radio_lable">
+                                            <input type="radio" name="status" value="0" class="dd_radio" {$info.status?'':'checked'}><span>隐藏</span>
+                                        </label>
+                                        {else /}
+                                        <label class="dd_radio_lable">
+                                            <input type="radio" name="status" value="1" class="dd_radio" checked><span>显示</span>
+                                        </label>
+                                        <label class="dd_radio_lable">
+                                            <input type="radio" name="status" value="0" class="dd_radio" ><span>隐藏</span>
+                                        </label>
+                                        {/if}
+                                    </div>
+                                </div>
+                                <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">* 用于控制系统设置中该字段是否显示，隐藏后前台依然可以调用</div>
+				            </div>
+			            </div>
+                        <!---->
+                        <div class="row dd_input_group">
+                            <div class="form-group">
+                                <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">排序</label>
+                                <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+                                    <input type="text" name="sort" class="form-control" placeholder="请输入排序" value="{$info.sort?$info.sort:'50'}">
+                                </div>
+                                <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">* 排序为从小到大排序，默认为50</div>
+                            </div>
+                        </div>
+                        <!---->
+                        <div class="row dd_input_group">
+                            <div class="form-group">
+                              <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">字段设置</label>
+                              <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+                                <div class="dd_radio_lable_left" id="field_setup">
+                                    <!--ajax调用文件-->
+                                    <!--ajax调用结束-->
+                                </div>  
+                              </div>
+                            </div>
+                        </div>
+                    	<!---->
+                        <div class="row dd_input_group">
+                            <div class="form-group">
+                                <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5 text-center">
+                                    <button type="submit" class="btn btn-flat btn-primary ">提 交</button>
+                                    <button type="button" class="btn btn-flat btn-default" onclick="javascript :history.back(-1)">返 回</button>
+                                </div>
+                            </div>
+                        </div>
+                 </div>
+                  <!-- /.box -->
+                </div>
+            </div>
+            </form>
+            <!--数据表结束-->
+        </section>
+        <!-- right col -->
+      </div>
+      <!-- /.row (main row) -->
+
+    </section>
+        <!--内容结束-->
+    </div>
+</div>
+{include file="index/bottom" /} 
+<script>
+	$(function(){
+		$("#type").change(function(){
+		  var type = $(this).val();
+		  var url =  "{:url('add')}?isajax=1&type="+type;
+		  field_setting(type,url);
+		});	
+		
+		{if $info}
+		  var type = '{$info.type}';
+		  var name = '{$info.field}'
+		  var url =  "{:url('add')}?isajax=1&type="+type+"&name="+name;
+		  field_setting(type,url);
+		{/if}
+		
+	})
+	//选择后变更
+	function field_setting(type,url,data){
+		 $.ajax({
+            type: "POST",
+            url: url,
+            data: '',
+            beforeSend:function(){
+                $('#field_setup').html('<i class="fa fa-spinner fa-spin fa-fw"></i>');
+            },
+            success: function(msg){
+                $('#field_setup').html(msg);
+            }
+        });
+	}
+</script>
+</body>
+</html>    

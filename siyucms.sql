@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2019-05-15 15:54:09
+Date: 2019-05-16 10:29:54
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -176,7 +176,7 @@ CREATE TABLE `tp_auth_group` (
 -- Records of tp_auth_group
 -- ----------------------------
 INSERT INTO `tp_auth_group` VALUES ('1', '超级管理员', '1', '0,1,4,5,38,6,7,10,11,12,14,13,8,15,16,17,18,19,20,21,9,22,23,24,25,28,27,26,29,3', '1537944508', '1537944508');
-INSERT INTO `tp_auth_group` VALUES ('2', '测试组', '1', '0,1,4,5,107,157,158,160,6,152,153,154,155,29,30,34,32,33,31,35,36,39,40,41,42,44,45,46,47,48,49,51,52,53,54,60,61,62,63,64,67,68,70,71,74,73,69,76,77,137,80,95,96,97,131,132,109,138,100,101,102,103,105,81,82,84,85,88,94,83,89,91,120,121,', '1536304526', '1557906836');
+INSERT INTO `tp_auth_group` VALUES ('2', '测试组', '1', '0,1,4,166,167,169,5,107,157,158,160,6,152,153,154,155,29,30,34,32,33,31,35,36,39,40,41,42,44,45,46,47,48,49,51,52,53,54,60,61,62,63,64,67,68,70,71,74,73,69,76,77,137,80,95,96,97,131,132,109,138,100,101,102,103,105,81,82,84,85,88,94,83,89,91,120,121,', '1536304526', '1557973503');
 
 -- ----------------------------
 -- Table structure for tp_auth_group_access
@@ -216,7 +216,7 @@ CREATE TABLE `tp_auth_rule` (
   `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=166 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=175 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tp_auth_rule
@@ -370,6 +370,15 @@ INSERT INTO `tp_auth_rule` VALUES ('162', '157', 'SystemGroup/del', '修改-删�
 INSERT INTO `tp_auth_rule` VALUES ('163', '157', 'SystemGroup/selectDel', '修改-批量删除', '1', '1', '', '146', '1', '', '0', '0');
 INSERT INTO `tp_auth_rule` VALUES ('164', '157', 'SystemGroup/sort', '修改-排序', '1', '1', '', '147', '1', '', '0', '0');
 INSERT INTO `tp_auth_rule` VALUES ('165', '157', 'SystemGroup/state', '修改-状态', '1', '1', '', '147', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('166', '4', 'System/index', '操作-字段列表', '1', '1', '', '112', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('167', '4', 'System/add', '操作-字段添加', '1', '1', '', '113', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('168', '4', 'System/addPost', '操作-字段添加保存', '1', '1', '', '114', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('169', '4', 'System/edit', '操作-字段修改', '1', '1', '', '115', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('170', '4', 'System/editPost', '操作-字段修改保存', '1', '1', '', '116', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('171', '4', 'System/del', '操作-字段删除', '1', '1', '', '117', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('172', '4', 'System/selectDel', '操作-字段批量删除', '1', '1', '', '118', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('173', '4', 'System/sort', '操作-字段排序', '1', '1', '', '119', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('174', '4', 'System/state', '操作-字段状态', '1', '1', '', '120', '1', '', '0', '0');
 
 -- ----------------------------
 -- Table structure for tp_cate
@@ -826,36 +835,46 @@ INSERT INTO `tp_product` VALUES ('17', '15', '钢笔', '', '', '', '', '<p>钢�
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_system`;
 CREATE TABLE `tp_system` (
-  `id` int(8) unsigned NOT NULL,
-  `name` char(100) NOT NULL DEFAULT '' COMMENT '网站名称',
-  `url` varchar(100) NOT NULL DEFAULT '' COMMENT '网址',
-  `title` varchar(200) NOT NULL COMMENT '标题',
-  `key` varchar(200) NOT NULL COMMENT '关键字',
-  `des` varchar(200) NOT NULL COMMENT '描述',
-  `bah` varchar(100) DEFAULT NULL COMMENT '备案号',
-  `copyright` varchar(200) DEFAULT NULL COMMENT 'copyright',
-  `address` varchar(120) DEFAULT NULL COMMENT '公司地址',
-  `contacts` varchar(255) DEFAULT NULL COMMENT '联系人',
-  `mobile_phone` varchar(100) DEFAULT NULL COMMENT '手机',
-  `fax` varchar(100) DEFAULT NULL COMMENT '传真',
-  `tel` varchar(100) DEFAULT NULL COMMENT '公司电话',
-  `email` varchar(50) DEFAULT NULL COMMENT '公司邮箱',
-  `qq` varchar(255) DEFAULT NULL COMMENT 'qq',
-  `logo` varchar(120) DEFAULT NULL COMMENT 'logo',
-  `qrcode` varchar(255) DEFAULT NULL COMMENT '二维码',
-  `mobile` tinyint(2) DEFAULT '0' COMMENT '是否开启手机端 1 开启0 关闭',
-  `code` tinyint(2) DEFAULT '0' COMMENT '是否开启后台验证码 1 开启 0 关闭',
-  `message_code` tinyint(2) DEFAULT '0' COMMENT '是否开启前台验证码 1 开启 0 关闭',
-  `message_send_mail` tinyint(2) DEFAULT '0' COMMENT '留言是否发送邮件',
-  `template` varchar(200) DEFAULT NULL COMMENT '模版选择',
-  `html` varchar(200) DEFAULT NULL COMMENT 'Html目录',
+  `id` int(8) NOT NULL AUTO_INCREMENT,
+  `group_id` int(8) NOT NULL COMMENT '系统设置分组id',
+  `field` varchar(255) NOT NULL COMMENT '字段名',
+  `name` varchar(255) NOT NULL DEFAULT '' COMMENT '别名',
+  `required` tinyint(1) DEFAULT '0' COMMENT '是否必填',
+  `tips` varchar(255) DEFAULT NULL COMMENT '提示信息',
+  `type` varchar(20) DEFAULT NULL COMMENT '字段类型',
+  `setup` text COMMENT '配置信息',
+  `sort` int(10) DEFAULT NULL COMMENT '排序',
+  `status` tinyint(1) DEFAULT '0' COMMENT '状态',
+  `value` text COMMENT '字段值',
+  `create_time` int(11) DEFAULT '0' COMMENT '添加时间',
+  `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='系统设置表';
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COMMENT='系统设置表';
 
 -- ----------------------------
 -- Records of tp_system
 -- ----------------------------
-INSERT INTO `tp_system` VALUES ('1', 'SIYUCMS', 'www.xxx.com', 'SIYUCMS 官网', 'SIYUCMS，SIYUCMS内容管理系统，php，ThinkPHP CMS，ThinkPHP建站系统', 'SIYUCMS 是一款基于 ThinkPHP5 + AdminLTE 的内容管理系统。后台界面采用响应式布局，清爽、极简、简单、易用，是做开发的最佳选择。', '辽ICP备12345678号-1', 'Copyright © SIYUCMS 2019.All right reserved.Powered by SIYUCMS', '辽宁省沈阳市铁西区重工街XX路XX号1-1-1', 'X先生', '158 4018 8888', '010-8888 9999', '010-8888 7777', '407593529@qq.com', '407593529', '/uploads/20181226/a3a4245ec095da4903c6c81123fd480d.png', '/uploads/20181226/cb7a4c21d6443bc5e7a8d16ac2cbe242.png', '0', '0', '1', '0', 'default', 'html');
+INSERT INTO `tp_system` VALUES ('1', '1', 'name', '网站名称', '0', null, 'text', 'array (\n  \'upload_allowext\' => \'\',\n)', '1', '1', null, '1557964941', '1557971301');
+INSERT INTO `tp_system` VALUES ('2', '1', 'logo', ' 网站LOGO', '0', null, 'image', 'array (\n  \'upload_allowext\' => \'jpg|jpeg|gif|png\',\n)', '2', '1', null, '1557968436', '1557968436');
+INSERT INTO `tp_system` VALUES ('3', '1', 'icp', '备案号', '0', '', 'text', null, '3', '1', null, '1557968883', '1557968883');
+INSERT INTO `tp_system` VALUES ('4', '1', 'copyright', '版权信息', '0', '', 'textarea', null, '4', '1', null, '1557968923', '1557968923');
+INSERT INTO `tp_system` VALUES ('5', '1', 'address', '公司地址', '0', '', 'text', null, '5', '1', null, '1557968979', '1557968979');
+INSERT INTO `tp_system` VALUES ('6', '1', 'contacts', '联系人', '0', '', 'text', null, '6', '1', null, '1557969011', '1557969011');
+INSERT INTO `tp_system` VALUES ('7', '1', 'tel', '联系电话', '0', '', 'text', null, '7', '1', null, '1557969048', '1557969048');
+INSERT INTO `tp_system` VALUES ('8', '1', 'mobile_phone', '手机号码', '0', '', 'text', null, '8', '1', null, '1557969066', '1557969066');
+INSERT INTO `tp_system` VALUES ('9', '1', 'fax', '传真号码', '0', '', 'text', null, '9', '1', null, '1557969093', '1557969093');
+INSERT INTO `tp_system` VALUES ('10', '1', 'email', '邮箱账号', '0', '', 'text', null, '10', '1', null, '1557969113', '1557969113');
+INSERT INTO `tp_system` VALUES ('11', '1', 'qq', 'QQ', '0', '', 'text', null, '11', '1', null, '1557969147', '1557969147');
+INSERT INTO `tp_system` VALUES ('12', '1', 'qrcode', '二维码', '0', '', 'text', null, '12', '1', null, '1557969170', '1557969170');
+INSERT INTO `tp_system` VALUES ('13', '2', 'title', 'SEO标题', '0', '', 'text', null, '21', '1', null, '1557969266', '1557969266');
+INSERT INTO `tp_system` VALUES ('14', '2', 'key', 'SEO关键字', '0', '', 'textarea', null, '22', '1', null, '1557969297', '1557969297');
+INSERT INTO `tp_system` VALUES ('15', '2', 'des', 'SEO描述', '0', '', 'textarea', null, '23', '1', null, '1557969320', '1557969320');
+INSERT INTO `tp_system` VALUES ('16', '3', 'mobile', '手机端', '0', '开启后自动跳转到mobile，自适应网站或无手机端网站请关闭', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', '31', '1', null, '1557969425', '1557969425');
+INSERT INTO `tp_system` VALUES ('17', '3', 'code', '后台验证码', '0', '后台登录时是否需要验证码', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', '32', '1', null, '1557969468', '1557969539');
+INSERT INTO `tp_system` VALUES ('18', '3', 'message_code', '前台验证码', '0', '前台留言等是否需要验证码', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', '33', '1', null, '1557969501', '1557969501');
+INSERT INTO `tp_system` VALUES ('19', '3', 'message_send_mail', '留言邮件提醒', '0', '前台留言时是否需要邮件提醒，如开启请先进行配置。', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', '34', '1', null, '1557969526', '1557969526');
+INSERT INTO `tp_system` VALUES ('20', '4', 'template', '选择模板', '0', 'PC , MOBILE 等都会在该模板中', 'template', null, '41', '1', null, '1557969864', '1557969864');
+INSERT INTO `tp_system` VALUES ('21', '4', 'html', 'Html目录', '0', '用于模板文件防盗', 'text', null, '42', '1', null, '1557969903', '1557969903');
 
 -- ----------------------------
 -- Table structure for tp_system_group

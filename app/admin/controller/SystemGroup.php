@@ -124,7 +124,7 @@ class SystemGroup extends Base
         if(Request::isPost()) {
             $id = Request::param('id');
             if($id<=5){
-                $this->error('内置分组不可删除');
+                $this->error('内置分组不可删除,如不需要可隐藏');
             }
             return M::del($id);
         }
@@ -134,8 +134,12 @@ class SystemGroup extends Base
     public function selectDel(){
         if(Request::isPost()) {
             $id = Request::param('id');
-            if($id<=5){
-                $this->error('内置分组不可删除');
+            //是否包含多个
+            $ids = explode(',',$id);
+            foreach($ids as $k=>$v){
+                if($v<=5){
+                    $this->error('内置分组不可删除');
+                }
             }
             return M::selectDel($id);
         }

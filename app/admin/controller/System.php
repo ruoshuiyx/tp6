@@ -25,13 +25,182 @@
  */
 namespace app\admin\controller;
 
+use app\common\model\SystemGroup;
+use app\common\model\System as M;
+
 use think\facade\App;
 use think\facade\Request;
 use think\facade\View;
 
 class System extends Base
 {
-    //系统设置
+    protected $validate = 'System';
+
+    //系统设置字段列表
+    public function index(){
+
+        //全局查询条件
+        $where=[];
+        $keyword = Request::param('keyword');
+        if(!empty($keyword)){
+            $where[]=['name|field', 'like', '%'.$keyword.'%'];
+        }
+        $groupId  = Request::param('group_id');
+        if(!empty($groupId)){
+            $where[]=['group_id', '=', $groupId];
+        }
+        $dateran = Request::param('dateran');
+        if(!empty($dateran)){
+            $getDateran = get_dateran($dateran);
+            $where[]=['create_time', 'between', $getDateran];
+        }
+
+        //获取列表
+        $list = M::getList($where,$this->pageSize);
+
+        //获取系统设置分组列表
+        $systemGroup = SystemGroup::select();
+
+        $view = [
+            'keyword'=>$keyword,
+            'groupId' => $groupId,
+            'dateran'=> $dateran,
+            'systemGroup'=> $systemGroup,
+            'pageSize' => page_size($this->pageSize,$list->total()),
+            'page' => $list->render(),
+            'list' => $list,
+            'empty'=> empty_list(12),
+        ];
+        View::assign($view);
+        return View::fetch();
+    }
+
+    //系统设置字段添加
+    public function add(){
+        if(Request::param('isajax')) {
+            //调用字段设置模版
+            View::assign(Request::param());
+            //根据name取值
+            if(Request::param('name')){
+                $fieldInfo = M::where('field','=',Request::param('name'))
+                    ->find();
+                $fieldInfo['setup'] = string2array($fieldInfo['setup']);
+            }else{
+                $fieldInfo = null;
+            }
+            $view = [
+                'fieldInfo'  => $fieldInfo,
+            ];
+            View::assign($view);
+            return View::fetch('fieldAddType');
+
+        }
+        //分组获取
+        $systemGroup = SystemGroup::where('status',1)->select();
+        //字段类型获取
+        $fildType = M::getType();
+        if(!count($systemGroup)){
+            $this->error('请先添加系统设置分组');
+        }
+        $view = [
+            'systemGroup' => $systemGroup,
+            'fildType'    => $fildType,
+            'info'        => null
+        ];
+        View::assign($view);
+        return View::fetch();
+    }
+
+    //系统设置字段添加保存
+    public function addPost(){
+        $data = Request::except(['file'], 'post');
+        $result = $this->validate($data,$this->validate);
+        if (true !== $result) {
+            // 验证失败 输出错误信息
+            $this->error($result);
+        }else{
+            //特殊处理配置信息
+            if(isset($data['setup'])) {
+                $data['setup'] = array2string($data['setup']);
+            }
+            if (M::create($data) !==false) {
+                $this->success('添加成功','index');
+            }else{
+                $this->error('添加失败','index');
+            }
+        }
+    }
+
+    //系统设置字段修改
+    public function edit(){
+        $id = Request::param('id');
+        $info = M::edit($id);
+        //分组获取
+        $systemGroup = SystemGroup::select();
+        //字段类型获取
+        $fildType = M::getType();
+        $view =[
+            'systemGroup' => $systemGroup,
+            'fildType'    => $fildType,
+            'info'        => $info,
+        ];
+        View::assign($view);
+        return View::fetch('add');
+    }
+
+    //系统设置字段修改保存
+    public function editPost(){
+        $data = Request::except(['file'], 'post');
+        $result = $this->validate($data,$this->validate);
+        if (true !== $result) {
+            // 验证失败 输出错误信息
+            $this->error($result);
+        }else{
+            //特殊处理配置信息
+            if(isset($data['setup'])) {
+                $data['setup'] = array2string($data['setup']);
+            }
+            if (M::update($data) !==false) {
+                $this->success('修改成功','index');
+            }else{
+                $this->error('修改失败','index');
+            }
+        }
+    }
+
+    //系统设置字段删除
+    public function del(){
+        if(Request::isPost()) {
+            $id = Request::param('id');
+            return M::del($id);
+        }
+    }
+
+    //系统设置字段批量删除
+    public function selectDel(){
+        if(Request::isPost()) {
+            $id = Request::param('id');
+            return M::selectDel($id);
+        }
+    }
+
+    //系统设置字段排序
+    public function sort(){
+        if(Request::isPost()){
+            $data = Request::post();
+            return M::sort($data);
+        }
+    }
+
+    //系统设置字段状态
+    public function state(){
+        if(Request::isPost()){
+            $id = Request::param('id');
+            return M::state($id);
+        }
+    }
+
+    //系统设置查看
     public function system(){
         //查找所有模版
         $dir = App::getRootPath() . 'public' .DIRECTORY_SEPARATOR. 'template';
@@ -84,7 +253,7 @@ class System extends Base
         }
     }
 
-    //邮件发送
+    //测试邮件发送
     public function trySend(){
         $sender = Request::param('email');
         //检查是否邮箱格式
@@ -133,7 +302,7 @@ class System extends Base
         }
     }
 
-    //短信发送
+    //测试短信发送
     public function trySms(){
         $mobile = input('mobile');
         $data = \app\common\model\Config::where('inc_type','sms')->select();

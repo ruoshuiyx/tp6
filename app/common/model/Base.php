@@ -73,17 +73,17 @@ class Base extends Model
 
     //排序修改
     public static function sort($data){
-        self::where('id',$data['id'])
-            ->update($data);
+        $info = self::find($data['id']);
+        $info -> sort = $data['sort'];
+        $info -> save();
         return json(['error'=>0,'msg'=>'修改成功!']);
-
     }
 
     //状态修改
     public static function state($id){
-        $data = self::find($id);
-        $data->status = $data['status']==1 ? 0 : 1;
-        $data -> save();
+        $info = self::find($id);
+        $info-> status = $info['status']==1 ? 0 : 1;
+        $info -> save();
         return json(['error'=>0,'msg'=>'修改成功!']);
     }
 
