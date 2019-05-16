@@ -415,3 +415,23 @@ function getTemplate(){
     return $tpl;
 }
 
+/**
+ * 格式化系统设置表中的setup数据
+ * @param $system
+ * @return mixed
+ */
+function sysgem_setup($system){
+    foreach($system as $k=>$v){
+        if($system[$k]['setup']){
+            $system[$k]['setup'] = string2array($v['setup']);
+            if(array_key_exists('options',$system[$k]['setup'])){
+                $system[$k]['setup']['options'] = explode("\n",$system[$k]['setup']['options']);
+                foreach ($system[$k]['setup']['options'] as $kk=>$vv){
+                    $system[$k]['setup']['options'][$kk] = trim_array_element(explode("|",$system[$k]['setup']['options'][$kk]));
+
+                }
+            }
+        }
+    }
+    return $system;
+}

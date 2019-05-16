@@ -208,18 +208,7 @@ class System extends Base
         //查找所有数据
         $system = M::getListField()->toArray();
         //格式化设置字段
-        foreach($system as $k=>$v){
-            if($system[$k]['setup']){
-                $system[$k]['setup'] = string2array($v['setup']);
-                if(array_key_exists('options',$system[$k]['setup'])){
-                    $system[$k]['setup']['options'] = explode("\n",$system[$k]['setup']['options']);
-                    foreach ($system[$k]['setup']['options'] as $kk=>$vv){
-                        $system[$k]['setup']['options'][$kk] = trim_array_element(explode("|",$system[$k]['setup']['options'][$kk]));
-
-                    }
-                }
-            }
-        }
+        $system = sysgem_setup($system);
         //将数据重新分组
         $system = array_group($system,'group_id');
 
@@ -283,7 +272,7 @@ class System extends Base
                     $info -> save();
                 }
             }
-            
+
             $this->success('修改成功', 'system');
         }
     }

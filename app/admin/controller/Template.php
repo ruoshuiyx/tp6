@@ -25,7 +25,7 @@
  */
 namespace app\admin\controller;
 
-use think\facade\Db;
+use app\common\model\System;
 use think\facade\Request;
 use think\facade\View;
 
@@ -36,9 +36,15 @@ class Template extends Base
     function initialize()
     {
         parent::initialize();
-        $system = Db::name('system')
-            ->where('id',1)
-            ->find();
+        //查找所有数据
+        $system = System::getListField()->toArray();
+        //格式化设置字段
+        $system = sysgem_setup($system);
+        $systemArr = [];
+        foreach($system as $k=>$v){
+            $systemArr[$v['field']] = $v['value'];
+        }
+        $system = $systemArr;
         $this->public         = '/template/'.
             $system['template'].
             '/'.
