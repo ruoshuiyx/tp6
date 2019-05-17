@@ -35,7 +35,10 @@ use think\facade\Request;
 use think\Response;
 use think\Validate;
 
-class Base
+/**
+ * 控制器基础类
+ */
+abstract class Base
 {
     /**
      * Request实例

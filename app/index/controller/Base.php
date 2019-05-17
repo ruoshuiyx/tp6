@@ -36,7 +36,10 @@ use think\Validate;
 use app\common\model\System;
 
 
-class Base
+/**
+ * 控制器基础类
+ */
+abstract class Base
 {
     protected $appName;        //当前应用名称
     protected $controllerName; //获取当前的控制器名
