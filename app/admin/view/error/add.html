@@ -65,7 +65,10 @@
                                                 {if $moduleid !==$cate_list.moduleid} disabled {/if}
                                                  >{$cate_list.lcatname}</option>
                                                 {/volist}
-                                          </select>
+                                          	</select>
+                                            {if $moduleid ==1}<!--select disabled 导致无法获取分类-->
+                                            <input type="hidden" name="{$field.field}" value="{$cateId}"/>
+                                            {/if}
                                           </div>
                                           <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"} *{/eq}</div>
                                         {/case}
