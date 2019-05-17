@@ -44,6 +44,7 @@
                 		<form method="post" action="{:url('add')}">
                 		{/if}
 		                	{volist name='field' id='field' }
+                            {if $field.status}<!--隐藏不再显示的字段-->
 		                	<!---->
 		                	<div class="row dd_input_group">
 			                	<div class="form-group">
@@ -249,6 +250,7 @@
 				                </div>
 			                </div>
 			                <!---->
+                            {/if}<!--隐藏不再显示的字段-->
                             {/volist} 
 		                	
 			                <div class="row dd_input_group">
