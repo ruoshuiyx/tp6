@@ -125,7 +125,12 @@ abstract class Base
             $v->batch(true);
         }
 
-        return $v->failException(true)->check($data);
+        $result =  $v->failException(false)->check($data);
+        if(true !== $result){
+            return $v->getError();
+        }else{
+            return $result;
+        }
     }
 
     /**
