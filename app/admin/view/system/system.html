@@ -46,8 +46,9 @@
                               {foreach $systemGroup as $key=>$vo } 
                               <div class="tab-pane {if $key+1 == 1}active{/if}" id="tab_{$key+1}">
                                 <!--调用该分组下所有字段-->
-                                {if array_key_exists($key+1,$system)}
+                                {if array_key_exists($vo.id,$system)}<!--去除状态为隐藏的分组配置信息-->
                                 {foreach $system[($key+1)] as $k=>$v } 
+                                {if $v['status']}<!--去除状态为隐藏的配置信息-->
                                     {if $v['type'] =='text'}
                                     <!---->
                                     <div class="row dd_input_group">
@@ -215,6 +216,8 @@
                                         </div>
                                     </div>
                                     {/if}
+                                    <!---->
+                                {/if}    
                                 {/foreach}
                                 {/if}
                               </div>
