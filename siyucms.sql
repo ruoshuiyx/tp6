@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2019-05-20 13:50:23
+Date: 2019-05-20 15:09:07
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -856,7 +856,7 @@ CREATE TABLE `tp_system` (
 -- Records of tp_system
 -- ----------------------------
 INSERT INTO `tp_system` VALUES ('1', '1', 'name', '网站名称', '0', '', 'text', 'array (\n  \'edittype\' => \'ckeditor\',\n)', '1', '1', 'SIYUCMS', '1557964941', '1557986040');
-INSERT INTO `tp_system` VALUES ('2', '1', 'logo', ' 网站LOGO', '0', '', 'file', 'array (\n  \'upload_allowext\' => \'zip|rar|doc|ppt\',\n)', '2', '1', '/uploads/20181226/a3a4245ec095da4903c6c81123fd480d.png', '1557968436', '1557986040');
+INSERT INTO `tp_system` VALUES ('2', '1', 'logo', ' 网站LOGO', '0', '', 'image', 'array (\n  \'upload_allowext\' => \'jpg|jpeg|gif|png\',\n)', '2', '1', '/uploads/20181226/a3a4245ec095da4903c6c81123fd480d.png', '1557968436', '1557986040');
 INSERT INTO `tp_system` VALUES ('3', '1', 'icp', '备案号', '0', '', 'text', null, '3', '1', '辽ICP备12345678号-1', '1557968883', '1557986040');
 INSERT INTO `tp_system` VALUES ('4', '1', 'copyright', '版权信息', '0', '', 'textarea', null, '4', '1', 'Copyright © SIYUCMS 2019.All right reserved.Powered by SIYUCMS', '1557968923', '1557986040');
 INSERT INTO `tp_system` VALUES ('5', '1', 'address', '公司地址', '0', '', 'text', null, '6', '1', '辽宁省沈阳市铁西区重工街XX路XX号1-1-1', '1557968979', '1557986095');
