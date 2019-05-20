@@ -119,13 +119,14 @@ class Error extends Base
                 if(array_key_exists('file',$data)){
                     unset($data['file']);
                 }
-                //查找栏目相关数据
+                //查找栏目相关数据(已隐藏的数据不再做修改)
                 $list = Db::name('cate')
                     ->alias('c')
                     ->leftJoin('module m','c.moduleid = m.id')
                     ->leftJoin('field f','c.moduleid = f.moduleid')
                     ->field('c.moduleid,m.name as m_table,f.*')
                     ->where('c.id','=',input('post.cate_id'))
+                    ->where('f.status','=',1)
                     ->order(['f.sort'=>'asc','f.id'=>'asc'])
                     ->select();
                 //循环判断数据合法性
@@ -333,13 +334,14 @@ class Error extends Base
                 if(array_key_exists('file',$data)){
                     unset($data['file']);
                 }
-                //查找栏目相关数据
+                //查找栏目相关数据(已隐藏的数据不再做修改)
                 $list = Db::name('cate')
                     ->alias('c')
                     ->leftJoin('module m','c.moduleid = m.id')
                     ->leftJoin('field f','c.moduleid = f.moduleid')
                     ->field('c.moduleid,m.name as m_table,f.*')
                     ->where('c.id','=',input('post.cate_id'))
+                    ->where('f.status','=',1)
                     ->order(['f.sort'=>'asc','f.id'=>'asc'])
                     ->select();
                 //循环判断数据合法性
