@@ -67,8 +67,13 @@ class Base extends Model
 
     //批量删除
     public static function selectDel($id){
-        self::destroy($id);
-        return json(['error'=>0,'msg'=>'删除成功!']);
+        if($id){
+            $ids = explode(',',$id);
+            self::destroy($ids);
+            return json(['error'=>0,'msg'=>'删除成功!']);
+        }else{
+            return ['error' => 1, 'msg' => '删除失败'];
+        }
     }
 
     //排序修改
