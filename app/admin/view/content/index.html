@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>后台管理面板</title>
+  <!-- 告诉浏览器该页面是自适应布局 -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	{include file="index/top" /}
+	<link rel="stylesheet" href="/static/plugins/zTree_v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
+</head>
+<body class="hold-transition skin-blue sidebar-mini">	
+	<div class="wrapper">
+			<div class="content-wrapper" style="margin-left: 0 !important;">	
+				<!--内容开始-->
+				<section class="content" style="padding-bottom: 0;">
+					<div class="row boot-col-space15">
+						<!--左侧开始-->
+						<div class="col-md-3">
+							<!--页眉-->
+							<section class="content-header content-content-left">
+								<h1>栏目列表</h1>
+							</section>
+							<div class="box box-solid">
+								<div class="box-header with-border">
+									<!--<h3 class="box-title">栏目列表</h3>-->
+								</div>
+								<div class="box-body">
+									<!--ztree-->
+									<ul id="treeDemo" class="ztree"></ul>
+									<!--ztree-->
+								</div>
+							</div>
+						</div>
+						<!--左侧结束-->
+						<!--右侧开始-->
+						<div class="col-md-9">
+							<iframe id="contentFrame" scrolling="auto" frameborder="0" src="{:url('index',['type'=>'main'])}" name="content" width="100%" height="100%"></iframe>
+						</div>
+						<!--右侧结束-->
+					</div>
+				</section>
+			</div>
+	</div>
+	{include file="index/bottom" /} 
+	<script type="text/javascript" src="/static/plugins/zTree_v3/js/jquery.ztree.core.js"></script>
+	<script type="text/javascript" src="/static/plugins/zTree_v3/js/jquery.ztree.excheck.js"></script>
+	<SCRIPT type="text/javascript">
+		<!--
+		var setting = {
+			data: {
+				simpleData: {
+					enable: true
+				}
+			}
+		};
+
+		var zNodes =[
+			{volist name='list' id='list'}
+    		{ id:{$list.id}, pId:{$list.parentid}, name:"{$list.catname}", open:true, url:"{:url($list.moduleurl.'/index',['cate'=>$list.id])}", target:"content"},
+    	{/volist}
+		];
+
+		$(document).ready(function(){
+			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+		});
+		//-->
+	</SCRIPT>
+	<script>
+    $("#contentFrame").height(window.innerHeight-60);
+	</script>
+</body>
+</html>    
