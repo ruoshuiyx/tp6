@@ -590,8 +590,9 @@ class Error extends Base
     public function selectDel(){
         if(Request::isPost()) {
             $id = Request::post('id');
+            $ids = explode(',',$id);
             Db::name($this->table)
-                ->delete($id);
+                ->delete($ids);
             return json(['error'=>0,'msg'=>'删除成功!']);
         }
     }
