@@ -102,7 +102,7 @@ class Error extends Base
             'list' => $list,
             'cateId'=> $cateId,
             'cate' => $cate,
-            'empty'=> empty_list(8),
+            'empty'=> empty_list(9),
         ];
         View::assign($view);
         return View::fetch('error/index');
