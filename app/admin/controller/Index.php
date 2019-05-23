@@ -37,6 +37,9 @@ use think\facade\View;
 
 class Index extends Base
 {
+    //后台是否开启多标签
+    protected $labelOpening = true;
+
     //首页
     public function index()
     {
@@ -74,6 +77,8 @@ class Index extends Base
         }
         $view['menus'] = $menus;
         $view['admin'] = Session::get('admin');
+        //有些人不喜欢多标签，比如我，有些人喜欢多标签，比如用户...
+        $view['labelOpening'] = $this->labelOpening;
         View::assign($view);
         return View::fetch();
     }

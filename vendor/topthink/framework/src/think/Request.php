@@ -13,6 +13,7 @@ declare (strict_types = 1);
 namespace think;
 
 use think\route\Dispatch;
+use think\route\Rule;
 
 /**
  * 请求管理类
@@ -192,6 +193,12 @@ class Request
      * @var array
      */
     protected $request = [];
+
+    /**
+     * 当前路由对象
+     * @var Rule
+     */
+    protected $rule;
 
     /**
      * 当前ROUTE参数
@@ -877,6 +884,28 @@ class Request
         }
 
         return $this->input($this->param, $name, $default, $filter);
+    }
+
+    /**
+     * 设置路由变量
+     * @access public
+     * @param  Rule $rule 路由对象
+     * @return $this
+     */
+    public function setRule(Rule $rule)
+    {
+        $this->rule = $rule;
+        return $this;
+    }
+
+    /**
+     * 获取当前路由对象
+     * @access public
+     * @return Rule|null
+     */
+    public function rule()
+    {
+        return $this->rule;
     }
 
     /**

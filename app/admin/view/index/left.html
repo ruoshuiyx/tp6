@@ -11,7 +11,72 @@
           <i class="fa fa-circle text-success"></i> 在线
         </div>
       </div>
-      <!-- sidebar menu: : style can be found in sidebar.less -->
+			{if $labelOpening}
+			<!-- 菜单搜索 -->
+			<form action="" method="get" class="sidebar-form" onsubmit="return false;">
+					<div class="input-group">
+							<input type="text" name="q" class="form-control" placeholder="Search..." autocomplete="off" >
+							<span class="input-group-btn">
+								<button type="button" name="search" id="search-btn" class="btn btn-flat" onclick="search_menu()"><i class="fa fa-search"></i></button>
+							</span>
+							<div class="menuresult list-group sidebar-form hide"></div>
+					</div>
+			</form>
+			<script type="text/javascript">
+				$(function(){
+					//菜单搜索
+						//设置默认宽度
+            $(".menuresult").width($("form.sidebar-form > .input-group").width());
+						//搜索展示框
+            var searchResult = $(".menuresult");
+            $("form.sidebar-form").on("blur", "input[name=q]", function () {
+								//表单失去焦点后隐藏展示框
+								setTimeout(function(){
+									searchResult.addClass("hide");
+								}, 300);
+                
+            }).on("focus", "input[name=q]", function () {
+								//获取焦点时,当有元素则取消隐藏
+                if ($("a", searchResult).size() > 0) {
+                    searchResult.removeClass("hide");
+                }
+            }).on("keyup", "input[name=q]", function () {
+								//按下按键时触发以下内容
+                searchResult.html(''); //设置内容为空
+                var val = $(this).val();
+                var html = [];
+                if (val != '') {
+										//循环菜单进行遍历
+                    $("ul.sidebar-menu li a:not([href^='javascript:;'])").each(function () {
+												//进行汉字比较
+                        if ($("span:first", this).text().indexOf(val) > -1) {
+														//写入搜搜展示框
+                            html.push('<a onclick="' + $(this).attr("onclick") + '" href="javascript:;">' + $("span:first", this).text() + '</a>');
+														//超出最大值则退出,防止页面崩溃
+                            if (html.length >= 100) {
+                                return false;
+                            }
+                        }
+                    });
+                }
+                $(searchResult).append(html.join(""));
+                if (html.length > 0) {
+                    searchResult.removeClass("hide");
+                } else {
+                    searchResult.addClass("hide");
+                }
+            });
+            //快捷搜索点击事件
+            $("form.sidebar-form").on('mousedown click', '.menuresult a[data-url]', function () {
+            });
+				})	
+			</script>
+			<!-- /.菜单搜索 -->
+			<!--开启tab不需要显示导航-->
+			<ul class="sidebar-menu" data-widget="tree">
+			</ul>
+			{else}
+			<!--未开启tab需要显示导航-->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">主导航</li>
         <!---->
@@ -27,9 +92,9 @@
           </ul>
         </li>
         {/volist}
-        <!---->
-        
+        <!---->   
       </ul>
+			{/if}
     </section>
     <!-- /.sidebar -->
   </aside>
