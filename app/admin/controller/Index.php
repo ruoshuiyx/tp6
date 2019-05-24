@@ -27,6 +27,7 @@ namespace app\admin\controller;
 use app\admin\model\AuthRule;
 use app\common\model\Cate;
 use app\common\model\Module;
+use app\common\model\System;
 use app\common\model\Users;
 use think\facade\App;
 use think\facade\Config;
@@ -37,12 +38,15 @@ use think\facade\View;
 
 class Index extends Base
 {
-    //后台是否开启多标签
+    //默认开启后台多标签
     protected $labelOpening = true;
 
     //首页
     public function index()
     {
+        //查询后台多标签是否关闭
+        $this->labelOpening = System::where('field','=','label_opening')->value('value');
+
         $authRule = AuthRule::where('status',1)
             ->order('sort asc')
             ->select()
@@ -77,7 +81,7 @@ class Index extends Base
         }
         $view['menus'] = $menus;
         $view['admin'] = Session::get('admin');
-        //有些人不喜欢多标签，比如我，有些人喜欢多标签，比如用户...
+        //多标签
         $view['labelOpening'] = $this->labelOpening;
         View::assign($view);
         return View::fetch();

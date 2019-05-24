@@ -36,7 +36,11 @@
               <!-- Menu Footer-->
               <li class="user-body">
                 <div class="pull-left">
-                  <a href="{:url('auth/adminedit',['id'=>$admin.id])}" target="right" class="btn btn-default btn-flat">资料</a>
+									{if $labelOpening}
+										<a onclick="addTabs({id:'600070001',title: '修改管理员',close: true,url: '{:url('auth/adminedit',['id'=>$admin.id])}',icon: 'fa fa-user'});" href="javascript:;" class="btn btn-default btn-flat">资料</a>
+									{else}
+										<a href="{:url('auth/adminedit',['id'=>$admin.id])}" target="right" class="btn btn-default btn-flat">资料</a>
+									{/if}
                 </div>
                 <div class="pull-right">
                   <a href="{:url('Login/logout')}" class="btn btn-default btn-flat">退出</a>

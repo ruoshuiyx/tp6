@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2019-05-20 15:09:07
+Date: 2019-05-24 08:08:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -850,7 +850,7 @@ CREATE TABLE `tp_system` (
   `create_time` int(11) DEFAULT '0' COMMENT '添加时间',
   `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COMMENT='系统设置表';
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COMMENT='系统设置表';
 
 -- ----------------------------
 -- Records of tp_system
@@ -877,6 +877,7 @@ INSERT INTO `tp_system` VALUES ('19', '3', 'message_send_mail', '留言邮件提
 INSERT INTO `tp_system` VALUES ('20', '4', 'template', '选择模板', '0', 'PC , MOBILE 等都会在该模板中', 'template', null, '41', '1', 'default', '1557969864', '1557985790');
 INSERT INTO `tp_system` VALUES ('21', '4', 'html', 'Html目录', '0', '用于模板文件防盗', 'text', null, '42', '1', 'html', '1557969903', '1557986194');
 INSERT INTO `tp_system` VALUES ('22', '1', 'url', '网站地址', '0', '', 'text', null, '5', '1', 'www.xxx.com', '1557986088', '1557986120');
+INSERT INTO `tp_system` VALUES ('23', '3', 'label_opening', '后台多标签', '0', '开启后后台启用多标签模式', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', '35', '1', '1', '1558656395', '1558656444');
 
 -- ----------------------------
 -- Table structure for tp_system_group
