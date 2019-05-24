@@ -1950,7 +1950,7 @@ var addTabs = function (options) {
         options.url = basePath + options.url;
     }
 
-    //判断是否按了ctrl按键，当按了ctrl按键时，直接进行跳转。
+    //判断是否按了ctrl按键，当按了ctrl按键时，直接进行新窗口跳转。
     if(event.ctrlKey){
         window.open(options.url, '_blank');
         return false;
@@ -2021,6 +2021,10 @@ var addTabs = function (options) {
         /*$tab.find("iframe").load(function () {
          App.fixIframeCotent();
          });*/
+    }
+    else{
+        //已打开的菜单再次点击执行刷新操作
+        refreshTabById(pageId);
     }
 
     activeTabByPageId(pageId);
