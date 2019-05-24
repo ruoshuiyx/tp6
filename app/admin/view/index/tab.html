@@ -122,4 +122,14 @@
         $('.sidebar-menu').sidebarMenu({data: menus});
 
     });
+
+    //当刷新过来的时候应该查找刷新的菜单并执行模拟点击事件
+    {if $refererUrl}
+    $(function(){
+        var url = '{$refererUrl}';
+        //查找url出现的位置
+        var active = $("ul.sidebar-menu li a[href='" + url + "']");
+        active.trigger("click");
+    })
+    {/if}
 </script>

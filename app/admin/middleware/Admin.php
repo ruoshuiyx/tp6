@@ -72,6 +72,18 @@ class Admin
         //进行操作日志的记录
         \app\admin\model\AdminLog::record();
 
+        //当url中有ref=tab时表示刷新当前页(用于后台tab模式刷新)
+        if(Request::get("ref") == 'tab'){
+
+            //去除url中ref参数
+            $url = preg_replace_callback("/([\?|&]+)ref=tab(&?)/i", function ($matches) {
+                return $matches[2] == '&' ? $matches[1] : '';
+            }, Request::url());
+
+            //重定向隐式传值使用的是Session闪存数据隐式传值，并且仅在下一次请求有效，再次访问重定向地址的时候无效
+            return redirect('Index/index')->with('referer',$url);
+        }
+
         //中间件handle方法的返回值必须是一个Response对象。
         return $next($request);
     }

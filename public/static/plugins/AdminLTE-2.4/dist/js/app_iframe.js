@@ -1956,6 +1956,20 @@ var addTabs = function (options) {
         return false;
     }
 
+    //重新设置浏览器地址信息(控制台不需要进行URL设置)
+    if(options.id>1){
+        var state = ({
+            url: options.url, title: options.title, id: options.id
+        });
+        var pushurl = options.url.indexOf("ref=tab") === -1 ? (options.url + (options.url.indexOf("?") > -1 ? "&" : "?") + "ref=tab") : options.url;
+        try {
+            window.history.pushState(state, options.title, pushurl);
+        } catch (e) {
+
+        }
+    }
+
+
     var pageId = options.id;
 
     //判断这个id的tab是否已经存在,不存在就新建一个

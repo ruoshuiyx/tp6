@@ -47,6 +47,15 @@ class Index extends Base
         //查询后台多标签是否关闭
         $this->labelOpening = System::where('field','=','label_opening')->value('value');
 
+        //接收多标签刷新时传递过来的参数referer
+        if(Session::has('referer')){
+            //刷新的请求
+            $refererUrl = Session::get('referer');
+            $view['refererUrl'] = $refererUrl;
+        }else{
+            $view['refererUrl'] = '';
+        }
+
         $authRule = AuthRule::where('status',1)
             ->order('sort asc')
             ->select()
