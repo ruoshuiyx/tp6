@@ -873,7 +873,7 @@ INSERT INTO `tp_system` VALUES ('15', '2', 'des', 'SEO描述', '0', '', 'textare
 INSERT INTO `tp_system` VALUES ('16', '3', 'mobile', '手机端', '0', '开启后自动跳转到mobile，自适应网站或无手机端网站请关闭', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', '31', '1', '0', '1557969425', '1557986182');
 INSERT INTO `tp_system` VALUES ('17', '3', 'code', '后台验证码', '0', '后台登录时是否需要验证码', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', '32', '1', '0', '1557969468', '1557986161');
 INSERT INTO `tp_system` VALUES ('18', '3', 'message_code', '前台验证码', '0', '前台留言等是否需要验证码', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', '33', '1', '0', '1557969501', '1557986161');
-INSERT INTO `tp_system` VALUES ('19', '3', 'message_send_mail', '留言邮件提醒', '0', '前台留言时是否需要邮件提醒，如开启请先进行配置。', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', '34', '1', '0', '1557969526', '1557986161');
+INSERT INTO `tp_system` VALUES ('19', '3', 'message_send_mail', '留言邮件提醒', '0', '前台留言时是否需要邮件提醒，如开启请先进行邮箱配置', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', '34', '1', '0', '1557969526', '1557986161');
 INSERT INTO `tp_system` VALUES ('20', '4', 'template', '选择模板', '0', 'PC , MOBILE 等都会在该模板中', 'template', null, '41', '1', 'default', '1557969864', '1557985790');
 INSERT INTO `tp_system` VALUES ('21', '4', 'html', 'Html目录', '0', '用于模板文件防盗', 'text', null, '42', '1', 'html', '1557969903', '1557986194');
 INSERT INTO `tp_system` VALUES ('22', '1', 'url', '网站地址', '0', '', 'text', null, '5', '1', 'www.xxx.com', '1557986088', '1557986120');
