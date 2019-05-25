@@ -48,6 +48,30 @@ abstract class Base
     protected $template;       //模板目录
 
     /**
+     * Request实例
+     * @var \think\Request
+     */
+    protected $request;
+
+    /**
+     * 应用实例
+     * @var \think\App
+     */
+    protected $app;
+
+    /**
+     * 是否批量验证
+     * @var bool
+     */
+    protected $batchValidate = false;
+
+    /**
+     * 控制器中间件
+     * @var array
+     */
+    protected $middleware = [];
+
+    /**
      * 构造方法
      * @access public
      * @param  App  $app  应用对象
@@ -62,7 +86,7 @@ abstract class Base
     }
 
     // 初始化
-    public function initialize()
+    protected function initialize()
     {
         //查找所有系统设置表数据
         $system = System::getListField()->toArray();
@@ -83,6 +107,48 @@ abstract class Base
             $this->appName.
             '/';
         $this->template       = '.'.$this->public.$this->system['html'].'/';
+    }
+
+    /**
+     * 验证数据
+     * @access protected
+     * @param  array        $data     数据
+     * @param  string|array $validate 验证器名或者验证规则数组
+     * @param  array        $message  提示信息
+     * @param  bool         $batch    是否批量验证
+     * @return array|string|true
+     * @throws ValidateException
+     */
+    protected function validate(array $data, $validate, array $message = [], bool $batch = false)
+    {
+        if (is_array($validate)) {
+            $v = new Validate();
+            $v->rule($validate);
+        } else {
+            if (strpos($validate, '.')) {
+                // 支持场景
+                list($validate, $scene) = explode('.', $validate);
+            }
+            $class = false !== strpos($validate, '\\') ? $validate : $this->app->parseClass('validate', $validate);
+            $v     = new $class();
+            if (!empty($scene)) {
+                $v->scene($scene);
+            }
+        }
+
+        $v->message($message);
+
+        //是否批量验证
+        if ($batch || $this->batchValidate) {
+            $v->batch(true);
+        }
+
+        $result =  $v->failException(false)->check($data);
+        if (true !== $result) {
+            return $v->getError();
+        } else {
+            return $result;
+        }
     }
 
     /**
@@ -110,13 +176,7 @@ abstract class Base
             'wait' => $wait,
         ];
 
-        $type = (request()->isJson() || request()->isAjax()) ? 'json' : 'html';
-        if ('html' == strtolower($type)) {
-            $type = 'jump';
-        }
-
-        $response = Response::create($result, $type)->header($header)->options(['jump_template' => app('config')->get('app.dispatch_error_tmpl')]);
-
+        $response = view(app('config')->get('app.dispatch_error_tmpl'), $result);
         throw new HttpResponseException($response);
     }
 
@@ -168,15 +228,7 @@ abstract class Base
             'url'  => $url,
             'wait' => $wait,
         ];
-
-        $type = (request()->isJson() || request()->isAjax()) ? 'json' : 'html';
-        // 把跳转模板的渲染下沉，这样在 response_send 行为里通过getData()获得的数据是一致性的格式
-        if ('html' == strtolower($type)) {
-            $type = 'jump';
-        }
-
-        $response = Response::create($result, $type)->header($header)->options(['jump_template' => app('config')->get('app.dispatch_success_tmpl')]);
-
+        $response = view(app('config')->get('app.dispatch_success_tmpl'), $result);
         throw new HttpResponseException($response);
     }
 
