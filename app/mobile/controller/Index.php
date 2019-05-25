@@ -37,13 +37,6 @@ class Index extends Base
     // 首页
     public function index()
     {
-        //后台开启手机端的时候自动跳转
-        if ($this->system['mobile'] == '1') {
-            if (Request::isMobile()) {
-                return redirect('mobile/index/index');
-            }
-        }
-
         $view = [
             'cate'        => null,
             'system'      => $this->system, //系统信息
