@@ -73,7 +73,11 @@
                             	<a class="btn btn-flat btn-default btn-xs disabled">不可控</a>
                             {/if}
                           <a class="btn btn-flat btn-info btn-xs" href="{:url('fieldEdit',['moduleid'=>$moduleid,'id'=>$list.id])}">编辑</a>
-                          <a class="btn btn-flat btn-danger btn-xs list_del" data-id="{$list.id}">删除</a>
+                          {if $list.delStatus==1}
+                            <a class="btn btn-flat btn-default btn-xs disabled">删除</a>
+                          {else}
+                            <a class="btn btn-flat btn-danger btn-xs list_del" data-id="{$list.id}">删除</a>
+                          {/if}
                           </td>
                         </tr>
                         {/volist}                       
