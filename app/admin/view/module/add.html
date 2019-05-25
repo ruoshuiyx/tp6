@@ -30,6 +30,7 @@
                 		{if $info}
                 		<form method="post" action="{:url('editPost')}">
                 			<input type="hidden" name="id" value="{$info.id}"/>
+                            <input type="hidden" name="name" value="{$info.name}"/>
                 		{else /}
                 		<form method="post" action="{:url('addPost')}">
                 		{/if}
