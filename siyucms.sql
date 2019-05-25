@@ -555,8 +555,8 @@ INSERT INTO `tp_field` VALUES ('2', '2', 'title', '标题', '', '1', '1', '70', 
 INSERT INTO `tp_field` VALUES ('3', '2', 'keywords', '关键词', '', '0', '0', '80', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '1', '', '15', '1', '1');
 INSERT INTO `tp_field` VALUES ('4', '2', 'description', 'SEO简介', '', '0', '0', '1200', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'mediumtext\',\n  \'default\' => \'发3\',\n)', '1', '', '16', '1', '1');
 INSERT INTO `tp_field` VALUES ('5', '2', 'content', '内容', '', '0', '0', '0', '', '', '', 'editor', 'array (\n  \'edittype\' => \'ckeditor\',\n)', '1', '', '5', '1', '1');
-INSERT INTO `tp_field` VALUES ('6', '2', 'create_time', '发布时间', '', '1', '0', '0', 'date', '', 'createtime', 'datetime', '', '1', '', '10', '1', '1');
-INSERT INTO `tp_field` VALUES ('7', '2', 'status', '状态', '', '0', '0', '0', '', '', '', 'radio', 'array (\n  \'options\' => \'发布|1\r\n定时发布|0\',\n  \'fieldtype\' => \'tinyint\',\n  \'numbertype\' => \'1\',\n  \'labelwidth\' => \'75\',\n  \'default\' => \'1\',\n)', '1', '', '11', '1', '1');
+INSERT INTO `tp_field` VALUES ('6', '2', 'create_time', '添加时间', '', '1', '0', '0', 'date', '', 'createtime', 'datetime', '', '1', '', '10', '1', '1');
+INSERT INTO `tp_field` VALUES ('7', '2', 'status', '状态', '', '0', '0', '0', '', '', '', 'radio', 'array (\n  \'options\' => \'显示|1\r\n隐藏|0\',\n  \'fieldtype\' => \'tinyint\',\n  \'numbertype\' => \'1\',\n  \'labelwidth\' => \'75\',\n  \'default\' => \'1\',\n)', '1', '', '11', '1', '1');
 INSERT INTO `tp_field` VALUES ('8', '2', 'hits', '点击次数', '', '0', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'\',\n)', '1', '', '12', '1', '1');
 INSERT INTO `tp_field` VALUES ('10', '2', 'template', '模板', '', '0', '0', '0', '', '', '', 'template', '', '1', '', '14', '1', '1');
 INSERT INTO `tp_field` VALUES ('13', '2', 'image', '缩略图', '', '0', '0', '120', '', '', '', 'image', 'array (\n  \'upload_allowext\' => \'jpg|jpeg|gif|png\',\n)', '0', '', '7', '1', '0');
@@ -576,8 +576,8 @@ INSERT INTO `tp_field` VALUES ('31', '3', 'title', '标题', '', '1', '1', '70',
 INSERT INTO `tp_field` VALUES ('32', '3', 'keywords', '关键词', '', '0', '0', '80', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '1', '', '15', '1', '1');
 INSERT INTO `tp_field` VALUES ('33', '3', 'description', 'SEO简介', '', '0', '0', '1200', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'mediumtext\',\n  \'default\' => \'发3\',\n)', '1', '', '16', '1', '1');
 INSERT INTO `tp_field` VALUES ('34', '3', 'content', '内容', '', '0', '0', '0', '', '', '', 'editor', 'array (\n  \'edittype\' => \'ckeditor\',\n)', '1', '', '5', '1', '1');
-INSERT INTO `tp_field` VALUES ('35', '3', 'create_time', '发布时间', '', '1', '0', '0', 'date', '', 'createtime', 'datetime', '', '1', '', '10', '1', '1');
-INSERT INTO `tp_field` VALUES ('36', '3', 'status', '状态', '', '0', '0', '0', '', '', '', 'radio', 'array (\n  \'options\' => \'发布|1\r\n定时发布|0\',\n  \'fieldtype\' => \'tinyint\',\n  \'numbertype\' => \'1\',\n  \'labelwidth\' => \'75\',\n  \'default\' => \'1\',\n)', '1', '', '11', '1', '1');
+INSERT INTO `tp_field` VALUES ('35', '3', 'create_time', '添加时间', '', '1', '0', '0', 'date', '', 'createtime', 'datetime', '', '1', '', '10', '1', '1');
+INSERT INTO `tp_field` VALUES ('36', '3', 'status', '状态', '', '0', '0', '0', '', '', '', 'radio', 'array (\n  \'options\' => \'显示|1\r\n隐藏|0\',\n  \'fieldtype\' => \'tinyint\',\n  \'numbertype\' => \'1\',\n  \'labelwidth\' => \'75\',\n  \'default\' => \'1\',\n)', '1', '', '11', '1', '1');
 INSERT INTO `tp_field` VALUES ('37', '3', 'hits', '点击次数', '', '0', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'\',\n)', '1', '', '12', '1', '1');
 INSERT INTO `tp_field` VALUES ('38', '3', 'template', '模板', '', '0', '0', '0', '', '', '', 'template', '', '1', '', '14', '1', '1');
 INSERT INTO `tp_field` VALUES ('39', '3', 'image', '缩略图', '', '0', '0', '120', '', '', '', 'image', 'array (\n  \'upload_allowext\' => \'jpg|jpeg|gif|png\',\n)', '0', '', '7', '1', '0');
@@ -591,8 +591,8 @@ INSERT INTO `tp_field` VALUES ('46', '4', 'title', '标题', '', '1', '1', '70',
 INSERT INTO `tp_field` VALUES ('47', '4', 'keywords', '关键词', '', '0', '0', '80', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '1', '', '15', '1', '1');
 INSERT INTO `tp_field` VALUES ('48', '4', 'description', 'SEO简介', '', '0', '0', '1200', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'mediumtext\',\n  \'default\' => \'发3\',\n)', '1', '', '16', '1', '1');
 INSERT INTO `tp_field` VALUES ('49', '4', 'content', '内容', '', '0', '0', '0', '', '', '', 'editor', 'array (\n  \'edittype\' => \'ckeditor\',\n)', '1', '', '5', '1', '1');
-INSERT INTO `tp_field` VALUES ('50', '4', 'create_time', '发布时间', '', '1', '0', '0', 'date', '', 'createtime', 'datetime', '', '1', '', '10', '1', '1');
-INSERT INTO `tp_field` VALUES ('51', '4', 'status', '状态', '', '0', '0', '0', '', '', '', 'radio', 'array (\n  \'options\' => \'发布|1\r\n定时发布|0\',\n  \'fieldtype\' => \'tinyint\',\n  \'numbertype\' => \'1\',\n  \'labelwidth\' => \'75\',\n  \'default\' => \'1\',\n)', '1', '', '11', '1', '1');
+INSERT INTO `tp_field` VALUES ('50', '4', 'create_time', '添加时间', '', '1', '0', '0', 'date', '', 'createtime', 'datetime', '', '1', '', '10', '1', '1');
+INSERT INTO `tp_field` VALUES ('51', '4', 'status', '状态', '', '0', '0', '0', '', '', '', 'radio', 'array (\n  \'options\' => \'显示|1\r\n隐藏|0\',\n  \'fieldtype\' => \'tinyint\',\n  \'numbertype\' => \'1\',\n  \'labelwidth\' => \'75\',\n  \'default\' => \'1\',\n)', '1', '', '11', '1', '1');
 INSERT INTO `tp_field` VALUES ('52', '4', 'hits', '点击次数', '', '0', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'\',\n)', '1', '', '12', '1', '1');
 INSERT INTO `tp_field` VALUES ('53', '4', 'template', '模板', '', '0', '0', '0', '', '', '', 'template', '', '1', '', '14', '1', '1');
 INSERT INTO `tp_field` VALUES ('54', '4', 'image', '缩略图', '', '0', '0', '120', '', '', '', 'image', 'array (\n  \'upload_allowext\' => \'jpg|jpeg|gif|png\',\n)', '0', '', '7', '1', '0');
@@ -606,8 +606,8 @@ INSERT INTO `tp_field` VALUES ('61', '5', 'title', '标题', '', '1', '1', '70',
 INSERT INTO `tp_field` VALUES ('62', '5', 'keywords', '关键词', '', '0', '0', '80', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '1', '', '15', '1', '1');
 INSERT INTO `tp_field` VALUES ('63', '5', 'description', 'SEO简介', '', '0', '0', '1200', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'mediumtext\',\n  \'default\' => \'发3\',\n)', '1', '', '16', '1', '1');
 INSERT INTO `tp_field` VALUES ('64', '5', 'content', '内容', '', '0', '0', '0', '', '', '', 'editor', 'array (\n  \'edittype\' => \'ckeditor\',\n)', '1', '', '5', '1', '1');
-INSERT INTO `tp_field` VALUES ('65', '5', 'create_time', '发布时间', '', '1', '0', '0', 'date', '', 'createtime', 'datetime', '', '1', '', '10', '1', '1');
-INSERT INTO `tp_field` VALUES ('66', '5', 'status', '状态', '', '0', '0', '0', '', '', '', 'radio', 'array (\n  \'options\' => \'发布|1\r\n定时发布|0\',\n  \'fieldtype\' => \'tinyint\',\n  \'numbertype\' => \'1\',\n  \'labelwidth\' => \'75\',\n  \'default\' => \'1\',\n)', '1', '', '11', '1', '1');
+INSERT INTO `tp_field` VALUES ('65', '5', 'create_time', '添加时间', '', '1', '0', '0', 'date', '', 'createtime', 'datetime', '', '1', '', '10', '1', '1');
+INSERT INTO `tp_field` VALUES ('66', '5', 'status', '状态', '', '0', '0', '0', '', '', '', 'radio', 'array (\n  \'options\' => \'显示|1\r\n隐藏|0\',\n  \'fieldtype\' => \'tinyint\',\n  \'numbertype\' => \'1\',\n  \'labelwidth\' => \'75\',\n  \'default\' => \'1\',\n)', '1', '', '11', '1', '1');
 INSERT INTO `tp_field` VALUES ('67', '5', 'hits', '点击次数', '', '0', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'\',\n)', '1', '', '12', '1', '1');
 INSERT INTO `tp_field` VALUES ('68', '5', 'template', '模板', '', '0', '0', '0', '', '', '', 'template', '', '1', '', '14', '1', '1');
 INSERT INTO `tp_field` VALUES ('69', '5', 'image', '缩略图', '', '0', '0', '120', '', '', '', 'image', 'array (\n  \'upload_allowext\' => \'jpg|jpeg|gif|png\',\n)', '0', '', '7', '1', '0');
@@ -621,8 +621,8 @@ INSERT INTO `tp_field` VALUES ('76', '6', 'title', '标题', '', '1', '1', '70',
 INSERT INTO `tp_field` VALUES ('77', '6', 'keywords', '关键词', '', '0', '0', '80', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '1', '', '15', '1', '1');
 INSERT INTO `tp_field` VALUES ('78', '6', 'description', 'SEO简介', '', '0', '0', '1200', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'mediumtext\',\n  \'default\' => \'发3\',\n)', '1', '', '16', '1', '1');
 INSERT INTO `tp_field` VALUES ('79', '6', 'content', '内容', '', '0', '0', '0', '', '', '', 'editor', 'array (\n  \'edittype\' => \'ckeditor\',\n)', '1', '', '5', '1', '1');
-INSERT INTO `tp_field` VALUES ('80', '6', 'create_time', '发布时间', '', '1', '0', '0', 'date', '', 'createtime', 'datetime', '', '1', '', '10', '1', '1');
-INSERT INTO `tp_field` VALUES ('81', '6', 'status', '状态', '', '0', '0', '0', '', '', '', 'radio', 'array (\n  \'options\' => \'发布|1\r\n定时发布|0\',\n  \'fieldtype\' => \'tinyint\',\n  \'numbertype\' => \'1\',\n  \'labelwidth\' => \'75\',\n  \'default\' => \'1\',\n)', '1', '', '11', '1', '1');
+INSERT INTO `tp_field` VALUES ('80', '6', 'create_time', '添加时间', '', '1', '0', '0', 'date', '', 'createtime', 'datetime', '', '1', '', '10', '1', '1');
+INSERT INTO `tp_field` VALUES ('81', '6', 'status', '状态', '', '0', '0', '0', '', '', '', 'radio', 'array (\n  \'options\' => \'显示|1\r\n隐藏|0\',\n  \'fieldtype\' => \'tinyint\',\n  \'numbertype\' => \'1\',\n  \'labelwidth\' => \'75\',\n  \'default\' => \'1\',\n)', '1', '', '11', '1', '1');
 INSERT INTO `tp_field` VALUES ('82', '6', 'hits', '点击次数', '', '0', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'\',\n)', '1', '', '12', '1', '1');
 INSERT INTO `tp_field` VALUES ('83', '6', 'template', '模板', '', '0', '0', '0', '', '', '', 'template', '', '1', '', '14', '1', '1');
 INSERT INTO `tp_field` VALUES ('84', '6', 'image', '缩略图', '', '0', '0', '120', '', '', '', 'image', 'array (\n  \'upload_allowext\' => \'jpg|jpeg|gif|png\',\n)', '0', '', '7', '1', '0');
