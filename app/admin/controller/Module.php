@@ -24,6 +24,8 @@
  * +----------------------------------------------------------------------
  */
 namespace app\admin\controller;
+
+use app\common\model\Field;
 use app\common\model\Module as M;
 
 use think\facade\Config;
@@ -80,20 +82,20 @@ class module extends Base
     // 模型删除
     public function del(){
         if (Request::isPost()) {
-            $id = Request::post('id');
-            M::where('id','=',$id)
-                ->delete();
-            return json(['error'=>0, 'msg'=>'删除成功!']);
+            $id = Request::param('id');
+            //删除模型时删除字段
+            Field::where('moduleid',$id)->delete();
+            return M::del($id);
         }
     }
 
     // 批量删除
     public function selectDel(){
         if (Request::isPost()) {
-            $id = Request::post('id');
-            M::destroy($id);
-            return json(['error'=>0, 'msg'=>'删除成功!']);
-
+            $id = Request::param('id');
+            //删除模型时删除字段
+            Field::where('moduleid',$id)->delete();
+            return M::selectDel($id);
         }
     }
 

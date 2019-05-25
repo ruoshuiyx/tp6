@@ -24,6 +24,7 @@
  * +----------------------------------------------------------------------
  */
 namespace app\index\controller;
+
 use app\common\model\Users;
 
 use think\facade\Db;
@@ -65,7 +66,7 @@ class User extends Base
         return View::fetch();
     }
 
-    //登录
+    // 登录
     public function login(){
         if (Request::isPost()) {
             $result=['error'=>'', 'msg'=>''];
