@@ -95,7 +95,7 @@ class Ad extends Base
         if (true !== $result) {
             // 验证失败 输出错误信息
             $this->error($result);
-        }else{
+        } else {
             $result =  M::addPost($data);
             if ($result['error']) {
                 $this->error($result['msg']);
@@ -111,7 +111,7 @@ class Ad extends Base
         $info   = M::edit($id);
         $adType = AdType::where('status',1)
             ->select();
-        $view =[
+        $view = [
             'info'   => $info,
             'adType' => $adType,
         ];
