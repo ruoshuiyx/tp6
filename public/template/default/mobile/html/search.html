@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+ <head> 
+  <meta charset="utf-8" /> 
+  <meta http-equiv="x-ua-compatible" content="ie=edge" /> 
+  <title>{$search}_{$system.name}</title> 
+  <meta name="keywords" content="{$keywords}" /> 
+  <meta name="description" content="{$description}" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" /> 
+  <link rel="shortcut icon" type="image/x-icon" href="{$public}img/favicon.ico" /> 
+  {include file="common/css"/}
+ </head> 
+ <body> 
+  <!--[if lt IE 8]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]--> 
+  <!--Main Wrapper Start--> 
+  <div class="as-mainwrapper"> 
+   <!--Bg White Start--> 
+   <div class="bg-white"> 
+    <!--Header Area Start--> 
+    {include file="common/header"/} 
+    <!--End of Header Area--> 
+    <div class="breadcrumb-banner-area" style=" background:none">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="breadcrumb-text">
+                    <h1 class="text-center">搜索 {$search} 的结果</h1>
+                    <div class="breadcrumb-bar">
+                        <ul class="breadcrumb text-center">
+                            <li><a href="/">首页</a></li>
+                            <li>搜索</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+	<!--Latest News Area Start--> 
+    <div class="latest-area section-padding latest-page">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                	{tp:search search="$search" table="article" name="list" pagesize="6"}
+                    <div class="single-latest-item col-md-6">
+                        <div class="single-latest-text">
+                            <h3><a href="{$list.url}">{$list.title}</a></h3>
+                            <div class="single-item-comment-view">
+                               <span><i class="zmdi zmdi-calendar-check"></i>{$list.create_time|date="Y-m-d H:i:s"}</span>
+                               <span><i class="zmdi zmdi-eye"></i>{$list.hits}</span>
+                               <span><i class="zmdi zmdi-pin-account"></i>{$list.author}</span>
+                               <!--<span><i class="zmdi zmdi-label"></i>{$list.source}</span>-->
+                           </div>
+                           <p class="line_three">{$list.summary}</p>
+                           <a href="{$list.url}" class="button-default">查看详细</a>
+                        </div>
+                    </div>
+                    {/tp:search}
+                    {if empty($list)}
+                    	<h2 class="aligncenter">暂无相关内容</h2>
+                    {/if}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="pagination-content number">
+                    	{$page|raw}
+                        <!--<ul class="pagination">
+                            <li><a href="#"><i class="zmdi zmdi-chevron-left"></i></a></li>
+                            <li class="current"><a href="#"><i class="zmdi zmdi-chevron-right"></i></a></li>
+                        </ul>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End of Latest News Area-->
+    {include file="common/footer"/}
+   </div> 
+   <!--End of Bg White--> 
+  </div> 
+  <!--End of Main Wrapper Area--> 
+  {include file="common/js"/}
+ </body>
+</html>

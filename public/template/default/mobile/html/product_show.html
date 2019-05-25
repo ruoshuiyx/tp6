@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+ <head> 
+  <meta charset="utf-8" /> 
+  <meta http-equiv="x-ua-compatible" content="ie=edge" /> 
+  <title>{$info.title}-{$title}_{$system.name}</title> 
+  <meta name="keywords" content="{$keywords}" /> 
+  <meta name="description" content="{$description}" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" /> 
+  <link rel="shortcut icon" type="image/x-icon" href="{$public}img/favicon.ico" /> 
+  {include file="common/css"/}
+ </head> 
+ <body> 
+  <!--[if lt IE 8]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]--> 
+  <!--Main Wrapper Start--> 
+  <div class="as-mainwrapper"> 
+   <!--Bg White Start--> 
+   <div class="bg-white"> 
+    <!--Header Area Start--> 
+    {include file="common/header"/} 
+    <!--End of Header Area--> 
+    <!--Breadcrumb Banner Area Start-->
+    {include file="common/banner"/} 
+    <!--End of Breadcrumb Banner Area-->
+    <!--Little Nav Start-->
+    {include file="common/nav"/} 
+    <!--End of Little Nav-->
+    <!--News Detail Start-->
+    <div class="news-details-area section-padding">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-9 col-md-8">
+                                <div class="news-details-content">
+                                   <div class="single-latest-item">
+                                        <!--<img src="img/details/2.jpg" alt="">-->  
+                                        <div class="single-latest-text">
+                                            <h3>{$info.title}</h3> 
+                                            <div class="single-item-comment-view">
+                                               <span><i class="zmdi zmdi-calendar-check"></i>{$info.create_time|date="Y-m-d H:i:s"}</span>
+                                               <span><i class="zmdi zmdi-eye"></i>{$info.hits}</span>
+                                               <span><i class="zmdi zmdi-pin-account"></i>{$info.author}</span>
+                               				   <span><i class="zmdi zmdi-label"></i>{$info.source}</span>
+                                            </div>
+                                            {$info.content|raw}
+                                            {if $info.images}
+                                                {foreach $info.images as $key=>$vo} 
+                                                    <img src="{$vo.image}" alt="{$vo.title}">
+                                                {/foreach}
+                                            {/if}  
+                                            <div class="tags-and-links">
+                                                <div class="related-tag">
+                                                    <span>上一篇:</span>
+                                                    {tp:prev len='10'/}
+                                                </div>
+                                                <div class="related-tag floatright">
+                                                    <span>下一篇:</span>
+                                                    {tp:next len='10'/}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div>    
+                            </div>
+                            <div class="col-lg-3 col-md-4">
+                             	{include file="common/hot"/}   
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    <!--News Detail End-->
+    {include file="common/footer"/}
+   </div> 
+   <!--End of Bg White--> 
+  </div> 
+  <!--End of Main Wrapper Area--> 
+  {include file="common/js"/}
+ </body>
+</html>

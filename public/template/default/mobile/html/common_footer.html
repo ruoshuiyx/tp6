@@ -1,0 +1,68 @@
+
+	<!--Footer Widget Area Start--> 
+    <div class="footer-widget-area"> 
+     <div class="container"> 
+      <div class="row"> 
+       <div class="col-md-3 col-sm-4"> 
+        <div class="single-footer-widget"> 
+         <div class="footer-logo"> 
+          <a href="index.html"><img src="{$public}img/logo/footer.png" alt="" /></a> 
+         </div> 
+         <p>{$system.des}</p> 
+         <div class="social-icons"> 
+          <a href="tencent://message/?uin={$system.qq}&Site=SuperNic&Menu=yes"><i class="fa fa-qq"></i></a> 
+          <a href="https://gitee.com/ruoshuiyx/SYPHP"><i class="fa fa-git"></i></a> 
+          <a href="mailto:{$system.email}"><i class="zmdi zmdi-email"></i></a> 
+         </div> 
+        </div> 
+       </div> 
+       <div class="col-md-3 col-sm-4"> 
+        <div class="single-footer-widget"> 
+         <h3>联系我们</h3> 
+         <a href="tel:{$system.tel}"><i class="fa fa-phone"></i>{$system.tel}</a> 
+         <span><i class="fa fa-envelope"></i>{$system.email}</span> 
+         <span><i class="fa fa-globe"></i>{$system.url}</span> 
+         <span><i class="fa fa-map-marker"></i>{$system.address}</span> 
+        </div> 
+       </div> 
+       <div class="col-md-3 hidden-sm"> 
+        <div class="single-footer-widget"> 
+         <h3>友情链接</h3> 
+         <ul class="footer-list"> 
+          {tp:link name='link'}
+          <li><a target="_blank" href="{$link.url}">{$link.name}</a></li> 
+          {/tp:link}
+         </ul> 
+        </div> 
+       </div> 
+       <div class="col-md-3 col-sm-4"> 
+        <div class="single-footer-widget"> 
+         <h3>加入我们</h3> 
+         <div class="instagram-image"> 
+          <div class="footer-img"> 
+           <img src="{$system.qrcode}" />
+          </div> 
+          
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <!--End of Footer Widget Area--> 
+    <!--Footer Area Start--> 
+    <footer class="footer-area"> 
+     <div class="container"> 
+      <div class="row"> 
+       <div class="col-md-6 col-sm-7"> 
+        <span>{$system.copyright}</span> 
+       </div> 
+       <div class="col-md-6 col-sm-5"> 
+        <div class="column-right"> 
+         <span>备案号：{$system.icp}</span> 
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+    </footer> 
+    <!--End of Footer Area--> 

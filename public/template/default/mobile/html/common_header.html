@@ -1,0 +1,95 @@
+    <header class="header-two"> 
+     <div class="header-top"> 
+      <div class="container"> 
+       <div class="row"> 
+        <div class="col-lg-6 col-md-6 col-sm-5 hidden-xs">
+         <span>手机端24小时客户服务热线：{$system.tel}</span> 
+        </div> 
+        <div class="col-lg-6 col-md-6 col-sm-7 col-xs-12">
+         <div class="header-top-right"> 
+          <span>Phone: {$system.mobile_phone}</span> 
+          <span>Email: {$system.email}</span>
+          <span class="login">
+              <i class="zmdi zmdi-account"></i>
+              <a href="{:url('user/index')}">用户中心</a>
+          </span>
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+     <div class="header-logo-menu sticker"> 
+      <div class="container"> 
+       <div class="row"> 
+        <div class="col-md-4 col-sm-12"> 
+         <div class="logo"> 
+          <a href="/"><img src="{$system.logo}" alt="{$system.name}" /></a> 
+         </div> 
+        </div> 
+        <div class="col-md-8"> 
+         <div class="mainmenu-area pull-right"> 
+          <div class="mainmenu hidden-sm hidden-xs"> 
+           <nav> 
+            <ul id="nav"> 
+             <li {if empty($cate['topid'])}class="current"{/if}><a href="/">首 页</a></li> 
+             {tp:nav name='nav' limit='10'}
+             <li {if $nav['id'] == $cate['topid']}class="current"{/if}><a data-id="nav_key_{$key}" href="{$nav.url}">{$nav.catname}</a>
+             	 {if $nav.sub}
+             	 <ul class="sub-menu"> 
+                   {volist name="$nav.sub" id="v"}
+                   <li><a data-id="nav_sub_key_{$key}" href="{$v.url}">{$v.catname}</a></li> 
+                   {/volist}
+                 </ul>
+                 {/if}
+             </li> 
+             {/tp:nav}
+            </ul> 
+           </nav> 
+          </div> 
+          <ul class="header-search"> 
+           <li class="search-menu"> <i id="toggle-search" class="zmdi zmdi-search-for"></i> </li> 
+          </ul> 
+          <!--Search Form--> 
+          <div class="search"> 
+           <div class="search-form"> 
+            <form id="search-form" method="get" action="{:url('index/search')}"> 
+             <input type="search" placeholder="Search here..." name="search" /> 
+             <button type="submit"> <span><i class="fa fa-search"></i></span> </button> 
+            </form> 
+           </div> 
+          </div> 
+          <!--End of Search Form--> 
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+     <!-- Mobile Menu Area start --> 
+     <div class="mobile-menu-area"> 
+      <div class="container"> 
+       <div class="row"> 
+        <div class="col-lg-12 col-md-12 col-sm-12"> 
+         <div class="mobile-menu"> 
+          <nav id="dropdown"> 
+           <ul> 
+            <li class="current"><a href="/">首 页</a></li> 
+             {tp:nav name='nav' limit='10'}
+             <li><a href="{$nav.url}">{$nav.catname}</a>
+             	 {if $nav.sub}
+             	 <ul class="sub-menu"> 
+                   {volist name="$nav.sub" id="v"}
+                   <li><a href="{$v.url}">{$v.catname}</a></li> 
+                   {/volist}
+                 </ul>
+                 {/if}
+             </li> 
+             {/tp:nav}
+           </ul> 
+          </nav> 
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+     <!-- Mobile Menu Area end --> 
+    </header>
