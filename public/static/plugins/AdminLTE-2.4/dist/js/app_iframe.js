@@ -1961,11 +1961,13 @@ var addTabs = function (options) {
         var state = ({
             url: options.url, title: options.title, id: options.id
         });
-        var pushurl = options.url.indexOf("ref=tab") === -1 ? (options.url + (options.url.indexOf("?") > -1 ? "&" : "?") + "ref=tab") : options.url;
-        try {
-            window.history.pushState(state, options.title, pushurl);
-        } catch (e) {
+        if (history.pushState) {
+            var pushurl = options.url.indexOf("ref=tab") === -1 ? (options.url + (options.url.indexOf("?") > -1 ? "&" : "?") + "ref=tab") : options.url;
+            try {
+                window.history.pushState(state, options.title, pushurl);
+            } catch (e) {
 
+            }
         }
     }
 

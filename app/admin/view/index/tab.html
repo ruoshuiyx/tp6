@@ -132,4 +132,14 @@
         active.trigger("click");
     })
     {/if}
+
+    if (history.pushState) {
+        //浏览器前进后退事件
+        $(window).on("popstate", function (e) {
+            var state = e.originalEvent.state;
+            if (state) {
+                $("ul.sidebar-menu li a[href='" + state.url + "']").trigger("click");
+            }
+        });
+    }
 </script>
