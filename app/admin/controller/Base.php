@@ -85,7 +85,7 @@ abstract class Base
     }
 
     // 初始化
-    public function initialize()
+    protected function initialize()
     {
         //每页显示数据量
         $this->pageSize = Request::param('page_size', Config::get('app.page_size'));
