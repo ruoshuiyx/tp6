@@ -36,10 +36,10 @@
 		                	<!---->
 		                	<div class="row dd_input_group">
 			                	<div class="form-group">
-				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">用户组</label>
+				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">角色组</label>
 				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
 				                    <select name="group_id" class="form-control">
-						                    <option value="">请选择用户组</option>
+						                    <option value="">请选择角色组</option>
 						                    {volist name="authGroup" id="vo"}
 						                    {if $info}
 						                    	<option {if $info['group_id']==$vo.id}selected{/if} value="{$vo.id}">{$vo.title}</option>

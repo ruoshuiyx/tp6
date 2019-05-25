@@ -225,8 +225,8 @@ INSERT INTO `tp_auth_rule` VALUES ('1', '0', 'System', '系统设置', '1', '1',
 INSERT INTO `tp_auth_rule` VALUES ('4', '1', 'System/system', '系统设置', '1', '1', '', '11', '1', 'fa fa-cog', '1536327129', '1547520976');
 INSERT INTO `tp_auth_rule` VALUES ('5', '1', 'System/email', '邮箱配置', '1', '1', '', '12', '1', 'fa  fa-mail-forward', '1536327444', '1536327838');
 INSERT INTO `tp_auth_rule` VALUES ('6', '0', 'Auth', '权限管理', '1', '1', '', '2', '1', 'fa fa-group', '1536327468', '1547520856');
-INSERT INTO `tp_auth_rule` VALUES ('7', '6', 'Auth/adminList', '管理员列表', '1', '1', '', '21', '1', 'fa fa-user', '1536327753', '1547523425');
-INSERT INTO `tp_auth_rule` VALUES ('8', '6', 'Auth/adminGroup', '用户组列表', '1', '1', '', '22', '1', 'fa fa-group', '1536327787', '1547520881');
+INSERT INTO `tp_auth_rule` VALUES ('7', '6', 'Auth/adminList', '管理员管理', '1', '1', '', '21', '1', 'fa fa-user', '1536327753', '1547523425');
+INSERT INTO `tp_auth_rule` VALUES ('8', '6', 'Auth/adminGroup', '角色组管理', '1', '1', '', '22', '1', 'fa fa-group', '1536327787', '1547520881');
 INSERT INTO `tp_auth_rule` VALUES ('9', '6', 'Auth/adminRule', '菜单规则', '1', '1', '', '23', '1', 'fa fa-bars', '1536327826', '1547520923');
 INSERT INTO `tp_auth_rule` VALUES ('10', '7', 'Auth/adminAdd', '操作-添加', '1', '1', '', '211', '1', '', '1536327882', '1536327952');
 INSERT INTO `tp_auth_rule` VALUES ('11', '7', 'Auth/adminEdit', '操作-修改', '1', '1', '', '212', '1', '', '1536327906', '1536327955');

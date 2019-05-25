@@ -13,13 +13,13 @@
     <div class="content-wrapper" style="margin-left: 0 !important;">
         <!--页眉-->
         <section class="content-header">
-          <h1>用户组列表</h1>
+          <h1>角色组列表</h1>
         </section>
         <!--内容开始-->
         <section class="content">
             <div class="search">
             	<form class="form-inline" action="{:url('Auth/adminGroup')}">
-                 <input type="text" class="form-control" name="title" placeholder="用户组" value="{$title}">
+                 <input type="text" class="form-control" name="title" placeholder="角色组" value="{$title}">
                  <input class="btn btn-flat btn-primary" type="submit" value="搜索">
                   
                  <input class="btn btn-flat btn-primary m_10" onclick="location.href='{:url('Auth/adminGroup')}'" type="button" value="显示全部">
@@ -38,7 +38,7 @@
                         <tr>
                         	<th class="t_c"><input type="checkbox" id="check"></th>
                           <th class="t_c">编号</th>
-                          <th class="t_c">用户组名</th>
+                          <th class="t_c">角色组</th>
                           <th class="t_c">添加时间</th>
                           <th class="t_c">修改时间</th>
                           <th class="t_c">状态</th>
