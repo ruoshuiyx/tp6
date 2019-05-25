@@ -38,7 +38,7 @@ class AdminLog extends Base {
         $list = self::where($where)
             ->order($order)
             ->paginate($pageSize,false,['query' => Request::get()]);
-        foreach($list as $k=>$v){
+        foreach ($list as $k => $v) {
             $useragent = explode('(',$v['useragent']);
             $list[$k]['useragent']=$useragent[0];
         }
@@ -50,7 +50,7 @@ class AdminLog extends Base {
         $list = self::where($where)
             ->order($order)
             ->select();
-        foreach($list as $k=>$v){
+        foreach ($list as $k => $v) {
             $list[$k]['useragent_all']=$list[$k]['useragent'];
             $useragent = explode('(',$v['useragent']);
             $list[$k]['useragent']=$useragent[0];
@@ -74,15 +74,15 @@ class AdminLog extends Base {
         //标题处理
         $auth = new \Auth();
         $titleArr = $auth->getBreadCrumb();
-        if(is_array($titleArr)){
-            foreach($titleArr as $k=>$v){
+        if (is_array($titleArr)) {
+            foreach ($titleArr as $k => $v) {
                 $title = '[' . $v['title'] . '] -> ' . $title;
             }
             $title = substr($title,0,strlen($title)-4);
         }
 
         //内容处理(过长的内容和涉及密码的内容不进行记录)
-        if($content){
+        if ($content) {
             foreach ($content as $k => $v)
             {
                 if (is_string($v) && strlen($v) > 200 || stripos($k, 'password') !== false)
@@ -93,17 +93,19 @@ class AdminLog extends Base {
         }
 
         //登录处理
-        if(strpos($url,'login/checklogin') !== false){
+        if (strpos($url,'login/checklogin') !== false) {
             $title = '登录成功';
             $content = '';
         }
 
         //插入数据
-        if(!empty($title)){
+        if (!empty($title)) {
             //查询管理员上一条数据
-            $result = self::where('admin_id' , '=' , $admin_id)->order('id', 'desc')->find();
-            if($result){
-                if($result->url != $url){
+            $result = self::where('admin_id' , '=' , $admin_id)
+                ->order('id', 'desc')
+                ->find();
+            if ($result) {
+                if ($result->url != $url) {
                     self::create([
                         'title'       => $title ? $title : '',
                         'content'     => !is_scalar($content) ? json_encode($content) : $content,
@@ -115,7 +117,7 @@ class AdminLog extends Base {
                         'create_time' =>$create_time
                     ]);
                 }
-            }else{
+            } else {
                 self::create([
                     'title'       => $title ? $title : '',
                     'content'     => !is_scalar($content) ? json_encode($content) : $content,

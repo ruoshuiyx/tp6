@@ -5,14 +5,14 @@
  * @param int $page_size 每页显示的数量
  * @return string
  */
-function page_size($page_size=0,$total=0){
+function page_size($page_size = 0, $total = 0){
     $str  = '<select class="form-control page_size">';
-    for ($i=10;$i<=100;$i+=10){
+    for ($i = 10; $i <= 100; $i += 10) {
         $selected = $page_size==$i? 'selected':'';
         $str .= '<option value="'.$i.'" '.$selected.' >'.$i.' 条/页</option>';
     }
     $str .= '</select>';
-    if($total>0){
+    if ($total > 0) {
         $str .= '<span class="form-control page_total">总共 '.$total.' 条记录</span>';
     }
     return $str;
@@ -23,8 +23,8 @@ function page_size($page_size=0,$total=0){
  * @param int $num
  * @return string
  */
-function empty_list($num=10){
-    $empty="<tr><td colspan='".$num."' align='center'>暂无数据</td></tr>";
+function empty_list($num = 10){
+    $empty = "<tr><td colspan='".$num."' align='center'>暂无数据</td></tr>";
     return $empty;
 }
 
@@ -36,15 +36,15 @@ function empty_list($num=10){
  * @param int $lvl         层级
  * @return array
  */
-function tree($cate , $lefthtml = '|— ' , $pid=0 , $lvl=0 ){
-    $arr=array();
+function tree($cate , $lefthtml = '|— ' , $pid = 0 , $lvl = 0 ){
+    $arr = array();
     foreach ($cate as $v){
-        if($v['pid']==$pid){
-            $v['lvl']=$lvl + 1;
-            $v['lefthtml']=str_repeat($lefthtml,$lvl);
-            $v['ltitle']=$v['lefthtml'].$v['title'];
-            $arr[]=$v;
-            $arr= array_merge($arr,tree($cate,$lefthtml,$v['id'], $lvl+1 ));
+        if ($v['pid'] == $pid) {
+            $v['lvl']      = $lvl + 1;
+            $v['lefthtml'] = str_repeat($lefthtml,$lvl);
+            $v['ltitle']   = $v['lefthtml'].$v['title'];
+            $arr[] = $v;
+            $arr = array_merge($arr, tree($cate, $lefthtml, $v['id'], $lvl+1));
         }
     }
     return $arr;
@@ -57,17 +57,17 @@ function tree($cate , $lefthtml = '|— ' , $pid=0 , $lvl=0 ){
  * @param $rules 规则
  * @return array
  */
-function auth($cate , $pid=0,$rules){
-    $arr=array();
+function auth($cate , $pid = 0,$rules){
+    $arr = array();
     $rulesArr = explode(',',$rules);
     foreach ($cate as $v){
-        if($v['pid']==$pid){
-            if(in_array($v['id'],$rulesArr)){
-                $v['checked']=true;
+        if ($v['pid'] == $pid) {
+            if (in_array($v['id'], $rulesArr)) {
+                $v['checked'] = true;
             }
-            $v['open']=true;
+            $v['open'] = true;
             $arr[]=$v;
-            $arr= array_merge($arr,auth($cate, $v['id'],$rules));
+            $arr = array_merge($arr, auth($cate, $v['id'], $rules));
         }
     }
     return $arr;
@@ -92,7 +92,7 @@ function format_bytes($size, $delimiter = '') {
  */
 function get_dir($dir){
     $file = @ scandir($dir);
-    foreach($file as $key){
+    foreach ($file as $key){
         if ( $key != ".." && $key != "." ){
             $files[] = $key;
         }
@@ -110,7 +110,7 @@ function get_dir($dir){
 function dir_list($path, $exts = '', $list= array()) {
     $path = dir_path($path);
     $files = glob($path.'*');
-    foreach($files as $v) {
+    foreach ($files as $v) {
         $fileext = fileext($v);
         if (!$exts || preg_match("/\.($exts)/i", $v)) {
             $list[] = $v;
@@ -129,7 +129,7 @@ function dir_list($path, $exts = '', $list= array()) {
  */
 function dir_path($path) {
     $path = str_replace('\\', '/', $path);
-    if(substr($path, -1) != '/') $path = $path.'/';
+    if (substr($path, -1) != '/') $path = $path.'/';
     return $path;
 }
 
@@ -151,7 +151,7 @@ function dir_delete($dir) {
     $dir = dir_path($dir);
     if (!is_dir($dir)) return FALSE;
     $list = glob($dir.'*');
-    foreach($list as $v) {
+    foreach ($list as $v) {
         is_dir($v) ? dir_delete($v) : @unlink($v);
     }
     return @rmdir($dir);
@@ -177,10 +177,10 @@ function make_editor($name, $conetnt = '', $editor = '' ,$height = '400px', $wid
  * @return array
  */
 function get_dateran($dateran){
-    if($dateran){
+    if ($dateran) {
         $dateran = explode(" 至 ",$dateran);
     }
-    if(is_array($dateran) && count($dateran)==2){
+    if (is_array($dateran) && count($dateran) == 2) {
         $dateran[0] = strtotime($dateran[0]);
         $dateran[1] = strtotime($dateran[1])+24*60*60-1;
     }
@@ -192,7 +192,7 @@ function get_dateran($dateran){
  * @param {dataArr:需要分组的数据；keyStr:分组依据}
  * @return: array
  */
-function array_group(array $dataArr,string $keyStr)   :array
+function array_group(array $dataArr, string $keyStr)   :array
 {
     $newArr=[];
     foreach ($dataArr as $k => $val) {

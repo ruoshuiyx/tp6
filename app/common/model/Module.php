@@ -35,14 +35,14 @@ class Module extends Base
     // 一对多获取栏目
     public function cates()
     {
-        return $this->hasMany('Cate','moduleid');
+        return $this->hasMany('Cate', 'moduleid');
     }
 
     // 获取模型列表
-    public static function getList($where=array(),$pageSize,$order=['id'=>'asc']){
+    public static function getList($where = array(), $pageSize, $order = ['id'=>'asc']){
         $list = self::where($where)
             ->order($order)
-            ->paginate($pageSize,false,['query' => Request::get()]);
+            ->paginate($pageSize, false, ['query' => Request::get()]);
         return $list;
     }
 }

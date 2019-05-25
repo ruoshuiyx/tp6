@@ -84,11 +84,11 @@ abstract class Base
         $this->initialize();
     }
 
-    //初始化
+    // 初始化
     public function initialize()
     {
         //每页显示数据量
-        $this->pageSize = Request::param('page_size',Config::get('app.page_size'));
+        $this->pageSize = Request::param('page_size', Config::get('app.page_size'));
     }
 
     /**
@@ -120,15 +120,15 @@ abstract class Base
 
         $v->message($message);
 
-        // 是否批量验证
+        //是否批量验证
         if ($batch || $this->batchValidate) {
             $v->batch(true);
         }
 
         $result =  $v->failException(false)->check($data);
-        if(true !== $result){
+        if (true !== $result) {
             return $v->getError();
-        }else{
+        } else {
             return $result;
         }
     }

@@ -22,7 +22,7 @@ class Database extends Base
         $this->db = new Backup($this->config);
     }
 
-    //数据列表
+    // 数据列表
     public function database(){
 
         $list = $this->db->dataList();
@@ -39,35 +39,35 @@ class Database extends Base
         return View::fetch();
     }
 
-    //优化
+    // 优化
     public function optimize() {
         $tables = Request::param('id');
         if (empty($tables)) {
             return json(['error'=>1,'msg'=>'请选择要优化的表！']);
         }
         $tables = explode(',',$tables);
-        if($this->db->optimize($tables)){
-            return json(['error'=>0,'msg'=>'数据表优化成功！']);
-        }else{
-            return json(['error'=>1,'msg'=>'数据表优化出错请重试！']);
+        if ($this->db->optimize($tables)) {
+            return json(['error'=>0, 'msg'=>'数据表优化成功！']);
+        } else {
+            return json(['error'=>1, 'msg'=>'数据表优化出错请重试！']);
         }
     }
 
-    //修复
+    // 修复
     public function repair() {
         $tables = Request::param('id');
         if (empty($tables)) {
             return json(['error'=>1,'msg'=>'请选择要修复的表！']);
         }
         $tables = explode(',',$tables);
-        if($this->db->repair($tables)){
-            return json(['error'=>0,'msg'=>'数据表修复成功！']);
-        }else{
-            return json(['error'=>1,'msg'=>'数据表修复出错请重试！']);
+        if ($this->db->repair($tables)) {
+            return json(['error'=>0, 'msg'=>'数据表修复成功！']);
+        } else {
+            return json(['error'=>1, 'msg'=>'数据表修复出错请重试！']);
         }
     }
 
-    //备份
+    // 备份
     public function backup(){
         $tables = Request::param('id');
         if (!empty($tables)) {
@@ -75,13 +75,13 @@ class Database extends Base
             foreach ($tables as $table) {
                 $this->db->setFile()->backup($table, 0);
             }
-            return json(['error'=>0,'msg'=>'备份成功！']);
+            return json(['error'=>0, 'msg'=>'备份成功！']);
         } else {
-            return json(['error'=>1,'msg'=>'请选择要备份的表！']);
+            return json(['error'=>1, 'msg'=>'请选择要备份的表！']);
         }
     }
 
-    //备份列表
+    // 备份列表
     public function restore(){
         $list =  $this->db->fileList();
         $total = 0;
@@ -89,8 +89,8 @@ class Database extends Base
             $total += substr($v['size'],0,strlen($v['size'])-2);
             $list[$k]['size'] = format_bytes($v['size']);
         }
-        $statistics=['total'=>format_bytes($total),'count'=>count($list)];
-        array_multisort(array_column($list,'time'),SORT_DESC,$list);
+        $statistics = ['total' => format_bytes($total), 'count' => count($list)];
+        array_multisort(array_column($list, 'time'), SORT_DESC,$list);
         $view = [
             'statistics' => $statistics,
             'list'       => $list,
@@ -100,24 +100,25 @@ class Database extends Base
         return View::fetch();
     }
 
-    //执行还原数据库操作
+    // 执行还原数据库操作
     public function import($time) {
-        $list  = $this->db->getFile('timeverif',$time);
+        $list  = $this->db->getFile('timeverif', $time);
         $this->db->setFile($list)->import(1);
-        return json(['error'=>0,'msg'=>'还原成功！']);
+        return json(['error'=>0, 'msg'=>'还原成功！']);
     }
 
-    //下载
+    // 下载
     public function downFile($time) {
         $this->db->downloadFile($time);
     }
-    //删除sql文件
+
+    // 删除sql文件
     public function delSqlFiles() {
         $time = input('time');
-        if($this->db->delFile($time)){
-            return json(['error'=>0,'msg'=>"备份文件删除成功！"]);
-        }else{
-            return json(['error'=>1,'msg'=>"备份文件删除失败，请检查权限！"]);
+        if ($this->db->delFile($time)) {
+            return json(['error'=>0, 'msg'=>"备份文件删除成功！"]);
+        } else {
+            return json(['error'=>1, 'msg'=>"备份文件删除失败，请检查权限！"]);
         }
     }
 }

@@ -36,14 +36,14 @@ class UsersType extends Base
     // 一对多获取用户
     public function users()
     {
-        return $this->hasMany('Users','type_id');
+        return $this->hasMany('Users', 'type_id');
     }
 
     // 获取列表
-    public static function getList($where=array(),$pageSize,$order=['sort','id'=>'desc']){
+    public static function getList($where = array(), $pageSize, $order = ['sort', 'id'=>'desc']){
         $list = self::where($where)
             ->order($order)
-            ->paginate($pageSize,false,['query' => Request::get()]);
+            ->paginate($pageSize, false, ['query' => Request::get()]);
         return $list;
     }
 

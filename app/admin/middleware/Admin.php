@@ -36,8 +36,7 @@ class Admin
     {
         //获取当前用户
         $admin_id = Session::get('admin.id');
-
-        if(empty($admin_id)){
+        if (empty($admin_id)) {
             return redirect('Login/index');
         }
 
@@ -58,12 +57,12 @@ class Admin
         $route = Request::controller() . '/' . lcfirst(Request::action());
 
         //权限认证
-        if(!in_array($route, $allow)){
-            if($admin_id!=1){
+        if (!in_array($route, $allow)) {
+            if ($admin_id != 1) {
                 //开始认证
                 $auth = new \Auth();
                 $result = $auth->check($route,$admin_id);
-                if(!$result){
+                if (!$result) {
                     $this->error('您无此操作权限!');
                 }
             }
@@ -73,7 +72,7 @@ class Admin
         \app\admin\model\AdminLog::record();
 
         //当url中有ref=tab时表示刷新当前页(用于后台tab模式刷新)
-        if(Request::get("ref") == 'tab'){
+        if (Request::get("ref") == 'tab') {
 
             //去除url中ref参数
             $url = preg_replace_callback("/([\?|&]+)ref=tab(&?)/i", function ($matches) {

@@ -36,14 +36,14 @@ class System extends Base
     // 一对一获取所属分组
     public function systemGroup()
     {
-        return $this->belongsTo('SystemGroup','group_id');
+        return $this->belongsTo('SystemGroup', 'group_id');
     }
 
-    //格式化获取所有字段(后台列表)
-    public static function getListField($order=['sort','id'=>'desc']){
+    // 格式化获取所有字段(后台列表)
+    public static function getListField($order = ['sort', 'id'=>'desc']){
         $list = self::order($order)
             ->select();
-        foreach($list as $k=>$v){
+        foreach ($list as $k => $v){
             $v['type_name']  = self::getType($v['type']);
             $v['group_name'] = $v->systemGroup->getData('name');
         }
@@ -51,11 +51,11 @@ class System extends Base
     }
 
     // 获取字段列表
-    public static function getList($where=array(),$pageSize,$order=['sort','id'=>'desc']){
+    public static function getList($where = array(), $pageSize, $order = ['sort', 'id'=>'desc']){
         $list = self::where($where)
             ->order($order)
-            ->paginate($pageSize,false,['query' => Request::get()]);
-        foreach($list as $k=>$v){
+            ->paginate($pageSize, false, ['query' => Request::get()]);
+        foreach ($list as $k=>$v){
             $v['type_name']  = self::getType($v['type']);
             $v['group_name'] = $v->systemGroup->getData('name');
         }
@@ -76,9 +76,9 @@ class System extends Base
             'datetime'  => '日期和时间',
             'template'  => '选择模板',
         ];
-        if($type){
+        if ($type) {
             return $arr[$type];
-        }else{
+        } else {
             return $arr;
         }
     }

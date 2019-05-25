@@ -36,14 +36,14 @@ class SystemGroup extends Base
     // 一对多获取系统设置
     public function systems()
     {
-        return $this->hasMany('System','group_id');
+        return $this->hasMany('System', 'group_id');
     }
 
     // 获取列表
-    public static function getList($where=array(),$pageSize,$order=['sort','id'=>'desc']){
+    public static function getList($where = array(), $pageSize, $order = ['sort', 'id'=>'desc']){
         $list = self::where($where)
             ->order($order)
-            ->paginate($pageSize,false,['query' => Request::get()]);
+            ->paginate($pageSize, false, ['query' => Request::get()]);
         return $list;
     }
 

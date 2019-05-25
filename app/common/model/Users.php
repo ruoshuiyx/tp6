@@ -36,26 +36,26 @@ class Users extends Base
     // 一对一获取所属用户组
     public function usersType()
     {
-        return $this->belongsTo('UsersType','type_id');
+        return $this->belongsTo('UsersType', 'type_id');
     }
 
     // 获取列表
-    public static function getList($where=array(),$pageSize,$order=['sort','id'=>'desc']){
+    public static function getList($where = array(), $pageSize, $order = ['sort', 'id'=>'desc']){
         $list = self::where($where)
             ->order($order)
-            ->paginate($pageSize,false,['query' => Request::get()]);
-        foreach($list as $k=>$v){
+            ->paginate($pageSize, false, ['query' => Request::get()]);
+        foreach ($list as $k => $v){
             $v['type_name'] = $v->usersType->getData('name');
         }
         return $list;
     }
 
     // 获取下载列表
-    public static function getDownList($where=array(),$order=['sort','id'=>'desc']){
+    public static function getDownList($where = array(), $order = ['sort', 'id'=>'desc']){
         $list = self::where($where)
             ->order($order)
             ->select();
-        foreach($list as $k=>$v){
+        foreach ($list as $k => $v){
             $v['type_name'] = $v->usersType->getData('name');
         }
         return $list;

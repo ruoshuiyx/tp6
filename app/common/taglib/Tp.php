@@ -46,23 +46,23 @@ class Tp extends TagLib {
 
     );
 
-    //这是一个闭合标签的简单演示
+    // 这是一个闭合标签的简单演示
     public function tagClose($tag)
     {
         $format = empty($tag['format']) ? 'Y-m-d H:i:s' : $tag['format'];
-        $time = empty($tag['time']) ? time() : $tag['time'];
-        $parse = '<?php ';
+        $time   = empty($tag['time'])   ? time()        : $tag['time'];
+        $parse  = '<?php ';
         $parse .= 'echo date("' . $format . '",' . $time . ');';
         $parse .= ' ?>';
         return $parse;
     }
 
-    //这是一个非闭合标签的简单演示
+    // 这是一个非闭合标签的简单演示
     public function tagOpen($tag, $content)
     {
-        $type = empty($tag['type']) ? 0 : 1; // 这个type目的是为了区分类型，一般来源是数据库
-        $name = $tag['name']; // name是必填项，这里不做判断了
-        $parse = '<?php ';
+        $type   = empty($tag['type']) ? 0 : 1; // 这个type目的是为了区分类型，一般来源是数据库
+        $name   = $tag['name']; // name是必填项，这里不做判断了
+        $parse  = '<?php ';
         $parse .= '$test_arr=[[1,3,5,7,9],[2,4,6,8,10]];'; // 这里是模拟数据
         $parse .= '$__LIST__ = $test_arr[' . $type . '];';
         $parse .= ' ?>';
@@ -72,13 +72,13 @@ class Tp extends TagLib {
         return $parse;
     }
 
-    //通用导航信息
-    Public function tagNav($tag,$content){
+    // 通用导航信息
+    Public function tagNav($tag, $content){
         $tag['limit'] = isset($tag['limit']) ? $tag['limit'] : '0';
         $tag['id']    = isset($tag['id'])    ? $tag['id']    : '';
         $name         = isset($tag['name'])  ? $tag['name']  : 'nav';
 
-        if(!empty($tag['id'])){
+        if (!empty($tag['id'])) {
             $catestr = '$__CATE__ = \think\facade\Db::name(\'cate\')->where(\'is_menu\',1)->order(\'sort ASC,id DESC\')->select();';
             $catestr.= '$__LIST__ = getChildsOn($__CATE__,'.$tag['id'].');';
         }else{
@@ -86,10 +86,10 @@ class Tp extends TagLib {
             $catestr.= '$__LIST__ = unlimitedForLayer($__CATE__);';
         }
         //提取前N条数据,因为sql的LIMIT避免不了子栏目的问题
-        if(!empty($tag['limit'])){
+        if (!empty($tag['limit'])) {
             $catestr.= '$__LIST__ =  array_slice($__LIST__, 0,'.$tag['limit'].');';
         }
-        $parse = '<?php ';
+        $parse  = '<?php ';
         $parse .= $catestr;
         $parse .= ' ?>';
         $parse .= '{volist name="__LIST__" id="' . $name . '"}';
@@ -98,14 +98,14 @@ class Tp extends TagLib {
         return $parse;
     }
 
-    //通用栏目信息
+    // 通用栏目信息
     Public function tagCate($tag){
-        $id   = isset($tag['id'])?$tag['id']:"input('cate')";
-        $type = $tag['type']?$tag['type']:'catname';
+        $id   = isset($tag['id']) ? $tag['id']   : "input('cate')";
+        $type = $tag['type']      ? $tag['type'] : 'catname';
 
         $str = '<?php ';
         $str .= '$__CATE__=\think\facade\Db::name("cate")->where("id",'.$id.')->find();';
-        $str .= 'if(is_array($__CATE__)){ ';
+        $str .= 'if (is_array($__CATE__)) { ';
         $str .= '$__CATE__[\'url\']=getUrl($__CATE__);';
         $str .= 'echo $__CATE__[\''.$type.'\'];';
         $str .= '}';
@@ -113,9 +113,9 @@ class Tp extends TagLib {
         return $str;
     }
 
-    //通用位置信息
-    Public function tagPosition($tag,$content){
-        $name   = $tag['name']?$tag['name']:'position';
+    // 通用位置信息
+    Public function tagPosition($tag, $content){
+        $name   = $tag['name'] ? $tag['name'] : 'position';
         $parse  = '<?php ';
         $parse .= '$__CATE__ = \think\facade\Db::name(\'cate\')->select();';
         $parse .= '$__LIST__ = getParents($__CATE__,input(\'cate\'));';
@@ -127,9 +127,9 @@ class Tp extends TagLib {
         return $parse;
     }
 
-    //获取友情链接
-    Public function tagLink($tag,$content){
-        $name   = $tag['name']?$tag['name']:'link';
+    // 获取友情链接
+    Public function tagLink($tag, $content){
+        $name   = $tag['name'] ? $tag['name'] : 'link';
         $parse  = '<?php ';
         $parse .= '$__LIST__ = \think\facade\Db::name(\'link\')->where(\'status\',1)->order(\'sort ASC,id desc\')->select();';
         $parse .= ' ?>';
@@ -139,10 +139,10 @@ class Tp extends TagLib {
         return $parse;
     }
 
-    //获取广告信息
-    Public function tagAd($tag,$content){
-        $name   = $tag['name']?$tag['name']:'ad';
-        $type   = $tag['type']?$tag['type']:'1';
+    // 获取广告信息
+    Public function tagAd($tag, $content){
+        $name   = $tag['name'] ? $tag['name'] : 'ad';
+        $type   = $tag['type'] ? $tag['type'] : '1';
         $parse  = '<?php ';
         $parse .= '$__LIST__ = \think\facade\Db::name(\'ad\')
             ->alias(\'a\')
@@ -159,19 +159,19 @@ class Tp extends TagLib {
         return $parse;
     }
 
-    //通用碎片信息
+    // 通用碎片信息
     Public function tagDebris($tag){
-        $name   = $tag['name']?$tag['name']:'';
-        $type   = $tag['type']?$tag['type']:'';
+        $name   = $tag['name'] ? $tag['name'] : '';
+        $type   = $tag['type'] ? $tag['type'] : '';
         $str = '<?php ';
         $str .= 'echo \think\facade\Db::name("debris")->where("name",\''.$name.'\')->value("'.$type.'");';
         $str .= '?>';
         return $str;
     }
 
-    //通用列表
-    Public function tagList($tag,$content){
-        $id    = isset($tag['id'])    ? $tag['id']     : "input('cate')";                //可以为空
+    // 通用列表
+    Public function tagList($tag, $content){
+        $id    = isset($tag['id'])    ? $tag['id']     : "input('cate')";                 //可以为空
         $name  = isset($tag['name'])  ?  $tag['name']  : "list";                          //不可为空
         $order = isset($tag['order']) ?  $tag['order'] : 'sort ASC,id DESC';              //排序
         $limit = isset($tag['limit']) ?  $tag['limit'] : '0';                             //多少条数据,传递时不再进行分页
@@ -229,14 +229,14 @@ class Tp extends TagLib {
         return $parse;
     }
 
-    //通用搜索 search,table,name,pagesize,where,order
-    Public function tagSearch($tag,$content){
-        $search = isset($tag['search'])    ? $tag['search']     : "";                     //关键字
-        $table  = isset($tag['table'])     ? $tag['table']      : "article";              //表名称
-        $name  = isset($tag['name'])  ?  $tag['name']  : "list";                          //不可为空
-        $order = isset($tag['order']) ?  $tag['order'] : 'sort ASC,id DESC';              //排序
-        $where = isset($tag['where']) ?  $tag['where'].' AND status = 1 ' : 'status = 1'; //查询条件
-        $pagesize = isset($tag['pagesize']) ?  $tag['pagesize']   : config('page_size');
+    // 通用搜索 search,table,name,pagesize,where,order
+    Public function tagSearch($tag, $content){
+        $search   = isset($tag['search'])   ? $tag['search']                    : "";                     //关键字
+        $table    = isset($tag['table'])    ? $tag['table']                     : "article";              //表名称
+        $name     = isset($tag['name'])     ?  $tag['name']                     : "list";                 //不可为空
+        $order    = isset($tag['order'])    ?  $tag['order']                    : 'sort ASC,id DESC';     //排序
+        $where    = isset($tag['where'])    ?  $tag['where'].' AND status = 1 ' : 'status = 1';           //查询条件
+        $pagesize = isset($tag['pagesize']) ?  $tag['pagesize']                 : config('page_size');
 
         $parse  = '<?php ';
         $parse .='
@@ -258,9 +258,9 @@ class Tp extends TagLib {
         return $parse;
     }
 
-    //详情上一篇
+    // 详情上一篇
     Public function tagPrev($tag){
-        $len = $tag['len']?$tag['len']:'500';
+        $len = $tag['len'] ? $tag['len'] : '500';
 
         $str  = '<?php ';
         $str .= '
@@ -295,9 +295,9 @@ class Tp extends TagLib {
         return $str;
     }
 
-    //详情下一篇
+    // 详情下一篇
     Public function tagNext($tag){
-        $len = $tag['len']?$tag['len']:'500';
+        $len = $tag['len'] ? $tag['len'] : '500';
 
         $str  = '<?php ';
         $str .= '

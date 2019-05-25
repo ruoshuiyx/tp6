@@ -44,13 +44,13 @@ class Error extends Base
             ->value('name');
     }
 
-    //列表
+    // 列表
     public function index(){
         //栏目ID
         $catId = Request::param('cate');
 
         //设置顶级栏目，当顶级栏目不存在的时候顶级栏目为本身
-        if($catId){
+        if ($catId) {
             $cate = Cate::where('id','=',Request::param('cate'))
                 ->find();
             $cate['topid'] = $cate['parentid'] ? $cate['parentid'] : $cate['id'];
@@ -62,7 +62,7 @@ class Error extends Base
         $description = $cate['description'] ? $cate['description'] : $this->system['des']; //描述
 
         //单页模型
-        if($this->tableName=='page'){
+        if ($this->tableName == 'page') {
             $info = Db::name($this->tableName)
                 ->where('cate_id','=',Request::param('cate'))
                 ->find();
@@ -83,20 +83,20 @@ class Error extends Base
         return View::fetch($template);
     }
 
-    //详情
+    // 详情
     public function info(){
         $id    = Request::param('id');
         $catId = Request::param('cate');
 
         //更新点击数
-        if($id){
+        if ($id) {
             Db::name($this->tableName)
                 ->where('id',$id)
                 ->inc('hits')
                 ->update();
         }
         //设置顶级栏目，当顶级栏目不存在的时候顶级栏目为本身
-        if($catId){
+        if ($catId) {
             $cate = Cate::where('id',$catId)
                 ->find();
             $cate['topid'] = $cate['parentid'] ? $cate['parentid'] : $cate['id'];
@@ -126,7 +126,7 @@ class Error extends Base
             'description' => $description,
         ];
 
-        $template=$info['template'] ? $info['template'] :
+        $template = $info['template'] ? $info['template'] :
             ( $cate['template_show'] ? str_replace('.html', '', $cate['template_show']) : $this->tableName.'_show');
         View::assign($view);
         return View::fetch($template);

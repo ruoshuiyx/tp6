@@ -60,18 +60,17 @@ class Admin extends Base {
         $open_code = $system['code'];
         if ($open_code){
             $code = Request::param("vercode");
-            if( !captcha_check($code ))
-            {
+            if (!captcha_check($code )) {
                 $data = ['error' => '1', 'msg' => '验证码错误'];
                 return json($data);
             }
         }
         $result = self::where(['username'=>$username,'password'=>md5($password)])->find();
-        if(empty($result)){
+        if (empty($result)) {
             $data = ['error' => '1', 'msg' => '帐号或密码错误'];
             return json($data);
-        }else{
-            if ($result['status']==1){
+        } else {
+            if ($result['status'] == 1){
                 $uid = $result['id'];
                 //更新登录IP和登录时间
                 self::where('id', '=' ,$result['id'])
@@ -102,7 +101,7 @@ class Admin extends Base {
                 //触发登录成功事件
                 Event::trigger('AdminLogin',$result);
 
-                $data = ['error' => '0','href' => url('Index/index'), 'msg' => '登录成功'];
+                $data = ['error' => '0', 'href' => url('Index/index'), 'msg' => '登录成功'];
                 return json($data);
             }else{
                 return json(['error' => 1, 'msg' => '用户已被禁用!']);

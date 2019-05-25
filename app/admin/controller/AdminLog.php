@@ -36,66 +36,66 @@ use PHPExcel;
 
 class AdminLog extends Base
 {
-    //列表
+    // 列表
     public function index(){
 
         //全局查询条件
-        $where=[];
+        $where = [];
         $keyword = Request::param('keyword');
-        if(!empty($keyword)){
-            $where[]=['username|title', 'like', '%'.$keyword.'%'];
+        if (!empty($keyword)) {
+            $where[] = ['username|title', 'like', '%'.$keyword.'%'];
         }
         //非超级管理员只能查看自己的日志
-        if(Session::get('admin.id')>1){
+        if (Session::get('admin.id')>1) {
             $where[]=['admin_id', '=', Session::get('admin.id')];
         }
         $dateran = Request::param('dateran');
-        if(!empty($dateran)){
+        if (!empty($dateran)) {
             $getDateran = get_dateran($dateran);
             $where[]=['create_time', 'between', $getDateran];
         }
 
         //调取列表
-        $list = M::getList($where,$this->pageSize,['id'=>'desc']);
+        $list = M::getList($where, $this->pageSize, ['id'=>'desc']);
 
         $view = [
-            'keyword'=>$keyword,
-            'dateran'=> $dateran,
-            'pageSize' => page_size($this->pageSize,$list->total()),
-            'page' => $list->render(),
-            'list' => $list,
-            'empty'=> empty_list(9),
+            'keyword'  => $keyword,
+            'dateran'  => $dateran,
+            'pageSize' => page_size($this->pageSize, $list->total()),
+            'page'     => $list->render(),
+            'list'     => $list,
+            'empty'    => empty_list(9),
         ];
         View::assign($view);
         return View::fetch();
     }
 
-    //查看
+    // 查看
     public function edit(){
-        $id = Request::param('id');
+        $id   = Request::param('id');
         $info = M::find($id);
-        $view =[
-            'info'   => $info,
+        $view = [
+            'info' => $info,
         ];
         View::assign($view);
         return View::fetch();
     }
 
-    //删除
+    // 删除
     public function del(){
         $id = Request::param('id');
         M::destroy($id);
-        return json(['error'=>0,'msg'=>'删除成功!']);
+        return json(['error'=>0, 'msg'=>'删除成功!']);
     }
 
-    //批量删除
+    // 批量删除
     public function selectDel(){
         $id = Request::param('id');
         M::destroy($id);
-        return json(['error'=>0,'msg'=>'删除成功!']);
+        return json(['error'=>0, 'msg'=>'删除成功!']);
     }
 
-    //下载
+    // 下载
     public function download(){
         $PHPExcel = new PHPExcel(); //实例化PHPExcel类
         $PHPExcel->setActiveSheetIndex(0); //设置sheet的起始位置
@@ -117,25 +117,25 @@ class AdminLog extends Base
 
         //调取列表
         //全局查询条件
-        $where=[];
+        $where = [];
         $keyword = Request::param('keyword');
-        if(!empty($keyword)){
-            $where[]=['username|title', 'like', '%'.$keyword.'%'];
+        if (!empty($keyword)) {
+            $where[] = ['username|title', 'like', '%'.$keyword.'%'];
         }
         //非超级管理员只能查看自己的日志
-        if(Session::get('admin.id')>1){
-            $where[]=['admin_id', '=', Session::get('admin.id')];
+        if (Session::get('admin.id')>1) {
+            $where[] = ['admin_id', '=', Session::get('admin.id')];
         }
         $dateran = Request::param('dateran');
-        if(!empty($dateran)){
+        if (!empty($dateran)) {
             $getDateran = get_dateran($dateran);
-            $where[]=['create_time', 'between', $getDateran];
+            $where[] = ['create_time', 'between', $getDateran];
         }
 
         //调取列表
         $list = M::getDownList($where,['id'=>'desc']);
-        foreach ($list as $k=>$v){
-            $v['create_time']      = date("Y-m-d H:i",$v['create_time']);
+        foreach ($list as $k => $v) {
+            $v['create_time'] = date("Y-m-d H:i", $v['create_time']);
             $PHPSheet
                 ->setCellValue('A'.($k+2),$v['id'])
                 ->setCellValue('B'.($k+2),$v['admin_id'])

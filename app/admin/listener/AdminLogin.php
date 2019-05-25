@@ -8,7 +8,6 @@ class AdminLogin
 {
     public function handle($admin)
     {
-        //halt($admin);
         // 事件监听处理
         AdminLog::record();
     }

@@ -61,7 +61,7 @@ abstract class Base
         $this->initialize();
     }
 
-    //初始化
+    // 初始化
     public function initialize()
     {
         //查找所有系统设置表数据
@@ -69,11 +69,10 @@ abstract class Base
         //格式化设置字段
         $system = sysgem_setup($system);
         $systemArr = [];
-        foreach($system as $k=>$v){
+        foreach ($system as $k => $v) {
             $systemArr[$v['field']] = $v['value'];
         }
         $system = $systemArr;
-
 
         $this->appName        = strtolower(Request::app());
         $this->controllerName = strtolower(Request::controller());

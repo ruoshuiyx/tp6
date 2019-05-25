@@ -40,84 +40,82 @@ class module extends Base
         $this->table=Db::name('module');
     }
 
-    //模型列表
+    // 模型列表
     public function index(){
-
         //全局查询条件
-        $where=[];
-        $title=Request::param('title');
-        if($title){
-            $where[]=['title|name', 'like', '%'.$title.'%'];
+        $where = [];
+        $title = Request::param('title');
+        if ($title) {
+            $where[] = ['title|name', 'like', '%'.$title.'%'];
         }
         //获取列表
-        $list = M::getList($where,$this->pageSize);
+        $list = M::getList($where, $this->pageSize);
 
         $view = [
-            'title'=>$title,
-            'pageSize' => page_size($this->pageSize,$list->total()),
-            'page' => $list->render(),
-            'list' => $list,
-            'empty'=> empty_list(7),
+            'title'    => $title,
+            'pageSize' => page_size($this->pageSize, $list->total()),
+            'page'     => $list->render(),
+            'list'     => $list,
+            'empty'    => empty_list(7),
         ];
         View::assign($view);
         return View::fetch();
     }
 
-    //模型状态
+    // 模型状态
     public function moduleState(){
-        if(Request::isPost()){
+        if (Request::isPost()) {
             $id = Request::param('id');
-
             $status = M::where('id='.$id)
                 ->value('status');
-            $status = $status==1?0:1;
-            if(M::where('id='.$id)->update(['status'=>$status])!==false){
-                return json(['error'=>0,'msg'=>'修改成功!']);
+            $status = $status == 1 ? 0 : 1;
+            if (M::where('id='.$id)->update(['status'=>$status]) !== false) {
+                return json(['error'=>0, 'msg'=>'修改成功!']);
             }else{
-                return json(['error'=>1,'msg'=>'修改失败!']);
+                return json(['error'=>1, 'msg'=>'修改失败!']);
             }
         }
     }
 
-    //模型删除
+    // 模型删除
     public function del(){
-        if(Request::isPost()) {
+        if (Request::isPost()) {
             $id = Request::post('id');
             M::where('id','=',$id)
                 ->delete();
-            return json(['error'=>0,'msg'=>'删除成功!']);
+            return json(['error'=>0, 'msg'=>'删除成功!']);
         }
     }
 
-    //批量删除
+    // 批量删除
     public function selectDel(){
-        if(Request::isPost()) {
+        if (Request::isPost()) {
             $id = Request::post('id');
             M::destroy($id);
-            return json(['error'=>0,'msg'=>'删除成功!']);
+            return json(['error'=>0, 'msg'=>'删除成功!']);
 
         }
     }
 
-    //模型添加
+    // 模型添加
     public function add(){
         $view =[
-            'info'   => null
+            'info' => null
         ];
         View::assign($view);
         return View::fetch('');
     }
 
-    //模型添加保存
+    // 模型添加保存
     public function addPost(){
-        if(Request::isPost()){
+        if (Request::isPost()) {
             //获取数据库所有表名
             $tables = Db::getConnection()->getTables();
             //组装表名
             $prefix = Config::get('database.prefix');
             $tablename = $prefix.Request::param('name');
             //判断表名是否已经存在
-            if(in_array($tablename,$tables)){
+            if (in_array($tablename, $tables)) {
                 $this->error('该表已经存在！');
             }
             //$name = ucfirst(Request::post('name'));
@@ -126,17 +124,18 @@ class module extends Base
             $data['type'] = 1;
 
             $moduleid = $this->table->insert($data);
-            $moduleid = $this->table->where('title','=',$data['title'])->field('id')->find();
+            $moduleid = $this->table->where('title','=',$data['title'])
+                ->field('id')
+                ->find();
             $moduleid = $moduleid['id'];
 
-            if(empty($moduleid)){
+            if (empty($moduleid)) {
                 $this->error('添加模型失败！');
             }
             //暂时只提供文章模型
             $emptytable = Request::post('emptytable');
 
-            if($emptytable=='1'){
-
+            if ($emptytable=='1') {
                 Db::execute("CREATE TABLE `".$tablename."` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
 			  `cate_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '栏目ID',
@@ -173,15 +172,15 @@ class module extends Base
 
             }
 
-            if ($moduleid !==false) {
+            if ($moduleid !== false) {
                 $this->success('添加模型成功', 'index');
-            }else{
+            } else {
                 $this->error('添加模型失败');
             }
         }
     }
 
-    //模型修改
+    // 模型修改
     public function edit(){
         $where['id'] = input('id');
         $info = Db::name('module')
@@ -189,19 +188,19 @@ class module extends Base
             ->where($where)
             ->find();
         $view = [
-            'info'   => $info
+            'info' => $info
         ];
         View::assign($view);
         return View::fetch('add');
     }
 
-    //模型修改保存
+    // 模型修改保存
     public function editPost(){
-        if(Request::isPost()){
+        if (Request::isPost()) {
             $data = Request::except(['name']);
-            if(Db::name('module')->update($data)!==false){
+            if (Db::name('module')->update($data) !== false) {
                 $this->success('修改成功!', 'index');
-            }else{
+            } else {
                 $this->error('修改失败！');
             }
         }
@@ -218,59 +217,59 @@ class module extends Base
             ->where("moduleid",'=',Request::param('id'))
             ->order('sort asc,id asc')
             ->select();
-        foreach ($list as $k=>$v){
-            if($v['status']==1){
-                if(in_array($v['field'],$nodostatus)){
-                    $list[$k]['disable']=2;//状态不可变更
-                }else{
-                    $list[$k]['disable']=0;//已启用
+        foreach ($list as $k => $v){
+            if ($v['status']==1) {
+                if (in_array($v['field'], $nodostatus)) {
+                    $list[$k]['disable'] = 2;//状态不可变更
+                } else {
+                    $list[$k]['disable'] = 0;//已启用
                 }
-            }else{
-                $list[$k]['disable']=1;//已禁用
+            } else {
+                $list[$k]['disable'] = 1;//已禁用
             }
 
-            if(in_array($v['field'],$sysfield)){
-                $list[$k]['delStatus']=1;//不可删除
-            }else{
-                $list[$k]['delStatus']=0;//可删除
+            if (in_array($v['field'], $sysfield)) {
+                $list[$k]['delStatus'] = 1;//不可删除
+            } else {
+                $list[$k]['delStatus'] = 0;//可删除
             }
         }
 
         $view = [
             'list' => $list,
-            'moduleid'   => Request::param('id')
+            'moduleid' => Request::param('id')
         ];
         View::assign($view);
         return View::fetch();
     }
 
-    //字段排序
+    // 字段排序
     public function fieldSort(){
         $data = Request::post();
-        if(Db::name('field')->update($data)!==false){
-            return json(['error' => 0,'msg' => '操作成功！']);
-        }else{
+        if (Db::name('field')->update($data) !== false) {
+            return json(['error' => 0, 'msg' => '操作成功！']);
+        } else {
             return json(['error'=>1,'msg'=>'操作失败！']);
         }
     }
 
-    //字段状态
+    // 字段状态
     public function fieldState(){
-        if(Request::isPost()){
+        if (Request::isPost()) {
             $id = Request::param('id');
             $status = Db::name('field')
                 ->where('id','=',$id)
                 ->value('status');
-            $status = $status==1?0:1;
-            if(Db::name('field')->where('id','=',$id)->update(['status'=>$status])!==false){
-                return json(['error'=>0,'msg'=>'设置成功!']);
-            }else{
-                return json(['error'=>1,'msg'=>'设置失败!']);
+            $status = $status == 1 ? 0 : 1;
+            if (Db::name('field')->where('id','=',$id)->update(['status'=>$status]) !== false) {
+                return json(['error'=>0, 'msg'=>'设置成功!']);
+            } else {
+                return json(['error'=>1, 'msg'=>'设置失败!']);
             }
         }
     }
 
-    //添加字段
+    // 添加字段
     public function fieldAdd(){
         $view = [
             'moduleid'  => Request::param('moduleid'),
@@ -281,20 +280,20 @@ class module extends Base
         return View::fetch('field_add');
     }
 
-    //添加字段保存
+    // 添加字段保存
     public function fieldAddPost(){
-        if(Request::isPost()){
-            if(Request::param('isajax')) {
+        if (Request::isPost()) {
+            if (Request::param('isajax')) {
                 //调用字段设置模版
                 View::assign(Request::param());
                 //根据name取值
-                if(Request::param('name')){
+                if (Request::param('name')) {
                     $fieldInfo = Db::name('field')
                         ->where('moduleid','=',Request::param('moduleid'))
                         ->where('field','=',Request::param('name'))
                         ->find();
                     $fieldInfo['setup'] = string2array($fieldInfo['setup']);
-                }else{
+                } else {
                     $fieldInfo = null;
                 }
                 $view = [
@@ -303,36 +302,36 @@ class module extends Base
                 View::assign($view);
                 return View::fetch('fieldAddType');
 
-            }else{
+            } else {
                 $data = Request::post();
                 $fieldName = $data['field'];
                 $prefix = Config::get('database.prefix');
                 $name = Db::name('module')
                     ->where('id','=',$data['moduleid'])
                     ->value('name');
-                $tablename=$prefix.$name;
-                $Fields=Db::getTableFields($tablename);
-                if(in_array($fieldName,$Fields)){
+                $tablename = $prefix.$name;
+                $Fields = Db::getTableFields($tablename);
+                if (in_array($fieldName,$Fields)) {
                     $this->error('字段名已经存在！');
                 }
-                if(empty($data['type']))
+                if (empty($data['type']))
                     $this->error('请选择字段类型！');
-                if(empty($data['field']))
+                if (empty($data['field']))
                     $this->error('请填写字段名！');
-                if(empty($data['name']))
+                if (empty($data['name']))
                     $this->error('请填写别名！');
-                $addfieldsql =$this->get_tablesql($data,'add');
-                if(isset($data['setup'])) {
+                $addfieldsql = $this->get_tablesql($data,'add');
+                if (isset($data['setup'])) {
                     $data['setup'] = array2string($data['setup']);
                 }
                 $data['status'] =1;
                 $model = Db::name('field');
                 if ($model->insert($data) !==false) {
-                    if(is_array($addfieldsql)){
+                    if (is_array($addfieldsql)) {
                         foreach($addfieldsql as $sql){
                             $model->execute($sql);
                         }
-                    }else{
+                    } else {
                         $model->execute($addfieldsql);
                     }
                     $this->success('添加成功！', url('field',array('id'=>input('post.moduleid'))));
@@ -343,14 +342,14 @@ class module extends Base
         }
     }
 
-    //编辑字段
+    // 编辑字段
     public function fieldEdit(){
         $model = Db::name('field');
         $id = Request::param('id');
         $fieldInfo = $model
             ->where('id','=',$id)
             ->find();
-        if($fieldInfo['setup'])
+        if ($fieldInfo['setup'])
             $fieldInfo['setup']=string2array($fieldInfo['setup']);
 
         $view = [
@@ -361,9 +360,9 @@ class module extends Base
         return View::fetch('field_add');
     }
 
-    //编辑字段保存
+    // 编辑字段保存
     public function fieldEditPost(){
-        if(Request::isPost()){
+        if (Request::isPost()) {
             $data = Request::except(['oldfield']);
             $oldfield = Request::param('oldfield');
             $fieldName = $data['field'];
@@ -377,17 +376,17 @@ class module extends Base
 
             $editfieldsql =$this->get_tablesql(Request::post(),'edit');
 
-            if(array_key_exists ("setup",$data)&&$data['setup']){
+            if (array_key_exists ("setup",$data)&&$data['setup']) {
                 $data['setup']=array2string($data['setup']);
             }
             $model = Db::name('field');
 
             if (false !== $model->update($data)) {
-                if(is_array($editfieldsql)){
+                if (is_array($editfieldsql)) {
                     foreach($editfieldsql as $sql){
                         $model->execute($sql);
                     }
-                }else{
+                } else {
                     $model->execute($editfieldsql);
                 }
                 $this->success('修改成功！',url('field',array('id'=>Request::post('moduleid'))));
@@ -397,7 +396,7 @@ class module extends Base
         }
     }
 
-    //删除字段
+    // 删除字段
     public function fieldDel() {
         $id = Request::param('id');
         $r  = Db::name('field')->find($id);
@@ -421,85 +420,81 @@ class module extends Base
         $comment = $info['name'];
         $fieldtype = $info['type'];
 
-        if(isset($info['setup']['fieldtype'])){
+        if (isset($info['setup']['fieldtype'])) {
             $fieldtype=$info['setup']['fieldtype'];
         }
         $moduleid = $info['moduleid'];
         $default = '';
-        if(isset($info['setup']['default'])){
-            $default=$info['setup']['default'];
+        if (isset($info['setup']['default'])) {
+            $default = $info['setup']['default'];
         }
         $field = $info['field'];
         $prefix = Config::get('database.prefix');
         $name = Db::name('module')
             ->where('id',$moduleid)
             ->value('name');
-        $tablename=$prefix.$name;
+        $tablename = $prefix.$name;
         $maxlength = intval($info['maxlength']);
         $minlength = intval($info['minlength']);
         $numbertype = '';
-        if(isset($info['setup']['numbertype'])){
+        if (isset($info['setup']['numbertype'])) {
             $numbertype=$info['setup']['numbertype'];
         }
-        if($do=='add'){
+        if ($do=='add') {
             $do = ' ADD ';
-        }else{
+        } else {
             $oldfield = $info['oldfield'];
             $do =  " CHANGE `".$oldfield."` ";
         }
-        switch($fieldtype) {
+        switch ($fieldtype) {
             case 'varchar':
-                if(!$maxlength){$maxlength = 255;}
+                if (!$maxlength) {
+                    $maxlength = 255;
+                }
                 $maxlength = min($maxlength, 255);
                 $sql = "ALTER TABLE `$tablename` $do `$field` VARCHAR( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 break;
             case 'title':
-                if(!$maxlength){$maxlength = 255;}
+                if (!$maxlength) {
+                    $maxlength = 255;
+                }
                 $maxlength = min($maxlength, 255);
                 $sql[] = "ALTER TABLE `$tablename` $do `$field` VARCHAR( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
-
                 break;
             case 'cate':
                 $sql = "ALTER TABLE `$tablename` $do `$field` SMALLINT(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT '$comment'";
                 break;
-
             case 'number':
                 $decimaldigits = $info['setup']['decimaldigits'];
                 $default = $decimaldigits == 0 ? intval($default) : floatval($default);
                 $sql = "ALTER TABLE `$tablename` $do `$field` ".($decimaldigits == 0 ? 'INT' : 'decimal( 10,'.$decimaldigits.' )')." ".($numbertype ==1 ? 'UNSIGNED' : '')."  NOT NULL DEFAULT '$default'  COMMENT '$comment'";
                 break;
-
             case 'tinyint':
-                if(!$maxlength) $maxlength = 3;
+                if (!$maxlength) {
+                    $maxlength = 3;
+                }
                 $maxlength = min($maxlength,3);
                 $default = intval($default);
                 $sql = "ALTER TABLE `$tablename` $do `$field` TINYINT( $maxlength ) ".($numbertype ==1 ? 'UNSIGNED' : '')." NOT NULL DEFAULT '$default'  COMMENT '$comment'";
                 break;
-
-
             case 'smallint':
                 $default = intval($default);
                 $sql = "ALTER TABLE `$tablename` $do `$field` SMALLINT ".($numbertype ==1 ? 'UNSIGNED' : '')." NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 break;
-
             case 'int':
                 $default = intval($default);
                 $sql = "ALTER TABLE `$tablename` $do `$field` INT ".($numbertype ==1 ? 'UNSIGNED' : '')." NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 break;
-
             case 'mediumint':
                 $default = intval($default);
                 $sql = "ALTER TABLE `$tablename` $do `$field` INT ".($numbertype ==1 ? 'UNSIGNED' : '')." NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 break;
-
             case 'mediumtext':
                 $sql = "ALTER TABLE `$tablename` $do `$field` MEDIUMTEXT NOT NULL COMMENT '$comment'";
                 break;
-
             case 'text':
                 $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NOT NULL COMMENT '$comment'";
                 break;
-
             //case 'typeid':
             //$sql = "ALTER TABLE `$tablename` $do `$field` SMALLINT(5) UNSIGNED NOT NULL DEFAULT '0'";
             //break;
@@ -507,23 +502,18 @@ class module extends Base
             case 'datetime':
                 $sql = "ALTER TABLE `$tablename` $do `$field` INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '$comment'";
                 break;
-
             case 'editor':
                 $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NOT NULL COMMENT '$comment'";
                 break;
-
             case 'image':
                 $sql = "ALTER TABLE `$tablename` $do `$field` VARCHAR( 80 ) NOT NULL DEFAULT '' COMMENT '$comment'";
                 break;
-
             case 'images':
                 $sql = "ALTER TABLE `$tablename` $do `$field` MEDIUMTEXT NOT NULL COMMENT '$comment'";
                 break;
-
             case 'file':
                 $sql = "ALTER TABLE `$tablename` $do `$field` VARCHAR( 80 ) NOT NULL DEFAULT '' COMMENT '$comment'";
                 break;
-
             case 'files':
                 $sql = "ALTER TABLE `$tablename` $do `$field` MEDIUMTEXT NOT NULL COMMENT '$comment'";
                 break;

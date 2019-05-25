@@ -11,21 +11,26 @@
 
 // 应用公共文件
 
-//获取列表链接地址
+// 获取列表链接地址
 function getUrl($v){
     //判断是否直接跳转
-    if(trim($v['url'])==''){
+    if (trim($v['url']) == '') {
         //判断是否跳转到下级栏目
-        if($v['is_next']==1){
-            $is_next = \think\facade\Db::name('cate')->where('parentid',$v['id'])->order('sort ASC,id DESC')->find();
-            if($is_next){
+        if ($v['is_next'] == 1) {
+            $is_next = \think\facade\Db::name('cate')
+                ->where('parentid',$v['id'])
+                ->order('sort asc,id desc')
+                ->find();
+            if ($is_next) {
                 $v['url'] = getUrl($is_next);
             }
-        }else{
-            $moduleurl = \think\facade\Db::name('module')->where('id',$v['moduleid'])->value('name');
-            if($v['catdir']){
+        } else {
+            $moduleurl = \think\facade\Db::name('module')
+                ->where('id',$v['moduleid'])
+                ->value('name');
+            if ($v['catdir']) {
                 $v['url'] = url($v['catdir'].'/index', ['cate'=>$v['id']]);
-            }else{
+            } else {
                 $v['url'] = url($moduleurl.'/index', ['cate'=>$v['id']]);
             }
         }
@@ -33,9 +38,9 @@ function getUrl($v){
     return $v['url'];
 }
 
-//获取详情URL
+// 获取详情URL
 function getShowUrl($v){
-    if($v){
+    if ($v) {
         //$home_rote[''.$v['catdir'].'-:cat/:id'] = 'home/'.$v['catdir'].'/index';
         $cate = \think\facade\Db::name('cate')
             ->field('id,catdir,moduleid')
@@ -44,18 +49,18 @@ function getShowUrl($v){
         $moduleurl = \think\facade\Db::name('module')
             ->where('id',$cate['moduleid'])
             ->value('name');
-        if($cate['catdir']){
+        if ($cate['catdir']) {
             $url = url($cate['catdir'].'/info', ['cate'=>$cate['id'],'id'=>$v['id']]);
-        }else{
+        } else {
             $url = url($moduleurl.'/info', ['cate'=>$cate['id'],'id'=>$v['id']] );
         }
     }
     return $url;
 }
 
-function changeFields($list,$moduleid){
+function changeFields($list, $moduleid){
     $info = [];
-    foreach ($list as $k=>$v){
+    foreach ($list as $k => $v){
         $url = getShowUrl($v);
         $list[$k] = changeField($v,$moduleid);
         $info[$k] = $list[$k];//定义中间变量防止报错
@@ -64,27 +69,28 @@ function changeFields($list,$moduleid){
     return $info;
 }
 
-function changefield($info,$moduleid){
-    $fields = \think\facade\Db::name('field')->where('moduleid','=',$moduleid)->select();
-    foreach ($fields as $k=>$v){
+function changefield($info, $moduleid){
+    $fields = \think\facade\Db::name('field')
+        ->where('moduleid','=',$moduleid)
+        ->select();
+    foreach ($fields as $k => $v) {
         $field = $v['field'];
-        if($info[$field]){
-            switch ($v['type'])
-            {
+        if ($info[$field]) {
+            switch ($v['type']){
                 case 'textarea'://多行文本
                     break;
                 case 'editor'://编辑器
-                    $info[$field]=$info[$field];
+                    $info[$field] = $info[$field];
                     break;
                 case 'select'://下拉列表
                     break;
                 case 'radio'://单选按钮
                     break;
                 case 'checkbox'://复选框
-                    $info[$field]=explode(',',$info[$field]);
+                    $info[$field] = explode(',',$info[$field]);
                     break;
                 case 'images'://多张图片
-                    $info[$field]=json_decode($info[$field],true);
+                    $info[$field] = json_decode($info[$field], true);
                     break;
                 default:
             }
@@ -119,7 +125,7 @@ function send_email($to,$subject='',$content=''){
     //端口 - likely to be 25, 465 or 587
     $mail->Port = $config['smtp_port'];
 
-    if($mail->Port == '465') {
+    if ($mail->Port == '465') {
         $mail->SMTPSecure = 'ssl';
     }// 使用安全协议
     //Whether to use SMTP authentication
@@ -133,11 +139,11 @@ function send_email($to,$subject='',$content=''){
     //回复地址
     //$mail->addReplyTo('replyto@example.com', 'First Last');
     //接收邮件方
-    if(is_array($to)){
+    if (is_array($to)) {
         foreach ($to as $v){
             $mail->addAddress($v);
         }
-    }else{
+    } else {
         $mail->addAddress($to);
     }
 
@@ -188,7 +194,7 @@ function is_mobile_phone($mobile_phone)
  * @return array|string
  */
 function trim_array_element($array){
-    if(!is_array($array))
+    if (!is_array($array))
         return trim($array);
     return array_map('trim_array_element',$array);
 }
@@ -201,31 +207,31 @@ function trim_array_element($array){
  */
 function convert_arr_kv($arr,$key_name,$value){
     $arr2 = array();
-    foreach($arr as $key => $val){
+    foreach ($arr as $key => $val) {
         $arr2[$val[$key_name]] = $val[$value];
     }
     return $arr2;
 }
 
 function string2array($info) {
-    if($info == '') return array();
+    if ($info == '') return array();
     eval("\$r = $info;");
     return $r;
 }
 
 function array2string($info) {
     //删除空格，某些情况下字段的设置会出现换行和空格的情况
-    if(is_array($info)){
-        if(array_key_exists('options', $info)){
+    if (is_array($info)) {
+        if (array_key_exists('options', $info)) {
             $info['options'] = trim($info['options']);
         }
     }
-    if($info == '') return '';
-    if(!is_array($info)){
+    if ($info == '') return '';
+    if (!is_array($info)){
         //删除反斜杠
         $string = stripslashes($info);
     }
-    foreach($info as $key => $val){
+    foreach ($info as $key => $val) {
         $string[$key] = stripslashes($val);
     }
     $setup = var_export($string, TRUE);
@@ -251,14 +257,14 @@ function textareaBr($info) {
  * @return array
  */
 function tree_cate($cate , $lefthtml = '|— ' , $pid=0 , $lvl=0 ){
-    $arr=array();
-    foreach ($cate as $v){
-        if($v['parentid']==$pid){
-            $v['lvl']=$lvl + 1;
-            $v['lefthtml']=str_repeat($lefthtml,$lvl);
-            $v['lcatname']=$v['lefthtml'].$v['catname'];
-            $arr[]=$v;
-            $arr= array_merge($arr,tree_cate($cate,$lefthtml,$v['id'], $lvl+1 ));
+    $arr = array();
+    foreach ($cate as $v) {
+        if ($v['parentid'] == $pid) {
+            $v['lvl'] = $lvl + 1;
+            $v['lefthtml'] = str_repeat($lefthtml,$lvl);
+            $v['lcatname'] = $v['lefthtml'].$v['catname'];
+            $arr[] = $v;
+            $arr = array_merge($arr, tree_cate($cate, $lefthtml, $v['id'], $lvl+1));
         }
     }
     return $arr;
@@ -271,7 +277,7 @@ function tree_cate($cate , $lefthtml = '|— ' , $pid=0 , $lvl=0 ){
  * @param int $pid
  * @return array
  */
-function unlimitedForLayer ($cate, $name = 'sub', $pid = 0) {
+function unlimitedForLayer($cate, $name = 'sub', $pid = 0){
     $arr = array();
     foreach ($cate as $v) {
         if ($v['parentid'] == $pid) {
@@ -279,7 +285,6 @@ function unlimitedForLayer ($cate, $name = 'sub', $pid = 0) {
             $v['url'] = getUrl($v);
             $arr[] = $v;
         }
-
     }
     return $arr;
 }
@@ -290,7 +295,7 @@ function unlimitedForLayer ($cate, $name = 'sub', $pid = 0) {
  * @param $pid
  * @return array
  */
-function getChildsOn ($cate, $pid) {
+function getChildsOn($cate, $pid){
     $arr = array();
     foreach ($cate as $v) {
         if ($v['parentid'] == $pid) {
@@ -308,7 +313,7 @@ function getChildsOn ($cate, $pid) {
  * @param $pid
  * @return array
  */
-function getChilds ($cate, $pid) {
+function getChilds($cate, $pid){
     $arr = array();
     foreach ($cate as $v) {
         if ($v['parentid'] == $pid) {
@@ -326,7 +331,7 @@ function getChilds ($cate, $pid) {
  * @param $pid
  * @return array
  */
-function getChildsId ($cate, $pid) {
+function getChildsId($cate, $pid){
     $arr = [];
     foreach ($cate as $v) {
         if ($v['parentid'] == $pid) {
@@ -343,12 +348,12 @@ function getChildsId ($cate, $pid) {
  * @param string $pid
  * @return string
  */
-function getChildsIdStr($ids,$pid=''){
+function getChildsIdStr($ids, $pid = ''){
     $result='';
-    foreach ($ids as $k=>$v){
-        $result.=$v['id'].',';
+    foreach ($ids as $k => $v) {
+        $result .= $v['id'].',';
     }
-    if($pid){
+    if ($pid) {
         $result = $pid.','.$result;
     }
     $result = rtrim($result,',');
@@ -417,7 +422,7 @@ function getTemplate(){
     //查找系统设置
     $system = \think\facade\Db::name('system')->select();
     $systemArr = [];
-    foreach($system as $k=>$v){
+    foreach ($system as $k => $v) {
         $systemArr[$v['field']] = $v['value'];
     }
 
@@ -433,12 +438,12 @@ function getTemplate(){
  * @return mixed
  */
 function sysgem_setup($system){
-    foreach($system as $k=>$v){
-        if($system[$k]['setup']){
+    foreach ($system as $k => $v) {
+        if ($system[$k]['setup']) {
             $system[$k]['setup'] = string2array($v['setup']);
-            if(array_key_exists('options',$system[$k]['setup'])){
+            if (array_key_exists('options',$system[$k]['setup'])) {
                 $system[$k]['setup']['options'] = explode("\n",$system[$k]['setup']['options']);
-                foreach ($system[$k]['setup']['options'] as $kk=>$vv){
+                foreach ($system[$k]['setup']['options'] as $kk => $vv) {
                     $system[$k]['setup']['options'][$kk] = trim_array_element(explode("|",$system[$k]['setup']['options'][$kk]));
 
                 }

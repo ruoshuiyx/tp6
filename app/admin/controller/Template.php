@@ -26,6 +26,7 @@
 namespace app\admin\controller;
 
 use app\common\model\System;
+
 use think\facade\Request;
 use think\facade\View;
 
@@ -41,11 +42,11 @@ class Template extends Base
         //格式化设置字段
         $system = sysgem_setup($system);
         $systemArr = [];
-        foreach($system as $k=>$v){
+        foreach ($system as $k => $v) {
             $systemArr[$v['field']] = $v['value'];
         }
         $system = $systemArr;
-        $this->public         = '/template/'.
+        $this->public       = '/template/'.
             $system['template'].
             '/'.
             'index'.
@@ -64,27 +65,26 @@ class Template extends Base
             'img'  => $this->template_img,  //自定义媒体文件目录
         ];
         View::assign($initialize);
-
     }
 
-    //列表
+    // 列表
     public function index(){
         $type = Request::param('type') ? Request::param('type') : 'html';
-        if($type=='html'){
+        if ($type=='html') {
             $path=$this->template_path.$this->template_html.DIRECTORY_SEPARATOR;
-        }else{
+        } else {
             $path=$this->template_path.$type.DIRECTORY_SEPARATOR;
         }
         $files = dir_list($path,$type);
         $templates = array();
-        foreach ($files as $key=>$file){
+        foreach ($files as $key => $file){
             $filename = basename($file);
-            $templates[$key]['value'] =  substr($filename,0,strrpos($filename, '.'));
-            $templates[$key]['filename'] = $filename;
-            $templates[$key]['filepath'] = $file;
-            $templates[$key]['filesize']=format_bytes(filesize($file));
-            $templates[$key]['filemtime']=filemtime($file);
-            $templates[$key]['ext'] = strtolower(substr($filename,strrpos($filename, '.')-strlen($filename)));
+            $templates[$key]['value']     =  substr($filename, 0, strrpos($filename, '.'));
+            $templates[$key]['filename']  = $filename;
+            $templates[$key]['filepath']  = $file;
+            $templates[$key]['filesize']  = format_bytes(filesize($file));
+            $templates[$key]['filemtime'] = filemtime($file);
+            $templates[$key]['ext']       = strtolower(substr($filename, strrpos($filename, '.')-strlen($filename)));
         }
 
         $view = [
@@ -96,7 +96,7 @@ class Template extends Base
         return View::fetch();
     }
 
-    //添加
+    // 添加
     public function add(){
         $type=  Request::param('type') ? Request::param('type') : 'html';
 
@@ -108,134 +108,136 @@ class Template extends Base
         return View::fetch();
     }
 
-    //添加保存
+    // 添加保存
     public function addPost(){
-        if(Request::isPost()){
+        if (Request::isPost()) {
             $filename = Request::post('filename');
             $type     = Request::param('type') ? Request::param('type') : 'html';
-            if($type=='html'){
-                $path=$this->template_path.$this->template_html.'/';
-            }else{
-                $path=$this->template_path.$type.'/';
+            if ($type == 'html') {
+                $path = $this->template_path.$this->template_html.'/';
+            } else {
+                $path = $this->template_path.$type.'/';
             }
             $file = $path.$filename.'.'.$type;
-            if(file_exists($file)){
+            if (file_exists($file)) {
                 $this->error('文件已经存在!');
-            }else{
+            } else {
                 file_put_contents($file,stripslashes(input('post.content')));
-                if($type=='html'){
+                if ($type=='html') {
                     $this->success('添加成功!',url('index', ['type' => 'html']));
-                }else{
+                } else {
                     $this->success('添加成功!',url('index', ['type' => $type]));
                 }
             }
         }
     }
 
-    //修改
+    // 修改
     public function edit(){
         $filename = Request::param('file');
         $type     = Request::param('type') ? Request::param('type') : 'html';
-        if($type=='html'){
-            $path=$this->template_path.$this->template_html.'/';
-        }else{
-            $path=$this->template_path.$type.'/';
+        if ($type == 'html') {
+            $path = $this->template_path.$this->template_html.'/';
+        } else {
+            $path = $this->template_path.$type.'/';
         }
         $file = $path.$filename;
-        if(file_exists($file)){
-            $file=iconv('gb2312','utf-8',$file);
+        if (file_exists($file)) {
+            $file = iconv('gb2312','utf-8',$file);
             $content = file_get_contents($file);
-            $info=[
-                'filename'=>$filename,
-                'file'=>$file,
-                'content'=>$content,
-                'type'=>$type
+            $info = [
+                'filename' => $filename,
+                'file'     => $file,
+                'content'  => $content,
+                'type'     => $type
             ];
-        }else{
+        } else {
             $this->error('文件不存在！');
         }
         $view = [
-            'info'=>$info,
+            'info' => $info,
             'type' => $type,//当前显示的类型
         ];
         View::assign($view);
         return View::fetch('add');
     }
 
-    //修改保存
+    // 修改保存
     public function editPost(){
-        if(Request::isPost()) {
+        if (Request::isPost()) {
             $filename = Request::post('filename');
             $type     = Request::param('type') ? Request::param('type') : 'html';
-            if($type=='html'){
-                $path=$this->template_path.$this->template_html.'/';
-            }else{
-                $path=$this->template_path.$type.'/';
+            if ($type == 'html') {
+                $path = $this->template_path.$this->template_html.'/';
+            } else {
+                $path = $this->template_path.$type.'/';
             }
             $file = $path.$filename;
-            if(file_exists($file)){
+            if (file_exists($file)) {
                 file_put_contents($file,stripslashes(input('content')));
-                if($type=='html'){
+                if ($type == 'html') {
                     $this->success('修改成功!',url('index', ['type' => 'html']));
-                }else{
+                } else {
                     $this->success('修改成功!',url('index', ['type' => $type]));
                 }
 
-            }else{
+            } else {
                 $this->error('文件不存在!');
             }
         }
     }
 
-    //删除
+    // 删除
     public function del(){
-        if(Request::isPost()) {
+        if (Request::isPost()) {
             $id = Request::param('id');
             //删除文件
             $filename = $id;
             $type = Request::param('type') ? Request::param('type') : 'html';
-            if($type=='html'){
-                $path=$this->template_path.$this->template_html.'/';
-            }else{
-                $path=$this->template_path.$type.'/';
+            if ($type == 'html') {
+                $path = $this->template_path.$this->template_html.'/';
+            } else {
+                $path = $this->template_path.$type.'/';
             }
             $file = $path.$filename;
-            if(file_exists($file)){
+            if (file_exists($file)) {
                 unlink($file);
-                return json(['error'=>0,'msg'=>'删除成功!']);
+                return json(['error'=>0, 'msg'=>'删除成功!']);
             }else{
-                return json(['error'=>1,'msg'=>'删除失败!']);
+                return json(['error'=>1, 'msg'=>'删除失败!']);
             }
         }
     }
 
-    //媒体文件
+    // 媒体文件
     public function img(){
         $path = $this->template_path.$this->template_img.'/'.Request::param('folder');
         $folder = Request::param('folder') ? Request::param('folder') : '';
         $uppath = explode('/',Request::param('folder'));
         $leve = count($uppath)-1;
         unset($uppath[$leve]);
-        if($leve>1){
+        if ($leve>1) {
             unset($uppath[$leve-1]);
             $uppath = implode('/',$uppath).'/';
-        }else{
+        } else {
             $uppath = '';
         }
 
         $files = glob($path.'*');
         $folders = $templates = array();
-        foreach($files as $key => $file) {
+        foreach ($files as $key => $file) {
             $filename = basename($file);
-            if(is_dir($file)){
+            if (is_dir($file)) {
                 $folders[$key]['filename'] = $filename;
                 $folders[$key]['filepath'] = $file;
-                $folders[$key]['ext'] = 'folder';
-            }else{
+                $folders[$key]['ext']      = 'folder';
+            } else {
                 $templates[$key]['filename'] = $filename;
                 $templates[$key]['filepath'] = ltrim($file,'.') ;
-                $templates[$key]['ext'] = strtolower(substr($filename,strrpos($filename, '.')-strlen($filename)+1));
-                if(!in_array($templates[$key]['ext'],array('gif','jpg','png','bmp'))) $templates[$key]['ico'] =1;
+                $templates[$key]['ext']      = strtolower(substr($filename,strrpos($filename, '.')-strlen($filename)+1));
+                if (!in_array($templates[$key]['ext'], array('gif','jpg','png','bmp'))) {
+                    $templates[$key]['ico'] =1;
+                }
             }
         }
         $view = [
@@ -251,16 +253,16 @@ class Template extends Base
         return View::fetch();
     }
 
-    //媒体文件删除
+    // 媒体文件删除
     public function imgDel(){
         $path = $this->template_path.$this->template_img.'/'.Request::post('folder');
-        $file=$path.Request::post('filename');
+        $file = $path.Request::post('filename');
 
-        if(file_exists($file)){
+        if (file_exists($file)) {
             is_dir($file) ? dir_delete($file) : unlink($file);
-            return json(['error'=>0,'msg'=>'删除成功!']);
-        }else{
-            return json(['error'=>1,'msg'=>'文件不存在!']);
+            return json(['error'=>0, 'msg'=>'删除成功!']);
+        } else {
+            return json(['error'=>1, 'msg'=>'文件不存在!']);
         }
     }
 

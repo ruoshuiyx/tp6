@@ -38,22 +38,22 @@ class Users extends Base
 {
     protected $validate = 'Users';
 
-    //列表
+    // 列表
     public function index(){
         //全局查询条件
-        $where=[];
+        $where = [];
         $keyword = Request::param('keyword');
-        if(!empty($keyword)){
-            $where[]=['email|mobile', 'like', '%'.$keyword.'%'];
+        if (!empty($keyword)) {
+            $where[] = ['email|mobile', 'like', '%'.$keyword.'%'];
         }
         $typeId  = Request::param('type_id');
-        if(!empty($typeId)){
-            $where[]=['type_id', '=', $typeId];
+        if (!empty($typeId)) {
+            $where[] = ['type_id', '=', $typeId];
         }
         $dateran = Request::param('dateran');
-        if(!empty($dateran)){
+        if (!empty($dateran)) {
             $getDateran = get_dateran($dateran);
-            $where[]=['create_time', 'between', $getDateran];
+            $where[] = ['create_time', 'between', $getDateran];
         }
 
         //获取列表
@@ -62,24 +62,24 @@ class Users extends Base
         $UsersType = UsersType::select();
 
         $view = [
-            'keyword'=>$keyword,
-            'typeId' => $typeId,
-            'dateran'=> $dateran,
+            'keyword'  => $keyword,
+            'typeId'   => $typeId,
+            'dateran'  => $dateran,
             'usersType'=> $UsersType,
-            'pageSize' => page_size($this->pageSize,$list->total()),
-            'page' => $list->render(),
-            'list' => $list,
-            'empty'=> empty_list(11),
+            'pageSize' => page_size($this->pageSize, $list->total()),
+            'page'     => $list->render(),
+            'list'     => $list,
+            'empty'    => empty_list(11),
         ];
         View::assign($view);
         return View::fetch();
     }
 
-    //添加
+    // 添加
     public function add(){
         $usersType = UsersType::where('status','=',1)
             ->select();
-        if(!count($usersType)){
+        if (!count($usersType)) {
             $this->error('请先添加会员组');
         }
         $view = [
@@ -90,37 +90,38 @@ class Users extends Base
         return View::fetch();
     }
 
-    //添加保存
+    // 添加保存
     public function addPost(){
-        if(Request::isPost()) {
+        if (Request::isPost()) {
             $data = Request::except(['file'], 'post');
             $result = $this->validate($data,$this->validate);
             if (true !== $result) {
                 // 验证失败 输出错误信息
                 $this->error($result);
-            }else{
-                if(empty($data['password'])){
+            } else {
+                if (empty($data['password'])) {
                     $this->error('请填写密码');
                 }
                 $data['last_login_time'] = time();
-                $data['create_ip'] = $data['last_login_ip'] = Request::ip();
-                $data['password'] = md5($data['password']);
+                $data['create_ip']       = $data['last_login_ip'] = Request::ip();
+                $data['password']        = md5($data['password']);
                 $result =  M::addPost($data);
-                if($result['error']){
+                if ($result['error']) {
                     $this->error($result['msg']);
-                }else{
+                } else {
                     $this->success($result['msg'],'index');
                 }
             }
         }
     }
 
-    //修改
+    // 修改
     public function edit(){
         $id = Request::param('id');
         $info = M::edit($id);
-        $usersType = UsersType::where('status',1)->select();
-        $view =[
+        $usersType = UsersType::where('status',1)
+            ->select();
+        $view = [
             'info'   => $info,
             'usersType' => $usersType,
         ];
@@ -129,55 +130,55 @@ class Users extends Base
 
     }
 
-    //修改保存
+    // 修改保存
     public function editPost(){
-        if(Request::isPost()) {
+        if (Request::isPost()) {
             $data = Request::except(['file'], 'post');
             $result = $this->validate($data,$this->validate);
             if (true !== $result) {
                 // 验证失败 输出错误信息
                 $this->error($result);
-            }else{
-                if($data['password']) {
+            } else {
+                if ($data['password']) {
                     $data['password'] = md5($data['password']);
-                }else{
+                } else {
                     unset($data['password']);
                 }
                 $result = M::editPost($data);
-                if($result['error']){
+                if ($result['error']) {
                     $this->error($result['msg']);
-                }else{
+                } else {
                     $this->success($result['msg'],'index');
                 }
             }
         }
     }
 
-    //删除
+    // 删除
     public function del(){
-        if(Request::isPost()) {
+        if (Request::isPost()) {
             $id = Request::param('id');
             return M::del($id);
         }
     }
 
-    //批量删除
+    // 批量删除
     public function selectDel(){
-        if(Request::isPost()) {
+        if (Request::isPost()) {
             $id = Request::param('id');
             return M::selectDel($id);
         }
     }
 
-    //状态
+    // 状态
     public function state(){
-        if(Request::isPost()){
+        if (Request::isPost()) {
             $id = Request::param('id');
             return M::state($id);
         }
     }
 
-    //下载
+    // 下载
     public function download(){
         $PHPExcel = new PHPExcel(); //实例化PHPExcel类
         $PHPExcel->setActiveSheetIndex(0); //设置sheet的起始位置
@@ -202,17 +203,17 @@ class Users extends Base
 
         //调取列表
         //全局查询条件
-        $where=[];
+        $where = [];
         $keyword = Request::param('keyword');
-        if(!empty($keyword)){
-            $where[]=['email|mobile', 'like', '%'.$keyword.'%'];
+        if (!empty($keyword)) {
+            $where[] = ['email|mobile', 'like', '%'.$keyword.'%'];
         }
         $typeId  = Request::param('type_id');
-        if(!empty($typeId)){
-            $where[]=['type_id', '=', $typeId];
+        if (!empty($typeId)) {
+            $where[] = ['type_id', '=', $typeId];
         }
         $dateran = Request::param('dateran');
-        if(!empty($dateran)){
+        if (!empty($dateran)) {
             $getDateran = get_dateran($dateran);
             $where[]=['create_time', 'between', $getDateran];
         }
@@ -220,7 +221,7 @@ class Users extends Base
         //获取列表
         $list = M::getDownList($where,$this->pageSize,['id'=>'desc']);
 
-        foreach ($list as $k=>$v){
+        foreach ($list as $k => $v) {
             $v['sex']              = $v['sex']=='1'              ? '男'    : '女';
             $v['mobile_validated'] = $v['mobile_validated']=='1' ? '已认证' : '未认证';
             $v['email_validated']  = $v['email_validated']=='1'  ? '已认证' : '未认证';
