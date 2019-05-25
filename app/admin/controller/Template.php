@@ -34,6 +34,9 @@ class Template extends Base
 {
     protected $public,$template_path,$template_html,$template_css,$template_js,$template_img,$upload_path;
 
+    // 默认开启备份功能
+    protected $templateOpening = true;
+
     function initialize()
     {
         parent::initialize();
@@ -65,6 +68,9 @@ class Template extends Base
             'img'  => $this->template_img,  //自定义媒体文件目录
         ];
         View::assign($initialize);
+
+        //查找是否开启了模板修改备份功能
+        $this->templateOpening = System::where('field','=','template_opening')->value('value');
     }
 
     // 列表
@@ -172,15 +178,30 @@ class Template extends Base
             } else {
                 $path = $this->template_path.$type.'/';
             }
-            $file = $path.$filename;
+            $file = $path . $filename;
             if (file_exists($file)) {
-                file_put_contents($file,stripslashes(input('content')));
-                if ($type == 'html') {
-                    $this->success('修改成功!',url('index', ['type' => 'html']));
-                } else {
-                    $this->success('修改成功!',url('index', ['type' => $type]));
+                //判断是否有写入权限
+                if (!is_writable($file)) {
+                    $this->error('无写入权限!');
                 }
 
+                //备份文件(防止出错)
+                if ($this->templateOpening) {
+                    //设置备份文件名
+                    $newFile = $path . str_replace('.' ,'_back-'.date("Y-m-d_H-i-s").'.', $filename);
+                    //执行复制操作
+                    copy($file,$newFile);
+                }
+
+                if (false !== file_put_contents($file,stripslashes(input('content')))){
+                    if ($type == 'html') {
+                        $this->success('修改成功!',url('index', ['type' => 'html']));
+                    } else {
+                        $this->success('修改成功!',url('index', ['type' => $type]));
+                    }
+                }else{
+                    $this->error('修改失败!');
+                }
             } else {
                 $this->error('文件不存在!');
             }

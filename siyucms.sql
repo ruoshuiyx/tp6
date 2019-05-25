@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2019-05-24 08:08:49
+Date: 2019-05-25 11:51:51
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -850,7 +850,7 @@ CREATE TABLE `tp_system` (
   `create_time` int(11) DEFAULT '0' COMMENT '添加时间',
   `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COMMENT='系统设置表';
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COMMENT='系统设置表';
 
 -- ----------------------------
 -- Records of tp_system
@@ -878,6 +878,7 @@ INSERT INTO `tp_system` VALUES ('20', '4', 'template', '选择模板', '0', 'PC 
 INSERT INTO `tp_system` VALUES ('21', '4', 'html', 'Html目录', '0', '用于模板文件防盗', 'text', null, '42', '1', 'html', '1557969903', '1557986194');
 INSERT INTO `tp_system` VALUES ('22', '1', 'url', '网站地址', '0', '', 'text', null, '5', '1', 'www.xxx.com', '1557986088', '1557986120');
 INSERT INTO `tp_system` VALUES ('23', '3', 'label_opening', '后台多标签', '0', '开启后后台启用多标签模式', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', '35', '1', '1', '1558656395', '1558656444');
+INSERT INTO `tp_system` VALUES ('24', '3', 'template_opening', '模板修改备份', '0', '开启后后台模板管理中修改文件时会进行自动备份', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', '36', '1', '1', '1558756191', '1558756247');
 
 -- ----------------------------
 -- Table structure for tp_system_group
