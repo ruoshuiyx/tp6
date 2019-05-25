@@ -43,7 +43,6 @@ class Tp extends TagLib {
         'search'    => ['attr' => 'search,table,name,pagesize,where,order','close' => 1], //通用搜索
         'prev'	    => ['attr'	=> 'len','close' => 0],                                   //上一篇
         'next'	    => ['attr'	=> 'len','close' => 0],                                   //下一篇
-
     );
 
     // 这是一个闭合标签的简单演示
@@ -275,6 +274,7 @@ class Tp extends TagLib {
                 $__PREV__ = \think\facade\Db::name($__TABLENAME__[\'table_name\'])
                     ->where(\'cate_id\',input(\'cate\'))
                     ->where(\'id\',\'<\',input(\'id\'))
+                    ->where(\'status\',\'=\',1)
                     ->field(\'id,cate_id,title\')
                     ->order(\'sort ASC,id DESC\')
                     ->find();
@@ -312,6 +312,7 @@ class Tp extends TagLib {
                 $__PREV__ = \think\facade\Db::name($__TABLENAME__[\'table_name\'])
                     ->where(\'cate_id\',input(\'cate\'))
                     ->where(\'id\',\'>\',input(\'id\'))
+                    ->where(\'status\',\'=\',1)
                     ->field(\'id,cate_id,title\')
                     ->order(\'sort ASC,id DESC\')
                     ->find();
