@@ -141,14 +141,14 @@ class Tp extends TagLib {
     // 获取广告信息
     Public function tagAd($tag, $content){
         $name   = $tag['name'] ? $tag['name'] : 'ad';
-        $type   = $tag['type'] ? $tag['type'] : '1';
+        $type   = $tag['type'] ? $tag['type'] : '';
         $parse  = '<?php ';
         $parse .= '$__LIST__ = \think\facade\Db::name(\'ad\')
             ->alias(\'a\')
             ->leftJoin(\'ad_type at\',\'a.type_id = at.id\')
             ->field(\'a.*,at.name as type_name\')
             ->where(\'a.status\',1)
-            //->where(\'at.name\',\' '.$type.' \')
+            ->where(\'at.name\',\''.$type.'\')
             ->order(\'a.sort ASC,a.id desc\')
             ->select();';
         $parse .= ' ?>';
