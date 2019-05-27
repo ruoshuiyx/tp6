@@ -84,6 +84,23 @@ class Admin extends Base {
                     ->where('uid',$uid)
                     ->find();
 
+                //查询所有不验证的方法并放入规则中
+                $authOpen = AuthRule::where('auth_open','=','0')
+                    ->select();
+                $authRole = AuthRule::select();
+                $authOpens = [];
+                foreach ($authOpen as $k => $v) {
+                    $authOpens[] = $v['id'];
+                    //查询所有下级权限
+                    $ids = getChildsRule($authRole, $v['id']);
+                    foreach ($ids as $kk => $vv) {
+                        $authOpens[] = $vv['id'];
+                    }
+                }
+
+                $authOpensStr = !empty($authOpens) ? implode(",", $authOpens) : '';
+                $rules['rules'] = $rules['rules'] . $authOpensStr;
+
                 //重新查询要赋值的数据[原因是toArray必须保证find的数据不为空，为空就报错]
                 $result = self::where(['username'=>$username,'password'=>md5($password)])->find();
                 Session::set('admin'         ,[

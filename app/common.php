@@ -452,3 +452,20 @@ function sysgem_setup($system){
     }
     return $system;
 }
+
+/**
+ * 传递一个父级分类ID返回所有子分类
+ * @param $cate
+ * @param $pid
+ * @return array
+ */
+function getChildsRule($rules, $pid){
+    $arr = [];
+    foreach ($rules as $v) {
+        if ($v['pid'] == $pid) {
+            $arr[] = $v;
+            $arr = array_merge($arr, getChildsRule($rules, $v['id']));
+        }
+    }
+    return $arr;
+}

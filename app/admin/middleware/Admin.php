@@ -25,6 +25,7 @@
  */
 namespace app\admin\middleware;
 
+use app\admin\model\AuthRule;
 use think\facade\Session;
 use think\facade\Request;
 use think\Response;
@@ -52,6 +53,21 @@ class Admin
             'Login/captcha',    //登录验证码
             'Login/logout',     //退出登录
         ];
+
+        //查询所有不验证的方法并放入白名单
+        $authOpen = AuthRule::where('auth_open','=','0')
+            ->select();
+        $authRole = AuthRule::select();
+        $authOpens = [];
+        foreach ($authOpen as $k => $v) {
+            $authOpens[] = $v['name'];
+            //查询所有下级权限
+            $ids = getChildsRule($authRole, $v['id']);
+            foreach ($ids as $kk => $vv) {
+                $authOpens[] = $vv['name'];
+            }
+        }
+        $allow = array_merge($allow,$authOpens);
 
         //查找当前控制器和方法，控制器首字母大写，方法首字母小写 如：Index/index
         $route = Request::controller() . '/' . lcfirst(Request::action());
