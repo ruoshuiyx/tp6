@@ -60,11 +60,25 @@ class Admin
         $authRole = AuthRule::select();
         $authOpens = [];
         foreach ($authOpen as $k => $v) {
-            $authOpens[] = $v['name'];
+            //转换方法为小写
+            $ruleName = explode('/',$v['name']);
+            if ($ruleName[1]){
+                $ruleName[1] = strtolower($ruleName[1]);
+            }
+            //转换控制器首字母大写
+            $ruleName = trim(implode('/',$ruleName));
+            $authOpens[] = ucfirst($ruleName);
             //查询所有下级权限
             $ids = getChildsRule($authRole, $v['id']);
             foreach ($ids as $kk => $vv) {
-                $authOpens[] = $vv['name'];
+                //转换方法为小写
+                $ruleName = explode('/',$vv['name']);
+                if ($ruleName[1]){
+                    $ruleName[1] = strtolower($ruleName[1]);
+                }
+                //转换控制器首字母大写
+                $ruleName = trim(implode('/',$ruleName));
+                $authOpens[] = ucfirst($ruleName);
             }
         }
         $allow = array_merge($allow,$authOpens);
@@ -77,6 +91,7 @@ class Admin
             if ($admin_id != 1) {
                 //开始认证
                 $auth = new \Auth();
+
                 $result = $auth->check($route,$admin_id);
                 if (!$result) {
                     $this->error('您无此操作权限!');
@@ -129,12 +144,11 @@ class Admin
         ];
 
         $type = (request()->isJson() || request()->isAjax()) ? 'json' : 'html';
-        if ('html' == strtolower($type)) {
-            $type = 'jump';
+        if ($type == 'html'){
+            $response = view(app('config')->get('app.dispatch_error_tmpl'), $result);
+        } else if ($type == 'json') {
+            $response = json($result);
         }
-
-        $response = Response::create($result, $type)->header($header)->options(['jump_template' => app('config')->get('app.dispatch_error_tmpl')]);
-
         throw new HttpResponseException($response);
     }
 }

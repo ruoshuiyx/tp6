@@ -158,7 +158,12 @@ abstract class Base
             'wait' => $wait,
         ];
 
-        $response = view(app('config')->get('app.dispatch_error_tmpl'), $result);
+        $type = (request()->isJson() || request()->isAjax()) ? 'json' : 'html';
+        if ($type == 'html'){
+            $response = view(app('config')->get('app.dispatch_error_tmpl'), $result);
+        } else if ($type == 'json') {
+            $response = json($result);
+        }
         throw new HttpResponseException($response);
     }
 
@@ -210,7 +215,13 @@ abstract class Base
             'url'  => $url,
             'wait' => $wait,
         ];
-        $response = view(app('config')->get('app.dispatch_success_tmpl'), $result);
+
+        $type = (request()->isJson() || request()->isAjax()) ? 'json' : 'html';
+        if ($type == 'html'){
+            $response = view(app('config')->get('app.dispatch_success_tmpl'), $result);
+        } else if ($type == 'json') {
+            $response = json($result);
+        }
         throw new HttpResponseException($response);
     }
 
