@@ -61,17 +61,17 @@
                                   <div class="dd_radio_lable_left">
                                   {if $info}
 				                    <label class="dd_radio_lable">
-                                      <input type="radio" name="status" value="1" class="dd_radio" {$info.status?'checked':''}><span>显示</span>
+                                      <input type="radio" name="status" value="1" class="dd_radio" {$info.status?'checked':''}><span>启用</span>
                                     </label>
                                     <label class="dd_radio_lable">
-                                      <input type="radio" name="status" value="0" class="dd_radio" {$info.status?'':'checked'}><span>隐藏</span>
+                                      <input type="radio" name="status" value="0" class="dd_radio" {$info.status?'':'checked'}><span>禁用</span>
                                     </label>
                                      {else /}
                                      <label class="dd_radio_lable">
-                                      <input type="radio" name="status" value="1" class="dd_radio" checked><span>是</span>
+                                      <input type="radio" name="status" value="1" class="dd_radio" checked><span>启用</span>
                                     </label>
                                     <label class="dd_radio_lable">
-                                      <input type="radio" name="status" value="0" class="dd_radio" ><span>否</span>
+                                      <input type="radio" name="status" value="0" class="dd_radio" ><span>禁用</span>
                                     </label>
                                      {/if}
                                      </div>

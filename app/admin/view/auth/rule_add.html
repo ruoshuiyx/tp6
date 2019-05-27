@@ -81,6 +81,58 @@
 				                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts"></div>
 				                </div>
 			                </div>
+                            <!---->
+                             <div class="row dd_input_group">
+			                	<div class="form-group">
+				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">菜单状态</label>
+				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+                                  <div class="dd_radio_lable_left">
+                                  {if $info}
+				                    <label class="dd_radio_lable">
+                                      <input type="radio" name="status" value="1" class="dd_radio" {$info.status?'checked':''}><span>显示</span>
+                                    </label>
+                                    <label class="dd_radio_lable">
+                                      <input type="radio" name="status" value="0" class="dd_radio" {$info.status?'':'checked'}><span>隐藏</span>
+                                    </label>
+                                     {else /}
+                                     <label class="dd_radio_lable">
+                                      <input type="radio" name="status" value="1" class="dd_radio" checked><span>显示</span>
+                                    </label>
+                                    <label class="dd_radio_lable">
+                                      <input type="radio" name="status" value="0" class="dd_radio" ><span>隐藏</span>
+                                    </label>
+                                     {/if}
+                                     </div>
+				                  </div>
+                                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">*</div>
+				                </div>
+			                </div>
+                            <!---->
+                             <div class="row dd_input_group">
+			                	<div class="form-group">
+				                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">验证权限</label>
+				                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+                                  <div class="dd_radio_lable_left">
+                                  {if $info}
+				                    <label class="dd_radio_lable">
+                                      <input type="radio" name="auth_open" value="1" class="dd_radio" {$info.auth_open?'checked':''}><span>是</span>
+                                    </label>
+                                    <label class="dd_radio_lable">
+                                      <input type="radio" name="auth_open" value="0" class="dd_radio" {$info.auth_open?'':'checked'}><span>否</span>
+                                    </label>
+                                     {else /}
+                                     <label class="dd_radio_lable">
+                                      <input type="radio" name="auth_open" value="1" class="dd_radio" checked><span>是</span>
+                                    </label>
+                                    <label class="dd_radio_lable">
+                                      <input type="radio" name="auth_open" value="0" class="dd_radio" ><span>否</span>
+                                    </label>
+                                     {/if}
+                                     </div>
+				                  </div>
+                                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">*</div>
+				                </div>
+			                </div>
 			                <!---->
 			                <div class="row dd_input_group">
 			                	<div class="form-group">

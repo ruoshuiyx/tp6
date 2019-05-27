@@ -72,7 +72,7 @@ class Auth extends Base
         return View::fetch('admin_list');
     }
 
-    //管理员添加
+    // 管理员添加
     public function adminAdd(){
         if(Request::isPost()){
             $data = Request::post();
@@ -96,7 +96,6 @@ class Auth extends Base
             $data['password']  = md5(trim($data['password']));
             $data['logintime'] = time();
             $data['loginip']   = Request::ip();
-            $data['status']    = 1;
             //添加
             $result = Admin::create($data);
             if ($result) {
@@ -254,7 +253,7 @@ class Auth extends Base
     // 用户组添加
     public function groupAdd(){
         if (Request::isPost()) {
-            $data = Request::param();
+            $data = Request::post();
             $result = $this->validate($data, 'AuthGroup');
             if (true !== $result) {
                 // 验证失败 输出错误信息
@@ -374,7 +373,7 @@ class Auth extends Base
         return View::fetch('admin_rule');
     }
 
-    //权限菜单显示或者隐藏
+    // 权限菜单显示或者隐藏
     public function ruleState(){
         if (Request::isPost()) {
             $id = Request::param('id');
@@ -385,7 +384,7 @@ class Auth extends Base
         }
     }
 
-    //设置权限是否验证
+    // 设置权限是否验证
     public function ruleOpen(){
         if (Request::isPost()) {
             $id = Request::param('id');
@@ -396,7 +395,7 @@ class Auth extends Base
         }
     }
 
-    //设置权限排序
+    // 设置权限排序
     public function ruleSort(){
         if (Request::isPost()) {
             $id = Request::param('id');
@@ -408,7 +407,7 @@ class Auth extends Base
         }
     }
 
-    //权限删除
+    // 权限删除
     public function ruleDel(){
         $id = Request::param('id');
         if ($id) {
@@ -417,7 +416,7 @@ class Auth extends Base
         }
     }
 
-    //权限批量删除
+    // 权限批量删除
     public function ruleSelectDel(){
         $id = Request::param('id');
         if ($id) {
@@ -427,7 +426,7 @@ class Auth extends Base
 
     }
 
-    //权限增加
+    // 权限增加
     public function ruleAdd(){
         if (Request::isPost()) {
             $data = Request::post();
