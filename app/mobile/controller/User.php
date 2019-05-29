@@ -74,7 +74,7 @@ class User extends Base
             $username = trim(Request::post('username'));
             $password = trim(Request::post('password'));
             //检查是否开启了验证码
-            $message_code = Db::name('system')->where('id',1)->value('message_code');
+            $message_code = $this->system['message_code'];
             if ($message_code) {
                 if (!captcha_check(Request::post("message_code"))) {
                     $result['error'] = '1';
@@ -84,7 +84,7 @@ class User extends Base
             }
             //校验用户名密码
             $user = Users::
-                where('email|mobile',$username)
+            where('email|mobile',$username)
                 ->where('password',md5($password))
                 ->find();
             if (empty($user)) {
@@ -157,7 +157,7 @@ class User extends Base
             }
 
             //检查是否开启了验证码
-            $message_code = Db::name('system')->where('id',1)->value('message_code');
+            $message_code = $this->system['message_code'];
             if ($message_code) {
                 if (!captcha_check(input("post.message_code"))) {
                     $result['error'] = '1';
@@ -212,7 +212,7 @@ class User extends Base
                 //查看原密码是否正确
                 if (Request::post("nowpassword")) {
                     $id = Users::
-                        where('id',session('user.id'))
+                    where('id',session('user.id'))
                         ->where('password',md5(trim(Request::post("nowpassword"))))
                         ->find();
                     if (!$id) {
@@ -240,7 +240,7 @@ class User extends Base
             if ($data['mobile']) {
                 //不可和其他用户的一致
                 $id = Users::
-                    where('mobile', $data['mobile'])
+                where('mobile', $data['mobile'])
                     ->where('id','<>',session('user.id'))
                     ->find();
                 if ($id) {

@@ -25,8 +25,6 @@
  */
 namespace app\mobile\controller;
 
-use app\common\model\System;
-
 use think\captcha\facade\Captcha;
 use think\facade\Db;
 use think\facade\Request;
@@ -37,6 +35,13 @@ class Index extends Base
     // 首页
     public function index()
     {
+        //后台开启手机端的时候PC自动跳转到mobile
+        if ($this->system['mobile'] == '1' && $this->appName == 'index') {
+            if (Request::isMobile()) {
+                return redirect('mobile/index/index');
+            }
+        }
+
         $view = [
             'cate'        => null,
             'system'      => $this->system, //系统信息
@@ -63,7 +68,7 @@ class Index extends Base
             if ($this->system['message_code']) {
                 if (!captcha_check($data['message_code'])) {
                     $this->error('验证码错误');
-                   // return json(['error' => '1', 'msg' => '验证码错误']);
+                    // return json(['error' => '1', 'msg' => '验证码错误']);
                 } else {
                     unset($data['message_code']);
                 }
@@ -96,7 +101,7 @@ class Index extends Base
                     $result['error'] = '0';
                     $result['msg']   = '留言成功';
                     //邮件通知开始
-                    if (System::where('id',1)->value('message_send_mail')) {
+                    if ($this->system['message_send_mail']) {
                         //去除无用字段
                         unset($data['cate_id']);
                         unset($data['status']);
