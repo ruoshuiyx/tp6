@@ -37,7 +37,7 @@ class Tp extends TagLib {
         'cate'      => ['attr' => 'id,type','close' => 0],                                //通用栏目信息
         'position'  => ['attr' => 'name','close' => 1],                                   //通用位置信息
         'link'      => ['attr' => 'name','close' => 1],                                   //获取友情链接
-        'ad'        => ['attr' => 'name,type','close' => 1],                              //获取广告信息
+        'ad'        => ['attr' => 'name,type,id','close' => 1],                           //获取广告信息
         'debris'    => ['attr' => 'name,type','close' => 0],                              //获取碎片信息
         'list'      => ['attr' => 'id,name,pagesize,where,limit,order','close' => 1],     //通用列表
         'search'    => ['attr' => 'search,table,name,pagesize,where,order','close' => 1], //通用搜索
@@ -140,15 +140,24 @@ class Tp extends TagLib {
 
     // 获取广告信息
     Public function tagAd($tag, $content){
-        $name   = $tag['name'] ? $tag['name'] : 'ad';
-        $type   = $tag['type'] ? $tag['type'] : '';
+        $name   = isset($tag['name']) ? $tag['name'] : 'ad';
+        $type   = isset($tag['type']) ? $tag['type'] : '';
+        $id     = isset($tag['id'])   ? $tag['id']   : '';
         $parse  = '<?php ';
-        $parse .= '$__LIST__ = \think\facade\Db::name(\'ad\')
+        $parse .= '
+            $__WHERE__ = array();
+            if (!empty(\''.$id.'\')) {
+                $__WHERE__[] = [\'a.type_id\', \'=\', '.$id.'];
+            }
+            if (!empty(\''.$type.'\')) {
+                $__WHERE__[] = [\'at.name\', \'=\', \''.$type.'\'];
+            }';
+        $parse .= '
+            $__LIST__ = \think\facade\Db::name(\'ad\')
             ->alias(\'a\')
             ->leftJoin(\'ad_type at\',\'a.type_id = at.id\')
             ->field(\'a.*,at.name as type_name\')
-            ->where(\'a.status\',1)
-            ->where(\'at.name\',\''.$type.'\')
+            ->where($__WHERE__)
             ->order(\'a.sort ASC,a.id desc\')
             ->select();';
         $parse .= ' ?>';
