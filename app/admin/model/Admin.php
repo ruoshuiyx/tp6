@@ -118,7 +118,7 @@ class Admin extends Base {
                 //触发登录成功事件
                 Event::trigger('AdminLogin',$result);
 
-                $data = ['error' => '0', 'href' => url('Index/index'), 'msg' => '登录成功'];
+                $data = ['error' => '0', 'href' => url('Index/index')->__toString(), 'msg' => '登录成功'];
                 return json($data);
             }else{
                 return json(['error' => 1, 'msg' => '用户已被禁用!']);
