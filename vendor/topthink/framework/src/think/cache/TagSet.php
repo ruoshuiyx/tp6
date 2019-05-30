@@ -29,6 +29,12 @@ class TagSet
      */
     protected $handler;
 
+    /**
+     * 架构函数
+     * @access public
+     * @param  array  $tag 缓存标签
+     * @param  Driver $cache 缓存对象
+     */
     public function __construct(array $tag, Driver $cache)
     {
         $this->tag     = $tag;
@@ -58,7 +64,7 @@ class TagSet
      * @param  string $name 缓存变量名
      * @return void
      */
-    protected function append(string $name): void
+    public function append(string $name): void
     {
         $name = $this->handler->getCacheKey($name);
 
