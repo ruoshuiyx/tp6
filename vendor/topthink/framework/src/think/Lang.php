@@ -26,8 +26,6 @@ class Lang
         'default_lang'    => 'zh-cn',
         // 允许的语言列表
         'allow_lang_list' => [],
-        // 自动侦测和切换
-        'auto_detect'     => false,
         // 是否使用Cookie记录
         'use_cookie'      => true,
         // 扩展语言包
@@ -71,10 +69,6 @@ class Lang
         $this->request = $request;
         $this->config  = array_merge($this->config, array_change_key_case($config));
         $this->range   = $this->config['default_lang'];
-
-        if ($this->config['auto_detect']) {
-            $this->detect();
-        }
     }
 
     public static function __make(Request $request, Config $config)
@@ -101,6 +95,16 @@ class Lang
     public function getLangSet(): string
     {
         return $this->range;
+    }
+
+    /**
+     * 获取默认语言
+     * @access public
+     * @return string
+     */
+    public function defaultLangSet()
+    {
+        return $this->config['default_lang'];
     }
 
     /**
@@ -206,10 +210,10 @@ class Lang
 
     /**
      * 自动侦测设置获取语言选择
-     * @access protected
-     * @return void
+     * @access public
+     * @return string
      */
-    protected function detect(): void
+    public function detect(): string
     {
         // 自动侦测设置获取语言选择
         $langSet = '';
@@ -234,6 +238,8 @@ class Lang
             // 合法的语言
             $this->range = $langSet;
         }
+
+        return $this->range;
     }
 
     /**
