@@ -70,6 +70,11 @@ class Admin extends Base {
             $data = ['error' => '1', 'msg' => '帐号或密码错误'];
             return json($data);
         } else {
+            $check = Request::checkToken('__token__');
+            if(false === $check) {
+                $data = ['error' => '1', 'msg' => '验证有误'];
+                return json($data);
+            }
             if ($result['status'] == 1){
                 $uid = $result['id'];
                 //更新登录IP和登录时间
