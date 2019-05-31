@@ -48,7 +48,7 @@ abstract class Dispatch
     protected $dispatch;
 
     /**
-     * 调度参数
+     * 路由变量
      * @var array
      */
     protected $param;
@@ -85,6 +85,9 @@ abstract class Dispatch
         // 记录当前请求的路由规则
         $this->request->setRule($this->rule);
 
+        // 记录路由变量
+        $this->request->setRoute($this->param);
+
         // 执行路由后置操作
         $this->doRouteAfter();
     }
@@ -120,7 +123,7 @@ abstract class Dispatch
             $data = ob_get_clean();
 
             $content  = false === $data ? '' : $data;
-            $status   = false === $data ? 204 : 200;
+            $status   = '' === $content && $this->request->isJson() ? 204 : 200;
             $response = Response::create($content, '', $status);
         }
 
