@@ -36,15 +36,15 @@ class Ad extends Base
     protected $validate = 'Ad';
 
     // 列表
-    public function index(){
-
+    public function index()
+    {
         //全局查询条件
         $where = [];
         $keyword = Request::param('keyword');
         if (!empty($keyword)) {
-            $where[] = ['name|description', 'like', '%'.$keyword.'%'];
+            $where[] = ['name|description', 'like', '%' . $keyword . '%'];
         }
-        $typeId  = Request::param('type_id');
+        $typeId = Request::param('type_id');
         if (!empty($typeId)) {
             $where[] = ['type_id', '=', $typeId];
         }
@@ -74,45 +74,48 @@ class Ad extends Base
     }
 
     // 添加
-    public function add(){
-        $adType = AdType::where('status',1)
+    public function add()
+    {
+        $adType = AdType::where('status', 1)
             ->select();
         if (!count($adType)) {
             $this->error('请先添加广告位');
         }
         $view = [
             'adType' => $adType,
-            'info'   => null
+            'info' => null
         ];
         View::assign($view);
         return View::fetch();
     }
 
     // 添加保存
-    public function addPost(){
-        $data   = Request::except(['file'], 'post');
+    public function addPost()
+    {
+        $data = Request::except(['file'], 'post');
         $result = $this->validate($data, $this->validate);
         if (true !== $result) {
             // 验证失败 输出错误信息
             $this->error($result);
         } else {
-            $result =  M::addPost($data);
+            $result = M::addPost($data);
             if ($result['error']) {
                 $this->error($result['msg']);
             } else {
-                $this->success($result['msg'],'index');
+                $this->success($result['msg'], 'index');
             }
         }
     }
 
     // 修改
-    public function edit(){
-        $id     = Request::param('id');
-        $info   = M::edit($id);
-        $adType = AdType::where('status',1)
+    public function edit()
+    {
+        $id = Request::param('id');
+        $info = M::edit($id);
+        $adType = AdType::where('status', 1)
             ->select();
         $view = [
-            'info'   => $info,
+            'info' => $info,
             'adType' => $adType,
         ];
         View::assign($view);
@@ -120,8 +123,9 @@ class Ad extends Base
     }
 
     // 修改保存
-    public function editPost(){
-        $data   = Request::except(['file'], 'post');
+    public function editPost()
+    {
+        $data = Request::except(['file'], 'post');
         $result = $this->validate($data, $this->validate);
         if (true !== $result) {
             // 验证失败 输出错误信息
@@ -131,13 +135,14 @@ class Ad extends Base
             if ($result['error']) {
                 $this->error($result['msg']);
             } else {
-                $this->success($result['msg'],'index');
+                $this->success($result['msg'], 'index');
             }
         }
     }
 
     // 删除
-    public function del(){
+    public function del()
+    {
         if (Request::isPost()) {
             $id = Request::param('id');
             return M::del($id);
@@ -145,7 +150,8 @@ class Ad extends Base
     }
 
     // 批量删除
-    public function selectDel(){
+    public function selectDel()
+    {
         if (Request::isPost()) {
             $id = Request::param('id');
             return M::selectDel($id);
@@ -153,7 +159,8 @@ class Ad extends Base
     }
 
     // 排序
-    public function sort(){
+    public function sort()
+    {
         if (Request::isPost()) {
             $data = Request::post();
             return M::sort($data);
@@ -161,7 +168,8 @@ class Ad extends Base
     }
 
     // 状态
-    public function state(){
+    public function state()
+    {
         if (Request::isPost()) {
             $id = Request::param('id');
             return M::state($id);
