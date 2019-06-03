@@ -2046,7 +2046,7 @@ var addTabs = function (options) {
     activeTabByPageId(pageId);
 
     //小屏幕上点击左边菜单栏按钮，模拟点击
-    if ($(window).width() < $.AdminLTE.options.screenSizes.sm) {//小屏幕
+    if ($(window).width() < $.AdminLTE.options.screenSizes.sm && $("body").hasClass("sidebar-open")) {//小屏幕
         //触发左边菜单栏按钮点击事件,关闭菜单栏
         $("[data-toggle='push-menu']").trigger('click');
     }
