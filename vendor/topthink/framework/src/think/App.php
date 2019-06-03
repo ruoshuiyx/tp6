@@ -23,7 +23,7 @@ use think\initializer\RegisterService;
  */
 class App extends Container
 {
-    const VERSION = '6.0.0RC2';
+    const VERSION = '6.0.0RC3';
 
     /**
      * 应用调试模式
@@ -412,9 +412,8 @@ class App extends Container
         }
 
         // 加载系统语言包
-        $this->lang->load([
-            $this->appPath . 'lang' . DIRECTORY_SEPARATOR . $langset . '.php',
-        ]);
+        $files = glob($this->appPath . 'lang' . DIRECTORY_SEPARATOR . $langset . '.*');
+        $this->lang->load($files);
 
         // 加载扩展（自定义）语言包
         $list = $this->config->get('lang.extend_list', []);
