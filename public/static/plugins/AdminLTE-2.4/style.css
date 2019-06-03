@@ -91,7 +91,7 @@ ul.ztree>li>a>span{font-size:15px;font-weight:700}
 	.uploader-list{ margin-top:10px;}
 	.search{padding: 10px;}
 	.search input,.search select{ margin-bottom:5px}
-	.search .m_10{ margin-top:0}
+	.search .m_10{ margin-top:0;margin-bottom: 5px;}
 	.search .f_r{ float:left; margin-left:0;margin-right: 10px;}
 	.study a{display:block; width:100%; margin:3px 0}
 	.wrapper .main-header .logo {background: none;border-bottom: 0 solid transparent;position: absolute;top: 0;z-index: 9999;width: 130px;left: 50%; margin-left: -65px;}
@@ -99,6 +99,8 @@ ul.ztree>li>a>span{font-size:15px;font-weight:700}
 	.main-sidebar { padding-top: 50px;}
 	.fixed .content-wrapper, .fixed .right-side {padding-top: 50px;}
 	.skin-black .main-header>.logo,.skin-black-light .main-header>.logo{color: #333;}
+	.pagination>li>a, .pagination>li>span{margin-bottom: 5px;}
+	.m_t_5{margin-top:5px !important; float:right !important}
 }
 .js_show_img{ cursor:pointer; color:#333}
 .js_show_img:hover{ color:#3c8dbc}
