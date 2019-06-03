@@ -94,6 +94,11 @@ ul.ztree>li>a>span{font-size:15px;font-weight:700}
 	.search .m_10{ margin-top:0}
 	.search .f_r{ float:left; margin-left:0;margin-right: 10px;}
 	.study a{display:block; width:100%; margin:3px 0}
+	.wrapper .main-header .logo {background: none;border-bottom: 0 solid transparent;position: absolute;top: 0;z-index: 9999;width: 130px;left: 50%; margin-left: -65px;}
+	.navbar-custom-menu ul li a{padding-left: 10px;padding-right: 10px;}
+	.main-sidebar { padding-top: 50px;}
+	.fixed .content-wrapper, .fixed .right-side {padding-top: 50px;}
+	.skin-black .main-header>.logo,.skin-black-light .main-header>.logo{color: #333;}
 }
 .js_show_img{ cursor:pointer; color:#333}
 .js_show_img:hover{ color:#3c8dbc}
