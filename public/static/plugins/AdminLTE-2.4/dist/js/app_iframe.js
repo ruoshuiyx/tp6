@@ -1950,11 +1950,13 @@ var addTabs = function (options) {
         options.url = basePath + options.url;
     }
 
-    //判断是否按了ctrl按键，当按了ctrl按键时，直接进行新窗口跳转。
-    if(event.ctrlKey){
-        window.open(options.url, '_blank');
-        return false;
-    }
+    //判断是否按了ctrl按键，当按了ctrl按键时，直接进行新窗口跳转。(火狐旧版不生效)
+	if(window.event){
+		if(window.event.ctrlKey){
+			window.open(options.url, '_blank');
+			return false;
+		}
+	} 
 
     //重新设置浏览器地址信息(控制台不需要进行URL设置)
     if(options.id>1){
