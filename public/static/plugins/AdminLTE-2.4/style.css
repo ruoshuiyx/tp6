@@ -67,7 +67,7 @@ ul.ztree>li>a>span{font-size:15px;font-weight:700}
 
 .changeSort{padding: 0 8px;line-height: 21px;height: 21px;}
 .image_preview{float: left;margin-left: 10px;/*max-width: 100px;*/max-height: 38px;}
-.main-header .fullscreen:before {content: "";}
+.main-header .fullscreen:before {content: normal;}
 
 /*多图区域调整*/
 #more_images_duotu{border: 1px solid #d2d6de;}
