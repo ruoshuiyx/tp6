@@ -177,7 +177,11 @@ class BelongsToMany extends Relation
             $closure($this->query);
         }
 
-        $result = $this->buildQuery()->relation($subRelation)->select();
+        $result = $this->buildQuery()
+            ->relation($subRelation)
+            ->select()
+            ->setParent(clone $this->parent);
+
         $this->hydratePivot($result);
 
         return $result;
@@ -331,7 +335,7 @@ class BelongsToMany extends Relation
                     $data[$result->$pk] = [];
                 }
 
-                $result->setRelation($attr, $this->resultSetBuild($data[$result->$pk]));
+                $result->setRelation($attr, $this->resultSetBuild($data[$result->$pk], clone $this->parent));
             }
         }
     }
@@ -361,7 +365,7 @@ class BelongsToMany extends Relation
                 $data[$pk] = [];
             }
 
-            $result->setRelation(App::parseName($relation), $this->resultSetBuild($data[$pk]));
+            $result->setRelation(App::parseName($relation), $this->resultSetBuild($data[$pk], clone $this->parent));
         }
     }
 
@@ -406,11 +410,7 @@ class BelongsToMany extends Relation
     public function getRelationCountQuery(Closure $closure = null, string $aggregate = 'count', string $field = '*', string &$name = null): string
     {
         if ($closure) {
-            $return = $closure($this->query);
-
-            if ($return && is_string($return)) {
-                $name = $return;
-            }
+            $closure($this->query, $name);
         }
 
         return $this->belongsToManyQuery($this->foreignKey, $this->localKey, [

@@ -58,18 +58,11 @@ class HasMany extends Relation
             $closure($this->query);
         }
 
-        $list = $this->query
+        return $this->query
             ->where($this->foreignKey, $this->parent->{$this->localKey})
             ->relation($subRelation)
-            ->select();
-
-        $parent = clone $this->parent;
-
-        foreach ($list as &$model) {
-            $model->setParent($parent);
-        }
-
-        return $list;
+            ->select()
+            ->setParent(clone $this->parent);
     }
 
     /**
@@ -109,11 +102,7 @@ class HasMany extends Relation
                     $data[$pk] = [];
                 }
 
-                foreach ($data[$pk] as &$relationModel) {
-                    $relationModel->setParent(clone $result);
-                }
-
-                $result->setRelation($attr, $this->resultSetBuild($data[$pk]));
+                $result->setRelation($attr, $this->resultSetBuild($data[$pk], clone $this->parent));
             }
         }
     }
@@ -141,11 +130,7 @@ class HasMany extends Relation
                 $data[$pk] = [];
             }
 
-            foreach ($data[$pk] as &$relationModel) {
-                $relationModel->setParent(clone $result);
-            }
-
-            $result->setRelation(App::parseName($relation), $this->resultSetBuild($data[$pk]));
+            $result->setRelation(App::parseName($relation), $this->resultSetBuild($data[$pk], clone $this->parent));
         }
     }
 
@@ -188,10 +173,7 @@ class HasMany extends Relation
     public function getRelationCountQuery(Closure $closure = null, string $aggregate = 'count', string $field = '*', string &$name = null): string
     {
         if ($closure) {
-            $return = $closure($this->query);
-            if ($return && is_string($return)) {
-                $name = $return;
-            }
+            $closure($this->query, $name);
         }
 
         return $this->query->alias($aggregate . '_table')
