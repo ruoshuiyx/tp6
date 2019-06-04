@@ -115,3 +115,5 @@ ul.ztree>li>a>span{font-size:15px;font-weight:700}
 /*内容管理页面*/
 .content-content-left{ padding:15px 0 15px 0}
 .info-box-number-content{font-size: 32px;padding-top: 10px;}
+/*ios iframe 横向无法滚动的BUG修复*/
+.content-iframe .tab-content .tab-pane{ -webkit-overflow-scrolling:touch;overflow:auto;}
