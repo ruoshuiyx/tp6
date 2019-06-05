@@ -279,6 +279,10 @@ class HasMany extends Relation
         $model    = App::classBaseName($this->parent);
         $relation = App::classBaseName($this->model);
 
+        if ('*' != $id) {
+            $id = $relation . '.' . (new $this->model)->getPk();
+        }
+
         return $this->parent->db()
             ->alias($model)
             ->field($model . '.*')
@@ -303,6 +307,8 @@ class HasMany extends Relation
 
         if (is_array($where)) {
             $this->getQueryWhere($where, $relation);
+        } elseif ($where instanceof Query) {
+            $where->via($relation);
         }
 
         $fields = $this->getRelationQueryFields($fields, $model);

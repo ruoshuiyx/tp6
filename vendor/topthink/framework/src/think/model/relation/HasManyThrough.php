@@ -15,7 +15,6 @@ use Closure;
 use think\App;
 use think\Collection;
 use think\db\Query;
-use think\Exception;
 use think\Model;
 use think\model\Relation;
 
@@ -46,12 +45,12 @@ class HasManyThrough extends Relation
      * 架构函数
      * @access public
      * @param  Model  $parent     上级模型对象
-     * @param  string $model      模型名
+     * @param  string $model      关联模型名
      * @param  string $through    中间模型名
      * @param  string $foreignKey 关联外键
-     * @param  string $throughKey 关联外键
-     * @param  string $localKey   当前主键
-     * @param  string $throughPk  中间表主键
+     * @param  string $throughKey 中间关联外键
+     * @param  string $localKey   当前模型主键
+     * @param  string $throughPk  中间模型主键
      */
     public function __construct(Model $parent, string $model, string $through, string $foreignKey, string $throughKey, string $localKey, string $throughPk)
     {
@@ -72,7 +71,7 @@ class HasManyThrough extends Relation
      * @param  Closure $closure     闭包查询条件
      * @return Collection
      */
-    public function getRelation(array $subRelation = [], \Closure $closure = null): Collection
+    public function getRelation(array $subRelation = [], \Closure $closure = null)
     {
         if ($closure) {
             $closure($this->query);
@@ -94,9 +93,26 @@ class HasManyThrough extends Relation
      * @param  string  $joinType JOIN类型
      * @return Query
      */
-    public function has(string $operator = '>=', int $count = 1, string $id = '*', $joinType = '')
+    public function has(string $operator = '>=', int $count = 1, string $id = '*', string $joinType = ''): Query
     {
-        return $this->parent;
+        $model         = App::parseName(App::classBaseName($this->parent));
+        $throughTable  = $this->through->getTable();
+        $pk            = $this->throughPk;
+        $throughKey    = $this->throughKey;
+        $relation      = new $this->model;
+        $relationTable = $relation->getTable();
+
+        if ('*' != $id) {
+            $id = $relationTable . '.' . $relation->getPk();
+        }
+
+        return $this->parent->db()
+            ->alias($model)
+            ->field($model . '.*')
+            ->join($throughTable, $throughTable . '.' . $this->foreignKey . '=' . $model . '.' . $this->localKey)
+            ->join($relationTable, $relationTable . '.' . $throughKey . '=' . $throughTable . '.' . $this->throughPk)
+            ->group($relationTable . '.' . $this->throughKey)
+            ->having('count(' . $id . ')' . $operator . $count);
     }
 
     /**
@@ -107,9 +123,29 @@ class HasManyThrough extends Relation
      * @param  string $joinType JOIN类型
      * @return Query
      */
-    public function hasWhere($where = [], $fields = null, $joinType = '')
+    public function hasWhere($where = [], $fields = null, $joinType = ''): Query
     {
-        throw new Exception('relation not support: hasWhere');
+        $model        = App::parseName(App::classBaseName($this->parent));
+        $throughTable = $this->through->getTable();
+        $pk           = $this->throughPk;
+        $throughKey   = $this->throughKey;
+        $modelTable   = (new $this->model)->getTable();
+
+        if (is_array($where)) {
+            $this->getQueryWhere($where, $modelTable);
+        } elseif ($where instanceof Query) {
+            $where->via($modelTable);
+        }
+
+        $fields = $this->getRelationQueryFields($fields, $model);
+
+        return $this->parent->db()
+            ->alias($model)
+            ->join($throughTable, $throughTable . '.' . $this->foreignKey . '=' . $model . '.' . $this->localKey)
+            ->join($modelTable, $modelTable . '.' . $throughKey . '=' . $throughTable . '.' . $this->throughPk)
+            ->group($modelTable . '.' . $this->throughKey)
+            ->where($where)
+            ->field($fields);
     }
 
     /**
@@ -196,7 +232,7 @@ class HasManyThrough extends Relation
      * @param  Closure $closure
      * @return array
      */
-    protected function eagerlyWhere(array $where, string $key, string $relation, array $subRelation = [], Closure $closure = null)
+    protected function eagerlyWhere(array $where, string $key, string $relation, array $subRelation = [], Closure $closure = null): array
     {
         // 预载入关联查询 支持嵌套预载入
         $throughList = $this->through->where($where)->select();
@@ -227,7 +263,7 @@ class HasManyThrough extends Relation
      * @param  string  $aggregate 聚合查询方法
      * @param  string  $field 字段
      * @param  string  $name 统计字段别名
-     * @return integer
+     * @return mixed
      */
     public function relationCount(Model $result, Closure $closure, string $aggregate = 'count', string $field = '*', string &$name = null)
     {
