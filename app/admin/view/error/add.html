@@ -12,10 +12,10 @@
         <div class="col-xs-12">
             <div class="box box-body">
                 {if $info}
-                <form method="post" action="{:url('edit')}">
+                <form method="post" action="{:url('editPost')}">
                     <input type="hidden" name="id" value="{$info.id}"/>
                 {else /}
-                <form method="post" action="{:url('add')}">
+                <form method="post" action="{:url('addPost')}">
                 {/if}
 		        {volist name='field' id='field' }
                     {if $field.status}<!--隐藏不再显示的字段-->

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2019-06-13 17:07:41
+Date: 2019-06-14 11:58:56
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -61,7 +61,7 @@ CREATE TABLE `tp_admin` (
 -- ----------------------------
 -- Records of tp_admin
 -- ----------------------------
-INSERT INTO `tp_admin` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '1557900047', '127.0.0.1', '1', 'admin', '/uploads/20181228/e5885dc546eb1369482cdf29fb07decd.jpg', '1553846932', '1553846932');
+INSERT INTO `tp_admin` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '1560482373', '127.0.0.1', '1', 'admin', '/uploads/20181228/e5885dc546eb1369482cdf29fb07decd.jpg', '1553846932', '1553846932');
 
 -- ----------------------------
 -- Table structure for tp_admin_log
@@ -176,7 +176,7 @@ CREATE TABLE `tp_auth_group` (
 -- Records of tp_auth_group
 -- ----------------------------
 INSERT INTO `tp_auth_group` VALUES ('1', '超级管理员', '1', '0,1,4,5,38,6,7,10,11,12,14,13,8,15,16,17,18,19,20,21,9,22,23,24,25,28,27,26,29,3', '1537944508', '1537944508');
-INSERT INTO `tp_auth_group` VALUES ('2', '测试组', '1', '1,4,166,167,169,5,107,157,158,160,6,152,153,154,155,29,30,34,32,33,31,35,36,39,40,41,42,44,45,46,47,48,49,51,52,53,54,60,61,62,63,64,67,68,70,71,74,73,69,76,77,137,80,95,96,97,131,132,109,138,100,101,102,103,105,81,82,84,85,88,94,83,89,91,120,121,', '1536304526', '1560416750');
+INSERT INTO `tp_auth_group` VALUES ('2', '测试组', '1', '0,1,4,166,167,169,5,107,157,158,160,6,152,153,154,155,29,30,34,32,33,31,35,36,39,40,41,42,44,45,46,47,48,49,51,52,53,54,60,61,62,63,64,67,68,70,71,74,73,69,76,77,137,80,95,96,97,131,132,109,138,100,101,102,103,105,81,82,84,85,88,94,83,89,91,120,121,176,177,184,186,178,193,195,179,202,204,180,211,213,181,220,222,182,229,231,183,238,240,', '1536304526', '1560484651');
 
 -- ----------------------------
 -- Table structure for tp_auth_group_access
@@ -216,7 +216,7 @@ CREATE TABLE `tp_auth_rule` (
   `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=176 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=247 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tp_auth_rule
@@ -379,6 +379,77 @@ INSERT INTO `tp_auth_rule` VALUES ('171', '4', 'System/del', '操作-字段删�
 INSERT INTO `tp_auth_rule` VALUES ('172', '4', 'System/selectDel', '操作-字段批量删除', '1', '1', '', '118', '1', '', '0', '0');
 INSERT INTO `tp_auth_rule` VALUES ('173', '4', 'System/sort', '操作-字段排序', '1', '1', '', '119', '1', '', '0', '0');
 INSERT INTO `tp_auth_rule` VALUES ('174', '4', 'System/state', '操作-字段状态', '1', '1', '', '120', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('176', '0', 'Content', '内容管理', '1', '0', '', '99', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('177', '176', 'Page/index', '单页模型', '1', '1', '', '991', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('178', '176', 'Article/index', '文章模型', '1', '1', '', '992', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('179', '176', 'Picture/index', '图片模型', '1', '1', '', '993', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('180', '176', 'Product/index', '产品模型', '1', '1', '', '994', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('181', '176', 'Download/index', '下载模型', '1', '1', '', '995', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('182', '176', 'Team/index', '团队模型', '1', '1', '', '996', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('183', '176', 'Message/index', '在线留言', '1', '1', '', '997', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('184', '177', 'Page/add', '操作-添加', '1', '1', '', '9911', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('185', '177', 'Page/addPost', '操作-添加保存', '1', '1', '', '9912', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('186', '177', 'Page/edit', '操作-修改', '1', '1', '', '9913', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('187', '177', 'Page/editPost', '操作-修改保存', '1', '1', '', '9914', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('188', '177', 'Page/del', '操作-删除', '1', '1', '', '9915', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('189', '177', 'Page/selectDel', '操作-批量删除', '1', '1', '', '9916', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('190', '177', 'Page/sort', '操作-排序', '1', '1', '', '9917', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('191', '177', 'Page/state', '操作-状态', '1', '1', '', '9918', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('192', '177', 'Page/selectMove', '操作-批量移动', '1', '1', '', '9919', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('193', '178', 'Article/add', '操作-添加', '1', '1', '', '9921', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('194', '178', 'Article/addPost', '操作-添加保存', '1', '1', '', '9922', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('195', '178', 'Article/edit', '操作-修改', '1', '1', '', '9923', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('196', '178', 'Article/editPost', '操作-修改保存', '1', '1', '', '9924', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('197', '178', 'Article/del', '操作-删除', '1', '1', '', '9925', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('198', '178', 'Article/selectDel', '操作-批量删除', '1', '1', '', '9926', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('199', '178', 'Article/sort', '操作-排序', '1', '1', '', '9927', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('200', '178', 'Article/state', '操作-状态', '1', '1', '', '9928', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('201', '178', 'Article/selectMove', '操作-批量移动', '1', '1', '', '9929', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('202', '179', 'Picture/add', '操作-添加', '1', '1', '', '9931', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('203', '179', 'Picture/addPost', '操作-添加保存', '1', '1', '', '9932', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('204', '179', 'Picture/edit', '操作-修改', '1', '1', '', '9933', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('205', '179', 'Picture/editPost', '操作-修改保存', '1', '1', '', '9934', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('206', '179', 'Picture/del', '操作-删除', '1', '1', '', '9935', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('207', '179', 'Picture/selectDel', '操作-批量删除', '1', '1', '', '9936', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('208', '179', 'Picture/sort', '操作-排序', '1', '1', '', '9937', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('209', '179', 'Picture/state', '操作-状态', '1', '1', '', '9938', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('210', '179', 'Picture/selectMove', '操作-批量移动', '1', '1', '', '9939', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('211', '180', 'Product/add', '操作-添加', '1', '1', '', '9941', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('212', '180', 'Product/addPost', '操作-添加保存', '1', '1', '', '9942', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('213', '180', 'Product/edit', '操作-修改', '1', '1', '', '9943', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('214', '180', 'Product/editPost', '操作-修改保存', '1', '1', '', '9944', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('215', '180', 'Product/del', '操作-删除', '1', '1', '', '9945', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('216', '180', 'Product/selectDel', '操作-批量删除', '1', '1', '', '9946', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('217', '180', 'Product/sort', '操作-排序', '1', '1', '', '9947', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('218', '180', 'Product/state', '操作-状态', '1', '1', '', '9948', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('219', '180', 'Product/selectMove', '操作-批量移动', '1', '1', '', '9949', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('220', '181', 'Download/add', '操作-添加', '1', '1', '', '9951', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('221', '181', 'Download/addPost', '操作-添加保存', '1', '1', '', '9952', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('222', '181', 'Download/edit', '操作-修改', '1', '1', '', '9953', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('223', '181', 'Download/editPost', '操作-修改保存', '1', '1', '', '9954', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('224', '181', 'Download/del', '操作-删除', '1', '1', '', '9955', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('225', '181', 'Download/selectDel', '操作-批量删除', '1', '1', '', '9956', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('226', '181', 'Download/sort', '操作-排序', '1', '1', '', '9957', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('227', '181', 'Download/state', '操作-状态', '1', '1', '', '9958', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('228', '181', 'Download/selectMove', '操作-批量移动', '1', '1', '', '9959', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('229', '182', 'Team/add', '操作-添加', '1', '1', '', '9961', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('230', '182', 'Team/addPost', '操作-添加保存', '1', '1', '', '9962', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('231', '182', 'Team/edit', '操作-修改', '1', '1', '', '9963', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('232', '182', 'Team/editPost', '操作-修改保存', '1', '1', '', '9964', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('233', '182', 'Team/del', '操作-删除', '1', '1', '', '9965', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('234', '182', 'Team/selectDel', '操作-批量删除', '1', '1', '', '9966', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('235', '182', 'Team/sort', '操作-排序', '1', '1', '', '9967', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('236', '182', 'Team/state', '操作-状态', '1', '1', '', '9968', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('237', '182', 'Team/selectMove', '操作-批量移动', '1', '1', '', '9969', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('238', '183', 'Message/add', '操作-添加', '1', '1', '', '9971', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('239', '183', 'Message/addPost', '操作-添加保存', '1', '1', '', '9972', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('240', '183', 'Message/edit', '操作-修改', '1', '1', '', '9973', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('241', '183', 'Message/editPost', '操作-修改保存', '1', '1', '', '9974', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('242', '183', 'Message/del', '操作-删除', '1', '1', '', '9975', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('243', '183', 'Message/selectDel', '操作-批量删除', '1', '1', '', '9976', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('244', '183', 'Message/sort', '操作-排序', '1', '1', '', '9977', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('245', '183', 'Message/state', '操作-状态', '1', '1', '', '9978', '1', '', '0', '0');
+INSERT INTO `tp_auth_rule` VALUES ('246', '183', 'Message/selectMove', '操作-批量移动', '1', '1', '', '9979', '1', '', '0', '0');
 
 -- ----------------------------
 -- Table structure for tp_cate

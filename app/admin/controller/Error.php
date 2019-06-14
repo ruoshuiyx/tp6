@@ -121,6 +121,50 @@ class Error extends Base
 
     // 添加
     public function add(){
+        if (Request::param('cate')) {
+            //获取栏目列表
+            $cate = Db::name('cate')
+                ->field('id,catname,parentid,moduleid')
+                ->order('sort ASC,id ASC')
+                ->select();
+            $cate = tree_cate($cate);
+
+            //获取所有字段
+            $field = Db::name('field')
+                ->where('moduleid','=',$this->moduleid)
+                ->order('sort asc,id asc')
+                ->select()
+                ->toArray();
+            foreach ($field as $k => $v) {
+                if ($field[$k]['setup']) {
+                    $field[$k]['setup'] = string2array($v['setup']);
+                    if (array_key_exists('options',$field[$k]['setup'])) {
+                        $field[$k]['setup']['options'] = explode("\n",$field[$k]['setup']['options']);
+                        foreach ($field[$k]['setup']['options'] as $kk => $vv){
+                            $field[$k]['setup']['options'][$kk] = trim_array_element(explode("|",$field[$k]['setup']['options'][$kk]));
+                        }
+                    }
+                }
+
+            }
+
+            $view = [
+                'cate'     => $cate,
+                'template' => getTemplate(),//获取模版列表
+                'field'    => $field,
+                'moduleid' => $this->moduleid,
+                'cateId'   => Request::param('cate'),
+                'info'     => null,
+                'time'     => date("Y-m-d H:i:s"),
+            ];
+            View::assign($view);
+            return View::fetch('error/add');
+        }
+    }
+
+    // 添加保存
+    public function addPost()
+    {
         if (Request::isPost()) {
             //根据cate_id获取所有字段
             if (Request::post('cate_id')) {
@@ -289,6 +333,11 @@ class Error extends Base
                 }
             }
         }
+    }
+
+    // 修改
+    public function edit(){
+        //展示数据
         if (Request::param('cate')) {
             //获取栏目列表
             $cate = Db::name('cate')
@@ -299,67 +348,85 @@ class Error extends Base
 
             //获取所有字段
             $field = Db::name('field')
-                ->where('moduleid','=',$this->moduleid)
+                ->where('moduleid', '=', $this->moduleid)
                 ->order('sort asc,id asc')
                 ->select()
                 ->toArray();
             foreach ($field as $k => $v) {
                 if ($field[$k]['setup']) {
                     $field[$k]['setup'] = string2array($v['setup']);
-                    if (array_key_exists('options',$field[$k]['setup'])) {
-                        $field[$k]['setup']['options'] = explode("\n",$field[$k]['setup']['options']);
-                        foreach ($field[$k]['setup']['options'] as $kk => $vv){
-                            $field[$k]['setup']['options'][$kk] = trim_array_element(explode("|",$field[$k]['setup']['options'][$kk]));
+                    if (array_key_exists('options', $field[$k]['setup'])) {
+                        $field[$k]['setup']['options'] = explode("\n", $field[$k]['setup']['options']);
+                        foreach ($field[$k]['setup']['options'] as $kk => $vv) {
+                            $field[$k]['setup']['options'][$kk] = trim_array_element(explode("|", $field[$k]['setup']['options'][$kk]));
+
                         }
                     }
                 }
 
             }
 
+            //调取内容
+            $info = Db::name($this->table)
+                ->where('id', Request::param('id'))
+                ->find();
+
+            //处理特殊字段
+            foreach ($field as $k => $v) {
+                if (array_key_exists($v['field'], $info)) {
+                    if ($info[$v['field']]) {
+                        if ($v['type'] == 'images') {
+                            $info[$v['field']] = json_decode($info[$v['field']], true);
+                        }
+                    }
+                }
+            }
+
             $view = [
-                'cate'     => $cate,
-                'template' => getTemplate(),//获取模版列表
-                'field'    => $field,
+                'cate' => $cate,
+                'template' => getTemplate(),
+                'field' => $field,
                 'moduleid' => $this->moduleid,
-                'cateId'   => Request::param('cate'),
-                'info'     => null,
-                'time'     => date("Y-m-d H:i:s"),
+                'cateId' => Request::param('cate'),
+                'info' => $info,
+                'time' => date("Y-m-d H:i:s")
             ];
             View::assign($view);
             return View::fetch('error/add');
         }
     }
 
-    // 编辑
-    public function edit(){
+    // 修改保存
+    public function editPost()
+    {
         if (Request::isPost()) {
             //根据cate_id获取所有字段
             if (Request::post('cate_id')) {
                 $data = Request::post();
                 //去除上传图片和文件的无用字段
-                if (array_key_exists('file',$data)) {
+                if (array_key_exists('file', $data)) {
                     unset($data['file']);
                 }
                 //查找栏目相关数据(已隐藏的数据不再做修改)
                 $list = Db::name('cate')
                     ->alias('c')
-                    ->leftJoin('module m','c.moduleid = m.id')
-                    ->leftJoin('field f','c.moduleid = f.moduleid')
+                    ->leftJoin('module m', 'c.moduleid = m.id')
+                    ->leftJoin('field f', 'c.moduleid = f.moduleid')
                     ->field('c.moduleid,m.name as m_table,f.*')
-                    ->where('c.id','=',input('post.cate_id'))
-                    ->where('f.status','=',1)
-                    ->order(['f.sort'=>'asc','f.id'=>'asc'])
+                    ->where('c.id', '=', input('post.cate_id'))
+                    ->where('f.status', '=', 1)
+                    ->order(['f.sort' => 'asc', 'f.id' => 'asc'])
                     ->select();
                 //循环判断数据合法性
-                foreach ($list as $k => $v){
+                foreach ($list as $k => $v) {
                     //判断是否必填
-                    if ($v['required']==1) {
-                        if (array_key_exists($v['field'],$data)) {
+                    if ($v['required'] == 1) {
+                        if (array_key_exists($v['field'], $data)) {
                             if (!$data[$v['field']]) {
-                                $this->error($v['name'].'为必填项!');
+                                $this->error($v['name'] . '为必填项!');
                             }
                         } else {
-                            $this->error($v['name'].'为必填项!');
+                            $this->error($v['name'] . '为必填项!');
                         }
 
                     }
@@ -371,7 +438,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if (!($length >= $minlength && $length <= $maxlength)) {
-                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'] . '长度超限，最多字符：' . $maxlength);
                             }
                             break;
                         case 'title'://标题
@@ -379,7 +446,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if (!($length >= $minlength && $length <= $maxlength)) {
-                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'] . '长度超限，最多字符：' . $maxlength);
                             }
                             break;
                         case 'text'://单行文本
@@ -387,7 +454,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if (!($length >= $minlength && $length <= $maxlength)) {
-                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'] . '长度超限，最多字符：' . $maxlength);
                             }
                             break;
                         case 'textarea'://多行文本
@@ -397,7 +464,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if (!($length >= $minlength && $length <= $maxlength)) {
-                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'] . '长度超限，最多字符：' . $maxlength);
                             }
                             break;
                         case 'editor'://编辑器
@@ -405,7 +472,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if (!($length >= $minlength && $length <= $maxlength)) {
-                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'] . '长度超限，最多字符：' . $maxlength);
                             }
                             break;
                         case 'select'://下拉列表
@@ -413,7 +480,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if (!($length >= $minlength && $length <= $maxlength)) {
-                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'] . '长度超限，最多字符：' . $maxlength);
                             }
                             break;
                         case 'radio'://单选按钮
@@ -421,7 +488,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if (!($length >= $minlength && $length <= $maxlength)) {
-                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'] . '长度超限，最多字符：' . $maxlength);
                             }
                             break;
                         case 'checkbox'://复选框
@@ -431,7 +498,7 @@ class Error extends Base
                                 $length = strlen($data[$v['field']]);
                                 //判断长度是否合法
                                 if (!($length >= $minlength && $length <= $maxlength)) {
-                                    $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                    $this->error($v['name'] . '长度超限，最多字符：' . $maxlength);
                                 }
                             }
                             break;
@@ -439,8 +506,8 @@ class Error extends Base
                             $maxlength = $maxlength ? min($maxlength, 80) : 80;
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
-                            if (!($length >= $minlength && $length <= $maxlength)){
-                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
+                            if (!($length >= $minlength && $length <= $maxlength)) {
+                                $this->error($v['name'] . '长度超限，最多字符：' . $maxlength);
                             }
                             break;
                         case 'images'://多张图片
@@ -448,17 +515,17 @@ class Error extends Base
                             if (array_key_exists($v['field'], $data)) {
                                 for ($i = 0; $i < count($data[$v['field']]); $i++) {
                                     $images[$i]['image'] = $data[$v['field']][$i];
-                                    $images[$i]['title'] = $data[$v['field'].'_title'][$i];
+                                    $images[$i]['title'] = $data[$v['field'] . '_title'][$i];
                                 }
                                 $data[$v['field']] = json_encode($images);
                                 $length = strlen($data[$v['field']]);
                                 //判断长度是否合法
                                 if (!($length >= $minlength && $length <= $maxlength)) {
-                                    $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                    $this->error($v['name'] . '长度超限，最多字符：' . $maxlength);
                                 }
                                 //去除上传图片和文件的无用字段
-                                unset($data[$v['field'].'_title']);
-                            }else{
+                                unset($data[$v['field'] . '_title']);
+                            } else {
                                 $data[$v['field']] = '';
                             }
                             break;
@@ -467,7 +534,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if (!($length >= $minlength && $length <= $maxlength)) {
-                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'] . '长度超限，最多字符：' . $maxlength);
                             }
                             break;
                         case 'number'://数字
@@ -475,7 +542,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if (!($length >= $minlength && $length <= $maxlength)) {
-                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'] . '长度超限，最多字符：' . $maxlength);
                             }
                             break;
                         case 'datetime'://时间
@@ -484,7 +551,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if (!($length >= $minlength && $length <= $maxlength)) {
-                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'] . '长度超限，最多字符：' . $maxlength);
                             }
                             break;
                         default:
@@ -494,71 +561,13 @@ class Error extends Base
             //入库操作
             if ($data) {
                 $result = Db::name($this->table)
-                    ->where('id',$data['id'])
+                    ->where('id', $data['id'])
                     ->update($data);
                 if ($result) {
                     $this->success('修改成功!', url('index', ['cate' => $data['cate_id']]));
                 } else {
                     $this->error('修改失败!');
                 }
-            }
-        } else {
-            //展示数据
-            if (Request::param('cate')) {
-                //获取栏目列表
-                $cate = Db::name('cate')
-                    ->field('id,catname,parentid,moduleid')
-                    ->order('sort ASC,id ASC')
-                    ->select();
-                $cate = tree_cate($cate);
-
-                //获取所有字段
-                $field = Db::name('field')
-                    ->where('moduleid','=',$this->moduleid)
-                    ->order('sort asc,id asc')
-                    ->select()
-                    ->toArray();
-                foreach ($field as $k => $v){
-                    if ($field[$k]['setup']) {
-                        $field[$k]['setup'] = string2array($v['setup']);
-                        if (array_key_exists('options',$field[$k]['setup'])) {
-                            $field[$k]['setup']['options'] = explode("\n",$field[$k]['setup']['options']);
-                            foreach ($field[$k]['setup']['options'] as $kk => $vv){
-                                $field[$k]['setup']['options'][$kk] = trim_array_element(explode("|",$field[$k]['setup']['options'][$kk]));
-
-                            }
-                        }
-                    }
-
-                }
-
-                //调取内容
-                $info = Db::name($this->table)
-                    ->where('id',Request::param('id'))
-                    ->find();
-
-                //处理特殊字段
-                foreach ($field as $k => $v) {
-                    if (array_key_exists($v['field'],$info)) {
-                        if ($info[$v['field']]) {
-                            if ($v['type']=='images') {
-                                $info[$v['field']] = json_decode($info[$v['field']], true);
-                            }
-                        }
-                    }
-                }
-
-                $view = [
-                    'cate'     => $cate,
-                    'template' => getTemplate(),
-                    'field'    => $field,
-                    'moduleid' => $this->moduleid,
-                    'cateId'   => Request::param('cate'),
-                    'info'     => $info,
-                    'time'     => date("Y-m-d H:i:s")
-                ];
-                View::assign($view);
-                return View::fetch('error/add');
             }
         }
     }
