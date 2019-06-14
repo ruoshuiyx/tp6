@@ -393,7 +393,7 @@ class Query
      */
     public function query(string $sql, array $bind = []): array
     {
-        return $this->connection->query($this, $sql, $bind, true);
+        return $this->connection->query($this, $sql, $bind);
     }
 
     /**
@@ -558,7 +558,10 @@ class Query
         if (!empty($this->options['group'])) {
             // 支持GROUP
             $options = $this->getOptions();
-            $subSql  = $this->options($options)->field('count(' . $field . ') AS think_count')->bind($this->bind)->buildSql();
+            $subSql  = $this->options($options)
+                ->field('count(' . $field . ') AS think_count')
+                ->bind($this->bind)
+                ->buildSql();
 
             $query = $this->newQuery()->table([$subSql => '_group_count_']);
 
@@ -1429,12 +1432,11 @@ class Query
      */
     protected function whereEq(string $field, $value): array
     {
-        $where = [$field, '=', $value];
         if ($this->getPk() == $field) {
             $this->options['key'] = $value;
         }
 
-        return $where;
+        return [$field, '=', $value];
     }
 
     /**
@@ -1461,7 +1463,8 @@ class Query
         }
 
         if (!empty($where)) {
-            $this->options['where'][$logic] = isset($this->options['where'][$logic]) ? array_merge($this->options['where'][$logic], $where) : $where;
+            $this->options['where'][$logic] = isset($this->options['where'][$logic]) ?
+            array_merge($this->options['where'][$logic], $where) : $where;
         }
 
         return $this;
@@ -1836,7 +1839,7 @@ class Query
             return $this;
         }
 
-        if ($key instanceof \DateTimeInterface || (is_int($key) && is_null($expire))) {
+        if ($key instanceof \DateTimeInterface || $key instanceof \DateInterval || (is_int($key) && is_null($expire))) {
             $expire = $key;
             $key    = true;
         }
@@ -1956,30 +1959,6 @@ class Query
             return new Fetch($this);
         }
 
-        return $this;
-    }
-
-    /**
-     * 设置是否返回数据集对象
-     * @access public
-     * @param bool|string $collection 是否返回数据集对象
-     * @return $this
-     */
-    public function fetchCollection($collection = true)
-    {
-        $this->options['collection'] = $collection;
-        return $this;
-    }
-
-    /**
-     * 设置是否返回数组
-     * @access public
-     * @param bool $asArray 是否返回数组
-     * @return $this
-     */
-    public function fetchArray(bool $asArray = true)
-    {
-        $this->options['array'] = $asArray;
         return $this;
     }
 
@@ -2359,13 +2338,11 @@ class Query
      */
     public function getPk()
     {
-        if (!empty($this->pk)) {
-            $pk = $this->pk;
-        } else {
-            $this->pk = $pk = $this->connection->getPk($this->getTable());
+        if (empty($this->pk)) {
+            $this->pk = $this->connection->getPk($this->getTable());
         }
 
-        return $pk;
+        return $this->pk;
     }
 
     /**
@@ -2629,13 +2606,15 @@ class Query
 
                 $relation = App::parseName($relation, 1, false);
 
-                $count = '(' . $this->model->$relation()->getRelationCountQuery($closure, $aggregate, $field, $aggregateField) . ')';
+                $count = $this->model
+                    ->$relation()
+                    ->getRelationCountQuery($closure, $aggregate, $field, $aggregateField);
 
                 if (empty($aggregateField)) {
                     $aggregateField = App::parseName($relation) . '_' . $aggregate;
                 }
 
-                $this->field([$count => $aggregateField]);
+                $this->field(['(' . $count . ')' => $aggregateField]);
             }
         }
 
@@ -2704,24 +2683,6 @@ class Query
     public function withAvg($relation, string $field, bool $subQuery = true)
     {
         return $this->withAggregate($relation, 'avg', $field, $subQuery);
-    }
-
-    /**
-     * 关联预加载中 获取关联指定字段值
-     * example:
-     * Model::with(['relation' => function($query){
-     *     $query->withField("id,name");
-     * }])
-     *
-     * @access public
-     * @param string|array $field 指定获取的字段
-     * @return $this
-     */
-    public function withField($field)
-    {
-        $this->options['with_field'] = $field;
-
-        return $this;
     }
 
     /**
@@ -2925,12 +2886,12 @@ class Query
      * 查找记录
      * @access public
      * @param mixed $data 数据
-     * @return Collection|array|ModelCollection
+     * @return Collection|ModelCollection
      * @throws DbException
      * @throws ModelNotFoundException
      * @throws DataNotFoundException
      */
-    public function select($data = null)
+    public function select($data = null): Collection
     {
         if (!is_null($data)) {
             // 主键条件分析
@@ -2945,7 +2906,7 @@ class Query
         }
 
         // 数据列表读取后的处理
-        if (!empty($this->model) && empty($this->options['array'])) {
+        if (!empty($this->model)) {
             // 生成模型对象
             $resultSet = $this->resultSetToModelCollection($resultSet);
         } else {
@@ -3030,10 +2991,8 @@ class Query
             }
         }
 
-        if (!empty($this->options['collection'])) {
-            // 返回Collection对象
-            $resultSet = new Collection($resultSet);
-        }
+        // 返回Collection对象
+        $resultSet = new Collection($resultSet);
     }
 
     /**
@@ -3059,7 +3018,7 @@ class Query
             return $this->resultToEmpty();
         }
 
-        if (!empty($this->model) && empty($this->options['array'])) {
+        if (!empty($this->model)) {
             // 返回模型对象
             $this->resultToModel($result, $this->options);
         } else {
@@ -3093,9 +3052,7 @@ class Query
         if (!empty($this->options['fail'])) {
             $this->throwNotFound();
         } elseif (!empty($this->options['allow_empty'])) {
-            return !empty($this->model) && empty($this->options['array']) ? $this->model->newInstance()->setQuery($this) : [];
-        } elseif (!empty($this->options['array'])) {
-            return [];
+            return !empty($this->model) ? $this->model->newInstance()->setQuery($this) : [];
         }
     }
 
@@ -3232,7 +3189,9 @@ class Query
             $this->jsonResult($result, $options['json'], $options['json_assoc'], $withRelationAttr);
         }
 
-        $result = $this->model->newInstance($result, $resultSet ? null : $this->getModelUpdateCondition($options))->setQuery($this);
+        $result = $this->model
+            ->newInstance($result, $resultSet ? null : $this->getModelUpdateCondition($options))
+            ->setQuery($this);
 
         // 动态获取器
         if (!empty($options['with_attr'])) {
@@ -3268,7 +3227,7 @@ class Query
         // 关联统计
         if (!empty($options['with_count'])) {
             foreach ($options['with_count'] as $val) {
-                $result->relationCount($result, $val[0], $val[1], $val[2]);
+                $result->relationCount($result, (array) $val[0], $val[1], $val[2]);
             }
         }
     }
@@ -3295,7 +3254,7 @@ class Query
      * 查找多条记录 如果不存在则抛出异常
      * @access public
      * @param array|string|Query|Closure $data 数据
-     * @return array|PDOStatement|string|Model
+     * @return array|Model
      * @throws DbException
      * @throws ModelNotFoundException
      * @throws DataNotFoundException
@@ -3309,7 +3268,7 @@ class Query
      * 查找单条记录 如果不存在则抛出异常
      * @access public
      * @param array|string|Query|Closure $data 数据
-     * @return array|PDOStatement|string|Model
+     * @return array|Model
      * @throws DbException
      * @throws ModelNotFoundException
      * @throws DataNotFoundException
@@ -3356,10 +3315,6 @@ class Query
         $resultSet = $query->order($column, $order)->select();
 
         while (count($resultSet) > 0) {
-            if ($resultSet instanceof Collection) {
-                $resultSet = $resultSet->all();
-            }
-
             if (false === call_user_func($callback, $resultSet)) {
                 return false;
             }
@@ -3471,7 +3426,6 @@ class Query
             unset($data[$pk]);
             $isUpdate = true;
         } elseif (is_array($pk)) {
-            // 增加复合主键支持
             foreach ($pk as $field) {
                 if (isset($data[$field])) {
                     $this->where($field, '=', $data[$field]);
@@ -3572,7 +3526,7 @@ class Query
             // 根据页数计算limit
             list($page, $listRows) = $options['page'];
             $page                  = $page > 0 ? $page : 1;
-            $listRows              = $listRows ? $listRows : (is_numeric($options['limit']) ? $options['limit'] : 20);
+            $listRows              = $listRows ?: (is_numeric($options['limit']) ? $options['limit'] : 20);
             $offset                = $listRows * ($page - 1);
             $options['limit']      = $offset . ',' . $listRows;
         }

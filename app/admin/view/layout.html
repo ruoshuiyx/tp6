@@ -1,0 +1,15 @@
+{if $pjax == true}
+	{include file="public/breadcrumb" /}
+	{__CONTENT__}
+{else /}
+    {include file="public/header" /}
+    {include file="public/left" /}
+    <div class="content-wrapper">
+    	{include file="public/breadcrumb" /}
+        {__CONTENT__}
+    </div>
+    {include file="public/footer" /}
+{/if}
+
+
+

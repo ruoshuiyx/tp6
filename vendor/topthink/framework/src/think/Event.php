@@ -239,18 +239,17 @@ class Event
         }
 
         if (is_object($event)) {
-            $class = get_class($event);
-            $this->app->instance($class, $event);
-            $event = $class;
+            $params = $event;
+            $event  = get_class($event);
         }
 
         if (isset($this->bind[$event])) {
             $event = $this->bind[$event];
         }
 
+        $result    = [];
         $listeners = $this->listener[$event] ?? [];
 
-        $result = [];
         foreach ($listeners as $key => $listener) {
             $result[$key] = $this->dispatch($listener, $params);
 

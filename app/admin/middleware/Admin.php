@@ -44,7 +44,6 @@ class Admin
         //定义方法白名单
         $allow = [
             'Index/index',      //首页
-            'Index/main',       //右侧
             'Index/upload',     //上传文件
             'Index/clear',      //清除缓存
 
@@ -55,33 +54,33 @@ class Admin
         ];
 
         //查询所有不验证的方法并放入白名单
-        $authOpen = AuthRule::where('auth_open','=','0')
+        $authOpen = AuthRule::where('auth_open', '=', '0')
             ->select();
         $authRole = AuthRule::select();
         $authOpens = [];
         foreach ($authOpen as $k => $v) {
             //转换方法为小写
-            $ruleName = explode('/',$v['name']);
-            if ($ruleName[1]){
+            $ruleName = explode('/', $v['name']);
+            if ($ruleName[1]) {
                 $ruleName[1] = strtolower($ruleName[1]);
             }
             //转换控制器首字母大写
-            $ruleName = trim(implode('/',$ruleName));
+            $ruleName = trim(implode('/', $ruleName));
             $authOpens[] = ucfirst($ruleName);
             //查询所有下级权限
             $ids = getChildsRule($authRole, $v['id']);
             foreach ($ids as $kk => $vv) {
                 //转换方法为小写
-                $ruleName = explode('/',$vv['name']);
-                if ($ruleName[1]){
+                $ruleName = explode('/', $vv['name']);
+                if ($ruleName[1]) {
                     $ruleName[1] = strtolower($ruleName[1]);
                 }
                 //转换控制器首字母大写
-                $ruleName = trim(implode('/',$ruleName));
+                $ruleName = trim(implode('/', $ruleName));
                 $authOpens[] = ucfirst($ruleName);
             }
         }
-        $allow = array_merge($allow,$authOpens);
+        $allow = array_merge($allow, $authOpens);
 
         //查找当前控制器和方法，控制器首字母大写，方法首字母小写 如：Index/index
         $route = Request::controller() . '/' . lcfirst(Request::action());
@@ -92,7 +91,7 @@ class Admin
                 //开始认证
                 $auth = new \Auth();
 
-                $result = $auth->check($route,$admin_id);
+                $result = $auth->check($route, $admin_id);
                 if (!$result) {
                     $this->error('您无此操作权限!');
                 }
@@ -111,7 +110,7 @@ class Admin
             }, Request::url());
 
             //重定向隐式传值使用的是Session闪存数据隐式传值，并且仅在下一次请求有效，再次访问重定向地址的时候无效
-            return redirect('Index/index')->with('referer',$url);
+            return redirect('Index/index')->with('referer', $url);
         }
 
         //中间件handle方法的返回值必须是一个Response对象。
@@ -120,11 +119,11 @@ class Admin
 
     /**
      * 操作错误跳转
-     * @param  mixed   $msg 提示信息
-     * @param  string  $url 跳转的URL地址
-     * @param  mixed   $data 返回的数据
+     * @param  mixed $msg 提示信息
+     * @param  string $url 跳转的URL地址
+     * @param  mixed $data 返回的数据
      * @param  integer $wait 跳转等待时间
-     * @param  array   $header 发送的Header信息
+     * @param  array $header 发送的Header信息
      * @return void
      */
     protected function error($msg = '', string $url = null, $data = '', int $wait = 3, array $header = []): Response
@@ -137,14 +136,14 @@ class Admin
 
         $result = [
             'code' => 0,
-            'msg'  => $msg,
+            'msg' => $msg,
             'data' => $data,
-            'url'  => $url,
+            'url' => $url,
             'wait' => $wait,
         ];
 
         $type = (request()->isJson() || request()->isAjax()) ? 'json' : 'html';
-        if ($type == 'html'){
+        if ($type == 'html') {
             $response = view(app('config')->get('app.dispatch_error_tmpl'), $result);
         } else if ($type == 'json') {
             $response = json($result);

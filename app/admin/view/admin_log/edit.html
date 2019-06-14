@@ -1,120 +1,93 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>后台管理面板</title>
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    {include file="index/top" /}
-</head>
-<body class="hold-transition skin-blue sidebar-mini">	
-<div class="wrapper">
-    <div class="content-wrapper" style="margin-left: 0 !important;">
-        <!--页眉-->
-        <section class="content-header">
-            <h1>查看日志</h1>
-        </section>
-        <!--内容开始-->
-        <section class="content">
-            <div class="search">
-                <form class="form-inline" action="">
-                    <input class="btn btn-flat btn-primary m_10_l_0" onclick="location.href='{:url('index')}'" type="button" value="显示全部">
-                    <a class="btn btn-flat btn-success m_10 f_r m_t_5" onclick="javascript :history.back(-1)"><i class="fa fa-undo m-r-10"></i>返 回</a>
-            	</form> 
-            </div>
-            <!--数据表开始-->
-            <!---->
-            <div class="row">
-                <div class="col-sm-12 col-xs-12">
-                	<div class="box box-body">
-                        <!---->
-                        <div class="row dd_input_group">
-                            <div class="form-group">
-                                <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">编号</label>
-                                <div class="col-xs-8 col-sm-6 col-md-4 col-lg-4">
-                                    <input type="text" class="form-control" value="{$info.id}">
-                                </div>
-                            </div>
-                        </div>
-                        <!---->
-                        <div class="row dd_input_group">
-                            <div class="form-group">
-                                <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">管理员ID</label>
-                                <div class="col-xs-8 col-sm-6 col-md-4 col-lg-4">
-                                    <input type="text" class="form-control" value="{$info.admin_id}">
-                                </div>
-                            </div>
-                        </div>
-                        <!---->
-                        <div class="row dd_input_group">
-                            <div class="form-group">
-                                <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">管理员名称</label>
-                                <div class="col-xs-8 col-sm-6 col-md-4 col-lg-4">
-                                    <input type="text" class="form-control" value="{$info.username}">
-                                </div>
-                            </div>
-                        </div>
-                        <!---->
-                        <div class="row dd_input_group">
-                            <div class="form-group">
-                                <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">URL</label>
-                                <div class="col-xs-8 col-sm-6 col-md-4 col-lg-4">
-                                    <input type="text" class="form-control" value="{$info.url}">
-                                </div>
-                            </div>
-                        </div>
-                        <!---->
-                        <div class="row dd_input_group">
-                            <div class="form-group">
-                                <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">标题</label>
-                                <div class="col-xs-8 col-sm-6 col-md-4 col-lg-4">
-                                    <input type="text" class="form-control" value="{$info.title}">
-                                </div>
-                            </div>
-                        </div>
-                        <!---->
-                        <div class="row dd_input_group">
-                            <div class="form-group">
-                                <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5">
-                                    <label class="text-lable">内容</label>
-                                    <textarea class="form-control" name="description" rows="3">{$info.content}</textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <!---->
-                        <div class="row dd_input_group">
-                            <div class="form-group">
-                                <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">IP</label>
-                                <div class="col-xs-8 col-sm-6 col-md-4 col-lg-4">
-                                    <input type="text" class="form-control" value="{$info.ip}">
-                                </div>
-                            </div>
-                        </div>
-                        <!---->
-                        <div class="row dd_input_group">
-                            <div class="form-group">
-                                <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5">
-                                    <label class="text-lable">浏览器</label>
-                                    <textarea class="form-control" name="description" rows="3">{$info.useragent}</textarea>
-                                </div>
-                            </div>
-                        </div>
-                        
-                 </div>
-                  <!-- /.box -->
-                </div>
-            </div>
-            </form>
-            <!--数据表结束-->
-        </section>
-        <!-- right col -->
-      </div>
-      <!-- /.row (main row) -->
-
-    </section>
-        <!--内容结束-->
+<!--内容开始-->
+<section class="content">
+    <div class="search">
+        <form class="form-inline" action="">
+            <a class="btn btn-flat btn-primary m_10" href="{:url('index')}" >显示全部</a>
+            <a class="btn btn-flat btn-success m_10 f_r m_t_5" onclick="javascript :history.back(-1)"><i
+                    class="fa fa-undo m-r-10"></i>返 回</a>
+        </form>
     </div>
-</div>
-{include file="index/bottom" /} 
-</body>
-</html>    
+    <!--数据表开始-->
+    <div class="row">
+        <div class="col-sm-12 col-xs-12">
+            <div class="box box-body">
+                <!---->
+                <div class="row dd_input_group">
+                    <div class="form-group">
+                        <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">编号</label>
+                        <div class="col-xs-8 col-sm-6 col-md-4 col-lg-4">
+                            <input type="text" class="form-control" value="{$info.id}">
+                        </div>
+                    </div>
+                </div>
+                <!---->
+                <div class="row dd_input_group">
+                    <div class="form-group">
+                        <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">管理员ID</label>
+                        <div class="col-xs-8 col-sm-6 col-md-4 col-lg-4">
+                            <input type="text" class="form-control" value="{$info.admin_id}">
+                        </div>
+                    </div>
+                </div>
+                <!---->
+                <div class="row dd_input_group">
+                    <div class="form-group">
+                        <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">管理员名称</label>
+                        <div class="col-xs-8 col-sm-6 col-md-4 col-lg-4">
+                            <input type="text" class="form-control" value="{$info.username}">
+                        </div>
+                    </div>
+                </div>
+                <!---->
+                <div class="row dd_input_group">
+                    <div class="form-group">
+                        <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">URL</label>
+                        <div class="col-xs-8 col-sm-6 col-md-4 col-lg-4">
+                            <input type="text" class="form-control" value="{$info.url}">
+                        </div>
+                    </div>
+                </div>
+                <!---->
+                <div class="row dd_input_group">
+                    <div class="form-group">
+                        <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">标题</label>
+                        <div class="col-xs-8 col-sm-6 col-md-4 col-lg-4">
+                            <input type="text" class="form-control" value="{$info.title}">
+                        </div>
+                    </div>
+                </div>
+                <!---->
+                <div class="row dd_input_group">
+                    <div class="form-group">
+                        <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5">
+                            <label class="text-lable">内容</label>
+                            <textarea class="form-control" name="description" rows="3">{$info.content}</textarea>
+                        </div>
+                    </div>
+                </div>
+                <!---->
+                <div class="row dd_input_group">
+                    <div class="form-group">
+                        <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">IP</label>
+                        <div class="col-xs-8 col-sm-6 col-md-4 col-lg-4">
+                            <input type="text" class="form-control" value="{$info.ip}">
+                        </div>
+                    </div>
+                </div>
+                <!---->
+                <div class="row dd_input_group">
+                    <div class="form-group">
+                        <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5">
+                            <label class="text-lable">浏览器</label>
+                            <textarea class="form-control" name="description" rows="3">{$info.useragent}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+    <!--数据表结束-->
+</section>
+<!--内容结束-->

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2019-05-25 11:51:51
+Date: 2019-06-13 17:07:41
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -176,7 +176,7 @@ CREATE TABLE `tp_auth_group` (
 -- Records of tp_auth_group
 -- ----------------------------
 INSERT INTO `tp_auth_group` VALUES ('1', '超级管理员', '1', '0,1,4,5,38,6,7,10,11,12,14,13,8,15,16,17,18,19,20,21,9,22,23,24,25,28,27,26,29,3', '1537944508', '1537944508');
-INSERT INTO `tp_auth_group` VALUES ('2', '测试组', '1', '0,1,4,166,167,169,5,107,157,158,160,6,152,153,154,155,29,30,34,32,33,31,35,36,39,40,41,42,44,45,46,47,48,49,51,52,53,54,175,60,61,62,63,64,67,68,70,71,74,73,69,76,77,137,80,95,96,97,131,132,109,138,100,101,102,103,105,81,82,84,85,88,94,83,89,91,120,121,', '1536304526', '1558331363');
+INSERT INTO `tp_auth_group` VALUES ('2', '测试组', '1', '1,4,166,167,169,5,107,157,158,160,6,152,153,154,155,29,30,34,32,33,31,35,36,39,40,41,42,44,45,46,47,48,49,51,52,53,54,60,61,62,63,64,67,68,70,71,74,73,69,76,77,137,80,95,96,97,131,132,109,138,100,101,102,103,105,81,82,84,85,88,94,83,89,91,120,121,', '1536304526', '1560416750');
 
 -- ----------------------------
 -- Table structure for tp_auth_group_access
@@ -269,7 +269,7 @@ INSERT INTO `tp_auth_rule` VALUES ('47', '45', 'Module/fieldEdit', '操作-修�
 INSERT INTO `tp_auth_rule` VALUES ('48', '45', 'Module/listOrder', '操作-排序', '1', '1', '', '4175', '1', '', '1536806907', '1553761056');
 INSERT INTO `tp_auth_rule` VALUES ('49', '45', 'Module/fieldStatus', '操作-状态', '1', '1', '', '4176', '1', '', '1536806921', '1553761059');
 INSERT INTO `tp_auth_rule` VALUES ('50', '45', 'Module/fieldDel', '操作-删除', '1', '1', '', '4177', '1', '', '1536806938', '1553761061');
-INSERT INTO `tp_auth_rule` VALUES ('51', '0', 'Cate', '内容管理', '1', '1', '', '5', '1', 'fa fa-th', '1537932344', '1537932720');
+INSERT INTO `tp_auth_rule` VALUES ('51', '0', 'Cate', '栏目管理', '1', '1', '', '5', '1', 'fa fa-th', '1537932344', '1537932720');
 INSERT INTO `tp_auth_rule` VALUES ('52', '51', 'Cate/index', '栏目列表', '1', '1', '', '51', '1', 'fa  fa-navicon', '1537932760', '1537932760');
 INSERT INTO `tp_auth_rule` VALUES ('53', '52', 'Cate/add', '操作-添加', '1', '1', '', '511', '1', '', '1537932869', '1537932869');
 INSERT INTO `tp_auth_rule` VALUES ('54', '52', 'Cate/edit', '操作-修改', '1', '1', '', '513', '1', '', '1537932909', '1553760586');
@@ -379,7 +379,6 @@ INSERT INTO `tp_auth_rule` VALUES ('171', '4', 'System/del', '操作-字段删�
 INSERT INTO `tp_auth_rule` VALUES ('172', '4', 'System/selectDel', '操作-字段批量删除', '1', '1', '', '118', '1', '', '0', '0');
 INSERT INTO `tp_auth_rule` VALUES ('173', '4', 'System/sort', '操作-字段排序', '1', '1', '', '119', '1', '', '0', '0');
 INSERT INTO `tp_auth_rule` VALUES ('174', '4', 'System/state', '操作-字段状态', '1', '1', '', '120', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('175', '51', 'Content/index', '内容管理', '1', '1', '', '52', '1', '', '0', '0');
 
 -- ----------------------------
 -- Table structure for tp_cate
@@ -877,7 +876,6 @@ INSERT INTO `tp_system` VALUES ('19', '3', 'message_send_mail', '留言邮件提
 INSERT INTO `tp_system` VALUES ('20', '4', 'template', '选择模板', '0', 'PC , MOBILE 等都会在该模板中', 'template', null, '41', '1', 'default', '1557969864', '1557985790');
 INSERT INTO `tp_system` VALUES ('21', '4', 'html', 'Html目录', '0', '用于模板文件防盗', 'text', null, '42', '1', 'html', '1557969903', '1557986194');
 INSERT INTO `tp_system` VALUES ('22', '1', 'url', '网站地址', '0', '', 'text', null, '5', '1', 'www.xxx.com', '1557986088', '1557986120');
-INSERT INTO `tp_system` VALUES ('23', '3', 'label_opening', '后台多标签', '0', '开启后后台启用多标签模式', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', '35', '1', '1', '1558656395', '1558656444');
 INSERT INTO `tp_system` VALUES ('24', '3', 'template_opening', '模板修改备份', '0', '开启后后台模板管理中修改文件时会进行自动备份', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', '36', '1', '1', '1558756191', '1558756247');
 
 -- ----------------------------

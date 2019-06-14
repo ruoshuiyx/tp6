@@ -55,7 +55,7 @@ class BelongsTo extends OneToOne
     public function getRelation(array $subRelation = [], Closure $closure = null)
     {
         if ($closure) {
-            $closure($this->query);
+            $closure($this);
         }
 
         $foreignKey = $this->foreignKey;
@@ -85,7 +85,7 @@ class BelongsTo extends OneToOne
     public function getRelationCountQuery(Closure $closure = null, string $aggregate = 'count', string $field = '*', &$name = ''): string
     {
         if ($closure) {
-            $closure($this->query, $name);
+            $closure($this, $name);
         }
 
         return $this->query
@@ -104,7 +104,7 @@ class BelongsTo extends OneToOne
      * @param  string  $name 统计字段别名
      * @return integer
      */
-    public function relationCount(Model $result, Closure $closure, string $aggregate = 'count', string $field = '*', string &$name = null)
+    public function relationCount(Model $result, Closure $closure = null, string $aggregate = 'count', string $field = '*', string &$name = null)
     {
         $foreignKey = $this->foreignKey;
 
@@ -113,7 +113,7 @@ class BelongsTo extends OneToOne
         }
 
         if ($closure) {
-            $closure($this->query, $name);
+            $closure($this, $name);
         }
 
         return $this->query

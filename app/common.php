@@ -29,9 +29,9 @@ function getUrl($v){
                 ->where('id',$v['moduleid'])
                 ->value('name');
             if ($v['catdir']) {
-                $v['url'] = url($v['catdir'].'/index', ['cate'=>$v['id']]);
+                $v['url'] = url($v['catdir'].'/index', ['cate'=>$v['id']])->__toString();
             } else {
-                $v['url'] = url($moduleurl.'/index', ['cate'=>$v['id']]);
+                $v['url'] = url($moduleurl.'/index', ['cate'=>$v['id']])->__toString();
             }
         }
     }
@@ -58,6 +58,12 @@ function getShowUrl($v){
     return $url;
 }
 
+/***
+ * 处理数据（把列表中需要处理的字段转换成数组和对应的值,用于自定义标签文件中）
+ * @param $list      列表
+ * @param $moduleid  模型ID
+ * @return array
+ */
 function changeFields($list, $moduleid){
     $info = [];
     foreach ($list as $k => $v){
@@ -69,6 +75,12 @@ function changeFields($list, $moduleid){
     return $info;
 }
 
+/***
+ * 处理数据（用于详情页中数据转换）
+ * @param $info      内容详情
+ * @param $moduleid  模型ID
+ * @return array
+ */
 function changefield($info, $moduleid){
     $fields = \think\facade\Db::name('field')
         ->where('moduleid','=',$moduleid)

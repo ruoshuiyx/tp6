@@ -39,7 +39,7 @@ class Cate extends Base
     public function index(){
 
         //获取列表
-        $cate = M::getList([], $this->pageSize);
+        $cate = M::getList();
         $cate = tree_cate($cate);
         $view = [
             'list' => $cate,

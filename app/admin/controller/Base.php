@@ -27,11 +27,13 @@ declare (strict_types = 1);
 
 namespace app\admin\controller;
 
+use app\common\model\Cate;
 use think\App;
 use think\exception\HttpResponseException;
 use think\exception\ValidateException;
 use think\facade\Config;
 use think\facade\Request;
+use think\facade\View;
 use think\Response;
 use think\Validate;
 
@@ -89,6 +91,29 @@ abstract class Base
     {
         //每页显示数据量
         $this->pageSize = Request::param('page_size', Config::get('app.page_size'));
+
+        //左侧菜单
+        $menus = \app\admin\model\Base::getMenus();
+        View::assign(['menus'=>$menus]);
+
+        //pjax
+        if (Request::has('_pjax')) {
+            View::assign(['pjax' => true]);
+        } else {
+            View::assign(['pjax' => false]);
+        }
+
+        //面包导航
+        $auth = new \Auth();
+        $breadCrumb = $auth->getBreadCrumb();
+        $breadCrumb = format_bread_crumb($breadCrumb);
+        //halt($breadCrumb);
+        View::assign(['breadCrumb' => $breadCrumb]);
+
+        //内容管理,获取栏目列表
+        $cates = Cate::getList()->toArray();
+        $cates = unlimitedForLayer($cates);
+        View::assign(['cates' => $cates]);
     }
 
     /**
@@ -147,7 +172,7 @@ abstract class Base
         if (is_null($url)) {
             $url = request()->isAjax() ? '' : 'javascript:history.back(-1);';
         } elseif ($url) {
-            $url = (strpos($url, '://') || 0 === strpos($url, '/')) ? $url : app('route')->buildUrl($url);
+            $url = (strpos($url, '://') || 0 === strpos($url, '/')) ? $url : app('route')->buildUrl($url)->__toString();
         }
 
         $result = [
@@ -205,7 +230,7 @@ abstract class Base
         if (is_null($url) && isset($_SERVER["HTTP_REFERER"])) {
             $url = $_SERVER["HTTP_REFERER"];
         } elseif ($url) {
-            $url = (strpos($url, '://') || 0 === strpos($url, '/')) ? $url : app('route')->buildUrl($url);
+            $url = (strpos($url, '://') || 0 === strpos($url, '/')) ? $url : app('route')->buildUrl($url)->__toString();
         }
 
         $result = [

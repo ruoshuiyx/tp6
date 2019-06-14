@@ -71,10 +71,14 @@ class MorphMany extends Relation
     public function getRelation(array $subRelation = [], Closure $closure = null): Collection
     {
         if ($closure) {
-            $closure($this->query);
+            $closure($this);
         }
 
         $this->baseQuery();
+
+        if ($this->withLimit) {
+            $this->query->limit($this->withLimit);
+        }
 
         return $this->query->relation($subRelation)
             ->select()
@@ -191,7 +195,7 @@ class MorphMany extends Relation
      * @param  string  $name 统计字段别名
      * @return mixed
      */
-    public function relationCount(Model $result, Closure $closure, string $aggregate = 'count', string $field = '*', string &$name = null)
+    public function relationCount(Model $result, Closure $closure = null, string $aggregate = 'count', string $field = '*', string &$name = null)
     {
         $pk = $result->getPk();
 
@@ -200,7 +204,7 @@ class MorphMany extends Relation
         }
 
         if ($closure) {
-            $closure($this->query, $name);
+            $closure($this, $name);
         }
 
         return $this->query
@@ -223,7 +227,7 @@ class MorphMany extends Relation
     public function getRelationCountQuery(Closure $closure = null, string $aggregate = 'count', string $field = '*', string &$name = null): string
     {
         if ($closure) {
-            $closure($this->query, $name);
+            $closure($this, $name);
         }
 
         return $this->query
@@ -248,7 +252,7 @@ class MorphMany extends Relation
         $this->query->removeOption('where');
 
         if ($closure) {
-            $closure($this->query);
+            $closure($this);
         }
 
         $list     = $this->query->where($where)->with($subRelation)->select();
@@ -257,7 +261,13 @@ class MorphMany extends Relation
         // 组装模型数据
         $data = [];
         foreach ($list as $set) {
-            $data[$set->$morphKey][] = $set;
+            $key = $set->$morphKey;
+
+            if ($this->withLimit && isset($data[$key]) && count($data[$key]) >= $this->withLimit) {
+                continue;
+            }
+
+            $data[$key][] = $set;
         }
 
         return $data;

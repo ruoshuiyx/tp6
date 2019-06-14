@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{__NOLAYOUT__}<!DOCTYPE html>
 <html>
 
 <head>
@@ -19,9 +19,9 @@
     </script>
     <script>
         layui.use('layer',
-                function() {
-                    var $ = layui.jquery, layer = layui.layer;
-                })
+            function () {
+                var $ = layui.jquery, layer = layui.layer;
+            })
     </script>
 </head>
 
@@ -33,10 +33,22 @@
     </video>
 </div>
 <style>
-    #video_wrapper { margin: 0px; padding: 0px; }
-    #video_wrapper video { position:
-            fixed; top: 50%; left: 50%; z-index: -100; min-width: 100%; min-height:
-            100%; width: auto; height: auto; transform: translate(-50%, -50%); }
+    #video_wrapper {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    #video_wrapper video {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        z-index: -100;
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        transform: translate(-50%, -50%);
+    }
 </style>
 {/if}
 <div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login">
@@ -81,7 +93,7 @@
             </div>
             {/if}
             <div class="layui-form-item">
-                <input type="hidden" name="__token__" value="{:token()}" />
+                <input type="hidden" name="__token__" value="{:token()}"/>
                 <button class="layui-btn layui-btn-fluid login" lay-submit lay-filter="LAY-user-login-submit">
                     登 录
                 </button>
@@ -107,22 +119,22 @@
     </div>
 </div>
 <script>
-    $(document).keyup(function(event) {
+    $(document).keyup(function (event) {
         if (event.keyCode == 13) {
             $(".login").trigger("click");
         }
     });
-    $(function() {
+    $(function () {
         //刷新验证码操作
-        $(".layadmin-user-login-codeimg").click(function() {
+        $(".layadmin-user-login-codeimg").click(function () {
             $(this).attr("src", $(this).attr("src") + '?' + Math.random());
         })
         //后台登录
-        $(".login").click(function() {
-            var username  = $("input[name='username']").val();
-            var password  = $("input[name='password']").val();
+        $(".login").click(function () {
+            var username = $("input[name='username']").val();
+            var password = $("input[name='password']").val();
             var __token__ = $("input[name='__token__']").val();
-            var vercode   = $("input[name='vercode']").val();
+            var vercode = $("input[name='vercode']").val();
             $.ajax({
                 type: "post",
                 url: "{:url('checkLogin')}",
@@ -133,7 +145,7 @@
                     __token__: __token__
                 },
                 dataType: "json",
-                success: function(data) {
+                success: function (data) {
                     if (data.error == 1) {
                         layer.alert(data.msg, {
                             icon: 2
@@ -143,7 +155,7 @@
                         window.location.href = data.href;
                     }
                 },
-                error: function(xhr) {
+                error: function (xhr) {
 
                 }
             });

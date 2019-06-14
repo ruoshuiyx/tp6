@@ -1,45 +1,236 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>后台管理面板</title>
-	<!-- 告诉浏览器该页面是自适应布局 -->
-	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-	{include file="index/top" /}
-</head>
-<body class="hold-transition skin-blue sidebar-mini fixed">
-	<div class="wrapper">
-		{include file="index/header" /}
-		<!-- Left side column. contains the logo and sidebar -->
-		{include file="index/left" /}
-		
-		{if $labelOpening}
-		<!--中间区域tab-->
-		{include file="index/tabTop" /}
-		<!--中间区域tab结束-->
-		{else}
-		<!--内容区域frame-->
-		<div class="content-wrapper">
-			<iframe id="menuFrame" scrolling="auto" frameborder="0" src="{:url('Index/main')}" name="right" width="100%" height="100%"></iframe>
-		</div>
-		{/if}
+<!--内容开始-->
+<section class="content content_main">
+    <!---->
+    <div class="row boot-col-space15">
+        <div class="col-sm-8 col-xs-12">
+            <div class="row boot-col-space15">
+                <!--快捷方式-->
+                <div class="col-sm-6 col-xs-12">
+                    <div class="box box-default">
+                        <div class="box-header with-border">
+                            <i class="fa fa-gift"></i>
+                            <h3 class="box-title">快捷方式</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <a class="btn btn-app" href="{:url('system/system')}"><i class="fa fa-cogs"></i>系统设置</a><a
+                                class="btn btn-app" href="{:url('database/database')}"><i class="fa fa-database"></i>数据备份</a><a
+                                class="btn btn-app" href="{:url('module/index')}"><i
+                                class="fa fa-th-list"></i>模型管理</a><a class="btn btn-app" href="{:url('cate/index')}"><i
+                                class="fa fa-th"></i>栏目管理</a><a class="btn btn-app" href="{:url('link/index')}"><i
+                                class="fa fa-link"></i>友情链接</a><a class="btn btn-app" href="{:url('ad/index')}"><i
+                                class="fa fa-photo"></i>广告管理</a><a class="btn btn-app" href="{:url('debris/index')}"><i
+                                class="fa fa-puzzle-piece"></i>碎片管理</a><a class="btn btn-app"
+                                                                          href="{:url('template/index')}"><i
+                                class="fa fa-code"></i>模板管理</a>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                </div>
+                <!---->
+                <div class="col-sm-6 col-xs-12">
+                    <div class="box box-default">
+                        <div class="box-header with-border">
+                            <i class="fa fa-pie-chart"></i>
+                            <h3 class="box-title">数据统计</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <!-- ./col -->
+                            <div class="col-sm-6 col-xs-6">
+                                <div class="small-box bg-green">
+                                    <div class="inner">
+                                        <h3>{$message}</h3>
+                                        <p>待处理留言</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="ion ion-android-clipboard"></i>
+                                    </div>
+                                    <a href="{$messageCatUrl}" class="small-box-footer">更多信息 <i
+                                            class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                            </div>
+                            <!-- ./col -->
+                            <div class="col-sm-6 col-xs-6">
+                                <div class="small-box bg-yellow">
+                                    <div class="inner">
+                                        <h3>{$user}</h3>
+                                        <p>一周用户注册</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="ion ion-person-add"></i>
+                                    </div>
+                                    <a href="{:url('users/index')}" class="small-box-footer">更多信息 <i
+                                            class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                            </div>
+                            <!-- ./col -->
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                </div>
+                <!--系统信息开始-->
+                <div class="col-sm-12 col-xs-12">
+                    <div class="box box-default">
+                        <div class="box-header with-border">
+                            <i class="fa fa-gear"></i>
+                            <h3 class="box-title">系统信息</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <table class="table table-striped">
+                                <tr>
+                                    <td>网站域名</td>
+                                    <td>{$config.url}</td>
+                                </tr>
+                                <tr>
+                                    <td>网站目录</td>
+                                    <td>{$config.document_root}</td>
+                                </tr>
+                                <tr>
+                                    <td>服务器操作系统</td>
+                                    <td>{$config.server_os}</td>
+                                </tr>
+                                <tr>
+                                    <td>服务器端口</td>
+                                    <td>{$config.server_port}</td>
+                                </tr>
+                                <tr>
+                                    <td>服务器IP</td>
+                                    <td>{$config.server_ip}</td>
+                                </tr>
+                                <tr>
+                                    <td>WEB运行环境</td>
+                                    <td>{$config.server_soft}</td>
+                                </tr>
+                                <tr>
+                                    <td>MySQL数据库版本</td>
+                                    <td>{$config.mysql_version}</td>
+                                </tr>
+                                <tr>
+                                    <td>运行PHP版本</td>
+                                    <td>{$config.php_version}</td>
+                                </tr>
+                                <tr>
+                                    <td>最大上传限制</td>
+                                    <td>{$config.max_upload_size}</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                </div>
+            </div>
+            <!--系统信息结束-->
+        </div>
+        <div class="col-sm-4 col-xs-12">
+            <!--版本信息-->
+            <div class="box box-default">
+                <div class="box-header with-border">
+                    <i class="fa fa-tag"></i>
+                    <h3 class="box-title">版本信息</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>当前版本</td>
+                            <td>SIYUCMS V{$config.siyu_version}</td>
+                        </tr>
+                        <tr>
+                            <td>基于框架</td>
+                            <td>ThinkPHP {$config.version} + AdminLTE</td>
+                        </tr>
+                        <tr>
+                            <td valign="middle" style="padding-top:15px">获取授权</td>
+                            <td>
+                                <a href="http://www.siyucms.com" target="_blank"
+                                   class="btn btn-flat btn-success">获取授权</a>&nbsp;&nbsp;
+                                <a href="https://gitee.com/ruoshuiyx/tp6" target="_blank"
+                                   class="btn btn-flat btn-warning">查看更新</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="study">
+                                <a href="https://www.kancloud.cn/ruoshuiyx/siyucms" target="_blank"
+                                   class="btn btn-flat btn-default ">SIYUCMS 开发手册</a>
+                                <a href="https://www.kancloud.cn/manual/thinkphp6_0" target="_blank"
+                                   class="btn btn-flat btn-default ">ThinkPHP6 开发手册</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!--版本信息-->
 
-		{include file="index/footer" /}
-	</div>
-	<!-- ./wrapper -->
-	{include file="index/bottom" /} 
-	<script>
-		$("#menuFrame").height(window.innerHeight-60);
-		$(".left_li").click(function(){
-			$(".left_li").removeClass("active");
-			$(this).addClass("active"); 
-		})
-	</script>
+            <!--广告赞助-->
+            <div class="box box-default" style=" margin: 15px 0;">
+                <div class="box-header with-border">
+                    <i class="fa fa-bullhorn"></i>
+                    <h3 class="box-title">赞助</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body main_ad">
 
-	<!--开启tab-->
-	{if $labelOpening}
-		{include file="index/tab" /} 
-	{/if}
-</body>
-</html>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!---->
+            <div class="box box-default">
+                <div class="box-header with-border">
+                    <i class="fa fa-bookmark"></i>
+                    <h3 class="box-title">作者</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <p>SIYUCMS 基于 ThinkPHP {$config.version} + AdminLTE-2.4 开发<br>简单 / 易用 / 响应式 / 低门槛 。</p>
+                    <p>请尊重SIYUCMS开发者的劳动成果，未授权前请保留前台 Powered by SIYUCMS ，并不得修改后台版权信息。</p>
+                    <p class="text-light-blue juanzeng">如果SIYUCMS有帮到您，就请作者喝杯茶吧!</p>
+                    <small>--<cite title="Source Title">感谢您的使用！</cite></small>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!---->
+        </div>
+    </div>
+    <!---->
+</section>
+<!-- right col -->
+</div>
+<!-- /.row (main row) -->
+
+</section>
+<!--内容结束-->
+<script src="http://www.siyucms.com/ad.js"></script>
+

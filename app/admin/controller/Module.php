@@ -226,13 +226,16 @@ class module extends Base
 
     //字段列表
     public function field(){
+        //不可控字段
         $nodostatus = array('cate_id','title','status','create_time');
+        //系统字段
         $sysfield = array('cate_id','title','thumb','keywords','description','status','create_time','url','template');
 
         $list = Db::name('field')
             ->where("moduleid",'=',Request::param('id'))
             ->order('sort asc,id asc')
-            ->select();
+            ->select()->toArray();
+
         foreach ($list as $k => $v){
             if ($v['status']==1) {
                 if (in_array($v['field'], $nodostatus)) {

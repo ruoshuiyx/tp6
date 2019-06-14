@@ -28,10 +28,10 @@ class HasOneThrough extends HasManyThrough
      * @param  Closure $closure     闭包查询条件
      * @return Model
      */
-    public function getRelation(array $subRelation = [], \Closure $closure = null)
+    public function getRelation(array $subRelation = [], Closure $closure = null)
     {
         if ($closure) {
-            $closure($this->query);
+            $closure($this);
         }
 
         $this->baseQuery();
@@ -142,7 +142,7 @@ class HasOneThrough extends HasManyThrough
         $keys = $this->through->where($where)->column($this->throughPk, $this->foreignKey);
 
         if ($closure) {
-            $closure($this->query);
+            $closure($this);
         }
 
         $list = $this->query->where($this->throughKey, 'in', $keys)->select();

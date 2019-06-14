@@ -287,6 +287,16 @@ abstract class Model implements JsonSerializable, ArrayAccess
     }
 
     /**
+     * 获取当前模型的数据库查询对象
+     * @access public
+     * @return Query|null
+     */
+    public function getQuery()
+    {
+        return $this->queryInstance;
+    }
+
+    /**
      * 设置当前模型数据表的后缀
      * @access public
      * @param string $suffix 数据表后缀
@@ -418,7 +428,7 @@ abstract class Model implements JsonSerializable, ArrayAccess
     public function refresh(bool $relation = false)
     {
         if ($this->exists) {
-            $this->data   = $this->db()->fetchArray()->find($this->getKey());
+            $this->data   = $this->db()->find($this->getKey())->getData();
             $this->origin = $this->data;
 
             if ($relation) {

@@ -353,7 +353,7 @@ class Auth extends Base
         $data = Request::post();
         $where['id'] = $data['id'];
         if (AuthGroup::update($data,$where)) {
-            return json(['msg'=>'权限配置成功!', 'url'=>url('adminGroup'), 'error'=>0]);
+            return json(['msg'=>'权限配置成功!', 'url'=>url('adminGroup')->__toString(), 'error'=>0]);
         }else{
             return json(['msg'=>'保存错误', 'error'=>1]);
         }

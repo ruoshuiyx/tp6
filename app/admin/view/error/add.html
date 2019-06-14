@@ -1,287 +1,256 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>后台管理面板</title>
-  <!-- 告诉浏览器该页面是自适应布局 -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  {include file="index/top" /}
-  <!--引入JS-->
-  <script type="text/javascript" src="/static/plugins/webuploader-0.1.5/webuploader.js"></script>
-  <script type="text/javascript">
-    //多图删除
-	$(document).on('click','.remove_images',function(){
-		var remove = $(this).parent().parent(); 
-			remove.remove();
-	})
-  </script>
-  {include file="index/webuploader" /}
-</head>
-<body class="hold-transition skin-blue sidebar-mini">	
-<div class="wrapper">
-    <div class="content-wrapper" style="margin-left: 0 !important;">
-        <!--页眉-->
-        <section class="content-header">
-          <h1>{$info?'修改':'添加'}内容</h1>
-        </section>
-        <!--内容开始-->
-        <section class="content">
-            <div class="search">
-            	<form class="form-inline" action="">
-                 <input class="btn btn-flat btn-primary m_10_l_0" onclick="location.href='{:url('index',['cate'=>$cateId])}'" type="button" value="显示全部">
-                 <a class="btn btn-flat btn-success m_10 f_r m_t_5" onclick="javascript :history.back(-1)"><i class="fa fa-undo m-r-10"></i>返 回</a>
-            	</form> 
-            </div>
-            <!--数据表开始-->
-            <div class="row">
-                <div class="col-xs-12">
-                	<div class="box box-body">
-                		{if $info}
-                		<form method="post" action="{:url('edit')}">
-                			<input type="hidden" name="id" value="{$info.id}"/>
-                		{else /}
-                		<form method="post" action="{:url('add')}">
-                		{/if}
-		                	{volist name='field' id='field' }
-                            {if $field.status}<!--隐藏不再显示的字段-->
-		                	<!---->
-		                	<div class="row dd_input_group">
-			                	<div class="form-group">
-                                  	{switch field.type}
-                                    	{case title}
-                                           <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$field.name}</label>
-				                  		   <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-                                           <input type="text" name="{$field.field}" class="form-control" placeholder="请输入{$field.name}" value="{$info[$field.field]}"> 
-                                           </div>
-				                 		   <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"} *{/eq}</div>
-                                        {/case}
-                                    	{case cate}
-                                          <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$field.name}</label>
-                                          <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-                                            <select name="{$field.field}" class="form-control" {if $moduleid ==1} disabled {/if}>
-                                                {volist name="cate" id="cate_list"}
-                                                <option {if $cateId == $cate_list.id}selected{/if} value='{$cate_list.id}'
-                                                {if $moduleid !==$cate_list.moduleid} disabled {/if}
-                                                 >{$cate_list.lcatname}</option>
-                                                {/volist}
-                                          	</select>
-                                            {if $moduleid ==1}<!--select disabled 导致无法获取分类-->
-                                            <input type="hidden" name="{$field.field}" value="{$cateId}"/>
-                                            {/if}
-                                          </div>
-                                          <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"} *{/eq}</div>
-                                        {/case}
-                                        {case text}
-                                           <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$field.name}</label>
-				                  		   <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-                                           <input type="text" name="{$field.field}" class="form-control" placeholder="请输入{$field.name}" value="{$info[$field.field]}"> 
-                                           </div>
-				                 		   <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"} *{/eq}</div>
-                                        {/case}
-                                        {case textarea}
-                                          <div class="col-xs-11 col-sm-8 col-md-6 col-lg-5">
-                                          <label class="text-lable">{$field.name}</label>
-                                          <textarea class="form-control" name="{$field.field}" rows="3" placeholder="请输入{$field.name}">{$info[$field.field]}</textarea>
-                                          </div>
-                                          <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"} *{/eq}</div>
-                                        {/case}
-                                        {case editor}
-                                        	<div class="col-xs-12 col-sm-11 col-md-10 col-lg-8">
-                                                <label class="text-lable">{$field.name}</label>
-                                                {:make_editor($field.field,$info[$field.field])}
-                                            </div>
-                                        	{switch $field.setup.edittype }
-                                                {case ckeditor}
-                                                
-                                                {/case}
-                                                {default /}
-                                            {/switch}
-                                          
-                                        {/case}
-                                        {case select}
-                                          <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$field.name}</label>
-                                          <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-                                            <select name="{$field.field}" class="form-control" >
-                                                {foreach $field.setup.options as $k=>$v }
-                                                {if $info}
-                                                <option {if $info[$field.field] == trim($v.1)}selected{/if} value='{$v.1}' >{$v.0}</option>
-                                                {else /}
-                                                <option {if trim($field.setup.default) == trim($v.1)}selected{/if} value='{$v.1}' >{$v.0}</option>
-                                                {/if}
-                                                {/foreach}
-                                          </select>
-                                          </div>
-                                          <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"} *{/eq}</div>
-                                        {/case}
-                                        {case radio}
-                                          <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$field.name}</label>
-                                          <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-                                          <div class="dd_radio_lable_left">
-                                          	{foreach $field.setup.options as $k=>$v }
-                                            <label class="dd_radio_lable">
-                                              {if $info}
-                                              <input type="radio" name="{$field.field}" value="{$v.1}" class="dd_radio" {if $info[$field.field] == trim($v.1)}checked{/if}><span>{$v.0}</span>
-                                               {else /}
-                                               <input type="radio" name="{$field.field}" value="{$v.1}" class="dd_radio" {if trim($field.setup.default) == trim($v.1)}checked{/if}><span>{$v.0}</span>
-                                               {/if}
-                                            </label>
-                                            {/foreach}
-                                           </div>
-                                          </div>
-                                          <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"} *{/eq}</div>
-                                        {/case}
-                                        {case checkbox}
-                                          <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$field.name}</label>
-                                          <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-                                          <div class="dd_radio_lable_left">
-                                          	{foreach $field.setup.options as $k=>$v }
-                                            <label class="dd_radio_lable">
-                                              {if $info}
-                                              <input type="checkbox" name="{$field.field}[]" value="{$v.1}" class="dd_radio"
-                                              {in name="$v.1" value="$info[$field.field]"}checked{/in}
-                                               ><span>{$v.0}</span>
-                                               {else /}
-                                               <input type="checkbox" name="{$field.field}[]" value="{$v.1}" class="dd_radio" {if trim($field.setup.default) == trim($v.1)}checked{/if}><span>{$v.0}</span>
-                                               {/if}
-                                            </label>
-                                            {/foreach}
-                                           </div>
-                                          </div>
-                                          <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"} *{/eq}</div>
-                                        {/case}
-                                        {case image}
-                                        	<label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$field.name}</label>
-                                              <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-                                                <input type="text" name="{$field.field}" class="form-control" placeholder="请点击按钮上传或手动输入地址" value="{$info[$field.field]}">
-                                              </div>
-                                              <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">
-                                                <!--上传图片-->
-                                                <!--用来存放item-->
-                                                <div id="fileList_image{$field.field}" class="uploader-list">
-                                                </div>
-                                                <div id="filePicker_image{$field.field}"><i class="fa fa-upload m-r-10"></i>选择图片</div>
-                                                <img class="image_preview" src="{$info[$field.field]?$info[$field.field]:'/static/admin/images/nopic.png'}" id="image_preview{$field.field}">
-                                                <!--上传图片-->
-                                                {eq name="$field.required" value="1"}<span class="image_preview"> *</span>{/eq}
-                                              </div>
-                                              <script>webupload('fileList_image{$field.field}','filePicker_image{$field.field}','image_preview{$field.field}','{$field.field}',false ,'{$field.setup.upload_allowext}');	</script>
-                                        {/case}
-                                        {case images}
-                                          <div class="col-xs-11 col-sm-8 col-md-6 col-lg-5">
-                                          <label class="text-lable">{$field.name}</label>
-                                          	<div class="more_images dd_ts">
-                                            	<div id="more_images_{$field.field}">
-                                                	<!---->
-                                                    {if $info[$field.field]}
-                                                    {foreach $info[$field.field] as $key=>$vo } 
-                                                    <div class="row"><div class="col-xs-6"><input type="text" name="{$field.field}[]" value="{$vo.image}" class="form-control"></div> <div class="col-xs-3"><input class="form-control input-sm" type="text" name="{$field.field}_title[]" value="{$vo.title}"></div> <div class="col-xs-3"><button type="button" class="btn btn-block btn-warning remove_images">移除</button></div></div>
-                                                    {/foreach}
-                                                    {/if}
-                                                    <!---->
-                                                </div>
-                                            </div>
-                                          </div>
-                                          <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">
-                                                <!--上传图片-->
-                                                <!--用来存放item-->
-                                                <div id="fileList_image{$field.field}" class="uploader-list">
-                                                </div>
-                                                <div id="filePicker_image{$field.field}"><i class="fa fa-upload m-r-10"></i>选择图片</div>
-                                                <!--上传图片-->
-                                                <script>webupload('fileList_image{$field.field}','filePicker_image{$field.field}','image_preview{$field.field}','{$field.field}',true ,'{$field.setup.upload_allowext}');	</script>
-                                                {eq name="$field.required" value="1"}<span class="image_preview"> * 必填</span>{/eq}
-                                              </div>
-                                        {/case}
-                                        {case file}
-                                        	<label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$field.name}</label>
-                                              <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-                                                <input type="text" name="{$field.field}" class="form-control" placeholder="请点击按钮上传或手动输入地址" value="{$info[$field.field]}">
-                                              </div>
-                                              <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">
-                                                <!--上传图片-->
-                                                <!--用来存放item-->
-                                                <div id="fileList_image{$field.field}" class="uploader-list">
-                                                </div>
-                                                <div id="filePicker_image{$field.field}"><i class="fa fa-upload m-r-10"></i>选择文件</div>
-                                                {eq name="$field.required" value="1"}<span class="image_preview"> *</span>{/eq}
-                                                <!--上传图片-->
-                                              </div>
-                                              <script>webupload('fileList_image{$field.field}','filePicker_image{$field.field}','image_preview{$field.field}','{$field.field}',false ,'{$field.setup.upload_allowext}');	</script>
-                                              
-                                        {/case}
-                                        {case number}
-                                        	<label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$field.name}</label>
-				                  		   <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-                                           <input type="number" name="{$field.field}" class="form-control" placeholder="请输入{$field.name}" value="{$info[$field.field]?$info[$field.field]:$field.setup.default}"> 
-                                           </div>
-				                 		   <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"} *{/eq}</div>
-                                        {/case}
-                                        {case datetime}
-                                        	<label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$field.name}</label>
-				                  		   <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-                                           <input type="text" name="{$field.field}" class="form-control" placeholder="请输入{$field.name}" value="{if $info}{$info[$field.field]|date="Y-m-d H:i"}{else/}{$time}{/if}" id="datepicker_{$field.field}"> 
-                                           
-                                           </div>
-				                 		   <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"} *{/eq}</div>
-                                        	<script>
-											$(function(){
-												$('#datepicker_{$field.field}').datetimepicker({
-												  autoclose: 1,
-												  format:"yyyy-mm-dd hh:ii:ss",
-												  language: "zh-CN",
-												  todayHighlight: 1,//今天高亮
-												})	
-											})
-											</script>
-                                        {/case}
-                                        {case template}
-                                          <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$field.name}</label>
-                                          <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-                                            <select name="{$field.field}" class="form-control" >
-                                            	<option value="">请选择</option>
-                                                {foreach $template.show as $k=>$v }
-                                                <option {if $info[$field.field] == trim($v)}selected{/if} value='{$v}' >{$v}</option>
-                                                {/foreach}
-                                          </select>
-                                          </div>
-                                          <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"}*{/eq}默认延用栏目设置的模版</div>
-                                        {/case}
-				                    	{default /}	
-                                    {/switch}
-				                  
-				                </div>
-			                </div>
-			                <!---->
-                            {/if}<!--隐藏不再显示的字段-->
-                            {/volist} 
-		                	
-			                <div class="row dd_input_group">
-			                	<div class="form-group">
-				                  <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5 text-center">
-				                    	<button type="submit" class="btn btn-flat btn-primary ">提 交</button> 
-				                    	<button type="button" class="btn btn-flat btn-default" onclick="javascript :history.back(-1)">返 回</button>
-				                  </div>
-		
-				                </div>
-			                </div>
-                		</form>
-                 </div>
-                  <!-- /.box -->
-                </div>
-              </div>
-            <!--数据表结束-->
-        </section>
-        <!-- right col -->
-      </div>
-      <!-- /.row (main row) -->
-
-    </section>
-        <!--内容结束-->
+<!--内容开始-->
+<section class="content">
+    <div class="search">
+        <form class="form-inline" action="">
+            <a class="btn btn-flat btn-primary m_10" href="{:url('index',['cate'=>$cateId])}">显示全部</a>
+            <a class="btn btn-flat btn-success m_10 f_r m_t_5" onclick="javascript :history.back(-1)"><i
+                    class="fa fa-undo m-r-10"></i>返 回</a>
+        </form>
     </div>
+    <!--数据表开始-->
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-body">
+                {if $info}
+                <form method="post" action="{:url('edit')}">
+                    <input type="hidden" name="id" value="{$info.id}"/>
+                {else /}
+                <form method="post" action="{:url('add')}">
+                {/if}
+		        {volist name='field' id='field' }
+                    {if $field.status}<!--隐藏不再显示的字段-->
+                    <!---->
+                    <div class="row dd_input_group">
+                        <div class="form-group">
+                            {switch field.type}
+                                {case title}
+                                   <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$field.name}</label>
+                                   <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+                                   <input type="text" name="{$field.field}" class="form-control" placeholder="请输入{$field.name}" value="{$info[$field.field]}">
+                                   </div>
+                                   <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"} *{/eq}</div>
+                                {/case}
+                                {case cate}
+                                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$field.name}</label>
+                                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+                                    <select name="{$field.field}" class="form-control" {if $moduleid ==1} disabled {/if}>
+                                        {volist name="cate" id="cate_list"}
+                                        <option {if $cateId == $cate_list.id}selected{/if} value='{$cate_list.id}'
+                                        {if $moduleid !==$cate_list.moduleid} disabled {/if}
+                                         >{$cate_list.lcatname}</option>
+                                        {/volist}
+                                    </select>
+                                    {if $moduleid ==1}<!--select disabled 导致无法获取分类-->
+                                    <input type="hidden" name="{$field.field}" value="{$cateId}"/>
+                                    {/if}
+                                  </div>
+                                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"} *{/eq}</div>
+                                {/case}
+                                {case text}
+                                   <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$field.name}</label>
+                                   <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+                                   <input type="text" name="{$field.field}" class="form-control" placeholder="请输入{$field.name}" value="{$info[$field.field]}">
+                                   </div>
+                                   <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"} *{/eq}</div>
+                                {/case}
+                                {case textarea}
+                                  <div class="col-xs-11 col-sm-8 col-md-6 col-lg-5">
+                                  <label class="text-lable">{$field.name}</label>
+                                  <textarea class="form-control" name="{$field.field}" rows="3" placeholder="请输入{$field.name}">{$info[$field.field]}</textarea>
+                                  </div>
+                                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"} *{/eq}</div>
+                                {/case}
+                                {case editor}
+                                    <div class="col-xs-12 col-sm-11 col-md-10 col-lg-8">
+                                        <label class="text-lable">{$field.name}</label>
+                                        {:make_editor($field.field,$info[$field.field])}
+                                    </div>
+                                    {switch $field.setup.edittype }
+                                        {case ckeditor}
+
+                                        {/case}
+                                        {default /}
+                                    {/switch}
+
+                                {/case}
+                                {case select}
+                                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$field.name}</label>
+                                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+                                    <select name="{$field.field}" class="form-control" >
+                                        {foreach $field.setup.options as $k=>$v }
+                                        {if $info}
+                                        <option {if $info[$field.field] == trim($v.1)}selected{/if} value='{$v.1}' >{$v.0}</option>
+                                        {else /}
+                                        <option {if trim($field.setup.default) == trim($v.1)}selected{/if} value='{$v.1}' >{$v.0}</option>
+                                        {/if}
+                                        {/foreach}
+                                  </select>
+                                  </div>
+                                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"} *{/eq}</div>
+                                {/case}
+                                {case radio}
+                                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$field.name}</label>
+                                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+                                  <div class="dd_radio_lable_left">
+                                    {foreach $field.setup.options as $k=>$v }
+                                    <label class="dd_radio_lable">
+                                      {if $info}
+                                      <input type="radio" name="{$field.field}" value="{$v.1}" class="dd_radio" {if $info[$field.field] == trim($v.1)}checked{/if}><span>{$v.0}</span>
+                                       {else /}
+                                       <input type="radio" name="{$field.field}" value="{$v.1}" class="dd_radio" {if trim($field.setup.default) == trim($v.1)}checked{/if}><span>{$v.0}</span>
+                                       {/if}
+                                    </label>
+                                    {/foreach}
+                                   </div>
+                                  </div>
+                                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"} *{/eq}</div>
+                                {/case}
+                                {case checkbox}
+                                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$field.name}</label>
+                                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+                                  <div class="dd_radio_lable_left">
+                                    {foreach $field.setup.options as $k=>$v }
+                                    <label class="dd_radio_lable">
+                                      {if $info}
+                                      <input type="checkbox" name="{$field.field}[]" value="{$v.1}" class="dd_radio"
+                                      {in name="$v.1" value="$info[$field.field]"}checked{/in}
+                                       ><span>{$v.0}</span>
+                                       {else /}
+                                       <input type="checkbox" name="{$field.field}[]" value="{$v.1}" class="dd_radio" {if trim($field.setup.default) == trim($v.1)}checked{/if}><span>{$v.0}</span>
+                                       {/if}
+                                    </label>
+                                    {/foreach}
+                                   </div>
+                                  </div>
+                                  <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"} *{/eq}</div>
+                                {/case}
+                                {case image}
+                                    <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$field.name}</label>
+                                      <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+                                        <input type="text" name="{$field.field}" class="form-control" placeholder="请点击按钮上传或手动输入地址" value="{$info[$field.field]}">
+                                      </div>
+                                      <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">
+                                        <!--上传图片-->
+                                        <!--用来存放item-->
+                                        <div id="fileList_image{$field.field}" class="uploader-list">
+                                        </div>
+                                        <div id="filePicker_image{$field.field}"><i class="fa fa-upload m-r-10"></i>选择图片</div>
+                                        <img class="image_preview" src="{$info[$field.field]?$info[$field.field]:'/static/admin/images/nopic.png'}" id="image_preview{$field.field}">
+                                        <!--上传图片-->
+                                        {eq name="$field.required" value="1"}<span class="image_preview"> *</span>{/eq}
+                                      </div>
+                                      <script>webupload('fileList_image{$field.field}','filePicker_image{$field.field}','image_preview{$field.field}','{$field.field}',false ,'{$field.setup.upload_allowext}');	</script>
+                                {/case}
+                                {case images}
+                                  <div class="col-xs-11 col-sm-8 col-md-6 col-lg-5">
+                                  <label class="text-lable">{$field.name}</label>
+                                    <div class="more_images dd_ts">
+                                        <div id="more_images_{$field.field}">
+                                            <!---->
+                                            {if $info[$field.field]}
+                                            {foreach $info[$field.field] as $key=>$vo }
+                                            <div class="row"><div class="col-xs-6"><input type="text" name="{$field.field}[]" value="{$vo.image}" class="form-control"></div> <div class="col-xs-3"><input class="form-control input-sm" type="text" name="{$field.field}_title[]" value="{$vo.title}"></div> <div class="col-xs-3"><button type="button" class="btn btn-block btn-warning remove_images">移除</button></div></div>
+                                            {/foreach}
+                                            {/if}
+                                            <!---->
+                                        </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">
+                                        <!--上传图片-->
+                                        <!--用来存放item-->
+                                        <div id="fileList_image{$field.field}" class="uploader-list">
+                                        </div>
+                                        <div id="filePicker_image{$field.field}"><i class="fa fa-upload m-r-10"></i>选择图片</div>
+                                        <!--上传图片-->
+                                        <script>webupload('fileList_image{$field.field}','filePicker_image{$field.field}','image_preview{$field.field}','{$field.field}',true ,'{$field.setup.upload_allowext}');	</script>
+                                        {eq name="$field.required" value="1"}<span class="image_preview"> * 必填</span>{/eq}
+                                      </div>
+                                {/case}
+                                {case file}
+                                    <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$field.name}</label>
+                                      <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+                                        <input type="text" name="{$field.field}" class="form-control" placeholder="请点击按钮上传或手动输入地址" value="{$info[$field.field]}">
+                                      </div>
+                                      <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">
+                                        <!--上传图片-->
+                                        <!--用来存放item-->
+                                        <div id="fileList_image{$field.field}" class="uploader-list">
+                                        </div>
+                                        <div id="filePicker_image{$field.field}"><i class="fa fa-upload m-r-10"></i>选择文件</div>
+                                        {eq name="$field.required" value="1"}<span class="image_preview"> *</span>{/eq}
+                                        <!--上传图片-->
+                                      </div>
+                                      <script>webupload('fileList_image{$field.field}','filePicker_image{$field.field}','image_preview{$field.field}','{$field.field}',false ,'{$field.setup.upload_allowext}');	</script>
+
+                                {/case}
+                                {case number}
+                                    <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$field.name}</label>
+                                   <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+                                   <input type="number" name="{$field.field}" class="form-control" placeholder="请输入{$field.name}" value="{$info[$field.field]?$info[$field.field]:$field.setup.default}">
+                                   </div>
+                                   <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"} *{/eq}</div>
+                                {/case}
+                                {case datetime}
+                                    <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$field.name}</label>
+                                   <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+                                   <input type="text" name="{$field.field}" class="form-control" placeholder="请输入{$field.name}" value="{if $info}{$info[$field.field]|date="Y-m-d H:i"}{else/}{$time}{/if}" id="datepicker_{$field.field}">
+
+                                   </div>
+                                   <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"} *{/eq}</div>
+                                    <script>
+                                    $(function(){
+                                        $('#datepicker_{$field.field}').datetimepicker({
+                                          autoclose: 1,
+                                          format:"yyyy-mm-dd hh:ii:ss",
+                                          language: "zh-CN",
+                                          todayHighlight: 1,//今天高亮
+                                        })
+                                    })
+                                    </script>
+                                {/case}
+                                {case template}
+                                  <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">{$field.name}</label>
+                                  <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+                                    <select name="{$field.field}" class="form-control" >
+                                        <option value="">请选择</option>
+                                        {foreach $template.show as $k=>$v }
+                                        <option {if $info[$field.field] == trim($v)}selected{/if} value='{$v}' >{$v}</option>
+                                        {/foreach}
+                                  </select>
+                                  </div>
+                                  <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">{eq name="$field.required" value="1"}*{/eq}默认延用栏目设置的模版</div>
+                                {/case}
+                                {default /}
+                            {/switch}
+
+                        </div>
+                    </div>
+                    <!---->
+                    {/if}<!--隐藏不再显示的字段-->
+                {/volist}
+
+                    <div class="row dd_input_group">
+                        <div class="form-group">
+                            <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5 text-center">
+                                <button type="submit" class="btn btn-flat btn-primary ">提 交</button>
+                                <button type="button" class="btn btn-flat btn-default"
+                                        onclick="javascript :history.back(-1)">返 回
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+    <!--数据表结束-->
+</section>
+<!-- right col -->
 </div>
-{include file="index/bottom" /} 
+<!-- /.row (main row) -->
 
-
-</body>
-</html>    
+</section>
+<!--内容结束-->

@@ -12,6 +12,7 @@ declare (strict_types = 1);
 
 namespace think\model\concern;
 
+use Closure;
 use think\App;
 use think\Collection;
 use think\db\Query;
@@ -96,8 +97,8 @@ trait RelationShip
         if (array_key_exists($name, $this->relation)) {
             return $this->relation[$name];
         } elseif ($auto) {
-            $method = App::parseName($name, 1, false);
-            return $this->$method()->getRelation();
+            $relation = App::parseName($name, 1, false);
+            return $this->getRelationValue($relation);
         }
     }
 
@@ -136,7 +137,7 @@ trait RelationShip
             $subRelation = '';
             $closure     = null;
 
-            if ($relation instanceof \Closure) {
+            if ($relation instanceof Closure) {
                 // 支持闭包查询过滤关联条件
                 $closure  = $relation;
                 $relation = $key;
@@ -225,7 +226,7 @@ trait RelationShip
             $subRelation = [];
             $closure     = null;
 
-            if ($relation instanceof \Closure) {
+            if ($relation instanceof Closure) {
                 $closure  = $relation;
                 $relation = $key;
             }
@@ -267,7 +268,7 @@ trait RelationShip
             $subRelation = [];
             $closure     = null;
 
-            if ($relation instanceof \Closure) {
+            if ($relation instanceof Closure) {
                 $closure  = $relation;
                 $relation = $key;
             }
@@ -334,7 +335,7 @@ trait RelationShip
         foreach ($relations as $key => $relation) {
             $closure = $name = null;
 
-            if ($relation instanceof \Closure) {
+            if ($relation instanceof Closure) {
                 $closure  = $relation;
                 $relation = $key;
             } elseif (is_string($key)) {
@@ -623,7 +624,8 @@ trait RelationShip
      */
     protected function getRelationData(Relation $modelRelation)
     {
-        if ($this->parent && !$modelRelation->isSelfRelation() && get_class($this->parent) == get_class($modelRelation->getModel())) {
+        if ($this->parent && !$modelRelation->isSelfRelation()
+            && get_class($this->parent) == get_class($modelRelation->getModel(false))) {
             return $this->parent;
         }
 

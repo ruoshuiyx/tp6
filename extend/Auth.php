@@ -222,29 +222,42 @@ class Auth
      * @param string $path
      * @return array
      */
-    public function getBreadCrumb($route=''){
+    public function getBreadCrumb($route = '')
+    {
         //当前URL
         $route = $route ? $route : Request::controller() . '/' . lcfirst(Request::action());
+
         //查找名称
-        $data = Db::name('auth_rule')->where('name','=',$route)->find();
+        $data = Db::name('auth_rule')->where('name', '=', $route)->find();
 
         $result = [];
-        if($data){
+        if ($data) {
             $result[] = [
-                'url'=> $data['name'],
-                'title'=>$data['title'],
+                'url'   => $data['name'],
+                'title' => $data['title'],
+                'icon'  => $data['icon'],
             ];
             //查找是否有上级别
-            if($data['pid']){
+            if ($data['pid']) {
                 //查询上级url
-                $route = Db::name('auth_rule')->where('id','=',$data['pid'])->find();
+                $route = Db::name('auth_rule')->where('id', '=', $data['pid'])->find();
                 $crumb = $this->getBreadCrumb($route['name']);
-                foreach($crumb as $k=>$v){
-                    $result[] =  [
-                        'url'=>$crumb[$k]['url'],
-                        'title'=>$crumb[$k]['title']
+                foreach ($crumb as $k => $v) {
+                    $result[] = [
+                        'url'   => $crumb[$k]['url'],
+                        'title' => $crumb[$k]['title'],
+                        'icon'  => $crumb[$k]['icon']
                     ];
                 }
+            }
+        } else {
+            //不存在的记录
+            if ($route == 'Index/index') {
+                $result[] = [
+                    'url'   => 'Index/index',
+                    'title' => '控制台',
+                    'icon'  => 'fa fa-dashboard',
+                ];
             }
         }
         return $result;

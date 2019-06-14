@@ -63,7 +63,15 @@ class Error extends Base
                         ->insertGetId($data);
                 }
                 //跳转编辑页
-                return redirect($this->table.'/edit', ['cate' => $cateId,'id' => $page_id ]);
+                $redirect = [
+                    'cate' => $cateId,
+                    'id' => $page_id
+                ];
+                if (Request::has('_pjax')) {
+                    $redirect['_pjax'] = Request::param('_pjax');
+                }
+
+                return redirect($this->table.'/edit', $redirect);
             }
 
             $where[] = ['cate_id','=',$cateId];
@@ -293,7 +301,8 @@ class Error extends Base
             $field = Db::name('field')
                 ->where('moduleid','=',$this->moduleid)
                 ->order('sort asc,id asc')
-                ->select();
+                ->select()
+                ->toArray();
             foreach ($field as $k => $v) {
                 if ($field[$k]['setup']) {
                     $field[$k]['setup'] = string2array($v['setup']);
@@ -507,7 +516,8 @@ class Error extends Base
                 $field = Db::name('field')
                     ->where('moduleid','=',$this->moduleid)
                     ->order('sort asc,id asc')
-                    ->select();
+                    ->select()
+                    ->toArray();
                 foreach ($field as $k => $v){
                     if ($field[$k]['setup']) {
                         $field[$k]['setup'] = string2array($v['setup']);

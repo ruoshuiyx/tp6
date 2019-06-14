@@ -1,86 +1,64 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>后台管理面板</title>
-  <!-- 告诉浏览器该页面是自适应布局 -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-   {include file="index/top" /}
-</head>
-<body class="hold-transition skin-blue sidebar-mini">	
-<div class="wrapper">
-    <div class="content-wrapper" style="margin-left: 0 !important;">
-        <!--页眉-->
-        <section class="content-header">
-          <h1>模版管理</h1>
-        </section>
-        <!--内容开始-->
-        <section class="content">
-            <div class="search">
-               <form class="form-inline">
-                 <input class="btn btn-flat btn-primary m_l_0 {if $type == 'html'}btn-warning{/if}" onclick="location.href='{:url('index',['type'=>'html'])}'" type="button" value="html">
-                 <input class="btn btn-flat btn-primary m_10 {if $type == $css}btn-warning{/if}"  onclick="location.href='{:url('index',['type'=>$css])}'" type="button" value="{$css}">
-                 <input class="btn btn-flat btn-primary m_10 {if $type == $js}btn-warning{/if}"  onclick="location.href='{:url('index',['type'=>$js])}'" type="button" value="{$js}">
-                 <input class="btn btn-flat btn-primary m_10 {if $type == $img}btn-warning{/if}"  onclick="location.href='{:url('img',['type'=>$img])}'" type="button" value="媒体文件">
-                 <a class="btn btn-flat btn-success m_10 f_r" href='{:url('add')}'><i class="fa fa-plus m-r-10"></i>添 加</a>
-               </form> 
-            </div>
-            <!--数据表开始-->
-            <div class="row">
-                <div class="col-xs-12">
-                  <div class="box">
-                    <div class="box-header">
+<!--内容开始-->
+<section class="content">
+    <div class="search">
+        <form class="form-inline">
+            <a class="btn btn-flat btn-primary m_l_0 {if $type == 'html'}btn-warning{/if}"
+               href="{:url('index',['type'=>'html'])}">html</a>
+            <a class="btn btn-flat btn-primary m_10 {if $type == $css}btn-warning{/if}"
+               href="{:url('index',['type'=>$css])}">{$css}</a>
+            <a class="btn btn-flat btn-primary m_10 {if $type == $js}btn-warning{/if}"
+               href="{:url('index',['type'=>$js])}">{$js}</a>
+            <a class="btn btn-flat btn-primary m_10 {if $type == $img}btn-warning{/if}"
+               href="{:url('img',['type'=>$img])}'" >媒体文件</a>
+            <a class="btn btn-flat btn-success m_10 f_r" href='{:url('add')}'><i class="fa fa-plus m-r-10"></i>添 加</a>
+        </form>
+    </div>
+    <!--数据表开始-->
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
                     <!-- /.box-header -->
                     <div class="box-body table-responsive no-padding">
-                      <table class="table table-bordered table-hover">
-                        <tr>
-                          <th class="t_c">文件名称</th>
-                          <th class="t_c">文件大小</th>
-                          <th class="t_c">修改时间</th>
-                          <th class="t_c">操作</th>
-                        </tr>
-                        {volist name='list' id='list' empty="$empty"}
-                        <tr>
-                          <td class="t_c">{$list.filename}</td>
-                          <td class="t_c">{$list.filesize}</td>
-                          <th class="t_c">{$list.filemtime|date="Y-m-d H:i:s"}</th>
-                          <td class="t_c">
-	                          <a class="btn btn-flat btn-info btn-xs" href="{:url('edit',['file'=>$list.filename,'type'=>$type])}">
-                                <i class="fa fa-edit"></i> 编辑
-                              </a>
-                              <a class="btn btn-flat btn-warning btn-xs list_del" data-id="{$list.filename}">
-                                <i class="fa fa-trash-o"></i> 删除
-                              </a>
-                          </td>
-                        </tr>
-                        {/volist}                       
-                      </table>
+                        <table class="table table-bordered table-hover">
+                            <tr>
+                                <th class="t_c">文件名称</th>
+                                <th class="t_c">文件大小</th>
+                                <th class="t_c">修改时间</th>
+                                <th class="t_c">操作</th>
+                            </tr>
+                            {volist name='list' id='list' empty="$empty"}
+                            <tr>
+                                <td class="t_c">{$list.filename}</td>
+                                <td class="t_c">{$list.filesize}</td>
+                                <th class="t_c">{$list.filemtime|date="Y-m-d H:i:s"}</th>
+                                <td class="t_c">
+                                    <a class="btn btn-flat btn-info btn-xs"
+                                       href="{:url('edit',['file'=>$list.filename,'type'=>$type])}">
+                                        <i class="fa fa-edit"></i> 编辑
+                                    </a>
+                                    <a class="btn btn-flat btn-warning btn-xs list_del" data-id="{$list.filename}">
+                                        <i class="fa fa-trash-o"></i> 删除
+                                    </a>
+                                </td>
+                            </tr>
+                            {/volist}
+                        </table>
                     </div>
                     <!-- /.box-body -->
-                  </div>
-                  <!-- /.box -->
                 </div>
-              </div>
-            <!--数据表结束-->
-        </section>
-        <!-- right col -->
-      </div>
-      <!-- /.row (main row) -->
-
-    </section>
-        <!--内容结束-->
+                <!-- /.box -->
+            </div>
+        </div>
+        <!--数据表结束-->
     </div>
-</div>
-{include file="index/bottom" /} 
+</section>
 
 <script>
-	//删除
-	$(".list_del").click(function(){
-		var url = "{:url('del',['type'=>$type])}";
-		var id = $(this).data("id");
-		delOne(url,id)
-	})
+    //删除
+    $(".list_del").click(function () {
+        var url = "{:url('del',['type'=>$type])}";
+        var id = $(this).data("id");
+        delOne(url, id)
+    })
 </script>
-</body>
-</html>    

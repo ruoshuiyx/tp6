@@ -215,7 +215,20 @@ class Validate
     /**
      * @var Closure
      */
-    protected static $maker;
+    protected static $maker = [];
+
+    /**
+     * 构造方法
+     * @access public
+     */
+    public function __construct()
+    {
+        if (!empty(static::$maker)) {
+            foreach (static::$maker as $maker) {
+                call_user_func($maker, $this);
+            }
+        }
+    }
 
     /**
      * 设置服务注入
@@ -225,7 +238,7 @@ class Validate
      */
     public static function maker(Closure $maker)
     {
-        static::$maker = $maker;
+        static::$maker[] = $maker;
     }
 
     /**
@@ -283,7 +296,7 @@ class Validate
     }
 
     /**
-     * 注册扩展验证（类型）规则
+     * 注册验证（类型）规则
      * @access public
      * @param  string   $type  验证规则类型
      * @param  callable $callback callback方法(或闭包)
@@ -455,10 +468,6 @@ class Validate
      */
     public function check(array $data, array $rules = []): bool
     {
-        if (static::$maker && !$this->lang) {
-            call_user_func(static::$maker, $this);
-        }
-
         $this->error = [];
 
         if (empty($rules)) {
@@ -494,7 +503,7 @@ class Validate
             $value = $this->getDataValue($data, $key);
 
             // 字段验证
-            if ($rule instanceof \Closure) {
+            if ($rule instanceof Closure) {
                 $result = call_user_func_array($rule, [$value, $data]);
             } elseif ($rule instanceof ValidateRule) {
                 //  验证因子
@@ -540,11 +549,7 @@ class Validate
      */
     public function checkRule($value, $rules): bool
     {
-        if (static::$maker && !$this->lang) {
-            call_user_func(static::$maker, $this);
-        }
-
-        if ($rules instanceof \Closure) {
+        if ($rules instanceof Closure) {
             return call_user_func_array($rules, [$value]);
         } elseif ($rules instanceof ValidateRule) {
             $rules = $rules->getRule();
@@ -553,7 +558,7 @@ class Validate
         }
 
         foreach ($rules as $key => $rule) {
-            if ($rule instanceof \Closure) {
+            if ($rule instanceof Closure) {
                 $result = call_user_func_array($rule, [$value]);
             } else {
                 // 判断验证类型
@@ -606,7 +611,7 @@ class Validate
 
         $i = 0;
         foreach ($rules as $key => $rule) {
-            if ($rule instanceof \Closure) {
+            if ($rule instanceof Closure) {
                 $result = call_user_func_array($rule, [$value, $data]);
                 $info   = is_numeric($key) ? '' : $key;
             } else {

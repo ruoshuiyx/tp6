@@ -66,7 +66,7 @@ class AdminLog extends Base {
         $username   = Session::get('admin.username','Unknown') ;
         $url        = Request::url();
         $title      = '';
-        $content    = Request::param();
+        $content    = Request::except(['s','_pjax']); //s 变量为系统内置的变量，_pjax为js的变量，无记录的必要
         $ip         = Request::ip();
         $useragent  = Request::server('HTTP_USER_AGENT');
         $create_time = time();

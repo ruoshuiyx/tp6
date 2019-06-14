@@ -200,3 +200,65 @@ function array_group(array $dataArr, string $keyStr)   :array
     }
     return $newArr;
 }
+
+/***
+ * 格式化面包导航(用户后台面包导航)
+ * @param $data
+ * @return array
+ */
+function format_bread_crumb($data)
+{
+    $result = array();
+    if (!empty($data)) {
+        $data = array_reverse($data);
+        if (count($data) == 4) {
+            //非常规 添加或修改
+            $result['right'] = $data[1];
+            $result['left'][0] = $data[1]['title'];
+            //查看是添加还是修改
+            $result['left'][1] = $data[2]['title'] . '-' . str_replace('操作-', '', $data[3]['title']);
+        } else if (count($data) == 3) {
+            //常规 添加或修改
+            $result['right'] = $data[1];
+            $result['left'][0] = $data[1]['title'];
+            //查看是添加还是修改
+            $result['left'][1] = str_replace('操作-', '', $data[2]['title']);
+        } else if (count($data) == 2) {
+            //常规 列表
+            $result['right'] = $data[1];
+            $result['left'][0] = $data[1]['title'];
+            $result['left'][1] = '列表';
+        } else {
+            //单独定义
+            $result['right'] = $data[0];
+            $result['left'][0] = $data[0]['title'];
+            $result['left'][1] = '';
+        }
+    } else {
+        //内容管理
+        if (\think\facade\Request::has('cate')) {
+            //判断当前方法是添加、修改、列表
+            $action = \think\facade\Request::action();
+            if ($action == 'add') {
+                $action = '添加';
+            } else if ($action == 'edit') {
+                $action = '修改';
+            } else {
+                $action = '列表';
+            }
+            //内容管理
+            $cate = \think\facade\Request::param('cate');
+            //调用当前栏目名称
+            $catname = \app\common\model\Cate::where('id', $cate)->value('catname');
+            $result['right'] = [
+                'url' => '',
+                'title' => $catname,
+                'icon' => '',
+            ];
+            $result['left'][0] = $catname;
+            $result['left'][1] = $action;
+        }
+    }
+
+    return $result;
+}
