@@ -234,30 +234,30 @@ function format_bread_crumb($data)
             $result['left'][0] = $data[0]['title'];
             $result['left'][1] = '';
         }
-    } else {
-        //内容管理
-        if (\think\facade\Request::has('cate')) {
-            //判断当前方法是添加、修改、列表
-            $action = \think\facade\Request::action();
-            if ($action == 'add') {
-                $action = '添加';
-            } else if ($action == 'edit') {
-                $action = '修改';
-            } else {
-                $action = '列表';
-            }
-            //内容管理
-            $cate = \think\facade\Request::param('cate');
-            //调用当前栏目名称
-            $catname = \app\common\model\Cate::where('id', $cate)->value('catname');
-            $result['right'] = [
-                'url' => '',
-                'title' => $catname,
-                'icon' => '',
-            ];
-            $result['left'][0] = $catname;
-            $result['left'][1] = $action;
+    }
+
+    //内容管理重构
+    if (\think\facade\Request::has('cate')) {
+        //判断当前方法是添加、修改、列表
+        $action = \think\facade\Request::action();
+        if ($action == 'add') {
+            $action = '添加';
+        } else if ($action == 'edit') {
+            $action = '修改';
+        } else {
+            $action = '列表';
         }
+        //内容管理
+        $cate = \think\facade\Request::param('cate');
+        //调用当前栏目名称
+        $catname = \app\common\model\Cate::where('id', $cate)->value('catname');
+        $result['right'] = [
+            'url' => '',
+            'title' => $catname,
+            'icon' => '',
+        ];
+        $result['left'][0] = $catname;
+        $result['left'][1] = $action;
     }
 
     return $result;
