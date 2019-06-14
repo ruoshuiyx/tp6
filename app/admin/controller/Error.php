@@ -81,7 +81,7 @@ class Error extends Base
             }
 
             //查询是否包含图片字段,包含则展示
-            $prefix = Config::get('database.prefix');
+            $prefix = Config::get('database.connections.mysql.prefix');
             $tablename = $prefix.$this->table;
             $Fields = Db::getTableFields($tablename);
             $image = '';

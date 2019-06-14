@@ -79,17 +79,16 @@ if (!function_exists('bind')) {
 if (!function_exists('cache')) {
     /**
      * 缓存管理
-     * @param  mixed  $name    缓存名称，如果为数组表示进行缓存设置
+     * @param  string $name    缓存名称
      * @param  mixed  $value   缓存值
      * @param  mixed  $options 缓存参数
      * @param  string $tag     缓存标签
      * @return mixed
      */
-    function cache($name, $value = '', $options = null, $tag = null)
+    function cache(string $name = null, $value = '', $options = null, $tag = null)
     {
-        if (is_array($name)) {
-            // 缓存初始化
-            return Cache::connect($name);
+        if (is_null($name)) {
+            return app('cache');
         }
 
         if ('' === $value) {

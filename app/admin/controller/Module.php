@@ -115,7 +115,7 @@ class module extends Base
             $tables = Db::getConnection()->getTables();
 
             //组装表名
-            $prefix = Config::get('database.prefix');
+            $prefix = Config::get('database.connections.mysql.prefix');
             $tablename = $prefix.Request::param('name');
 
             //判断表名是否已经存在(实际查询数据库所有表)
@@ -326,7 +326,7 @@ class module extends Base
 
                 //实际去数据库中查询是否存在这个字段
                 $fieldName = $data['field'];
-                $prefix = Config::get('database.prefix');
+                $prefix = Config::get('database.connections.mysql.prefix');
                 $name = Db::name('module')
                     ->where('id','=',$data['moduleid'])
                     ->value('name');
@@ -393,7 +393,7 @@ class module extends Base
             $name = Db::name('module')
                 ->where('id' , '=' ,$data['moduleid'])
                 ->value('name');
-            $prefix = Config::get('database.prefix');
+            $prefix = Config::get('database.connections.mysql.prefix');
             if($this->_iset_field($prefix.$name,$fieldName) && $oldfield!=$fieldName){
                 $this->error('字段名重复！');
             }
@@ -436,7 +436,7 @@ class module extends Base
         $moduleid = $r['moduleid'];
         $field    = $r['field'];
 
-        $prefix = Config::get('database.prefix');
+        $prefix = Config::get('database.connections.mysql.prefix');
         $name   = Db::name('module')
             ->where('id','=',$moduleid)
             ->value('name');
@@ -461,7 +461,7 @@ class module extends Base
             $default = $info['setup']['default'];
         }
         $field = $info['field'];
-        $prefix = Config::get('database.prefix');
+        $prefix = Config::get('database.connections.mysql.prefix');
         $name = Db::name('module')
             ->where('id',$moduleid)
             ->value('name');

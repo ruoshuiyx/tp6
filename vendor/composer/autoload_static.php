@@ -35,6 +35,11 @@ class ComposerStaticInit2b6d27c7c9442c4b1eb2d9fc93b24417
         array (
             'Opis\\Closure\\' => 13,
         ),
+        'L' => 
+        array (
+            'League\\Flysystem\\Cached\\' => 24,
+            'League\\Flysystem\\' => 17,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -82,6 +87,14 @@ class ComposerStaticInit2b6d27c7c9442c4b1eb2d9fc93b24417
         'Opis\\Closure\\' => 
         array (
             0 => __DIR__ . '/..' . '/opis/closure/src',
+        ),
+        'League\\Flysystem\\Cached\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/league/flysystem-cached-adapter/src',
+        ),
+        'League\\Flysystem\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/league/flysystem/src',
         ),
     );
 
