@@ -143,6 +143,10 @@ class Admin
         ];
 
         $type = (request()->isJson() || request()->isAjax()) ? 'json' : 'html';
+
+        //所有form返回的都必须是json，所有A链接返回的都必须是Html
+        $type = request()->isGet() ? 'html' : $type;
+
         if ($type == 'html') {
             $response = view(app('config')->get('app.dispatch_error_tmpl'), $result);
         } else if ($type == 'json') {
