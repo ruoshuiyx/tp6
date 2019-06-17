@@ -72,12 +72,34 @@
                 </a>
                 <ul class="treeview-menu">
                     {volist name="vo.sub" id="voo"}
+                    {if count($voo.sub)}
+                    <li class="treeview">
+                        <a href="{:url($voo.moduleurl.'/index',['cate'=>$voo.id])}">
+                            <i class="fa fa-circle-o"></i>
+                            <span>{$voo.catname}</span>
+                            <span class="pull-right-container">
+                              <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            {volist name="voo.sub" id="vooo"}
+                            <li>
+                                <a href="{:url($vooo.moduleurl.'/index',['cate'=>$vooo.id])}">
+                                    <i class="fa fa-circle-o"></i>
+                                    <span>{$vooo.catname}</span>
+                                </a>
+                            </li>
+                            {/volist}
+                        </ul>
+                    </li>
+                    {else /}
                     <li>
                         <a href="{:url($voo.moduleurl.'/index',['cate'=>$voo.id])}">
                             <i class="fa fa-circle-o"></i>
                             <span>{$voo.catname}</span>
                         </a>
                     </li>
+                    {/if}
                     {/volist}
                 </ul>
             </li>
@@ -128,8 +150,8 @@
                 if(this.href !== '#' && $(this).children('span').html() == _title){
                     //打开对应菜单
                     $(this).parent().addClass('active')
-                            .closest('.treeview-menu').addClass('.menu-open')  //打开二级ul
-                            .closest('.treeview').addClass('active'); //打开一级li
+                            .closest('.treeview-menu').addClass('menu-open')  //打开二级ul
+                            .closest('.treeview').addClass('active menu-open'); //打开一级li
                     //打开对应 .sidebar-menu
                     //判断当前所属的是第几个
                     var index = $(".js_left_menu_show").index($(this).closest('.sidebar-menu'));
