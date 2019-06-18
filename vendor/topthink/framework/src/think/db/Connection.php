@@ -388,17 +388,11 @@ abstract class Connection
     /**
      * 获取最近插入的ID
      * @access public
+     * @param Query  $query  查询对象
      * @param string $sequence 自增序列名
-     * @return string
+     * @return mixed
      */
-    abstract public function getLastInsID(string $sequence = null): string;
-
-    /**
-     * 获取最近的错误信息
-     * @access public
-     * @return string
-     */
-    abstract public function getError(): string;
+    abstract public function getLastInsID(Query $query, string $sequence = null);
 
     /**
      * 初始化数据库连接
