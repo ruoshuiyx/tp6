@@ -401,10 +401,30 @@ function pjaxReplace(url){
 
 //pjax 执行完成后执行的方法
 $(document).on('pjax:complete', function () {
+	
     //重新请求远程ad
     if ($(".main_ad").length > 0) {
         $.getScript("http://www.siyucms.com/ad.js");
     }
-})
+	
+	//tag 标签
+	if ($(".tags").length > 0) {
+		$('.tags').tagsInput({
+			'width':'auto',
+			'height':'auto',
+			'placeholderColor' : '#666666',
+			'defaultText':'添加标签',
+		});
+	}
+    
+})                
 
-
+//tag 标签
+if ($(".tags").length > 0) {
+	$('.tags').tagsInput({
+		'width':'auto',
+		'height':'auto',
+		'placeholderColor' : '#666666',
+		'defaultText':'添加标签',
+	});
+}

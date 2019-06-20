@@ -292,6 +292,7 @@ function format_bread_crumb($data)
  * number   数字
  * datetime 日期和时间
  * template 模版
+ * tag      标签
  *
  */
 function make_html_add($type, $field, $name, $required, $tips, $value = null, $moduleid = null, $cate = null, $cateId = null, $setup = [], $template = [])
@@ -518,6 +519,13 @@ function make_html_add($type, $field, $name, $required, $tips, $value = null, $m
                '.$templateHtml.'
                </div>
                <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">' . $requiredHtml . $tipsHtml . '</div>';
+            break;
+        case 'tag':
+            $result = '<label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">' . $name . '</label>
+                <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+                    <input type="text" name="' . $field . '" class="form-control tags" placeholder="输入后请回车确认" value="' . $value . '">
+                </div>
+                <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">' . $requiredHtml . $tipsHtml . '</div>';
             break;
     }
 

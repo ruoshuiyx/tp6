@@ -25,36 +25,23 @@
                             <div class="form-group">
                                 <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">字段类型</label>
                                 <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-                                    <select id="type" name="type" class="form-control" {$info?'disabled':''}>
+                                    <select id="type" name="type" class="form-control" {$info ? 'disabled' : ''}>
                                     <option value=''>请选择字段类型</option>
-                                    <option value="cate" {$info.type=='cate'?'selected="selected"
-                                    ':''}>栏目</option>
-                                    <option value="title" {$info.type=='title'?'selected="selected"
-                                    ':''}>标题</option>
-                                    <option value="text" {$info.type=='text'?'selected="selected"
-                                    ':''} >单行文本</option>
-                                    <option value="textarea" {$info.type=='textarea'?'selected="selected"
-                                    ':''}>多行文本</option>
-                                    <option value="editor" {$info.type=='editor'?'selected="selected"
-                                    ':''}>编辑器</option>
-                                    <option value="select" {$info.type=='select'?'selected="selected"
-                                    ':''}>下拉列表</option>
-                                    <option value="radio" {$info.type=='radio'?'selected="selected"
-                                    ':''}>单选按钮</option>
-                                    <option value="checkbox" {$info.type=='checkbox'?'selected="selected"
-                                    ':''}>复选框</option>
-                                    <option value="image" {$info.type=='image'?'selected="selected"
-                                    ':''}>单张图片</option>
-                                    <option value="images" {$info.type=='images'?'selected="selected"
-                                    ':''}>多张图片</option>
-                                    <option value="file" {$info.type=='file'?'selected="selected"
-                                    ':''}>文件上传</option>
-                                    <option value="number" {$info.type=='number'?'selected="selected"
-                                    ':''}>数字</option>
-                                    <option value="datetime" {$info.type=='datetime'?'selected="selected"
-                                    ':''}>日期和时间</option>
-                                    <option value="template" {$info.type=='template'?'selected="selected"
-                                    ':''}>模版</option>
+                                    <option value="cate" {$info.type == 'cate' ? 'selected="selected"' : ''}>栏目</option>
+                                    <option value="title" {$info.type == 'title' ? 'selected="selected"' : ''}>标题</option>
+                                    <option value="text" {$info.type == 'text' ? 'selected="selected"' : ''} >单行文本</option>
+                                    <option value="textarea" {$info.type == 'textarea' ? 'selected="selected"' : ''}>多行文本</option>
+                                    <option value="editor" {$info.type == 'editor' ? 'selected="selected"' : ''}>编辑器</option>
+                                    <option value="select" {$info.type == 'select' ? 'selected="selected"' : ''}>下拉列表</option>
+                                    <option value="radio" {$info.type == 'radio' ? 'selected="selected"' : ''}>单选按钮</option>
+                                    <option value="checkbox" {$info.type == 'checkbox' ? 'selected="selected"' : ''}>复选框</option>
+                                    <option value="image" {$info.type == 'image' ? 'selected="selected"' : ''}>单张图片</option>
+                                    <option value="images" {$info.type == 'images' ? 'selected="selected"' : ''}>多张图片</option>
+                                    <option value="file" {$info.type == 'file' ? 'selected="selected"' : ''}>文件上传</option>
+                                    <option value="number" {$info.type == 'number' ? 'selected="selected"' : ''}>数字</option>
+                                    <option value="datetime" {$info.type == 'datetime' ? 'selected="selected"' : ''}>日期和时间</option>
+                                    <option value="template" {$info.type == 'template' ? 'selected="selected"' : ''}>模版</option>
+                                    <option value="tag" {$info.type == 'tag' ? 'selected="selected"' : ''}>标签</option>
                                     <!--<option value="posid" >推荐位</option>-->
                                     <!--<option value="template">模板选择</option>-->
                                     </select>
