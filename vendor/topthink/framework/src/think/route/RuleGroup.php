@@ -422,7 +422,7 @@ class RuleGroup extends Rule
     }
 
     /**
-     * 添加分组下的路由规则或者子分组
+     * 添加分组下的路由规则
      * @access public
      * @param  string $rule   路由规则
      * @param  mixed  $route  路由地址
@@ -452,6 +452,13 @@ class RuleGroup extends Rule
         return $ruleItem;
     }
 
+    /**
+     * 注册分组下的路由规则
+     * @access public
+     * @param  Rule   $rule   路由规则
+     * @param  string $method 请求类型
+     * @return RuleItem
+     */
     public function addRuleItem(Rule $rule, string $method = '*')
     {
         if (strpos($method, '|')) {
@@ -460,6 +467,10 @@ class RuleGroup extends Rule
         }
 
         $this->rules[$method][] = $rule;
+
+        if ($rule instanceof RuleItem && 'options' != $method) {
+            $this->rules['options'][] = $rule->setAutoOptions();
+        }
 
         return $this;
     }

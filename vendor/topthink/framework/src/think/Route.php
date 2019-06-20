@@ -172,7 +172,7 @@ class Route
         $this->lazy($this->config['url_lazy_route']);
 
         if ($this->config['route_check_cache']) {
-            $this->cache = $this->app->cache->store($this->config['route_check_cache'] === true ? '' : $this->config['route_check_cache']);
+            $this->cache = $this->app->cache->store(true === $this->config['route_check_cache'] ? '' : $this->config['route_check_cache']);
         }
 
         if (is_file($this->app->getRuntimePath() . 'route.php')) {
@@ -619,6 +619,18 @@ class Route
     }
 
     /**
+     * 注册OPTIONS路由
+     * @access public
+     * @param string $rule  路由规则
+     * @param mixed  $route 路由地址
+     * @return RuleItem
+     */
+    public function options(string $rule, $route): RuleItem
+    {
+        return $this->rule($rule, $route, 'OPTIONS');
+    }
+
+    /**
      * 注册资源路由
      * @access public
      * @param string $rule  路由规则
@@ -634,9 +646,9 @@ class Route
     /**
      * 注册视图路由
      * @access public
-     * @param string|array $rule     路由规则
-     * @param string       $template 路由模板地址
-     * @param array        $vars     模板变量
+     * @param string $rule     路由规则
+     * @param string $template 路由模板地址
+     * @param array  $vars     模板变量
      * @return RuleItem
      */
     public function view(string $rule, string $template = '', array $vars = []): RuleItem
@@ -647,9 +659,9 @@ class Route
     /**
      * 注册重定向路由
      * @access public
-     * @param string|array $rule   路由规则
-     * @param string       $route  路由地址
-     * @param int          $status 状态码
+     * @param string $rule   路由规则
+     * @param string $route  路由地址
+     * @param int    $status 状态码
      * @return RuleItem
      */
     public function redirect(string $rule, string $route = '', int $status = 301): RuleItem

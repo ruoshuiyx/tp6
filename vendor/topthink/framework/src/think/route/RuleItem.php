@@ -25,7 +25,13 @@ class RuleItem extends Rule
      * 是否为MISS规则
      * @var bool
      */
-    protected $miss;
+    protected $miss = false;
+
+    /**
+     * 是否为额外自动注册的OPTIONS规则
+     * @var bool
+     */
+    protected $autoOption = false;
 
     /**
      * 架构函数
@@ -53,11 +59,12 @@ class RuleItem extends Rule
     /**
      * 设置当前路由规则为MISS路由
      * @access public
-     * @return void
+     * @return $this
      */
-    public function setMiss(): void
+    public function setMiss()
     {
         $this->miss = true;
+        return $this;
     }
 
     /**
@@ -67,7 +74,28 @@ class RuleItem extends Rule
      */
     public function isMiss(): bool
     {
-        return $this->miss ? true : false;
+        return $this->miss;
+    }
+
+    /**
+     * 设置当前路由为自动注册OPTIONS
+     * @access public
+     * @return $this
+     */
+    public function setAutoOptions()
+    {
+        $this->autoOption = true;
+        return $this;
+    }
+
+    /**
+     * 判断当前路由规则是否为自动注册的OPTIONS路由
+     * @access public
+     * @return bool
+     */
+    public function isAutoOptions(): bool
+    {
+        return $this->autoOption;
     }
 
     /**
@@ -233,7 +261,7 @@ class RuleItem extends Rule
         $pattern = array_merge($this->parent->getPattern(), $this->pattern);
 
         // 检查完整规则定义
-        if (isset($pattern['__url__']) && !preg_match(0 === strpos($pattern['__url__'], '/') ? $pattern['__url__'] : '/^' . $pattern['__url__'] . '/', str_replace('|', $depr, $url))) {
+        if (isset($pattern['__url__']) && !preg_match(0 === strpos($pattern['__url__'], '/') ? $pattern['__url__'] : '/^' . $pattern['__url__'] . ($completeMatch ? '$' : '') . '/', str_replace('|', $depr, $url))) {
             return false;
         }
 
