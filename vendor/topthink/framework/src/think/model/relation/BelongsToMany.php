@@ -14,7 +14,7 @@ namespace think\model\relation;
 use Closure;
 use think\App;
 use think\Collection;
-use think\db\Query;
+use think\db\BaseQuery as Query;
 use think\db\Raw;
 use think\Exception;
 use think\Model;
@@ -56,22 +56,22 @@ class BelongsToMany extends Relation
      * @access public
      * @param  Model  $parent     上级模型对象
      * @param  string $model      模型名
-     * @param  string $table      中间表名
+     * @param  string $middle     中间表/模型名
      * @param  string $foreignKey 关联模型外键
      * @param  string $localKey   当前模型关联键
      */
-    public function __construct(Model $parent, string $model, string $table, string $foreignKey, string $localKey)
+    public function __construct(Model $parent, string $model, string $middle, string $foreignKey, string $localKey)
     {
         $this->parent     = $parent;
         $this->model      = $model;
         $this->foreignKey = $foreignKey;
         $this->localKey   = $localKey;
 
-        if (false !== strpos($table, '\\')) {
-            $this->pivotName = $table;
-            $this->middle    = App::classBaseName($table);
+        if (false !== strpos($middle, '\\')) {
+            $this->pivotName = $middle;
+            $this->middle    = App::classBaseName($middle);
         } else {
-            $this->middle = $table;
+            $this->middle = $middle;
         }
 
         $this->query = (new $model)->db();
@@ -111,7 +111,7 @@ class BelongsToMany extends Relation
      */
     protected function newPivot(array $data = []): Pivot
     {
-        $class = $this->pivotName ?: '\\think\\model\\Pivot';
+        $class = $this->pivotName ?: Pivot::class;
         $pivot = new $class($data, $this->parent, $this->middle);
 
         if ($pivot instanceof Pivot) {
@@ -432,7 +432,6 @@ class BelongsToMany extends Relation
     protected function eagerlyManyToMany(array $where, string $relation, array $subRelation = [], Closure $closure = null): array
     {
         if ($closure) {
-            $this->baseQuery = true;
             $closure($this);
         }
 

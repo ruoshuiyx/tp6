@@ -431,6 +431,7 @@ class module extends Base
     public function fieldDel() {
         $id = Request::param('id');
         $r  = Db::name('field')->find($id);
+        //删除字段表中的记录
         Db::name('field')->delete($id);
 
         $moduleid = $r['moduleid'];
@@ -442,8 +443,11 @@ class module extends Base
             ->value('name');
         $tablename = $prefix.$name;
 
-        Db::name('field')
-            ->execute("ALTER TABLE `$tablename` DROP `$field`");
+        //实际查询表中是否有该字段
+        if($this->_iset_field($tablename,$field)){
+            Db::name('field')
+                ->execute("ALTER TABLE `$tablename` DROP `$field`");
+        }
         return json(['error'=>0, 'msg'=>'删除成功！']);
     }
 

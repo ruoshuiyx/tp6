@@ -28,7 +28,7 @@ class Filesystem
     /** @var App */
     protected $app;
 
-    public function __construct($app)
+    public function __construct(App $app)
     {
         $this->app = $app;
     }
@@ -37,7 +37,7 @@ class Filesystem
      * @param null|string $name
      * @return Driver
      */
-    public function disk($name = null)
+    public function disk(string $name = null): Driver
     {
         $name = $name ?: $this->app->config->get('filesystem.default');
 

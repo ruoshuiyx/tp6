@@ -3,6 +3,7 @@
 namespace think\filesystem;
 
 use League\Flysystem\AdapterInterface;
+use League\Flysystem\Adapter\AbstractAdapter;
 use League\Flysystem\Cached\CachedAdapter;
 use League\Flysystem\Cached\Storage\Memory as MemoryStore;
 use League\Flysystem\Filesystem;
@@ -23,9 +24,13 @@ abstract class Driver
     /** @var Filesystem */
     protected $filesystem;
 
+    /**
+     * 配置参数
+     * @var array
+     */
     protected $config = [];
 
-    public function __construct(App $app, $config)
+    public function __construct(App $app, array $config)
     {
         $this->app    = $app;
         $this->config = array_merge($this->config, $config);
@@ -36,7 +41,7 @@ abstract class Driver
 
     protected function createCacheStore($config)
     {
-        if ($config === true) {
+        if (true === $config) {
             return new MemoryStore;
         }
 
@@ -49,7 +54,7 @@ abstract class Driver
 
     abstract protected function createAdapter(): AdapterInterface;
 
-    protected function createFilesystem(AdapterInterface $adapter)
+    protected function createFilesystem(AdapterInterface $adapter): Filesystem
     {
         if (!empty($this->config['cache'])) {
             $adapter = new CachedAdapter($adapter, $this->createCacheStore($this->config['cache']));
@@ -61,6 +66,22 @@ abstract class Driver
     }
 
     /**
+     * 获取文件完整路径
+     * @param string $path
+     * @return string
+     */
+    public function path(string $path): string
+    {
+        $adapter = $this->filesystem->getAdapter();
+
+        if ($adapter instanceof AbstractAdapter) {
+            return $adapter->applyPathPrefix($path);
+        }
+
+        return $path;
+    }
+
+    /**
      * 保存文件
      * @param string               $path
      * @param File                 $file
@@ -68,7 +89,7 @@ abstract class Driver
      * @param array                $options
      * @return bool|string
      */
-    public function putFile($path, $file, $rule = null, $options = [])
+    public function putFile(string $path, File $file, $rule = null, array $options = [])
     {
         return $this->putFileAs($path, $file, $file->hashName($rule), $options);
     }
@@ -81,7 +102,7 @@ abstract class Driver
      * @param array  $options
      * @return bool|string
      */
-    public function putFileAs($path, $file, $name, $options = [])
+    public function putFileAs(string $path, File $file, string $name, array $options = [])
     {
         $stream = fopen($file->getRealPath(), 'r');
 

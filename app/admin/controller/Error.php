@@ -25,6 +25,7 @@
  */
 namespace app\admin\controller;
 
+use app\common\model\Tags;
 use think\facade\Config;
 use think\facade\Db;
 use think\facade\Request;
@@ -176,23 +177,23 @@ class Error extends Base
                 //查找栏目相关数据(已隐藏的数据不再做修改)
                 $list = Db::name('cate')
                     ->alias('c')
-                    ->leftJoin('module m','c.moduleid = m.id')
-                    ->leftJoin('field f','c.moduleid = f.moduleid')
+                    ->leftJoin('module m', 'c.moduleid = m.id')
+                    ->leftJoin('field f', 'c.moduleid = f.moduleid')
                     ->field('c.moduleid,m.name as m_table,f.*')
-                    ->where('c.id','=',input('post.cate_id'))
-                    ->where('f.status','=',1)
-                    ->order(['f.sort'=>'asc','f.id'=>'asc'])
+                    ->where('c.id', '=', input('post.cate_id'))
+                    ->where('f.status', '=', 1)
+                    ->order(['f.sort' => 'asc', 'f.id' => 'asc'])
                     ->select();
                 //循环判断数据合法性
-                foreach ($list as $k => $v){
+                foreach ($list as $k => $v) {
                     //判断是否必填
-                    if ($v['required']==1) {
-                        if (array_key_exists($v['field'],$data)) {
+                    if ($v['required'] == 1) {
+                        if (array_key_exists($v['field'], $data)) {
                             if (!$data[$v['field']]) {
-                                $this->error($v['name'].'为必填项!');
+                                $this->error($v['name'] . '为必填项!');
                             }
                         } else {
-                            $this->error($v['name'].'为必填项!');
+                            $this->error($v['name'] . '为必填项!');
                         }
                     }
                     $minlength = $v['minlength'];
@@ -203,7 +204,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if (!($length >= $minlength && $length <= $maxlength)) {
-                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'] . '长度超限，最多字符：' . $maxlength);
                             }
                             break;
                         case 'title'://标题
@@ -211,15 +212,15 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if (!($length >= $minlength && $length <= $maxlength)) {
-                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'] . '长度超限，最多字符：' . $maxlength);
                             }
                             break;
                         case 'text'://单行文本
                             $maxlength = $maxlength ? min($maxlength, 65535) : 65535;
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
-                            if (!($length >= $minlength && $length <= $maxlength)){
-                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
+                            if (!($length >= $minlength && $length <= $maxlength)) {
+                                $this->error($v['name'] . '长度超限，最多字符：' . $maxlength);
                             }
                             break;
                         case 'textarea'://多行文本
@@ -229,7 +230,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if (!($length >= $minlength && $length <= $maxlength)) {
-                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'] . '长度超限，最多字符：' . $maxlength);
                             }
                             break;
                         case 'editor'://编辑器
@@ -237,7 +238,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if (!($length >= $minlength && $length <= $maxlength)) {
-                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'] . '长度超限，最多字符：' . $maxlength);
                             }
                             break;
                         case 'select'://下拉列表
@@ -245,7 +246,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if (!($length >= $minlength && $length <= $maxlength)) {
-                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'] . '长度超限，最多字符：' . $maxlength);
                             }
                             break;
                         case 'radio'://单选按钮
@@ -253,17 +254,17 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if (!($length >= $minlength && $length <= $maxlength)) {
-                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'] . '长度超限，最多字符：' . $maxlength);
                             }
                             break;
                         case 'checkbox'://复选框
-                            if(array_key_exists($v['field'],$data)){
+                            if (array_key_exists($v['field'], $data)) {
                                 $data[$v['field']] = is_array($data[$v['field']]) ? implode(",", $data[$v['field']]) : $data[$v['field']];
                                 $maxlength = $maxlength ? min($maxlength, 255) : 255;
                                 $length = strlen($data[$v['field']]);
                                 //判断长度是否合法
                                 if (!($length >= $minlength && $length <= $maxlength)) {
-                                    $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                    $this->error($v['name'] . '长度超限，最多字符：' . $maxlength);
                                 }
                             }
                             break;
@@ -272,25 +273,25 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if (!($length >= $minlength && $length <= $maxlength)) {
-                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'] . '长度超限，最多字符：' . $maxlength);
                             }
                             break;
                         case 'images'://多张图片
                             $maxlength = $maxlength ? min($maxlength, 16777215) : 16777215;
                             if (array_key_exists($v['field'], $data)) {
-                                for ( $i=0; $i < count($data[$v['field']]); $i++) {
+                                for ($i = 0; $i < count($data[$v['field']]); $i++) {
                                     $images[$i]['image'] = $data[$v['field']][$i];
-                                    $images[$i]['title'] = $data[$v['field'].'_title'][$i];
+                                    $images[$i]['title'] = $data[$v['field'] . '_title'][$i];
                                 }
                                 $data[$v['field']] = json_encode($images);
                                 $length = strlen($data[$v['field']]);
                                 //判断长度是否合法
                                 if (!($length >= $minlength && $length <= $maxlength)) {
-                                    $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                    $this->error($v['name'] . '长度超限，最多字符：' . $maxlength);
                                 }
                                 //去除上传图片和文件的无用字段
-                                unset($data[$v['field'].'_title']);
-                            }else{
+                                unset($data[$v['field'] . '_title']);
+                            } else {
                                 $data[$v['field']] = '';
                             }
                             break;
@@ -299,7 +300,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if (!($length >= $minlength && $length <= $maxlength)) {
-                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'] . '长度超限，最多字符：' . $maxlength);
                             }
                             break;
                         case 'number'://数字
@@ -307,7 +308,7 @@ class Error extends Base
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
                             if (!($length >= $minlength && $length <= $maxlength)) {
-                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
+                                $this->error($v['name'] . '长度超限，最多字符：' . $maxlength);
                             }
                             break;
                         case 'datetime'://时间
@@ -315,19 +316,66 @@ class Error extends Base
                             $maxlength = $maxlength ? min($maxlength, 11) : 11;
                             $length = strlen($data[$v['field']]);
                             //判断长度是否合法
-                            if (!($length >= $minlength && $length <= $maxlength)){
-                                $this->error($v['name'].'长度超限，最多字符：'.$maxlength);
+                            if (!($length >= $minlength && $length <= $maxlength)) {
+                                $this->error($v['name'] . '长度超限，最多字符：' . $maxlength);
+                            }
+                            break;
+                        case 'tag'://标签
+                            $maxlength = $maxlength ? min($maxlength, 65535) : 65535;
+
+                            //判断标签表是否存在，不存在则创建标签
+                            $tagStr = $data[$v['field']];
+                            if (!empty($tagStr)) {
+                                $tagArr = explode(',', $tagStr);
+                                $data[$v['field']] = '';
+                                foreach ($tagArr as $tag) {
+                                    //判断是否已存在该标签
+                                    $tagModule = Tags::where('name', $tag)
+                                        ->where('module_id', $v['moduleid'])
+                                        ->find();
+                                    if (!$tagModule) {
+                                        //新增该标签
+                                        $tagModule = Tags::create([
+                                            'name' => $tag,
+                                            'num' => 0,
+                                            'module_id' => $v['moduleid'],
+                                        ]);
+                                        $data[$v['field']] .= $tagModule->id . ',';
+                                    } else {
+                                        //已存在的标签则获取标签ID
+                                        $tagId = Tags::where('name', $tag)
+                                            ->where('module_id', $v['moduleid'])
+                                            ->value('id');
+                                        $data[$v['field']] .= $tagId . ',';
+                                    }
+                                }
+                                $data[$v['field']] = rtrim($data[$v['field']], ',');
+                                $tags = $data[$v['field']];
+                            }
+
+                            $length = strlen($data[$v['field']]);
+                            //判断长度是否合法
+                            if (!($length >= $minlength && $length <= $maxlength)) {
+                                $this->error($v['name'] . '长度超限，最多字符：' . $maxlength);
                             }
                             break;
                         default:
                     }
                 }
             }
+
             //入库操作
-            if($data){
+            if ($data) {
                 $id = Db::name($this->table)->insertGetId($data);
                 if ($id) {
-                    $this->success('添加成功!',url('index', ['cate' => $data['cate_id']]));
+                    //维护标签扩展表
+                    if (!empty($tags)) {
+                         Tags::where('module_id', $list[0]['moduleid'])
+                            ->where('id', 'IN', $tags)
+                            ->inc('num')
+                            ->update();
+                    }
+                    $this->success('添加成功!', url('index', ['cate' => $data['cate_id']]));
                 } else {
                     $this->error('添加失败!');
                 }
@@ -371,12 +419,22 @@ class Error extends Base
                 ->where('id', Request::param('id'))
                 ->find();
 
+            //dump($field);
             //处理特殊字段
             foreach ($field as $k => $v) {
                 if (array_key_exists($v['field'], $info)) {
                     if ($info[$v['field']]) {
                         if ($v['type'] == 'images') {
                             $info[$v['field']] = json_decode($info[$v['field']], true);
+                        } else if ($v['type'] == 'tag') {
+                            //转换成文字
+                            $tagStrArr = Tags::where('id', 'IN', $info[$v['field']])->column('name', 'id');
+                            $tagStrs = '';
+                            foreach ($tagStrArr as $tagStr) {
+                                $tagStrs .= $tagStr . ',';
+                            }
+                            //去除右侧多余逗号
+                            $info[$v['field']] = rtrim($tagStrs, ',');
                         }
                     }
                 }
@@ -554,6 +612,50 @@ class Error extends Base
                                 $this->error($v['name'] . '长度超限，最多字符：' . $maxlength);
                             }
                             break;
+                        case 'tag'://标签
+                            $maxlength = $maxlength ? min($maxlength, 65535) : 65535;
+
+                            //查找该文章以前的tag，用于对应减少
+                            $tagOld = Db::name($this->table)
+                                ->where('id', $data['id'])
+                                ->value($v['field']);
+
+                            //判断标签表是否存在，不存在则创建标签
+                            $tagStr = $data[$v['field']];
+                            if (!empty($tagStr)) {
+                                $tagArr = explode(',', $tagStr);
+                                $data[$v['field']] = '';
+                                foreach ($tagArr as $tag) {
+                                    //判断是否已存在该标签
+                                    $tagModule = Tags::where('name', $tag)
+                                        ->where('module_id', $v['moduleid'])
+                                        ->find();
+                                    if (!$tagModule) {
+                                        //新增该标签
+                                        $tagModule = Tags::create([
+                                            'name' => $tag,
+                                            'num' => 0,
+                                            'module_id' => $v['moduleid'],
+                                        ]);
+                                        $data[$v['field']] .= $tagModule->id . ',';
+                                    } else {
+                                        //已存在的标签则获取标签ID
+                                        $tagId = Tags::where('name', $tag)
+                                            ->where('module_id', $v['moduleid'])
+                                            ->value('id');
+                                        $data[$v['field']] .= $tagId . ',';
+                                    }
+                                }
+                                $data[$v['field']] = rtrim($data[$v['field']], ',');
+                                $tags = $data[$v['field']];
+                            }
+
+                            $length = strlen($data[$v['field']]);
+                            //判断长度是否合法
+                            if (!($length >= $minlength && $length <= $maxlength)) {
+                                $this->error($v['name'] . '长度超限，最多字符：' . $maxlength);
+                            }
+                            break;
                         default:
                     }
                 }
@@ -564,6 +666,22 @@ class Error extends Base
                     ->where('id', $data['id'])
                     ->update($data);
                 if ($result) {
+                    //删除标签扩展表
+                    if (!empty($tagOld)) {
+                        Tags::where('module_id', $list[0]['moduleid'])
+                            ->where('id', 'IN', $tagOld)
+                            ->dec('num')
+                            ->update();
+                    }
+
+                    //增加标签扩展表
+                    if (!empty($tags)) {
+                        Tags::where('module_id', $list[0]['moduleid'])
+                            ->where('id', 'IN', $tags)
+                            ->inc('num')
+                            ->update();
+                    }
+                    $this->success('添加成功!', url('index', ['cate' => $data['cate_id']]));
                     $this->success('修改成功!', url('index', ['cate' => $data['cate_id']]));
                 } else {
                     $this->error('修改失败!');

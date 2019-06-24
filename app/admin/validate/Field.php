@@ -41,12 +41,10 @@ class Field extends Validate
         'field|字段名' => [
             'require' => 'require',
             'max'     => '20',
-            'unique'  => 'field',
         ],
         'name|别名' => [
             'require' => 'require',
             'max'     => '30',
-            'unique'  => 'field',
         ],
         'minlength|字符长度' => [
             'max' => '10',
