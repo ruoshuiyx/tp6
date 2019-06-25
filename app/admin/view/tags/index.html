@@ -1,0 +1,90 @@
+<!--内容开始-->
+<section class="content">
+    <div class="search">
+        <form class="form-inline" action="{:url('index')}" data-pjax>
+            <input type="text" class="form-control" name="keyword" placeholder="标签名称" value="{$keyword}">
+            <select name="module_id" class="form-control">
+                <option value="0">请选择</option>
+                {volist name="module" id="vo"}
+                <option {if $moduleId==$vo.id}selected{/if} value="{$vo.id}">{$vo.title}</option>
+                {/volist}
+            </select>
+            
+            <input class="btn btn-flat btn-primary" type="submit" value="搜索">
+            <a class="btn btn-flat btn-primary m_10" href="{:url('index')}" >显示全部</a>
+            <input class="btn btn-flat btn-warning m_10 select_del" type="button" value="批量删除">
+        </form>
+    </div>
+    <!--数据表开始-->
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <!-- /.box-header -->
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-bordered table-hover">
+                            <tr>
+                                <th class="t_c"><input type="checkbox" id="check"></th>
+                                <th class="t_c">编号</th>
+                                <th class="t_c">标签名称</th>
+                                <th class="t_c">所属模型</th>
+                                <th class="t_c">文档数量</th>
+                                <th class="t_c">URL</th>
+                                <th class="t_c">操作</th>
+                            </tr>
+                            {volist name='list' id='list' empty="$empty"}
+                            <tr>
+                                <td class="t_c"><input type="checkbox" name="key[]" value="{$list.id}"></td>
+                                <td class="t_c">{$list.id}</td>
+                                <td class="t_c">{$list.name}</td>
+                                <td class="t_c">{$list.module_title}</td>
+                                <td class="t_c">{$list.num}</td>
+                                <td class="t_c">
+                                	<a href="{:url('index/index/tag', ['t'=>$list.name])}" target="_blank" class="btn btn-default btn-xs"><i class="fa fa-link"></i></a>
+                                </td>
+                                <td class="t_c">
+                                    <a class="btn btn-flat btn-warning btn-xs list_del" data-id="{$list.id}">
+                                        <i class="fa fa-trash-o"></i> 删除
+                                    </a>
+                                </td>
+                            </tr>
+                            {/volist}
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer clearfix page">
+                        {$page|raw}
+                        <!---->
+                        {$pageSize|raw}
+                        <!---->
+                    </div>
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+    </div>
+    <!--数据表结束-->
+</section>
+<!--内容结束-->
+
+<script>
+    //删除
+    $(".list_del").click(function () {
+        var url = "{:url('del')}";
+        var id = $(this).data("id");
+        delOne(url, id)
+    })
+
+    //批量删除
+    $(".select_del").click(function () {
+        var url = "{:url('selectDel')}";
+        delSelect(url);
+    })
+    //显示数量
+    $(".page_size").change(function () {
+        var page_size = $(this).val();
+        var url = "{:url('index',['keyword'=>$keyword,'page_size'=>'pagesize'])}";
+        url = url.replace("pagesize", page_size);
+        pjaxReplace(url);
+    });
+</script>
