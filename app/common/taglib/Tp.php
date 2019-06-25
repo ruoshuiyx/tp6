@@ -276,9 +276,9 @@ class Tp extends TagLib {
         $parse  = '<?php ';
         $parse .='
                 //获取模型ID
-                $__MODULEID__ = \think\facade\Request::get(\'module\');
+                $__MODULEID__ = request()->param(\'module\');
                 //获取搜索词
-                $__T__ = \think\facade\Request::get(\'t\');
+                $__T__ = request()->param(\'t\');
                 //查询模型的表名称
                 $__MODULENAME__ = \think\facade\Db::name(\'module\')
                     ->where(\'id\', $__MODULEID__)
