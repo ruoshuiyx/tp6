@@ -41,6 +41,7 @@ class Tp extends TagLib {
         'debris'    => ['attr' => 'name,type','close' => 0],                              //获取碎片信息
         'list'      => ['attr' => 'id,name,pagesize,where,limit,order','close' => 1],     //通用列表
         'search'    => ['attr' => 'search,table,name,pagesize,where,order','close' => 1], //通用搜索
+        'tag'       => ['attr' => 'name,pagesize,order','close' => 1],                    //通用标签
         'prev'	    => ['attr'	=> 'len','close' => 0],                                   //上一篇
         'next'	    => ['attr'	=> 'len','close' => 0],                                   //下一篇
     );
@@ -244,20 +245,63 @@ class Tp extends TagLib {
         $name     = isset($tag['name'])     ?  $tag['name']                     : "list";                 //不可为空
         $order    = isset($tag['order'])    ?  $tag['order']                    : 'sort ASC,id DESC';     //排序
         $where    = isset($tag['where'])    ?  $tag['where'].' AND status = 1 ' : 'status = 1';           //查询条件
-        $pagesize = isset($tag['pagesize']) ?  $tag['pagesize']                 : config('page_size');
+        $pagesize = isset($tag['pagesize']) ?  $tag['pagesize']                 : config('app.page_size');
 
         $parse  = '<?php ';
         $parse .='
-                $__MODULEID__ = \think\facade\Db::name("module")->where("name","'.$table.'")->value("id");
-                $__LIST__ = \think\facade\Db::name("'.$table.'")
-                ->order("'.$order.'")
-                ->where("'.$where.'")
-                ->where("title", "like", "%'.$search.'%")
-                ->paginate("'.$pagesize.'",false,[\'query\' => request()->param()]);
+                $__MODULEID__ = \think\facade\Db::name("module")->where("name","' . $table . '")->value("id");
+                $__LIST__ = \think\facade\Db::name("' . $table . '")
+                ->order("' . $order . '")
+                ->where("' . $where . '")
+                ->where("title", "like", "%' . $search . '%")
+                ->paginate("' . $pagesize . '",false,[\'query\' => request()->param()]);
                 $page = $__LIST__->render();
 
-            //处理数据（把列表中需要处理的字段转换成数组和对应的值）
-            $__LIST__ = changeFields($__LIST__,$__MODULEID__);
+                //处理数据（把列表中需要处理的字段转换成数组和对应的值）
+                $__LIST__ = changeFields($__LIST__,$__MODULEID__);
+            ';
+        $parse .= ' ?>';
+        $parse .= '{volist name="__LIST__" id="'.$name.'"}';
+        $parse .= $content;
+        $parse .= '{/volist}';
+        return $parse;
+    }
+
+    // 通用标签 search,table,name,pagesize,where,order
+    Public function tagTag($tag, $content){
+        $name     = isset($tag['name'])     ?  $tag['name']                     : "list";                 //不可为空
+        $order    = isset($tag['order'])    ?  $tag['order']                    : 'sort ASC,id DESC';     //排序
+        $pagesize = isset($tag['pagesize']) ?  $tag['pagesize']                 : config('app.page_size');
+
+        $parse  = '<?php ';
+        $parse .='
+                //获取模型ID
+                $__MODULEID__ = \think\facade\Request::get(\'module\');
+                //获取搜索词
+                $__T__ = \think\facade\Request::get(\'t\');
+                //查询模型的表名称
+                $__MODULENAME__ = \think\facade\Db::name(\'module\')
+                    ->where(\'id\', $__MODULEID__)
+                    ->value(\'name\');
+                //查询搜索词对应的ID
+                $__TAGID__ = \think\facade\Db::name(\'tags\')
+                    ->where(\'module_id\', $__MODULEID__)
+                    ->where(\'name\', $__T__)
+                    ->value(\'id\');
+                //查询tag字段名称
+                $__TAGFIELD__ = \think\facade\Db::name(\'field\')
+                    ->where(\'moduleid\', $__MODULEID__)
+                    ->where(\'type\', \'tag\')
+                    ->value(\'field\');
+
+                $__LIST__ = \think\facade\Db::name($__MODULENAME__)
+                ->order("' . $order . '")
+                ->where($__TAGFIELD__, "find in set", $__TAGID__)
+                ->paginate("' . $pagesize . '", false, [\'query\' => request()->param()]);
+                $page = $__LIST__->render();
+
+                //处理数据（把列表中需要处理的字段转换成数组和对应的值）
+                $__LIST__ = changeFields($__LIST__,$__MODULEID__);
             ';
         $parse .= ' ?>';
         $parse .= '{volist name="__LIST__" id="'.$name.'"}';
