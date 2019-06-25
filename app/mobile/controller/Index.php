@@ -35,13 +35,6 @@ class Index extends Base
     // 首页
     public function index()
     {
-        //后台开启手机端的时候PC自动跳转到mobile
-        if ($this->system['mobile'] == '1' && $this->appName == 'index') {
-            if (Request::isMobile()) {
-                return redirect('mobile/index/index');
-            }
-        }
-
         $view = [
             'cate'        => null,
             'system'      => $this->system, //系统信息
