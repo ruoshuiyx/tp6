@@ -39,7 +39,7 @@ class Index extends Base
 {
     //上传验证规则
     protected $uploadValidate = [
-        'image'=>'fileExt:jpg,png,gif,jpeg,rar,zip,avi,rmvb,3gp,flv,mp3,txt,doc,xls,ppt,pdf,xls,docx,xlsx,doc'
+        'image' => 'fileExt:jpg,png,gif,jpeg,rar,zip,avi,rmvb,3gp,flv,mp3,txt,doc,xls,ppt,pdf,xls,docx,xlsx,doc'
     ];
 
     // 首页
