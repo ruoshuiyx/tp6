@@ -481,3 +481,21 @@ function getChildsRule($rules, $pid){
     }
     return $arr;
 }
+
+/***
+ * 对象转数组
+ * @param $object
+ * @return array
+ */
+function object2array($object)
+{
+    $array = array();
+    if (is_object($object)) {
+        foreach ($object as $key => $value) {
+            $array[$key] = $value;
+        }
+    } else {
+        $array = $object;
+    }
+    return $array;
+}

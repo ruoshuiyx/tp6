@@ -25,22 +25,22 @@
  */
 namespace app\admin\controller;
 
-use app\admin\model\AuthRule;
 use app\common\model\Cate;
 use app\common\model\Module;
-use app\common\model\System;
 use app\common\model\Users;
+
 use think\facade\App;
 use think\facade\Config;
 use think\facade\Db;
 use think\facade\Request;
-use think\facade\Session;
 use think\facade\View;
 
 class Index extends Base
 {
-    // 默认开启后台多标签
-    protected $labelOpening = true;
+    //上传验证规则
+    protected $uploadValidate = [
+        'image'=>'fileExt:jpg,png,gif,jpeg,rar,zip,avi,rmvb,3gp,flv,mp3,txt,doc,xls,ppt,pdf,xls,docx,xlsx,doc'
+    ];
 
     // 首页
     public function index()
@@ -88,7 +88,7 @@ class Index extends Base
         return View::fetch();
     }
 
-    // 上传文件
+    // 上传文件 [待完善]
     public function upload()
     {
         if (Request::param('from') == 'ckeditor') {
@@ -97,10 +97,14 @@ class Index extends Base
             for ($i = 0; $i < count($fileKey); $i++) {
                 //获取表单上传文件
                 $file = request()->file($fileKey[$i]);
-                //移动到框架应用根目录/public/uploads/ 目录下
-                $info = $file->validate(['ext' => 'jpg,png,gif,jpeg,rar,zip,avi,rmvb,3gp,flv,mp3,txt,doc,xls,ppt,pdf,xls,docx,xlsx,doc'])->move('uploads');
-                if ($info) {
-                    $path[] = '/uploads/' . str_replace('\\', '/', $info->getSaveName());
+                try {
+                    validate($this->uploadValidate)
+                        ->check(object2array($file));
+                    $savename = \think\facade\Filesystem::disk('public')->putFile('uploads', $file);
+                    $path[] = '/' . $savename;
+                } catch (think\exception\ValidateException $e) {
+                    $path = '';
+                    $error = $e->getMessage();
                 }
             }
 
@@ -117,29 +121,20 @@ class Index extends Base
                 //上传失败获取错误信息
                 $result['uploaded'] = false;
                 $result['url'] = '';
+                $result['message'] = $error;
                 return json_encode($result, true);
             }
         } else {
-            //webupload
-            //file是传文件的名称，这是webloader插件固定写入的。因为webloader插件会写入一个隐藏input，不信你们可以通过浏览器检查页面
+            //webupload [file是webloader固定写入的隐藏文本名称]
             $file = request()->file('file');
-            $info = $file->validate(['ext' => 'jpg,png,gif,jpeg,rar,zip,avi,rmvb,3gp,flv,mp3,txt,doc,xls,ppt,pdf,xls,docx,xlsx,doc'])->move('uploads');
-
-            if ($info) {
-                // 成功上传后 获取上传信息
-                // 输出 jpg
-                //echo $info->getExtension();
-                // 输出 20160820/42a79759f284b767dfcb2a0197904287.jpg
-                $url = "/uploads/" . $info->getSaveName();
-                $url = str_replace("\\", "/", $url);
-                return $url;
-                // 输出 42a79759f284b767dfcb2a0197904287.jpg
-                //echo $info->getFilename();
-            } else {
-                // 上传失败获取错误信息
-                return $file->getError();
+            try {
+                validate($this->uploadValidate)
+                    ->check(object2array($file));
+                $savename = \think\facade\Filesystem::disk('public')->putFile('uploads', $file);
+                return '/' . $savename;
+            } catch (think\exception\ValidateException $e) {
+                return $e->getMessage();
             }
-
         }
 
     }

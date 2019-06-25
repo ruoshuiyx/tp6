@@ -419,7 +419,6 @@ class Error extends Base
                 ->where('id', Request::param('id'))
                 ->find();
 
-            //dump($field);
             //处理特殊字段
             foreach ($field as $k => $v) {
                 if (array_key_exists($v['field'], $info)) {
