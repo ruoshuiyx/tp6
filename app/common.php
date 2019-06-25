@@ -104,6 +104,16 @@ function changefield($info, $moduleid){
                 case 'images'://多张图片
                     $info[$field] = json_decode($info[$field], true);
                     break;
+                case 'tag'://TAG标签
+                    if (!empty($info[$field])) {
+                        $tags = \think\facade\Db::name('tags')
+                            ->where('id', 'IN', $info[$field])
+                            ->select()->toArray();
+                        foreach ($tags as $tagKey => $tag) {
+                            $tags[$tagKey]['url'] = \think\facade\Route::buildUrl('index/tag', ['module' => $tag['module_id'], 't' => $tag['name']])->__toString();
+                        }
+                        $info[$field] = $tags;
+                    }
                 default:
             }
         }
