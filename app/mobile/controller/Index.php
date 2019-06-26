@@ -105,7 +105,7 @@ class Index extends Base
             if ($this->system['message_code']) {
                 if (!captcha_check($data['message_code'])) {
                     $this->error('验证码错误');
-                    // return json(['error' => '1', 'msg' => '验证码错误']);
+                   // return json(['error' => '1', 'msg' => '验证码错误']);
                 } else {
                     unset($data['message_code']);
                 }
@@ -117,18 +117,32 @@ class Index extends Base
                 ->value('moduleid');
             //查询该模型所有必填字段
             $fields = Db::name('field')
-                ->where('moduleid',$moduleId)
-                ->where('required',1)
-                ->field('field,name,errormsg')
-                ->select();
+                ->where('moduleid', $moduleId)
+                ->field('field,name,errormsg,type,required')
+                ->select()
+                ->toArray();
             foreach ($fields as $k => $v) {
-                if (isset($data[$v['field']]) && empty($data[$v['field']])) {
+                //必填项判断
+                if (isset($data[$v['field']]) && $v['required'] == 1 && empty($data[$v['field']])) {
                     $result['error'] = '1';
-                    $result['msg']   = $v['name'].'为必填项';
+                    $result['msg'] = $v['name'] . '为必填项';
+                }
+                //多选项转换
+                if ($v['type'] == 'checkbox') {
+                    //如填写则进行转换
+                    if (isset($data[$v['field']])) {
+                        $data[$v['field']] = implode(",", $data[$v['field']]);
+                    }
+                    //多选必填项单独判断
+                    if ($v['required'] == 1 && !isset($data[$v['field']])) {
+                        $result['error'] = '1';
+                        $result['msg'] = $v['name'] . '为必选项';
+                    }
                 }
             }
 
-            if ($result['error']  !== '1') {
+
+            if ($result['error'] !== '1') {
                 $tableName = Db::name('module')
                     ->where('id','=',$moduleId)
                     ->value('name');
