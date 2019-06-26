@@ -222,7 +222,7 @@ class Tp extends TagLib {
                     //->limit(\''.$limit.'\')
                     ->where(" '.$where.'")
                     ->where(\'cate_id\',\'in\',$__IDS__)
-                    ->paginate($__TABLE_[\'pagesize\']);
+                    ->paginate($__TABLE_[\'pagesize\'], false, [\'query\' => request()->param()]);
                     $page = $__LIST__->render();
                 }
                 //处理数据（把列表中需要处理的字段转换成数组和对应的值）
