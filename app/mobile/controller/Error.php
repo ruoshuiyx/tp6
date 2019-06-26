@@ -25,6 +25,7 @@
  */
 namespace app\mobile\controller;
 use app\common\model\Cate;
+use app\common\model\Field;
 use app\common\model\Module;
 
 use think\facade\Db;
@@ -35,13 +36,18 @@ class Error extends Base
 {
     protected $moduleId;  //当前模型ID
     protected $tableName; //当前模型对应的数据表
+
     public function initialize()
     {
         parent::initialize();
+        //当前模型ID
         $this->moduleId = Cate::where('id','=',Request::param('cate'))
             ->value('moduleid');
+        //当前表名称
         $this->tableName = Module::where('id','=',$this->moduleId)
             ->value('name');
+        //当前模型字段列表
+        $this->fields = Field::getFieldList($this->moduleId);
     }
 
     // 列表
@@ -71,6 +77,7 @@ class Error extends Base
 
         $view = [
             'cate'        => $cate,         //栏目信息
+            'fields'      => $this->fields, //字段列表
             'system'      => $this->system, //系统信息
             'public'      => $this->public, //公共目录
             'title'       => $title,
@@ -118,6 +125,7 @@ class Error extends Base
 
         $view = [
             'cate'        => $cate,         //栏目信息
+            'fields'      => $this->fields, //字段列表
             'info'        => $info,         //详情信息
             'system'      => $this->system, //系统信息
             'public'      => $this->public, //公共目录
