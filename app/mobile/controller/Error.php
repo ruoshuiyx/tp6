@@ -24,6 +24,7 @@
  * +----------------------------------------------------------------------
  */
 namespace app\mobile\controller;
+
 use app\common\model\Cate;
 use app\common\model\Field;
 use app\common\model\Module;
@@ -41,23 +42,24 @@ class Error extends Base
     {
         parent::initialize();
         //当前模型ID
-        $this->moduleId = Cate::where('id','=',Request::param('cate'))
+        $this->moduleId = Cate::where('id', '=', Request::param('cate'))
             ->value('moduleid');
         //当前表名称
-        $this->tableName = Module::where('id','=',$this->moduleId)
+        $this->tableName = Module::where('id', '=', $this->moduleId)
             ->value('name');
         //当前模型字段列表
         $this->fields = Field::getFieldList($this->moduleId);
     }
 
     // 列表
-    public function index(){
+    public function index()
+    {
         //栏目ID
         $catId = Request::param('cate');
 
         //设置顶级栏目，当顶级栏目不存在的时候顶级栏目为本身
         if ($catId) {
-            $cate = Cate::where('id','=',Request::param('cate'))
+            $cate = Cate::where('id', '=', Request::param('cate'))
                 ->find();
             $cate['topid'] = $cate['parentid'] ? $cate['parentid'] : $cate['id'];
         }
@@ -85,35 +87,35 @@ class Error extends Base
             'description' => $description,
         ];
 
-        $template = $cate['template_list'] ? str_replace('.html', '', $cate['template_list']) : $this->tableName.'_list';
+        $template = $cate['template_list'] ? str_replace('.html', '', $cate['template_list']) : $this->tableName . '_list';
         View::assign($view);
         return View::fetch($template);
     }
 
     // 详情
     public function info(){
-        $id    = Request::param('id');
+        $id = Request::param('id');
         $catId = Request::param('cate');
 
         //更新点击数
         if ($id) {
             Db::name($this->tableName)
-                ->where('id',$id)
+                ->where('id', $id)
                 ->inc('hits')
                 ->update();
         }
         //设置顶级栏目，当顶级栏目不存在的时候顶级栏目为本身
         if ($catId) {
-            $cate = Cate::where('id',$catId)
+            $cate = Cate::where('id', $catId)
                 ->find();
             $cate['topid'] = $cate['parentid'] ? $cate['parentid'] : $cate['id'];
         }
 
         //查找详情信息
         $info = Db::name($this->tableName)
-            ->where('id',$id)
+            ->where('id', $id)
             ->find();
-        $info = changefield($info,$this->moduleId);
+        $info = changefield($info, $this->moduleId);
         $info['url'] = getShowUrl($info);
 
         //tdk
@@ -135,7 +137,7 @@ class Error extends Base
         ];
 
         $template = $info['template'] ? $info['template'] :
-            ( $cate['template_show'] ? str_replace('.html', '', $cate['template_show']) : $this->tableName.'_show');
+            ($cate['template_show'] ? str_replace('.html', '', $cate['template_show']) : $this->tableName . '_show');
         View::assign($view);
         return View::fetch($template);
     }
