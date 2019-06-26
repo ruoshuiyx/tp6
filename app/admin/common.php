@@ -371,7 +371,7 @@ function make_html_add($type, $field, $name, $required, $tips, $value = null, $m
             $options = $setup['options'] ? $setup['options'] : []; //需考虑传入数据是否直接可用
             $radioHtml = '';
             foreach ($options as $k => $v) {
-                if ($value) {
+                if ($setup !== 0) {
                     $checked = $value == trim($v[1]) ? 'checked' : '';
                 } else {
                     $checked = $setup['default'] == trim($v[1]) ? 'checked' : '';
