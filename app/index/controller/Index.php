@@ -56,7 +56,7 @@ class Index extends Base
         return View::fetch($template);
     }
 
-    //搜索
+    // 搜索
     public function search(){
         $search = Request::param('search');//关键字
         if(empty($search)){
@@ -78,7 +78,7 @@ class Index extends Base
         return View::fetch($template);
     }
 
-    //标签
+    // 标签
     public function tag(){
         $tag = Request::param('t');
         if(empty($tag)){
