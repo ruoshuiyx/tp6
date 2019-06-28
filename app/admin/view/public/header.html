@@ -16,8 +16,7 @@
     <link rel="stylesheet" href="/static/plugins/AdminLTE/bower_components/font-awesome/css/font-awesome.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="/static/plugins/AdminLTE/dist/css/AdminLTE.min.css">
-    <!-- AdminLTE Skins. Choose a skin from the css/skins
-         folder instead of downloading all of them to reduce the load. -->
+    <!-- AdminLTE Skins. Choose a skin from the css/skins folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="/static/plugins/AdminLTE/dist/css/skins/_all-skins.min.css">
     <!-- Date Picker -->
     <link rel="stylesheet" href="/static/plugins/AdminLTE/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
@@ -27,27 +26,21 @@
     <link rel="stylesheet" href="/static/plugins/AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.css">
     <!-- Pace style -->
     <link rel="stylesheet" href="/static/plugins/AdminLTE/plugins/pace/pace.css">
-
     <!-- jQuery 3 -->
     <script src="/static/plugins/AdminLTE/bower_components/jquery/dist/jquery.min.js"></script>
-
     <!-- webuploader -->
     <link rel="stylesheet" type="text/css" href="/static/plugins/webuploader-0.1.5/webuploader.css">
     <script src="/static/plugins/webuploader-0.1.5/webuploader.js"></script>
     {include file="index/webuploader" /}
-
     <!-- ckeditor4 -->
     <script src="/static/plugins/ckeditor/ckeditor.js"></script>
-    
     <!-- sweetalert -->
     <link rel="stylesheet" href="/static/plugins/sweetalert/dist/sweetalert2.min.css">
-	<script src="/static/plugins/sweetalert/dist/sweetalert2.min.js"></script>
-	<script src="/static/plugins/sweetalert/lib/es6-promise.min.js"></script>
-
+    <script src="/static/plugins/sweetalert/dist/sweetalert2.min.js"></script>
+    <script src="/static/plugins/sweetalert/lib/es6-promise.min.js"></script>
     <!-- jQueryTagsInput -->
     <script src="/static/plugins/AdminLTE/plugins/jQueryTagsInput/jquery.tagsinput.js"></script>
     <link rel="stylesheet" href="/static/plugins/AdminLTE/plugins/jQueryTagsInput/jquery.tagsinput.css">
-
     <!-- SIYUCMS -->
     <link rel="stylesheet" href="/static/plugins/AdminLTE/dist/css/siyucms.css">
 
@@ -98,8 +91,7 @@ BODY TAG OPTIONS:
                 <span class="sr-only">切换边栏</span>
             </a>
             <a href="javascript:;" class="sidebar-toggle fullscreen" title="全屏模式">
-                <i class="glyphicon glyphicon-fullscreen">
-                </i>
+                <i class="glyphicon glyphicon-fullscreen"></i>
             </a>
             <!-- Navbar Left Menu -->
             <ul class="nav navbar-nav js_left_menu">
@@ -124,16 +116,14 @@ BODY TAG OPTIONS:
                         <!-- Menu Toggle Button -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <!-- The user image in the navbar-->
-                            <img src="{:session('admin.image') ? session('admin.image') : '/static/plugins/AdminLTE/dist/img/user2-160x160.jpg'}"
-                                 class="user-image">
+                            <img src="{:session('admin.image') ? session('admin.image') : '/static/plugins/AdminLTE/dist/img/user2-160x160.jpg'}" class="user-image">
                             <!-- hidden-xs hides the username on small devices so only the image appears. -->
                             <span class="hidden-xs">{:session('admin.nickname') ? session('admin.nickname') : session('admin.username')}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- The user image in the menu -->
                             <li class="user-header">
-                                <img src="{:session('admin.image') ? session('admin.image') : '/static/plugins/AdminLTE/dist/img/user2-160x160.jpg'}"
-                                     class="img-circle">
+                                <img src="{:session('admin.image') ? session('admin.image') : '/static/plugins/AdminLTE/dist/img/user2-160x160.jpg'}" class="img-circle">
 
                                 <h5>
                                     上次登录时间：{:session('admin.logintime')}
@@ -145,8 +135,7 @@ BODY TAG OPTIONS:
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="{:url('auth/adminedit',['id'=>session('admin.id')])}"
-                                       class="btn btn-default btn-flat">资料</a>
+                                    <a href="{:url('auth/adminedit',['id'=>session('admin.id')])}" class="btn btn-default btn-flat">资料</a>
                                 </div>
                                 <div class="pull-right">
                                     <a href="{:url('Login/logout')}" class="btn btn-default btn-flat">退出</a>
@@ -156,14 +145,12 @@ BODY TAG OPTIONS:
                     </li>
                     <li>
                         <a class="js_clear_cash" href="javascript:;" target="right" title="清空缓存">
-                            <i class="glyphicon glyphicon-refresh">
-                            </i>
+                            <i class="glyphicon glyphicon-refresh"></i>
                         </a>
                     </li>
                     <li>
                         <a href="/" target="_blank" title="访问系统前台">
-                            <i class="glyphicon glyphicon-home">
-                            </i>
+                            <i class="glyphicon glyphicon-home"></i>
                         </a>
                     </li>
                     <!-- Control Sidebar Toggle Button -->
@@ -176,17 +163,17 @@ BODY TAG OPTIONS:
     </header>
     <script>
         //主导航、内容管理切换
-        $(".js_left_menu li").click(function(){
+        $(".js_left_menu li").click(function () {
             //通过 .index()方法获取元素下标，从0开始，赋值给某个变量
             var _index = $(this).index();
             //让左侧菜单第 _index 个显示出来，其他的被隐藏
             $(".js_left_menu_show").eq(_index).show().siblings('.js_left_menu_show').hide();
             //当前菜单添加选中效果,同级的移除。
             $(this).addClass('active').siblings('li').removeClass('active');
-
         })
-
-        $(".js_clear_cash").click(function() {
+        
+        //清空缓存
+        $(".js_clear_cash").click(function () {
             var url = "{:url('index/clear')}";
             swal({
                 title: '确定要清除缓存吗?',
@@ -195,13 +182,13 @@ BODY TAG OPTIONS:
                 showCancelButton: false,
                 confirmButtonText: '确定',
                 cancelButtonText: '取消'
-            }).then(function(isConfirm) {
+            }).then(function (isConfirm) {
                 if (isConfirm) {
                     $.post(url, {
                         del: true
-                    }, function(result) {
+                    }, function (result) {
                         if (result.error == 0) {
-                            swal(result.msg, '', 'success').then(function() {
+                            swal(result.msg, '', 'success').then(function () {
                                 //window.location.reload(); //传统重载
                                 $.pjax.reload('.content-wrapper'); //pjax 重载
                             });
