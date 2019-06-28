@@ -189,15 +189,13 @@ trait Conversion
         if (is_array($name)) {
             // 追加关联对象属性
             $relation   = $this->getRelation($key, true);
-            $item[$key] = $relation ? $relation->visible($name)
-                ->append($name)
+            $item[$key] = $relation ? $relation->append($name)
                 ->toArray() : [];
         } elseif (strpos($name, '.')) {
             list($key, $attr) = explode('.', $name);
             // 追加关联对象属性
             $relation   = $this->getRelation($key, true);
-            $item[$key] = $relation ? $relation->visible([$attr])
-                ->append([$attr])
+            $item[$key] = $relation ? $relation->append([$attr])
                 ->toArray() : [];
         } else {
             $value       = $this->getAttr($name);
