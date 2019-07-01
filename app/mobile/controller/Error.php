@@ -41,9 +41,16 @@ class Error extends Base
     public function initialize()
     {
         parent::initialize();
-        //当前模型ID
-        $this->moduleId = Cate::where('id', '=', Request::param('cate'))
-            ->value('moduleid');
+
+        if (Request::param('cate')){
+            //当前模型ID
+            $this->moduleId = Cate::where('id', '=', Request::param('cate'))
+                ->value('moduleid');
+        }else{
+            //当前模型ID
+            $this->moduleId = Cate::where('catdir', '=', Request::controller())
+                ->value('moduleid');
+        }
         //当前表名称
         $this->tableName = Module::where('id', '=', $this->moduleId)
             ->value('name');
@@ -55,14 +62,16 @@ class Error extends Base
     public function index()
     {
         //栏目ID
-        $catId = Request::param('cate');
+        $catId = getCateId();
+        if (!empty($catId)) {
+            $cate = Cate::where('id', '=', $catId)
+                ->find();
+        } else {
+            $this->error('未找到对应栏目');
+        }
 
         //设置顶级栏目，当顶级栏目不存在的时候顶级栏目为本身
-        if ($catId) {
-            $cate = Cate::where('id', '=', Request::param('cate'))
-                ->find();
-            $cate['topid'] = $cate['parentid'] ? $cate['parentid'] : $cate['id'];
-        }
+        $cate['topid'] = $cate['parentid'] ? $cate['parentid'] : $cate['id'];
 
         //tdk
         $title       = $cate['title']       ? $cate['title']       : $cate['catname'];     //标题
@@ -72,9 +81,9 @@ class Error extends Base
         //单页模型
         if ($this->tableName == 'page') {
             $info = Db::name($this->tableName)
-                ->where('cate_id','=',Request::param('cate'))
+                ->where('cate_id', '=', $cate['id'])
                 ->find();
-            View::assign(['info'=>$info]);//单页内容
+            View::assign(['info' => $info]);//单页内容
         }
 
         $view = [
@@ -95,7 +104,17 @@ class Error extends Base
     // 详情
     public function info(){
         $id = Request::param('id');
-        $catId = Request::param('cate');
+        //栏目ID
+        $catId = getCateId();
+        if (!empty($catId)) {
+            $cate = Cate::where('id', '=', $catId)
+                ->find();
+        } else {
+            $this->error('未找到对应栏目');
+        }
+
+        //设置顶级栏目，当顶级栏目不存在的时候顶级栏目为本身
+        $cate['topid'] = $cate['parentid'] ? $cate['parentid'] : $cate['id'];
 
         //更新点击数
         if ($id) {
@@ -103,12 +122,6 @@ class Error extends Base
                 ->where('id', $id)
                 ->inc('hits')
                 ->update();
-        }
-        //设置顶级栏目，当顶级栏目不存在的时候顶级栏目为本身
-        if ($catId) {
-            $cate = Cate::where('id', $catId)
-                ->find();
-            $cate['topid'] = $cate['parentid'] ? $cate['parentid'] : $cate['id'];
         }
 
         //查找详情信息
