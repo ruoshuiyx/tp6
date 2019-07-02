@@ -376,8 +376,8 @@ class Tp extends TagLib {
                     ->find();
                 //根据ID查找下一篇的信息
                 $__PREV__ = \think\facade\Db::name($__TABLENAME__[\'table_name\'])
-                    ->where(\'cate_id\',input(\'cate\'))
-                    ->where(\'id\',\'>\',$__CATEID__)
+                    ->where(\'cate_id\',$__CATEID__)
+                    ->where(\'id\',\'<\',input(\'id\'))
                     ->where(\'status\',\'=\',1)
                     ->field(\'id,cate_id,title\')
                     ->order(\'sort ASC,id DESC\')
