@@ -40,6 +40,10 @@ class Module extends Validate
             'max'     => '50',
             'unique'  => 'module',
         ],
+        'listfields|列表页字段' => [
+            'require' => 'require',
+            'max'     => '255',
+        ],
         'description|描述' => [
             'max' => '200',
         ],

@@ -188,53 +188,57 @@ class Tp extends TagLib {
     // 通用列表
     Public function tagList($tag, $content)
     {
-        $id    = isset($tag['id'])    ? $tag['id']    : getCateId();                       //可以为空
-        $name  = isset($tag['name'])  ? $tag['name']  : "list";                            //不可为空
-        $order = isset($tag['order']) ? $tag['order'] : 'sort ASC,id DESC';                //排序
-        $limit = isset($tag['limit']) ? $tag['limit'] : '0';                               //多少条数据,传递时不再进行分页
-        $where = isset($tag['where']) ? $tag['where'] . ' AND status = 1 ' : 'status = 1'; //查询条件
-        $pagesize = isset($tag['pagesize']) ? $tag['pagesize'] : config('app.page_size');
-        //paginate(1,false,['query' => request()->param()]); //用于传递所有参数，目前只需要page参数
-        $parse = '<?php ';
+        $id       = isset($tag['id'])       ? $tag['id']                         : getCateId();             //可以为空
+        $name     = isset($tag['name'])     ? $tag['name']                       : "list";                  //不可为空
+        $order    = isset($tag['order'])    ? $tag['order']                      : 'sort ASC,id DESC';      //排序
+        $limit    = isset($tag['limit'])    ? $tag['limit']                      : '0';                     //多少条数据,传递时不再进行分页
+        $where    = isset($tag['where'])    ? $tag['where'] . ' AND status = 1 ' : 'status = 1';            //查询条件
+        $pagesize = isset($tag['pagesize']) ? $tag['pagesize']                   : config('app.page_size'); //每页数量
+        $parse  = '<?php ';
         $parse .= '
             //查找栏目对应的表信息
             $__TABLE_=\think\facade\Db::name(\'cate\')
                 ->alias(\'a\')
                 ->leftJoin(\'module m\',\'a.moduleid = m.id\')
-                ->field(\'a.id,a.moduleid,a.pagesize,a.catname,m.name as modulename\')
+                ->field(\'a.id,a.moduleid,a.pagesize,a.catname,m.name as modulename,m.listfields\')
                 ->where(\'a.id\',\'=\',' . $id . ')
                 ->find();
             //获取表名称
             $__TABLENAME_ = $__TABLE_[\'modulename\'];
             //获取模型ID
             $__MODULEID__ = $__TABLE_[\'moduleid\'];
+            //获取模型列表页字段
+            $__LISTFIELDS__ = $__TABLE_[\'listfields\'];
             //查询子分类,列表要包含子分类内容
-            $__ALLCATE__ = \think\facade\Db::name(\'cate\')->field(\'id,parentid\')->select();
+            $__ALLCATE__ = \think\facade\Db::name(\'cate\')
+                ->field(\'id,parentid\')
+                ->select();
             $__IDS__ = getChildsIdStr(getChildsId($__ALLCATE__,' . $id . '),' . $id . ');
 
-            //表名称为空时（id不存在）直接返回
-            if(!empty($__TABLENAME_)){
+            //表名称为空时（id不存在）直接返回空数组
+            if (!empty($__TABLENAME_)) {
                 //当传递limit时，不再进行分页
                 if(' . $limit . '!=0){
                     $__LIST__ = \think\facade\Db::name($__TABLENAME_)
-                    ->order(\'' . $order . '\')
-                    ->limit(\'' . $limit . '\')
-                    ->where(" ' . $where . '")
-                    ->where(\'cate_id\',\'in\',$__IDS__)
-                    ->select();
+                        ->where("' . $where . '")
+                        ->where(\'cate_id\', \'in\', $__IDS__)
+                        ->field($__LISTFIELDS__)
+                        ->order(\'' . $order . '\')
+                        ->limit(\'' . $limit . '\')
+                        ->select();
                     $page = \'\';
                 }else{
                     $__TABLE_[\'pagesize\'] = empty($__TABLE_[\'pagesize\'])?' . $pagesize . ':$__TABLE_[\'pagesize\'];
                     $__LIST__ = \think\facade\Db::name($__TABLENAME_)
-                    ->order(\'' . $order . '\')
-                    //->limit(\'' . $limit . '\')
-                    ->where(" ' . $where . '")
-                    ->where(\'cate_id\',\'in\',$__IDS__)
-                    ->paginate($__TABLE_[\'pagesize\'], false, [\'query\' => request()->param()]);
+                        ->where("' . $where . '")
+                        ->where(\'cate_id\', \'in\', $__IDS__)
+                        ->field($__LISTFIELDS__)
+                        ->order(\'' . $order . '\')
+                        ->paginate($__TABLE_[\'pagesize\'], false, [\'query\' => request()->param()]);
                     $page = $__LIST__->render();
                 }
                 //处理数据（把列表中需要处理的字段转换成数组和对应的值）
-                $__LIST__ = changeFields($__LIST__,$__MODULEID__);
+                $__LIST__ = changeFields($__LIST__, $__MODULEID__);
             }else{
                 $__LIST__ = [];
             }
