@@ -307,7 +307,7 @@ class Tp extends TagLib {
                 $__LIST__ = \think\facade\Db::name($__MODULENAME__)
                 ->order("' . $order . '")
                 ->where($__TAGFIELD__, "find in set", $__TAGID__)
-                ->paginate("' . $pagesize . '", false, [\'query\' => request()->param()]);
+                ->paginate("' . $pagesize . '");
                 $page = $__LIST__->render();
 
                 //处理数据（把列表中需要处理的字段转换成数组和对应的值）
