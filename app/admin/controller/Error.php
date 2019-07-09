@@ -97,7 +97,10 @@ class Error extends Base
                 ->field('a.id,a.title,a.cate_id,a.hits,a.sort,a.status,a.create_time'.$image.',c.catname')
                 ->where($where)
                 ->order('a.sort ASC,a.id DESC')
-                ->paginate($this->pageSize, false, ['query' => Request::get()]);
+                ->paginate([
+                    'query'     => Request::get(),
+                    'list_rows' => $this->pageSize,
+                ]);
 
             //获取栏目列表
             $cate = Db::name('cate')

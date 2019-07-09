@@ -54,7 +54,10 @@ class System extends Base
     public static function getList($where = array(), $pageSize, $order = ['sort', 'id'=>'desc']){
         $list = self::where($where)
             ->order($order)
-            ->paginate($pageSize, false, ['query' => Request::get()]);
+            ->paginate([
+                'query'     => Request::get(),
+                'list_rows' => $pageSize,
+            ]);
         foreach ($list as $k=>$v){
             $v['type_name']  = self::getType($v['type']);
             $v['group_name'] = $v->systemGroup->getData('name');

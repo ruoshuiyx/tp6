@@ -43,7 +43,10 @@ class Tags extends Base
     {
         $list = self::where($where)
             ->order($order)
-            ->paginate($pageSize, false, ['query' => Request::get()]);
+            ->paginate([
+                'query'     => Request::get(),
+                'list_rows' => $pageSize,
+            ]);
         foreach ($list as $k => $v) {
             $v['module_name'] = $v->module->getData('name');
             $v['module_title'] = $v->module->getData('title');

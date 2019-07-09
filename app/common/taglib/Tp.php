@@ -234,7 +234,10 @@ class Tp extends TagLib {
                         ->where(\'cate_id\', \'in\', $__IDS__)
                         ->field($__LISTFIELDS__)
                         ->order(\'' . $order . '\')
-                        ->paginate($__TABLE_[\'pagesize\'], false, [\'query\' => request()->param()]);
+                        ->paginate([
+                            \'query\'     => request()->param(),
+                            \'list_rows\' => $__TABLE_[\'pagesize\'],
+                        ]);
                     $page = $__LIST__->render();
                 }
                 //处理数据（把列表中需要处理的字段转换成数组和对应的值）
@@ -267,7 +270,10 @@ class Tp extends TagLib {
                     ->order("' . $order . '")
                     ->where("' . $where . '")
                     ->where("title", "like", "%' . $search . '%")
-                    ->paginate("' . $pagesize . '",false,[\'query\' => request()->param()]);
+                    ->paginate([
+                        \'query\'     => request()->param(),
+                        \'list_rows\' => "' . $pagesize . '",
+                    ]);
                 $page = $__LIST__->render();
 
                 //处理数据（把列表中需要处理的字段转换成数组和对应的值）
