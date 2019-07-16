@@ -1,52 +1,41 @@
-ThinkPHP 6.0
+SIYUCMS V6.0 快速开发内容管理系统
 ===============
 
 > 运行环境要求PHP7.1+。
 
-## 主要新特性
+> SIYUCMS 运行目录: public/
 
-* 采用`PHP7`强类型（严格模式）
-* 支持更多的`PSR`规范
-* 原生多应用支持
-* 更强大和易用的查询
-* 全新的事件系统
-* 模型事件和数据库事件统一纳入事件系统
-* 模板引擎分离出核心
-* 内部功能中间件化
-* SESSION/Cookie机制改进
-* 对Swoole以及协程支持改进
-* 对IDE更加友好
-* 统一和精简大量用法
+## 在线手册
+
++ [完全开发手册](https://www.kancloud.cn/ruoshuiyx/siyucms/)
 
 ## 安装
 
-~~~
-composer create-project topthink/think tp 6.0.*-dev
-~~~
+> 下载SIYUCMS完整包解压到你本地（建议采用git方式拉取）
 
-如果需要更新框架使用
-~~~
-composer update topthink/framework
-~~~
+> 将你的站点绑定到public目录(强烈建议绑定到public目录)
 
-## 文档
+> 将文件夹中siyucms.sql还原到你自己项目的数据库中（需自行创建数据库）
 
-[完全开发手册](https://www.kancloud.cn/manual/thinkphp6_0/content)
+> 修改.env 中数据库配置信息（调试模式也是在这个文件中进行打开和关闭）
 
-## 参与开发
+> 访问后台并登录查看是否正常，后台目录为http://www.yourwebsite.com/admin （如无法访问请尝试隐藏index.php https://www.kancloud.cn/ruoshuiyx/siyucms/1032705）
 
-请参阅 [ThinkPHP 核心框架包](https://github.com/top-think/framework)。
+> 默认后台用户名：admin 密码:admin
+
+## 演示
+
+> [演示地址](http://v6.siyucms.com/admin)
+
+> 演示账户：test 密码：123456
+
+## 交流群
+
+> QQ群：883855822
 
 ## 版权信息
 
-ThinkPHP遵循Apache2开源协议发布，并提供免费使用。
+> 请尊重SIYUCMS开发者的劳动成果，SIYUCMS提供免费使用，但未授权前请保留前台 Powered by SIYUCMS ，并不得修改后台版权信息。
 
-本项目包含的第三方源码和二进制文件之版权信息另行标注。
-
-版权所有Copyright © 2006-2019 by ThinkPHP (http://thinkphp.cn)
-
+> 版权所有Copyright © 2019-2020 by SIYUCMS (http://siyucms.com)
 All rights reserved。
-
-ThinkPHP® 商标和著作权所有者为上海顶想信息科技有限公司。
-
-更多细节参阅 [LICENSE.txt](LICENSE.txt)
