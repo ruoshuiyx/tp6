@@ -24,7 +24,7 @@ class Think
 
     // 模板引擎参数
     protected $config = [
-        // 默认模板渲染规则 1 解析为小写+下划线 2 全部转换小写
+        // 默认模板渲染规则 1 解析为小写+下划线 2 全部转换小写 3 保持操作方法
         'auto_rule'   => 1,
         // 视图基础目录（集中式）
         'view_base'   => '',
@@ -44,8 +44,8 @@ class Think
 
         $this->config = array_merge($this->config, (array) $config);
 
-        if (empty($this->config['view_path'])) {
-            $this->config['view_path'] = $app->getAppPath() . 'view' . DIRECTORY_SEPARATOR;
+        if (empty($this->config['view_base'])) {
+            $this->config['view_base'] = $app->getRootPath() . 'view' . DIRECTORY_SEPARATOR;
         }
 
         if (empty($this->config['cache_path'])) {
@@ -126,12 +126,14 @@ class Think
             list($app, $template) = explode('@', $template);
         }
 
-        if ($this->config['view_base']) {
-            // 基础视图目录
-            $app  = isset($app) ? $app : $request->app();
-            $path = $this->config['view_base'] . ($app ? $app . DIRECTORY_SEPARATOR : '');
+        if ($this->config['view_path'] && !isset($app)) {
+            $path = $this->config['view_path'];
         } else {
-            $path = isset($app) ? $this->app->getBasePath() . $app . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR : $this->config['view_path'];
+            $app = isset($app) ? $app : $request->app();
+            // 基础视图目录
+            $path = $this->config['view_base'] . ($app ? $app . DIRECTORY_SEPARATOR : '');
+
+            $this->template->view_path = $path;
         }
 
         $depr = $this->config['view_depr'];
@@ -141,8 +143,16 @@ class Think
             $controller = App::parseName($request->controller());
             if ($controller) {
                 if ('' == $template) {
-                    // 如果模板文件名为空 按照默认规则定位
-                    $template = str_replace('.', DIRECTORY_SEPARATOR, $controller) . $depr . (1 == $this->config['auto_rule'] ? App::parseName($request->action(true)) : $request->action());
+                    // 如果模板文件名为空 按照默认模板渲染规则定位
+                    if (2 == $this->config['auto_rule']) {
+                        $template = $request->action(true);
+                    } elseif (3 == $this->config['auto_rule']) {
+                        $template = $request->action();
+                    } else {
+                        $template = App::parseName($request->action());
+                    }
+
+                    $template = str_replace('.', DIRECTORY_SEPARATOR, $controller) . $depr . $template;
                 } elseif (false === strpos($template, $depr)) {
                     $template = str_replace('.', DIRECTORY_SEPARATOR, $controller) . $depr . $template;
                 }

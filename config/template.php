@@ -8,6 +8,8 @@ return [
     'type'         => 'Think',
     // 默认模板渲染规则 1 解析为小写+下划线 2 全部转换小写 3 保持操作方法
     'auto_rule'    => 1,
+    // 模板基础路径
+    'view_base'    => '',
     // 模板路径
     'view_path'    => '',
     // 模板后缀
@@ -22,6 +24,4 @@ return [
     'taglib_begin' => '{',
     // 标签库标签结束标记
     'taglib_end'   => '}',
-    // 自定义标签库
-    'taglib_pre_load'    => 'app\common\taglib\Tp',
 ];

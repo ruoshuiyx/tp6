@@ -12,8 +12,8 @@ declare (strict_types = 1);
 
 namespace think\model\concern;
 
-use think\Container;
-use think\exception\ModelEventException;
+use think\db\exception\ModelEventException;
+use think\helper\Str;
 
 /**
  * 模型事件处理
@@ -22,10 +22,27 @@ trait ModelEvent
 {
 
     /**
+     * Event对象
+     * @var object
+     */
+    protected $event;
+
+    /**
      * 是否需要事件响应
      * @var bool
      */
     protected $withEvent = true;
+
+    /**
+     * 设置Event对象
+     * @access public
+     * @param object $event Event对象
+     * @return void
+     */
+    public function setEvent($event)
+    {
+        $this->event = $event;
+    }
 
     /**
      * 当前操作的事件响应
@@ -51,12 +68,14 @@ trait ModelEvent
             return true;
         }
 
-        $call = 'on' . Container::parseName($event, 1);
+        $call = 'on' . Str::studly($event);
 
         try {
             if (method_exists(static::class, $call)) {
-                $result = Container::getInstance()
-                    ->invoke([static::class, $call], [$this]);
+                $result = call_user_func([static::class, $call], $this);
+            } elseif (is_object($this->event) && method_exists($this->event, 'trigger')) {
+                $result = $this->event->trigger(static::class . '.' . $event, $this);
+                $result = empty($result) ? true : end($result);
             } else {
                 $result = true;
             }

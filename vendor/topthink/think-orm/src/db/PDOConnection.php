@@ -12,12 +12,13 @@ declare (strict_types = 1);
 
 namespace think\db;
 
+use Closure;
 use PDO;
 use PDOStatement;
-use think\cache\CacheItem;
 use think\db\exception\BindParamException;
-use think\Exception;
-use think\exception\PDOException;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\ModelNotFoundException;
+use think\db\exception\PDOException;
 
 /**
  * 数据库连接基础类
@@ -213,14 +214,6 @@ abstract class PDOConnection extends Connection
     abstract public function getTables(string $dbName);
 
     /**
-     * SQL性能分析
-     * @access protected
-     * @param string $sql SQL语句
-     * @return array
-     */
-    abstract protected function getExplain(string $sql);
-
-    /**
      * 对返数据表字段信息进行大小写转换出来
      * @access public
      * @param array $info 字段信息
@@ -399,7 +392,7 @@ abstract class PDOConnection extends Connection
      * @param integer    $linkNum        连接序号
      * @param array|bool $autoConnection 是否自动连接主数据库（用于分布式）
      * @return PDO
-     * @throws Exception
+     * @throws PDOException
      */
     public function connect(array $config = [], $linkNum = 0, $autoConnection = false): PDO
     {
@@ -525,17 +518,17 @@ abstract class PDOConnection extends Connection
         // 分析查询表达式
         $query->parseOptions();
 
-        if ($query->getOptions('cache') && $this->cache) {
+        if ($query->getOptions('cache')) {
             // 检查查询缓存
             $cacheItem = $this->parseCache($query, $query->getOptions('cache'));
-            $resultSet = $this->cache->get($cacheItem->getKey());
+            $key       = $cacheItem->getKey();
 
-            if (false !== $resultSet) {
-                return $resultSet;
+            if ($this->cache->has($key)) {
+                return $this->cache->get($key);
             }
         }
 
-        if ($sql instanceof \Closure) {
+        if ($sql instanceof Closure) {
             $sql  = $sql($query);
             $bind = $query->getBind();
         }
@@ -656,15 +649,15 @@ abstract class PDOConnection extends Connection
 
         $this->numRows = $this->PDOStatement->rowCount();
 
-        if ($query->getOptions('cache') && $this->cache) {
+        if ($query->getOptions('cache')) {
             // 清理缓存数据
             $cacheItem = $this->parseCache($query, $query->getOptions('cache'));
             $key       = $cacheItem->getKey();
             $tag       = $cacheItem->getTag();
 
-            if (isset($key) && $this->cache->get($key)) {
+            if (isset($key) && $this->cache->has($key)) {
                 $this->cache->delete($key);
-            } elseif (!empty($tag)) {
+            } elseif (!empty($tag) && method_exists($this->cache, 'tag')) {
                 $this->cache->tag($tag)->clear();
             }
         }
@@ -863,7 +856,6 @@ abstract class PDOConnection extends Connection
      * @access public
      * @param BaseQuery $query 查询对象
      * @return integer
-     * @throws Exception
      * @throws PDOException
      */
     public function update(BaseQuery $query): int
@@ -888,7 +880,6 @@ abstract class PDOConnection extends Connection
      * @access public
      * @param BaseQuery $query 查询对象
      * @return int
-     * @throws Exception
      * @throws PDOException
      */
     public function delete(BaseQuery $query): int
@@ -928,12 +919,12 @@ abstract class PDOConnection extends Connection
 
         $query->setOption('field', (array) $field);
 
-        if (!empty($options['cache']) && $this->cache) {
+        if (!empty($options['cache'])) {
             $cacheItem = $this->parseCache($query, $options['cache']);
-            $result    = $this->cache->get($cacheItem->getKey());
+            $key       = $cacheItem->getKey();
 
-            if (false !== $result) {
-                return $result;
+            if ($this->cache->has($key)) {
+                return $this->cache->get($key);
             }
         }
 
@@ -951,7 +942,7 @@ abstract class PDOConnection extends Connection
 
         $result = $pdo->fetchColumn();
 
-        if (isset($cacheItem) && false !== $result) {
+        if (isset($cacheItem)) {
             // 缓存数据
             $cacheItem->set($result);
             $this->cacheData($cacheItem);
@@ -1008,13 +999,13 @@ abstract class PDOConnection extends Connection
 
         $query->setOption('field', $field);
 
-        if (!empty($options['cache']) && $this->cache) {
+        if (!empty($options['cache'])) {
             // 判断查询缓存
             $cacheItem = $this->parseCache($query, $options['cache']);
-            $result    = $this->cache->get($cacheItem->getKey());
+            $key       = $cacheItem->getKey();
 
-            if (false !== $result) {
-                return $result;
+            if ($this->cache->has($key)) {
+                return $this->cache->get($key);
             }
         }
 
@@ -1487,15 +1478,9 @@ abstract class PDOConnection extends Connection
                 // 记录操作结束时间
                 $runtime = number_format((microtime(true) - $this->queryStartTime), 6);
                 $sql     = $sql ?: $this->getLastsql();
-                $result  = [];
-
-                // SQL性能分析
-                if ($this->config['sql_explain'] && 0 === stripos(trim($sql), 'select')) {
-                    $result = $this->getExplain($sql);
-                }
 
                 // SQL监听
-                $this->triggerSql($sql, $runtime, $result, $master);
+                $this->triggerSql($sql, $runtime, $master);
             }
         }
     }
@@ -1505,17 +1490,16 @@ abstract class PDOConnection extends Connection
      * @access protected
      * @param string $sql     SQL语句
      * @param string $runtime SQL运行时间
-     * @param mixed  $explain SQL分析
      * @param bool   $master  主从标记
      * @return void
      */
-    protected function triggerSql(string $sql, string $runtime, array $explain = [], bool $master = false): void
+    protected function triggerSql(string $sql, string $runtime, bool $master = false): void
     {
         $listen = $this->db->getListen();
         if (!empty($listen)) {
             foreach ($listen as $callback) {
                 if (is_callable($callback)) {
-                    $callback($sql, $runtime, $explain, $master);
+                    $callback($sql, $runtime, $master);
                 }
             }
         } else {
@@ -1528,10 +1512,6 @@ abstract class PDOConnection extends Connection
 
             // 未注册监听则记录到日志中
             $this->log($sql . ' [ ' . $master . 'RunTime:' . $runtime . 's ]');
-
-            if (!empty($explain)) {
-                $this->log('[ EXPLAIN : ' . var_export($explain, true) . ' ]');
-            }
         }
     }
 
@@ -1617,33 +1597,20 @@ abstract class PDOConnection extends Connection
     }
 
     /**
-     * 分析缓存
+     * 分析缓存Key
      * @access protected
      * @param BaseQuery $query 查询对象
-     * @param array $cache 缓存信息
-     * @return CacheItem
+     * @return string
      */
-    protected function parseCache(BaseQuery $query, array $cache): CacheItem
+    protected function getCacheKey(BaseQuery $query): string
     {
-        list($key, $expire, $tag) = $cache;
-
-        if ($key instanceof CacheItem) {
-            $cacheItem = $key;
+        if (!empty($query->getOptions('key'))) {
+            $key = 'think:' . $this->getConfig('database') . '.' . $query->getTable() . '|' . $query->getOptions('key');
         } else {
-            if (true === $key) {
-                if (!empty($query->getOptions('key'))) {
-                    $key = 'think:' . $this->getConfig('database') . '.' . $query->getTable() . '|' . $query->getOptions('key');
-                } else {
-                    $key = md5($this->getConfig('database') . serialize($query->getOptions()) . serialize($query->getBind(false)));
-                }
-            }
-
-            $cacheItem = new CacheItem($key);
-            $cacheItem->expire($expire);
-            $cacheItem->tag($tag);
+            $key = md5($this->getConfig('database') . serialize($query->getOptions()) . serialize($query->getBind(false)));
         }
 
-        return $cacheItem;
+        return $key;
     }
 
 }

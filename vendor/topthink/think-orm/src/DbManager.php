@@ -13,13 +13,15 @@ declare (strict_types = 1);
 namespace think;
 
 use InvalidArgumentException;
-use think\CacheManager;
+use Psr\Log\LoggerInterface;
+use Psr\SimpleCache\CacheInterface;
 use think\db\BaseQuery;
 use think\db\Connection;
+use think\db\Query;
 use think\db\Raw;
 
 /**
- * Class Db
+ * Class DbManager
  * @package think
  * @mixin BaseQuery
  * @mixin Query
@@ -54,7 +56,7 @@ class DbManager
      * SQL日志
      * @var array
      */
-    protected $log = [];
+    protected $dbLog = [];
 
     /**
      * 查询次数
@@ -64,46 +66,128 @@ class DbManager
 
     /**
      * 查询缓存对象
-     * @var CacheManager
+     * @var CacheInterface
      */
     protected $cache;
 
     /**
-     * 初始化
+     * 查询日志对象
+     * @var LoggerInterface
+     */
+    protected $log;
+
+    /**
+     * 架构函数
+     * @access public
+     */
+    public function __construct()
+    {
+        $this->modelMaker();
+    }
+
+    /**
+     * 注入模型对象
+     * @access public
+     * @return void
+     */
+    protected function modelMaker()
+    {
+        Model::maker(function (Model $model) {
+            $model->setDb($this);
+
+            if (is_object($this->event)) {
+                $model->setEvent($this->event);
+            }
+
+            $isAutoWriteTimestamp = $model->getAutoWriteTimestamp();
+
+            if (is_null($isAutoWriteTimestamp)) {
+                // 自动写入时间戳
+                $model->isAutoWriteTimestamp($this->getConfig('auto_timestamp', true));
+            }
+
+            $dateFormat = $model->getDateFormat();
+
+            if (is_null($dateFormat)) {
+                // 设置时间戳格式
+                $model->setDateFormat($this->getConfig('datetime_format', 'Y-m-d H:i:s'));
+            }
+        });
+    }
+
+    /**
+     * 初始化配置参数
      * @access public
      * @param array $config 连接配置
-     * @return $this
+     * @return void
      */
-    public function init(array $config = [])
+    public function setConfig($config): void
     {
         $this->config = $config;
-        return $this;
     }
 
     /**
      * 设置缓存对象
      * @access public
-     * @param  CacheManager $cache 缓存对象
+     * @param  CacheInterface $cache 缓存对象
      * @return void
      */
-    public function setCache(CacheManager $cache)
+    public function setCache(CacheInterface $cache): void
     {
         $this->cache = $cache;
+    }
+
+    /**
+     * 设置日志对象
+     * @access public
+     * @param  LoggerInterface $log 日志对象
+     * @return void
+     */
+    public function setLog(LoggerInterface $log): void
+    {
+        $this->log = $log;
+    }
+
+    /**
+     * 记录SQL日志
+     * @access protected
+     * @param string $log  SQL日志信息
+     * @param string $type 日志类型
+     * @return void
+     */
+    public function log($log, $type = 'sql')
+    {
+        if ($this->log) {
+            $this->log->log($type, $log);
+        } else {
+            $this->dbLog[$type][] = $log;
+        }
+    }
+
+    /**
+     * 获得查询日志（没有设置日志对象使用）
+     * @access public
+     * @return array
+     */
+    public function getDbLog(): array
+    {
+        return $this->dbLog;
     }
 
     /**
      * 获取配置参数
      * @access public
      * @param  string $config 配置参数
+     * @param  mixed  $default 默认值
      * @return mixed
      */
-    public function getConfig($config = '')
+    public function getConfig(string $name = '', $default = null)
     {
         if ('' === $config) {
             return $this->config;
         }
 
-        return $this->config[$config] ?? null;
+        return $this->config[$name] ?? $default;
     }
 
     /**
@@ -125,8 +209,9 @@ class DbManager
         $class = $connection->getQueryClass();
         $query = new $class($connection);
 
-        if (!empty($this->config['time_query_rule'])) {
-            $query->timeRule($this->config['time_query_rule']);
+        $timeRule = $this->getConfig('time_query_rule');
+        if (!empty($timeRule)) {
+            $query->timeRule($timeRule);
         }
 
         return $query;
@@ -142,18 +227,25 @@ class DbManager
     protected function instance(string $name = null, bool $force = false): Connection
     {
         if (empty($name)) {
-            $name = $this->config['default'] ?? 'mysql';
+            $name = $this->getConfig('default', 'mysql');
         }
 
         if ($force || !isset($this->instance[$name])) {
-            if (!isset($this->config['connections'][$name])) {
+            $connections = $this->getConfig('connections');
+            if (!isset($connections[$name])) {
                 throw new InvalidArgumentException('Undefined db config:' . $name);
             }
 
-            $config = $this->config['connections'][$name];
+            $config = $connections[$name];
             $type   = !empty($config['type']) ? $config['type'] : 'mysql';
 
-            $this->instance[$name] = Container::factory($type, '\\think\\db\\connector\\', $config);
+            if (strpos($type, '\\')) {
+                $class = $type;
+            } else {
+                $class = '\\think\\db\\connector\\' . ucfirst($type);
+            }
+
+            $this->instance[$name] = new $class($config);
         }
 
         return $this->instance[$name];
@@ -198,28 +290,6 @@ class DbManager
     public function getQueryTimes(): int
     {
         return $this->queryTimes;
-    }
-
-    /**
-     * 记录SQL日志
-     * @access protected
-     * @param string $log  SQL日志信息
-     * @param string $type 日志类型
-     * @return void
-     */
-    public function log($log, $type = 'sql')
-    {
-        $this->log[$type][] = $log;
-    }
-
-    /**
-     * 获得查询日志
-     * @access public
-     * @return array
-     */
-    public function getLog()
-    {
-        return $this->log;
     }
 
     /**

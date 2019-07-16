@@ -12,14 +12,13 @@ declare (strict_types = 1);
 
 namespace think\db;
 
-use think\CacheManager;
-use think\cache\CacheItem;
+use Psr\SimpleCache\CacheInterface;
 use think\DbManager;
+use think\db\CacheItem;
 use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException as Exception;
 use think\db\exception\ModelNotFoundException;
-use think\Exception;
-use think\exception\DbException;
-use think\exception\PDOException;
+use think\db\exception\PDOException;
 
 /**
  * 数据库连接基础类
@@ -184,12 +183,22 @@ abstract class Connection
     /**
      * 设置当前的缓存对象
      * @access public
-     * @param CacheManager $cache
+     * @param CacheInterface $cache
      * @return void
      */
-    public function setCache(CacheManager $cache)
+    public function setCache(CacheInterface $cache)
     {
         $this->cache = $cache;
+    }
+
+    /**
+     * 获取当前的缓存对象
+     * @access public
+     * @return CacheInterface|null
+     */
+    public function getCache()
+    {
+        return $this->cache;
     }
 
     /**
@@ -412,11 +421,28 @@ abstract class Connection
      */
     protected function cacheData(CacheItem $cacheItem)
     {
-        if ($cacheItem->getTag()) {
+        if ($cacheItem->getTag() && method_exists($this->cache, 'tag')) {
             $this->cache->tag($cacheItem->getTag());
         }
 
         $this->cache->set($cacheItem->getKey(), $cacheItem->get(), $cacheItem->getExpire());
+    }
+
+    /**
+     * 分析缓存Key
+     * @access protected
+     * @param BaseQuery $query 查询对象
+     * @return string
+     */
+    protected function getCacheKey(BaseQuery $query): string
+    {
+        if (!empty($query->getOptions('key'))) {
+            $key = 'think:' . $this->getConfig('database') . '.' . $query->getTable() . '|' . $query->getOptions('key');
+        } else {
+            $key = md5($this->getConfig('database') . serialize($query->getOptions()));
+        }
+
+        return $key;
     }
 
     /**
@@ -434,11 +460,7 @@ abstract class Connection
             $cacheItem = $key;
         } else {
             if (true === $key) {
-                if (!empty($query->getOptions('key'))) {
-                    $key = 'think:' . $this->getConfig('database') . '.' . $query->getTable() . '|' . $query->getOptions('key');
-                } else {
-                    $key = md5($this->getConfig('database') . serialize($query->getOptions()));
-                }
+                $key = $this->getCacheKey($query);
             }
 
             $cacheItem = new CacheItem($key);
@@ -461,7 +483,7 @@ abstract class Connection
      */
     public function lazyWrite(string $type, string $guid, float $step, int $lazyTime)
     {
-        if (!$this->cache) {
+        if (!$this->cache || !method_exists($this->cache, $type)) {
             return $step;
         }
 

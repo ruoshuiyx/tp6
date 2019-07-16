@@ -33,7 +33,6 @@ class Template
      */
     protected $config = [
         'view_path'          => '', // 模板路径
-        'view_base'          => '',
         'view_suffix'        => 'html', // 默认模板文件后缀
         'view_depr'          => DIRECTORY_SEPARATOR,
         'cache_path'         => '',
@@ -1161,9 +1160,6 @@ class Template
     private function parseTemplateFile(string $template): string
     {
         if ('' == pathinfo($template, PATHINFO_EXTENSION)) {
-            if (strpos($template, '@')) {
-                list($app, $template) = explode('@', $template);
-            }
 
             if (0 !== strpos($template, '/')) {
                 $template = str_replace(['/', ':'], $this->config['view_depr'], $template);
@@ -1171,14 +1167,7 @@ class Template
                 $template = str_replace(['/', ':'], $this->config['view_depr'], substr($template, 1));
             }
 
-            if ($this->config['view_base']) {
-                $app  = isset($app) ? $app : '';
-                $path = $this->config['view_base'] . ($app ? $app . DIRECTORY_SEPARATOR : '');
-            } else {
-                $path = $this->config['view_path'];
-            }
-
-            $template = $path . $template . '.' . ltrim($this->config['view_suffix'], '.');
+            $template = $this->config['view_path'] . $template . '.' . ltrim($this->config['view_suffix'], '.');
         }
 
         if (is_file($template)) {

@@ -15,7 +15,9 @@ namespace think;
 use ArrayAccess;
 use Closure;
 use JsonSerializable;
-use think\db\Query;
+use think\contract\Arrayable;
+use think\contract\Jsonable;
+use think\db\BaseQuery as Query;
 
 /**
  * Class Model
@@ -33,7 +35,7 @@ use think\db\Query;
  * @method void onBeforeRestore(Model $model) static before_restore事件定义
  * @method void onAfterRestore(Model $model) static after_restore事件定义
  */
-abstract class Model implements JsonSerializable, ArrayAccess
+abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonable
 {
     use model\concern\Attribute;
     use model\concern\RelationShip;
@@ -145,10 +147,10 @@ abstract class Model implements JsonSerializable, ArrayAccess
     /**
      * 设置Db对象
      * @access public
-     * @param Db $db Db对象
+     * @param DbManager $db Db对象
      * @return void
      */
-    public function setDb(Db $db)
+    public function setDb(DbManager $db)
     {
         $this->db = $db;
     }
@@ -182,18 +184,6 @@ abstract class Model implements JsonSerializable, ArrayAccess
 
         if (static::$maker) {
             call_user_func(static::$maker, $this);
-        } else {
-            $this->db = Container::pull('think\DbManager');
-
-            if (is_null($this->autoWriteTimestamp)) {
-                // 自动写入时间戳
-                $this->autoWriteTimestamp = $this->db->getConfig('auto_timestamp');
-            }
-
-            if (is_null($this->dateFormat)) {
-                // 设置时间戳格式
-                $this->dateFormat = $this->db->getConfig('datetime_format');
-            }
         }
 
         // 执行初始化操作
@@ -351,13 +341,16 @@ abstract class Model implements JsonSerializable, ArrayAccess
      * @return void
      */
     protected static function init()
-    {}
+    {
+    }
 
     protected function checkData(): void
-    {}
+    {
+    }
 
     protected function checkResult($result): void
-    {}
+    {
+    }
 
     /**
      * 更新是否强制写入数据 而不做比较

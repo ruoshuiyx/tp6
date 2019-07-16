@@ -1,6 +1,17 @@
 CHANGELOG
 ---------
 
+### v3.3.1, 2019.07.10
+
+- Use `sha1` instead of `md5` for hashing file names in `Opis\Closure\ReflectionClosure` class
+
+### v3.3.0, 2019.05.31
+
+- Fixed a bug that prevented signed closures to properly work when the serialized string
+contains invalid UTF-8 chars. Starting with this version `json_encode` is no longer used
+when signing a closure. Backward compatibility is maintained and all closures that were 
+previously signed using the old method will continue to work.
+
 ### v3.2.0, 2019.05.05
 
 - Since an unsigned closure can be unserialized when no security provider is set, 
@@ -22,7 +33,7 @@ Those properties are now ignored.
 - Added support for static methods that are named using PHP keywords or magic constants.
 Ex: `A::new()`, `A::use()`, `A::if()`, `A::function()`, `A::__DIR__()`, etc.
 - Used `@internal` to mark classes & methods that are for internal use only and
-backward compatibility might be broken at some point.
+backward compatibility is not guaranteed.
 
 ### v3.1.3, 2019.01.07
 
