@@ -37,16 +37,14 @@ class Schema extends Command
         }
 
         if ($app) {
-            $runtimePath = $this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . $app . DIRECTORY_SEPARATOR;
-            $appPath     = $this->app->getBasePath() . $app . DIRECTORY_SEPARATOR;
-            $namespace   = 'app\\' . $app;
+            $appPath   = $this->app->getBasePath() . $app . DIRECTORY_SEPARATOR;
+            $namespace = 'app\\' . $app;
         } else {
-            $runtimePath = $this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR;
-            $appPath     = $this->app->getBasePath();
-            $namespace   = 'app';
+            $appPath   = $this->app->getBasePath();
+            $namespace = 'app';
         }
 
-        $schemaPath = $runtimePath . 'schema' . DIRECTORY_SEPARATOR;
+        $schemaPath = $this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . 'schema' . DIRECTORY_SEPARATOR;
         if (!is_dir($schemaPath)) {
             mkdir($schemaPath, 0755, true);
         }
@@ -54,7 +52,7 @@ class Schema extends Command
         if ($input->hasOption('table')) {
             $table = $input->getOption('table');
             if (false === strpos($table, '.')) {
-                $dbName = $this->app->db->getConfig('database');
+                $dbName = $this->app->db->getConnection()->getConfig('database');
             }
 
             $tables[] = $table;
@@ -93,7 +91,7 @@ class Schema extends Command
             $model = new $class;
 
             $table   = $model->getTable();
-            $dbName  = $model->getConfig('database');
+            $dbName  = $model->getConnection()->getConfig('database');
             $content = '<?php ' . PHP_EOL . 'return ';
             $info    = $model->db()->getConnection()->getFields($table);
             $content .= var_export($info, true) . ';';
@@ -105,7 +103,7 @@ class Schema extends Command
     protected function buildDataBaseSchema(string $path, array $tables, string $db): void
     {
         if ('' == $db) {
-            $dbName = $this->app->db->getConfig('database') . '.';
+            $dbName = $this->app->db->getConnection()->getConfig('database') . '.';
         } else {
             $dbName = $db;
         }

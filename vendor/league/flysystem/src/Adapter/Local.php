@@ -39,7 +39,7 @@ class Local extends AbstractAdapter
         'dir' => [
             'public' => 0755,
             'private' => 0700,
-        ]
+        ],
     ];
 
     /**
@@ -56,6 +56,7 @@ class Local extends AbstractAdapter
      * @var int
      */
     protected $writeFlags;
+
     /**
      * @var int
      */
@@ -99,11 +100,17 @@ class Local extends AbstractAdapter
     {
         if ( ! is_dir($root)) {
             $umask = umask(0);
-            @mkdir($root, $this->permissionMap['dir']['public'], true);
+
+            if ( ! @mkdir($root, $this->permissionMap['dir']['public'], true)) {
+                $mkdirError = error_get_last();
+            }
+
             umask($umask);
+            clearstatcache(false, $root);
 
             if ( ! is_dir($root)) {
-                throw new Exception(sprintf('Impossible to create the root directory "%s".', $root));
+                $errorMessage = isset($mkdirError['message']) ? $mkdirError['message'] : '';
+                throw new Exception(sprintf('Impossible to create the root directory "%s". %s', $root, $errorMessage));
             }
         }
     }
@@ -213,7 +220,7 @@ class Local extends AbstractAdapter
     public function read($path)
     {
         $location = $this->applyPathPrefix($path);
-        $contents = file_get_contents($location);
+        $contents = @file_get_contents($location);
 
         if ($contents === false) {
             return false;
@@ -290,6 +297,7 @@ class Local extends AbstractAdapter
     public function getMetadata($path)
     {
         $location = $this->applyPathPrefix($path);
+        clearstatcache(false, $location);
         $info = new SplFileInfo($location);
 
         return $this->normalizeFileInfo($info);

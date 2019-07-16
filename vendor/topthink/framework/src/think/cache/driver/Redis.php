@@ -8,6 +8,7 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
+declare (strict_types = 1);
 
 namespace think\cache\driver;
 
@@ -98,7 +99,7 @@ class Redis extends Driver
      */
     public function has($name): bool
     {
-        return $this->handler->exists($this->getCacheKey($name));
+        return $this->handler->exists($this->getCacheKey($name)) ? true : false;
     }
 
     /**
