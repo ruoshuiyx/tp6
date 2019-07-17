@@ -465,12 +465,12 @@ function make_html_add($type, $field, $name, $required, $tips, $value = null, $m
                     <input type="text" name="' . $field . '" class="form-control" placeholder="请点击按钮上传或手动输入地址" value="' . $value . '">
                   </div>
                   <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">
-                    <!--上传图片-->
+                    <!--上传文件-->
                     <!--用来存放item-->
                     <div id="fileList_image' . $field . '" class="uploader-list">
                     </div>
-                    <div id="filePicker_image' . $field . '"><i class="fa fa-upload m-r-10"></i>选择图片</div>
-                    <!--上传图片-->
+                    <div id="filePicker_image' . $field . '"><i class="fa fa-upload m-r-10"></i>选择文件</div>
+                    <!--上传文件-->
                     ' . $requiredHtml . '
                   </div>
                   <script>webupload(\'fileList_image' . $field . '\',\'filePicker_image' . $field . '\',\'image_preview' . $field . '\',\'' . $field . '\',false ,\'' . $setup['upload_allowext'] . '\');	</script>';
