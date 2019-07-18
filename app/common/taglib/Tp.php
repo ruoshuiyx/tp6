@@ -188,7 +188,7 @@ class Tp extends TagLib {
     // 通用列表
     Public function tagList($tag, $content)
     {
-        $id       = isset($tag['id'])       ? $tag['id']                         : getCateId();             //可以为空
+        $id       = isset($tag['id'])       ? $tag['id']                         : '0';                     //可以为空
         $name     = isset($tag['name'])     ? $tag['name']                       : "list";                  //不可为空
         $order    = isset($tag['order'])    ? $tag['order']                      : 'sort ASC,id DESC';      //排序
         $limit    = isset($tag['limit'])    ? $tag['limit']                      : '0';                     //多少条数据,传递时不再进行分页
@@ -196,12 +196,13 @@ class Tp extends TagLib {
         $pagesize = isset($tag['pagesize']) ? $tag['pagesize']                   : config('app.page_size'); //每页数量
         $parse  = '<?php ';
         $parse .= '
+            $__CATEID__ = '.$id.' ? '.$id.' : getCateId();
             //查找栏目对应的表信息
             $__TABLE_=\think\facade\Db::name(\'cate\')
                 ->alias(\'a\')
-                ->leftJoin(\'module m\',\'a.moduleid = m.id\')
-                ->field(\'a.id,a.moduleid,a.pagesize,a.catname,m.name as modulename,m.listfields\')
-                ->where(\'a.id\',\'=\',' . $id . ')
+                ->leftJoin(\'module m\', \'a.moduleid = m.id\')
+                ->field(\'a.id, a.moduleid, a.pagesize, a.catname, m.name as modulename, m.listfields\')
+                ->where(\'a.id\', \'=\', $__CATEID__)
                 ->find();
             //获取表名称
             $__TABLENAME_ = $__TABLE_[\'modulename\'];
@@ -213,7 +214,7 @@ class Tp extends TagLib {
             $__ALLCATE__ = \think\facade\Db::name(\'cate\')
                 ->field(\'id,parentid\')
                 ->select();
-            $__IDS__ = getChildsIdStr(getChildsId($__ALLCATE__,' . $id . '),' . $id . ');
+            $__IDS__ = getChildsIdStr(getChildsId($__ALLCATE__,$__CATEID__),$__CATEID__);
 
             //表名称为空时（id不存在）直接返回空数组
             if (!empty($__TABLENAME_)) {
