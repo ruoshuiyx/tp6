@@ -8,7 +8,7 @@
             <input class="btn btn-flat btn-primary" type="submit" value="搜索">
             <a class="btn btn-flat btn-primary m_10" href="{:url('index')}" >显示全部</a>
             <input class="btn btn-flat btn-warning m_10 select_del" type="button" value="批量删除">
-            <a class="btn btn-flat btn-danger m_10 f_r" href='{:url('download')}'><i class="fa fa-download m-r-10"></i>下载</a>
+            <a class="btn btn-flat btn-danger m_10 f_r" href='{:url('download', ['keyword'=>$keyword, 'dateran'=>$dateran])}' target='_blank'><i class="fa fa-download m-r-10"></i>下载</a>
         </form>
     </div>
     <!--数据表开始-->

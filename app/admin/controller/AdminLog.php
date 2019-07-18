@@ -31,8 +31,8 @@ use think\facade\Request;
 use think\facade\Session;
 use think\facade\View;
 
-use PHPExcel_IOFactory;
-use PHPExcel;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class AdminLog extends Base
 {
@@ -43,16 +43,16 @@ class AdminLog extends Base
         $where = [];
         $keyword = Request::param('keyword');
         if (!empty($keyword)) {
-            $where[] = ['username|title', 'like', '%'.$keyword.'%'];
+            $where[] = ['username|title', 'like', '%' . $keyword . '%'];
         }
         //非超级管理员只能查看自己的日志
-        if (Session::get('admin.id')>1) {
-            $where[]=['admin_id', '=', Session::get('admin.id')];
+        if (Session::get('admin.id') > 1) {
+            $where[] = ['admin_id', '=', Session::get('admin.id')];
         }
         $dateran = Request::param('dateran');
         if (!empty($dateran)) {
             $getDateran = get_dateran($dateran);
-            $where[]=['create_time', 'between', $getDateran];
+            $where[] = ['create_time', 'between', $getDateran];
         }
 
         //调取列表
@@ -97,12 +97,9 @@ class AdminLog extends Base
 
     // 下载
     public function download(){
-        $PHPExcel = new PHPExcel(); //实例化PHPExcel类
-        $PHPExcel->setActiveSheetIndex(0); //设置sheet的起始位置
-        $PHPSheet = $PHPExcel->getActiveSheet(); //获得当前活动sheet的操作对象
-        $PHPSheet->setTitle('用户列表'); //给当前活动sheet设置名称
-
-        $PHPSheet
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet
             ->setCellValue('A1','ID')
             ->setCellValue('B1','管理员ID')
             ->setCellValue('C1','管理员')
@@ -114,16 +111,16 @@ class AdminLog extends Base
             ->setCellValue('I1','浏览器全部')
             ->setCellValue('J1','添加时间')
         ;
-
+        /*--------------开始从数据库提取信息插入Excel表中------------------*/
         //调取列表
         //全局查询条件
         $where = [];
         $keyword = Request::param('keyword');
         if (!empty($keyword)) {
-            $where[] = ['username|title', 'like', '%'.$keyword.'%'];
+            $where[] = ['username|title', 'like', '%' . $keyword . '%'];
         }
         //非超级管理员只能查看自己的日志
-        if (Session::get('admin.id')>1) {
+        if (Session::get('admin.id') > 1) {
             $where[] = ['admin_id', '=', Session::get('admin.id')];
         }
         $dateran = Request::param('dateran');
@@ -133,10 +130,10 @@ class AdminLog extends Base
         }
 
         //调取列表
-        $list = M::getDownList($where,['id'=>'desc']);
+        $list = M::getDownList($where, ['id' => 'desc']);
         foreach ($list as $k => $v) {
             $v['create_time'] = date("Y-m-d H:i", $v['create_time']);
-            $PHPSheet
+            $sheet
                 ->setCellValue('A'.($k+2),$v['id'])
                 ->setCellValue('B'.($k+2),$v['admin_id'])
                 ->setCellValue('C'.($k+2),$v['username'])
@@ -150,12 +147,11 @@ class AdminLog extends Base
             ;
         }
 
-        $PHPWriter = PHPExcel_IOFactory::createWriter($PHPExcel,'Excel2007');//按照指定格式生成Excel文件，‘Excel2007’表示生成2007版本的xlsx，
-
-        //ob_end_clean();
-        header('Content-Disposition: attachment;filename="管理员日志.xlsx"');
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        $PHPWriter->save("php://output");
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="'.'管理员日志'.'.xlsx"');
+        header('Cache-Control: max-age=0');
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('php://output');
     }
 
 }
