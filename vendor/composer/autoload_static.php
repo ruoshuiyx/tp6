@@ -112,6 +112,7 @@ class ComposerStaticInit634a937ba1eabb0ab3e4c5f805e985ac
         array (
             'League\\Flysystem\\Cached\\' => 24,
             'League\\Flysystem\\' => 17,
+            'Lcobucci\\JWT\\' => 13,
         ),
         'C' => 
         array (
@@ -195,6 +196,10 @@ class ComposerStaticInit634a937ba1eabb0ab3e4c5f805e985ac
         'League\\Flysystem\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/flysystem/src',
+        ),
+        'Lcobucci\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/lcobucci/jwt/src',
         ),
         'Complex\\' => 
         array (
