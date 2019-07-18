@@ -31,8 +31,8 @@ use app\common\model\Users as M;
 use think\facade\Request;
 use think\facade\View;
 
-use PHPExcel_IOFactory;
-use PHPExcel;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class Users extends Base
 {
@@ -180,12 +180,9 @@ class Users extends Base
 
     // 下载
     public function download(){
-        $PHPExcel = new PHPExcel(); //实例化PHPExcel类
-        $PHPExcel->setActiveSheetIndex(0); //设置sheet的起始位置
-        $PHPSheet = $PHPExcel->getActiveSheet(); //获得当前活动sheet的操作对象
-        $PHPSheet->setTitle('用户列表'); //给当前活动sheet设置名称
-
-        $PHPSheet
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet
             ->setCellValue('A1','ID')
             ->setCellValue('B1','邮箱账号')
             ->setCellValue('C1','性别')
@@ -200,7 +197,7 @@ class Users extends Base
             ->setCellValue('L1','用户组')
             ->setCellValue('M1','状态')
         ;
-
+        /*--------------开始从数据库提取信息插入Excel表中------------------*/
         //调取列表
         //全局查询条件
         $where = [];
@@ -219,15 +216,14 @@ class Users extends Base
         }
 
         //获取列表
-        $list = M::getDownList($where,$this->pageSize,['id'=>'desc']);
-
+        $list = M::getDownList($where, ['id' => 'desc']);
         foreach ($list as $k => $v) {
             $v['sex']              = $v['sex']=='1'              ? '男'    : '女';
             $v['mobile_validated'] = $v['mobile_validated']=='1' ? '已认证' : '未认证';
             $v['email_validated']  = $v['email_validated']=='1'  ? '已认证' : '未认证';
             $v['status']           = $v['status']=='1'           ? '正常'   : '禁用';
             $v['last_login_time']  = date("Y-m-d H:i",$v['last_login_time']);
-            $PHPSheet
+            $sheet
                 ->setCellValue('A'.($k+2),$v['id'])
                 ->setCellValue('B'.($k+2),$v['email'])
                 ->setCellValue('C'.($k+2),$v['sex'])
@@ -244,12 +240,11 @@ class Users extends Base
             ;
         }
 
-        $PHPWriter = PHPExcel_IOFactory::createWriter($PHPExcel,'Excel2007');//按照指定格式生成Excel文件，‘Excel2007’表示生成2007版本的xlsx，
-
-        //ob_end_clean();
-        header('Content-Disposition: attachment;filename="用户列表.xlsx"');
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        $PHPWriter->save("php://output");
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="'.'用户列表'.'.xlsx"');
+        header('Cache-Control: max-age=0');
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('php://output');
     }
 
 }
