@@ -28,32 +28,38 @@ namespace app\admin\model;
 use think\facade\Request;
 use think\facade\Session;
 
-class AdminLog extends Base {
+class AdminLog extends Base
+{
 
     //关闭自动时间戳
     protected $autoWriteTimestamp = false;
 
     //获取列表
-    public static function getList($where=array(),$pageSize,$order=['sort','id'=>'desc']){
+    public static function getList($where = array(), $pageSize, $order = ['sort', 'id' => 'desc'])
+    {
         $list = self::where($where)
             ->order($order)
-            ->paginate($pageSize,false,['query' => Request::get()]);
+            ->paginate([
+                'query'     => Request::get(),
+                'list_rows' => $pageSize,
+            ]);
         foreach ($list as $k => $v) {
-            $useragent = explode('(',$v['useragent']);
-            $list[$k]['useragent']=$useragent[0];
+            $useragent = explode('(', $v['useragent']);
+            $list[$k]['useragent'] = $useragent[0];
         }
         return $list;
     }
 
     //获取下载列表
-    public static function getDownList($where=array(),$order=['sort','id'=>'desc']){
+    public static function getDownList($where = array(), $order = ['sort', 'id' => 'desc'])
+    {
         $list = self::where($where)
             ->order($order)
             ->select();
         foreach ($list as $k => $v) {
-            $list[$k]['useragent_all']=$list[$k]['useragent'];
-            $useragent = explode('(',$v['useragent']);
-            $list[$k]['useragent']=$useragent[0];
+            $list[$k]['useragent_all'] = $list[$k]['useragent'];
+            $useragent = explode('(', $v['useragent']);
+            $list[$k]['useragent'] = $useragent[0];
         }
         return $list;
     }
@@ -78,22 +84,20 @@ class AdminLog extends Base {
             foreach ($titleArr as $k => $v) {
                 $title = '[' . $v['title'] . '] -> ' . $title;
             }
-            $title = substr($title,0,strlen($title)-4);
+            $title = substr($title, 0, strlen($title) - 4);
         }
 
         //内容处理(过长的内容和涉及密码的内容不进行记录)
         if ($content) {
-            foreach ($content as $k => $v)
-            {
-                if (is_string($v) && strlen($v) > 200 || stripos($k, 'password') !== false)
-                {
+            foreach ($content as $k => $v) {
+                if (is_string($v) && strlen($v) > 200 || stripos($k, 'password') !== false) {
                     unset($content[$k]);
                 }
             }
         }
 
         //登录处理
-        if (strpos($url,'login/checklogin') !== false) {
+        if (strpos($url, 'login/checklogin') !== false) {
             $title = '[登录成功]';
             $content = '';
         }
@@ -101,7 +105,7 @@ class AdminLog extends Base {
         //插入数据
         if (!empty($title)) {
             //查询管理员上一条数据
-            $result = self::where('admin_id' , '=' , $admin_id)
+            $result = self::where('admin_id', '=', $admin_id)
                 ->order('id', 'desc')
                 ->find();
             if ($result) {
