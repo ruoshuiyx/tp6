@@ -846,12 +846,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/framework.git",
-                "reference": "d2dea0706bd2a70c0e8e56e0ba9da6c66118edaf"
+                "reference": "08f67325d4928aa3ee7f5a70d5fb527effcb6111"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/top-think/framework/zipball/d2dea0706bd2a70c0e8e56e0ba9da6c66118edaf",
-                "reference": "d2dea0706bd2a70c0e8e56e0ba9da6c66118edaf",
+                "url": "https://api.github.com/repos/top-think/framework/zipball/08f67325d4928aa3ee7f5a70d5fb527effcb6111",
+                "reference": "08f67325d4928aa3ee7f5a70d5fb527effcb6111",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -905,7 +905,7 @@
                 "orm",
                 "thinkphp"
             ],
-            "time": "2019-07-18T10:05:35+00:00"
+            "time": "2019-07-20T04:35:25+00:00"
         },
         {
             "name": "topthink/think-captcha",
@@ -1104,16 +1104,16 @@
         },
         {
             "name": "topthink/think-template",
-            "version": "v2.0.3",
+            "version": "v2.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/think-template.git",
-                "reference": "dfd4d1693207aa4ebc027dc11a9d424c28c3fac0"
+                "reference": "9ec06258475bba71576acf0cf047761e1350f63d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/top-think/think-template/zipball/dfd4d1693207aa4ebc027dc11a9d424c28c3fac0",
-                "reference": "dfd4d1693207aa4ebc027dc11a9d424c28c3fac0",
+                "url": "https://api.github.com/repos/top-think/think-template/zipball/9ec06258475bba71576acf0cf047761e1350f63d",
+                "reference": "9ec06258475bba71576acf0cf047761e1350f63d",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -1142,20 +1142,20 @@
                 }
             ],
             "description": "the php template engine",
-            "time": "2019-07-10T03:56:08+00:00"
+            "time": "2019-07-10T07:49:44+00:00"
         },
         {
             "name": "topthink/think-view",
-            "version": "v1.0.7",
+            "version": "v1.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/think-view.git",
-                "reference": "1e1c42b5fa7c92bed42b334aef733b732f8c32fb"
+                "reference": "a0e783c236f3d30a652b00d8375234f0b9e94f42"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/top-think/think-view/zipball/1e1c42b5fa7c92bed42b334aef733b732f8c32fb",
-                "reference": "1e1c42b5fa7c92bed42b334aef733b732f8c32fb",
+                "url": "https://api.github.com/repos/top-think/think-view/zipball/a0e783c236f3d30a652b00d8375234f0b9e94f42",
+                "reference": "a0e783c236f3d30a652b00d8375234f0b9e94f42",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -1192,7 +1192,7 @@
                 }
             ],
             "description": "thinkphp template driver",
-            "time": "2019-07-10T04:01:32+00:00"
+            "time": "2019-07-19T09:41:54+00:00"
         },
         {
             "name": "tp5er/tp5-databackup",

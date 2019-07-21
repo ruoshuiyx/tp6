@@ -42,10 +42,20 @@ class User extends Base
     ];
 
     /**
-     * 登录(获取token)
-     * @param username  用户名
-     * @param password  密码
-     * @return array
+     * @api {post} /User/login 01、会员登录
+     * @apiGroup User
+     * @apiVersion 6.0.0
+     * @apiDescription 系统登录接口，返回 token 用于操作需验证身份的接口
+
+     * @apiParam (请求参数：) {string}     		username 登录用户名
+     * @apiParam (请求参数：) {string}     		password 登录密码
+
+     * @apiParam (响应字段：) {string}     		token    Token
+
+     * @apiSuccessExample {json} 成功示例
+     * {"code":1,"msg":"登录成功","time":1563525780,"data":{"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhcGkuc2l5dWNtcy5jb20iLCJhdWQiOiJzaXl1Y21zX2FwcCIsImlhdCI6MTU2MzUyNTc4MCwiZXhwIjoxNTYzNTI5MzgwLCJ1aWQiOjEzfQ.prQbqT00DEUbvsA5M14HpNoUqm31aj2JEaWD7ilqXjw"}}
+     * @apiErrorExample {json} 失败示例
+     * {"code":0,"msg":"帐号或密码错误","time":1563525638,"data":[]}
      */
     public function login()
     {
@@ -76,10 +86,18 @@ class User extends Base
     }
 
     /**
-     * 注册
-     * @param email    邮箱
-     * @param password 密码
-     * @return array
+     * @api {post} /User/register 02、会员注册
+     * @apiGroup User
+     * @apiVersion 6.0.0
+     * @apiDescription  系统注册接口，返回是否成功的提示，需再次登录
+
+     * @apiParam (请求参数：) {string}     		email 邮箱
+     * @apiParam (请求参数：) {string}     		password 密码
+
+     * @apiSuccessExample {json} 成功示例
+     * {"code":1,"msg":"注册成功","time":1563526721,"data":[]}
+     * @apiErrorExample {json} 失败示例
+     * {"code":0,"msg":"邮箱已被注册","time":1563526693,"data":[]}
      */
     public function register(){
         $email     = trim(Request::param("email"));
@@ -124,8 +142,15 @@ class User extends Base
     }
 
     /**
-     * 用户中心首页
-     * @return array
+     * @api {post} /User/index 03、会员中心首页
+     * @apiGroup User
+     * @apiVersion 6.0.0
+     * @apiDescription  会员中心首页，返回用户个人信息
+
+     * @apiParam (请求参数：) {string}     		token Token
+
+     * @apiSuccessExample {json} 响应数据样例
+     * {"code":1,"msg":"","time":1563517637,"data":{"id":13,"email":"test110@qq.com","password":"e10adc3949ba59abbe56e057f20f883e","sex":1,"last_login_time":1563517503,"last_login_ip":"127.0.0.1","qq":"123455","mobile":"","mobile_validated":0,"email_validated":0,"type_id":1,"status":1,"create_ip":"127.0.0.1","update_time":1563507130,"create_time":1563503991,"type_name":"注册会员"}}
      */
     public function index()
     {
@@ -139,10 +164,19 @@ class User extends Base
     }
 
     /**
-     * 修改密码
-     * @param oldPassword 原密码
-     * @param newPassword 新密码
-     * @return array
+     * @api {post} /User/editPwd 04、修改密码
+     * @apiGroup User
+     * @apiVersion 6.0.0
+     * @apiDescription  修改会员密码，返回成功或失败提示
+
+     * @apiParam (请求参数：) {string}     		token Token
+     * @apiParam (请求参数：) {string}     		oldPassword 原密码
+     * @apiParam (请求参数：) {string}     		newPassword 新密码
+
+     * @apiSuccessExample {json} 成功示例
+     * {"code":1,"msg":"密码修改成功","time":1563527107,"data":[]}
+     * @apiErrorExample {json} 失败示例
+     * {"code":0,"msg":"token已过期","time":1563527082,"data":[]}
      */
     public function editPwd(){
         $oldPassword = trim(Request::param("oldPassword"));
@@ -174,11 +208,20 @@ class User extends Base
     }
 
     /**
-     * 修改信息
-     * @param sex    性别 [1 男/0 女]
-     * @param qq     QQ
-     * @param mobile 手机号
-     * @return array
+     * @api {post} /User/editInfo 05、修改信息
+     * @apiGroup User
+     * @apiVersion 6.0.0
+     * @apiDescription  修改用户信息，返回成功或失败提示
+
+     * @apiParam (请求参数：) {string}     		token Token
+     * @apiParam (请求参数：) {string}     		sex 性别 [1男/0女]
+     * @apiParam (请求参数：) {string}     		qq  qq
+     * @apiParam (请求参数：) {string}     		mobile  手机号
+
+     * @apiSuccessExample {json} 成功示例
+     * {"code":0,"msg":"修改成功","time":1563507660,"data":[]}
+     * @apiErrorExample {json} 失败示例
+     * {"code":0,"msg":"token已过期","time":1563527082,"data":[]}
      */
     public function editInfo(){
         $data['sex']    = trim(Request::param("sex"));

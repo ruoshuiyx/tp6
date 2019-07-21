@@ -13,6 +13,7 @@ declare (strict_types = 1);
 namespace think\view\driver;
 
 use think\App;
+use think\helper\Str;
 use think\Template;
 use think\template\exception\TemplateNotFoundException;
 
@@ -53,6 +54,20 @@ class Think
         }
 
         $this->template = new Template($this->config);
+        $this->template->extend('$Request', function (array $vars) {
+            // 获取Request请求对象参数
+            $method = array_shift($vars);
+            if (!empty($vars)) {
+                $params = implode('.', $vars);
+                if ('true' != $params) {
+                    $params = '\'' . $params . '\'';
+                }
+            } else {
+                $params = '';
+            }
+
+            return 'app(\'request\')->' . $method . '(' . $params . ')';
+        });
     }
 
     /**
@@ -140,7 +155,15 @@ class Think
 
         if (0 !== strpos($template, '/')) {
             $template   = str_replace(['/', ':'], $depr, $template);
-            $controller = App::parseName($request->controller());
+            $controller = $request->controller();
+
+            if (strpos($controller, '.')) {
+                $pos        = strrpos($controller, '.');
+                $controller = substr($controller, 0, $pos) . '.' . Str::snake(substr($controller, $pos + 1));
+            } else {
+                $controller = Str::snake($controller);
+            }
+
             if ($controller) {
                 if ('' == $template) {
                     // 如果模板文件名为空 按照默认模板渲染规则定位
@@ -149,7 +172,7 @@ class Think
                     } elseif (3 == $this->config['auto_rule']) {
                         $template = $request->action();
                     } else {
-                        $template = App::parseName($request->action());
+                        $template = Str::snake($request->action());
                     }
 
                     $template = str_replace('.', DIRECTORY_SEPARATOR, $controller) . $depr . $template;
