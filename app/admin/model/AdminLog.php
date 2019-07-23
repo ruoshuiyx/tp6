@@ -97,7 +97,7 @@ class AdminLog extends Base
         }
 
         //登录处理
-        if (strpos($url, 'login/checklogin') !== false) {
+        if (strpos($url, 'Login/checkLogin') !== false) {
             $title = '[登录成功]';
             $content = '';
         }
