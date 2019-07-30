@@ -14,6 +14,7 @@ namespace think;
 
 use Psr\SimpleCache\CacheInterface;
 use think\cache\Driver;
+use think\cache\TagSet;
 use think\exception\InvalidArgumentException;
 use think\helper\Arr;
 
@@ -29,9 +30,9 @@ class Cache extends Manager implements CacheInterface
 
     /**
      * 默认驱动
-     * @return string
+     * @return string|null
      */
-    public function getDefaultDriver(): string
+    public function getDefaultDriver()
     {
         return $this->getConfig('default');
     }
@@ -183,4 +184,14 @@ class Cache extends Manager implements CacheInterface
         return $this->store()->has($key);
     }
 
+    /**
+     * 缓存标签
+     * @access public
+     * @param string|array $name 标签名
+     * @return TagSet
+     */
+    public function tag($name): TagSet
+    {
+        return $this->store()->tag($name);
+    }
 }

@@ -422,10 +422,10 @@ abstract class Connection
     protected function cacheData(CacheItem $cacheItem)
     {
         if ($cacheItem->getTag() && method_exists($this->cache, 'tag')) {
-            $this->cache->tag($cacheItem->getTag());
+            $this->cache->tag($cacheItem->getTag())->set($cacheItem->getKey(), $cacheItem->get(), $cacheItem->getExpire());
+        } else {
+            $this->cache->set($cacheItem->getKey(), $cacheItem->get(), $cacheItem->getExpire());
         }
-
-        $this->cache->set($cacheItem->getKey(), $cacheItem->get(), $cacheItem->getExpire());
     }
 
     /**
@@ -504,6 +504,42 @@ abstract class Connection
 
         return false;
     }
+
+    /**
+     * 启动XA事务
+     * @access public
+     * @param  string $xid XA事务id
+     * @return void
+     */
+    public function startTransXa(string $xid)
+    {}
+
+    /**
+     * 预编译XA事务
+     * @access public
+     * @param  string $xid XA事务id
+     * @return void
+     */
+    public function prepareXa(string $xid)
+    {}
+
+    /**
+     * 提交XA事务
+     * @access public
+     * @param  string $xid XA事务id
+     * @return void
+     */
+    public function commitXa(string $xid)
+    {}
+
+    /**
+     * 回滚XA事务
+     * @access public
+     * @param  string $xid XA事务id
+     * @return void
+     */
+    public function rollbackXa(string $xid)
+    {}
 
     /**
      * 析构方法

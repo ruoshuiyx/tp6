@@ -1,0 +1,91 @@
+<!--内容开始-->
+<section class="content">
+	{// 额外HTML代码 }
+	{$extra_html_content_top|raw|default=''}
+	<!--顶部提示-->
+    {notempty name="page_tips_top"}
+    <div class="alert alert-{$tips_type} alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <p>{$page_tips_top|raw}</p>
+    </div>
+    {/notempty}
+    <!--搜索区域-->
+    <div class="search">
+        <form class="form-inline" action="">
+        	{notempty name="page_tips_search"}{$page_tips_search|raw}{/notempty}
+            <a class="btn btn-flat btn-primary m_10" href="{:url('index')}" >显示全部</a>
+            <a class="btn btn-flat btn-success m_10 f_r m_t_5" onclick="javascript :history.back(-1)"><i
+                    class="fa fa-undo m-r-10"></i>返 回</a>
+        </form>
+    </div>
+    <!--数据表开始-->
+    <form name="form-builder" method="{$form_method}" action="{$form_url}" {$submit_confirm ?= 'submit_confirm'}>
+        <input type="hidden" name="id" value=""/>
+        <!---->
+        {if $form_items}
+        <div class="row">
+            <div class="col-sm-12 col-xs-12">
+                <div class="box box-body"> 
+                    <!---->
+                    {volist name="form_items" id="form"}
+                    {switch form.type}
+                    	{case value="group"}
+                            {// 分组 }
+                            {include file="form_builder/items/group" type='' /}
+                        {/case}
+                        {case text}
+                        	{// 单行文本框 }
+                        	{include file="form_builder/items/text" type='' /}
+                        {/case}
+                        {case value="textarea"}
+                            {// 多行文本框 }
+                            {include file="form_builder/items/textarea" type='' /}
+                        {/case}
+                        {case group}输出内容2{/case}
+                        {default /}默认情况
+                    {/switch}
+                    {/volist}
+                    <!---->
+                    <div class="row dd_input_group">
+                        <div class="form-group">
+                            <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5 text-center">
+                            	{php}if(isset($btn_hide) && !in_array('submit', $btn_hide)):{/php}
+                                <button type="submit" class="btn btn-flat btn-primary ">{$btn_title['submit']|default='提 交'}</button>
+                                {php}endif;{/php}
+                                {php}if(isset($btn_hide) && !in_array('back', $btn_hide)):{/php}
+                                <button type="button" class="btn btn-flat btn-default" onclick="javascript :history.back(-1)">{$btn_title['back']|default='返 回'}</button>
+                                {php}endif;{/php}
+                                {// 额外按钮}
+                                {foreach $btn_extra as $key=>$vo } 
+                                {$vo|raw|default=''}
+                                {/foreach}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+        {else /}
+        <div class="row">
+            <div class="col-sm-12 col-xs-12">
+                <div class="box box-body"> 
+                    {$empty_tips|raw}
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+        {/if}
+    </form>
+    <!--底部提示-->
+    {notempty name="page_tips_bottom"}
+    <div class="alert alert-{$tips_type} alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <p>{$page_tips_bottom|raw}</p>
+    </div>
+    {/notempty}
+    {// 额外HTML代码 }
+	{$extra_html_content_bottom|raw|default=''}
+</section>
+
+<!--内容结束-->

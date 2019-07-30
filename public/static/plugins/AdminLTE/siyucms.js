@@ -351,7 +351,32 @@ $(document).on('mouseout', '.js_show_img', function(e){
 
 //常规表单提交转变成ajax
 $(document).on("submit", 'form:not([data-pjax])', function () {
-    $(this).ajaxSubmit(function(result) {
+	var _this = $(this);
+	//判断是否开启了提交确认
+	if(typeof($(this).attr("submit_confirm"))=="undefined")
+	{
+		//不需要提交确认,直接提交表单
+		formSubmit(_this);
+	}else{
+		swal({
+                title: '确定要提交吗?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: '确定',
+                cancelButtonText: '取消'
+            }).then(function (isConfirm) {
+                if (isConfirm) {
+					//提交表单	
+                   formSubmit(_this); 
+                }
+            })
+	}
+    return false; //阻止表单默认提交
+})
+
+// 表单提交 
+function formSubmit($this){
+	$this.ajaxSubmit(function(result) {
         //判断是否提交成功
         if(result.code == 1){
             swal(result.msg, '', 'success').then(function () {
@@ -362,10 +387,8 @@ $(document).on("submit", 'form:not([data-pjax])', function () {
             //提交失败
             swal(result.msg,'','error');
         }
-
     });
-    return false; //阻止表单默认提交
-})
+}
 
 //捐赠
 $(document).on("click", '.juanzeng', function () {

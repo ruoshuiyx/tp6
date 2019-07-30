@@ -41,10 +41,10 @@ class DbManager
     protected $config = [];
 
     /**
-     * Event
-     * @var array
+     * Event对象或者数组
+     * @var array|object
      */
-    protected $event = [];
+    protected $event;
 
     /**
      * SQL监听
@@ -177,13 +177,13 @@ class DbManager
     /**
      * 获取配置参数
      * @access public
-     * @param  string $config 配置参数
+     * @param  string $name 配置参数
      * @param  mixed  $default 默认值
      * @return mixed
      */
     public function getConfig(string $name = '', $default = null)
     {
-        if ('' === $config) {
+        if ('' === $name) {
             return $this->config;
         }
 
@@ -239,7 +239,7 @@ class DbManager
             $config = $connections[$name];
             $type   = !empty($config['type']) ? $config['type'] : 'mysql';
 
-            if (strpos($type, '\\')) {
+            if (false !== strpos($type, '\\')) {
                 $class = $type;
             } else {
                 $class = '\\think\\db\\connector\\' . ucfirst($type);

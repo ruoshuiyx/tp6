@@ -989,17 +989,17 @@
     },
     {
         "name": "symfony/var-dumper",
-        "version": "v4.3.2",
-        "version_normalized": "4.3.2.0",
+        "version": "v4.3.3",
+        "version_normalized": "4.3.3.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/var-dumper.git",
-            "reference": "45d6ef73671995aca565a1aa3d9a432a3ea63f91"
+            "reference": "e4110b992d2cbe198d7d3b244d079c1c58761d07"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/var-dumper/zipball/45d6ef73671995aca565a1aa3d9a432a3ea63f91",
-            "reference": "45d6ef73671995aca565a1aa3d9a432a3ea63f91",
+            "url": "https://api.github.com/repos/symfony/var-dumper/zipball/e4110b992d2cbe198d7d3b244d079c1c58761d07",
+            "reference": "e4110b992d2cbe198d7d3b244d079c1c58761d07",
             "shasum": "",
             "mirrors": [
                 {
@@ -1028,7 +1028,7 @@
             "ext-intl": "To show region name in time zone dump",
             "symfony/console": "To use the ServerDumpCommand and/or the bin/var-dump-server script"
         },
-        "time": "2019-06-17T17:37:00+00:00",
+        "time": "2019-07-27T06:42:46+00:00",
         "bin": [
             "Resources/bin/var-dump-server"
         ],
@@ -1078,12 +1078,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/framework.git",
-            "reference": "08f67325d4928aa3ee7f5a70d5fb527effcb6111"
+            "reference": "ebf27be8f9382f3000f8d21c6048abe229a82aef"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/framework/zipball/08f67325d4928aa3ee7f5a70d5fb527effcb6111",
-            "reference": "08f67325d4928aa3ee7f5a70d5fb527effcb6111",
+            "url": "https://api.github.com/repos/top-think/framework/zipball/ebf27be8f9382f3000f8d21c6048abe229a82aef",
+            "reference": "ebf27be8f9382f3000f8d21c6048abe229a82aef",
             "shasum": "",
             "mirrors": [
                 {
@@ -1109,7 +1109,7 @@
             "mockery/mockery": "^1.2",
             "phpunit/phpunit": "^7.0"
         },
-        "time": "2019-07-20T04:35:25+00:00",
+        "time": "2019-07-27T14:16:00+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1293,17 +1293,17 @@
     },
     {
         "name": "topthink/think-orm",
-        "version": "v2.0.16",
-        "version_normalized": "2.0.16.0",
+        "version": "v2.0.18",
+        "version_normalized": "2.0.18.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/think-orm.git",
-            "reference": "6cf12a91554fa30d24e9e6e2d0978c8bf7095242"
+            "reference": "bb3c6eca07f9980374a3948fdad4f2e8b71e99b6"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/think-orm/zipball/6cf12a91554fa30d24e9e6e2d0978c8bf7095242",
-            "reference": "6cf12a91554fa30d24e9e6e2d0978c8bf7095242",
+            "url": "https://api.github.com/repos/top-think/think-orm/zipball/bb3c6eca07f9980374a3948fdad4f2e8b71e99b6",
+            "reference": "bb3c6eca07f9980374a3948fdad4f2e8b71e99b6",
             "shasum": "",
             "mirrors": [
                 {
@@ -1318,7 +1318,7 @@
             "psr/simple-cache": "^1.0",
             "topthink/think-helper": "^3.1"
         },
-        "time": "2019-07-15T08:54:26+00:00",
+        "time": "2019-07-24T14:50:56+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
