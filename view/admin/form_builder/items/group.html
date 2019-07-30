@@ -1,38 +1,41 @@
+<div class="nav-tabs-custom">
+    <ul class="nav nav-tabs" id="builder-form-group-tab">
+        {volist name="form.options" id="item" key="items_key"}
+        <li {eq name="items_key" value="1" }class="active" {/eq}>
+            <a href="#tab_{$items_key}" data-toggle="tab" aria-expanded="false">{$key|htmlspecialchars}</a>
+        </li>
+        {/volist}
+    </ul>
+    <div class="tab-content no-padding">
+        {volist name="form.options" id="items" key="items_key"}
+        <div class="tab-pane {eq name="items_key" value="1"}active{/eq}" id="tab_{$items_key}" >
+        {volist name="items" id="form_group"}
+            {switch name="form_group.type"}
+                {case value="text"}
+                    {// 单行文本框 }
+                    {include file="form_builder/items/text" type="_group" /}
+                {/case}
+                {case value="textarea"}
+                    {// 多行文本框 }
+                    {include file="form_builder/items/textarea" type="_group" /}
+                {/case}
+                {case value="radio"}
+                    {// 单选 }
+                    {include file="form_builder/items/radio" type="_group" /}
+                {/case}
+                {case value="checkbox"}
+                    {// 多选 }
+                    {include file="form_builder/items/checkbox" type="_group" /}
+                {/case}
+                {case value="date"}
+                    {// 日期 }
+                    {include file="form_builder/items/date" type="_group" /}
+                {/case}
+                {default/}
 
-        <div class="nav-tabs-custom">
-            <ul class="nav nav-tabs" id="builder-form-group-tab">
-                {volist name="form.options" id="item" key="items_key"}
-                <li {eq name="items_key" value="1"}class="active"{/eq}>
-                <a href="#tab_{$items_key}" data-toggle="tab" aria-expanded="false">{$key|htmlspecialchars}</a>
-                </li>
-                {/volist}
-            </ul>
-            <div class="tab-content no-padding">
-                {volist name="form.options" id="items" key="items_key"}
-                <div class="tab-pane {eq name="items_key" value="1"}active{/eq}" id="tab_{$items_key}" >
-                    {volist name="items" id="form_group"}
-                        {switch name="form_group.type"}
-                            {case value="text"}
-                                {// 单行文本框 }
-                                {include file="form_builder/items/text" type="_group" /}
-                            {/case}
-                            {case value="textarea"}
-                                {// 多行文本框 }
-                                {include file="form_builder/items/textarea" type="_group" /}
-                            {/case}
-                            {case value="radio"}
-                                {// 单选 }
-                                {include file="form_builder/items/radio" type="_group" /}
-							{/case}
-                            {case value="checkbox"}
-                                {// 多选 }
-                                {include file="form_builder/items/checkbox" type="_group" /}
-                            {/case}
-                            {default/}
-                            
-                        {/switch}
-                    {/volist}
-                </div>
-                {/volist}
-            </div>
-        </div>
+            {/switch}
+        {/volist}
+    </div>
+    {/volist}
+</div>
+</div>

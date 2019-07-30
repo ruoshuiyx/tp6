@@ -143,7 +143,9 @@
             //获取当前页面面包导航标题
             var _title = $(".content-header").children("h1").clone();
             _title.find(':nth-child(n)').remove();
-            _title = _title.html().trim();
+            if (_title.length>0){
+                _title = _title.html().trim();
+            }
             //循环匹配
             $('.sidebar-menu a').each(function(){
                 //if(this.href === window.location.href){
