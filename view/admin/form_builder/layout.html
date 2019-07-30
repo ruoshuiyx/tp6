@@ -41,7 +41,11 @@
                             {// 多行文本框 }
                             {include file="form_builder/items/textarea" type='' /}
                         {/case}
-                        {case group}输出内容2{/case}
+                        {case value="radio"}
+                            {// 单选 }
+                            {include file="form_builder/items/radio" type='' /}
+                        {/case}
+                        
                         {default /}默认情况
                     {/switch}
                     {/volist}

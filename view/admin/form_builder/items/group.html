@@ -20,7 +20,10 @@
                                 {// 多行文本框 }
                                 {include file="form_builder/items/textarea" type="_group" /}
                             {/case}
-
+                            {case value="radio"}
+                                {// 单选 }
+                                {include file="form_builder/items/radio" type="_group" /}
+							{/case}
                             {default/}
                             
                         {/switch}
