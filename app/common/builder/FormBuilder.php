@@ -349,8 +349,42 @@ class FormBuilder
             'tips'        => $tips,
             'options'     => $options == '' ? [] : $options,
             'value'       => $default,
-            'extra_class' => $extra_class,
             'extra_attr'  => $extra_attr,
+            'extra_class' => $extra_class,
+            'required'    => $required,
+        ];
+
+        if ($this->_is_group) {
+            return $item;
+        }
+
+        $this->_vars['form_items'][] = $item;
+        return $this;
+    }
+
+    /**
+     * 添加复选框
+     * @param string $name        字段名称
+     * @param string $title       字段别名
+     * @param string $tips        提示信息
+     * @param array $options      复选框数据
+     * @param string $default     默认值
+     * @param string $extra_attr  额外属性
+     * @param string $extra_class 额外css类名
+     * @param bool   $required    是否必选
+     * @return $this|array
+     */
+    public function addCheckbox($name = '', $title = '', $tips = '', $options = [], $default = '', $extra_attr = '', $extra_class = '', $required = false)
+    {
+        $item = [
+            'type'        => 'checkbox',
+            'name'        => $name,
+            'title'       => $title,
+            'tips'        => $tips,
+            'options'     => $options == '' ? [] : $options,
+            'value'       => $default,
+            'extra_attr'  => $extra_attr,
+            'extra_class' => $extra_class,
             'required'    => $required,
         ];
 

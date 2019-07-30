@@ -45,7 +45,10 @@
                             {// 单选 }
                             {include file="form_builder/items/radio" type='' /}
                         {/case}
-                        
+                        {case value="checkbox"}
+                            {// 多选 }
+                            {include file="form_builder/items/checkbox" type='' /}
+                        {/case}
                         {default /}默认情况
                     {/switch}
                     {/volist}
