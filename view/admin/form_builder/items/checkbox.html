@@ -11,7 +11,7 @@
                 {/volist}
             </div>
         </div>
-        <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">
+        <div class="col-xs-{if $form[type].tips}12{else /}1{/if} col-sm-4 col-md-6 col-lg-6 dd_ts">
             {notempty name="form[type].required"} *{/notempty}
             {notempty name="form[type].tips"} {$form[type].tips|raw}{/notempty}
         </div>
