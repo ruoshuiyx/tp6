@@ -59,6 +59,10 @@
                             {// 日期时间 }
                             {include file="form_builder/items/datetime" type='' /}
                         {/case}
+                        {case value="tags"}
+                            {// 标签 }
+                            {include file="form_builder/items/tags" type='' /}
+                        {/case}
                         {default /}默认情况
                     {/switch}
                     {/volist}
