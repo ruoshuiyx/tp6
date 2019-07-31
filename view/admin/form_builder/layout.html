@@ -63,6 +63,10 @@
                             {// 标签 }
                             {include file="form_builder/items/tags" type='' /}
                         {/case}
+                        {case value="number"}
+                            {// 数字 }
+                            {include file="form_builder/items/number" type='' /}
+                        {/case}
                         {default /}默认情况
                     {/switch}
                     {/volist}

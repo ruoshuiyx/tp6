@@ -558,6 +558,44 @@ class FormBuilder
     }
 
     /**
+     * 添加数字输入框
+     * @param string $name        字段名称
+     * @param string $title       字段别名
+     * @param string $tips        提示信息
+     * @param string $default     默认值
+     * @param string $min         最小值
+     * @param string $max         最大值
+     * @param string $step        步进值
+     * @param string $extra_attr  额外属性
+     * @param string $extra_class 额外css类
+     * @param bool   $required    是否必填
+     * @return $this|array
+     */
+    public function addNumber($name = '', $title = '', $tips = '', $default = '', $min = '', $max = '', $step = '', $extra_attr = '', $extra_class = '', $required = false)
+    {
+        $item = [
+            'type'        => 'number',
+            'name'        => $name,
+            'title'       => $title,
+            'tips'        => $tips,
+            'value'       => $default == '' ? 0 : $default,
+            'min'         => $min,
+            'max'         => $max,
+            'step'        => $step,
+            'extra_class' => $extra_class,
+            'extra_attr'  => $extra_attr,
+            'required'    => $required,
+        ];
+
+        if ($this->_is_group) {
+            return $item;
+        }
+
+        $this->_vars['form_items'][] = $item;
+        return $this;
+    }
+
+    /**
      * 一次性添加多个表单项
      * @param array $items 表单项
      * @return $this
