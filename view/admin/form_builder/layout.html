@@ -55,6 +55,10 @@
                             {// 时间 }
                             {include file="form_builder/items/time" type='' /}
                         {/case}
+                        {case value="datetime"}
+                            {// 日期时间 }
+                            {include file="form_builder/items/datetime" type='' /}
+                        {/case}
                         {default /}默认情况
                     {/switch}
                     {/volist}

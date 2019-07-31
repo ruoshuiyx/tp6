@@ -490,6 +490,42 @@ class FormBuilder
     }
 
     /**
+     * 添加日期时间
+     * @param string $name        字段名称
+     * @param string $title       字段别名
+     * @param string $tips        提示信息
+     * @param string $default     默认值
+     * @param string $format      日期格式
+     * @param string $extra_attr  额外属性
+     * @param string $extra_class 额外css类名
+     * @param string $placeholder 占位符
+     * @param bool   $required    是否必填
+     * @return $this|array
+     */
+    public function addDatetime($name = '', $title = '', $tips = '', $default = '', $format = '', $extra_attr = '', $extra_class = '', $placeholder = '', $required = false)
+    {
+        $item = [
+            'type'        => 'date',
+            'name'        => $name,
+            'title'       => $title,
+            'tips'        => $tips,
+            'value'       => $default,
+            'format'      => $format == '' ? 'yyyy-mm-dd hh:ii:ss' : $format,
+            'extra_class' => $extra_class,
+            'extra_attr'  => $extra_attr,
+            'placeholder' => !empty($placeholder) ? $placeholder : '请选择或输入' . $title,
+            'required'    => $required,
+        ];
+
+        if ($this->_is_group) {
+            return $item;
+        }
+
+        $this->_vars['form_items'][] = $item;
+        return $this;
+    }
+
+    /**
      * 一次性添加多个表单项
      * @param array $items 表单项
      * @return $this
