@@ -17,7 +17,7 @@
 .box-footer{ padding:10px 0 0 0}
 /*列表排序*/
 .changeSort{padding: 0 8px;line-height: 21px;height: 21px;}
-.image_preview{float: left;margin-left: 10px;/*max-width: 100px;*/max-height: 38px;}
+.image_preview{float: left;margin-left: 10px;margin-right: 10px;/*max-width: 100px;*/max-height: 38px;}
 
 /*文本域标题*/
 .text-lable{display: block;background-color: #FBFBFB; margin: 0; padding: 8px 15px; height: 38px;line-height: 20px;border-width: 1px;border-style: solid;border-radius: 2px 2px 0 0;border-bottom: 0;border-color: #d2d6de;font-weight: normal;}

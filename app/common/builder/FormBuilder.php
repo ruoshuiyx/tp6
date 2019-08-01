@@ -605,7 +605,7 @@ class FormBuilder
      * @param string $extra_class 额外css类
      * @param string $placeholder 占位符
      * @param bool   $required    是否必填
-     * @return mixed
+     * @return $this|array
      */
     public function addPassword($name = '', $title = '', $tips = '', $default = '', $extra_attr = '', $extra_class = '', $placeholder = '', $required = false)
     {
@@ -638,8 +638,9 @@ class FormBuilder
      * @param string $default     默认值
      * @param string $extra_attr  额外属性
      * @param string $extra_class 额外css类
+     * @param string $placeholder 占位符
      * @param bool   $required    是否必填
-     * @return mixed
+     * @return $this|array
      */
     public function addSelect($name = '', $title = '', $tips = '', $options = [], $default = '', $extra_attr = '', $extra_class = '', $placeholder = '', $required = false)
     {
@@ -673,8 +674,9 @@ class FormBuilder
      * @param string $default     默认值
      * @param string $extra_attr  额外属性
      * @param string $extra_class 额外css类
+     * @param string $placeholder 占位符
      * @param bool   $required    是否必填
-     * @return mixed
+     * @return $this|array
      */
     public function addSelect2($name = '', $title = '', $tips = '', $options = [], $default = '', $extra_attr = '', $extra_class = '', $placeholder = '', $required = false)
     {
@@ -685,9 +687,50 @@ class FormBuilder
             'tips'        => $tips,
             'options'     => $options,
             'value'       => $default,
-            'extra_class' => $extra_class,
             'extra_attr'  => $extra_attr,
+            'extra_class' => $extra_class,
             'placeholder' => !empty($placeholder) ? $placeholder : '请选择',
+            'required'    => $required,
+        ];
+
+        if ($this->_is_group) {
+            return $item;
+        }
+
+        $this->_vars['form_items'][] = $item;
+        return $this;
+    }
+
+    /**
+     * 添加单图片上传
+     * @param string $name        字段名称
+     * @param string $title       字段别名
+     * @param string $tips        提示信息
+     * @param string $default     默认值
+     * @param string $size        图片大小，单位为kb，0为不限制
+     * @param string $ext         文件后缀
+     * @param string $extra_attr  额外属性
+     * @param string $extra_class 额外css类名
+     * @param string $placeholder 占位符
+     * @param bool   $required    是否必填
+     * @return $this|array
+     */
+    public function addImage($name = '', $title = '', $tips = '', $default = '', $size = '', $ext = '',$extra_attr = '', $extra_class = '', $placeholder = '', $required = false)
+    {
+        //$size = ($size != '' ? $size : config('upload_image_size')) * 1024;
+        //$ext  = $ext != '' ? $ext : config('upload_image_ext');
+
+        $item = [
+            'type'        => 'image',
+            'name'        => $name,
+            'title'       => $title,
+            'tips'        => $tips,
+            'value'       => $default,
+            'size'        => $size,
+            'ext'         => $ext,
+            'extra_attr'  => $extra_attr,
+            'extra_class' => $extra_class,
+            'placeholder' => !empty($placeholder) ? $placeholder : '请点击按钮上传或手动输入地址',
             'required'    => $required,
         ];
 
