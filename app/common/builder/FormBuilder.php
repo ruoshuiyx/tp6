@@ -987,49 +987,4 @@ class FormBuilder
         return View::fetch($this->_template, $renderContent);
     }
 
-    /**
-     * 生成 form_items Html 【已废弃】
-     */
-    public function html()
-    {
-        $result = '';
-        $vars = $this->_vars;
-        foreach ($vars['form_items'] as $var) {
-            $requiredHtml = $var['required'] ? ' *' : '';
-            $tipsHtml = $var['tips'] ? ' ' . $var['tips'] : '';
-            $groupBeforeHtml = $var['group'][0] ?? '';
-            $groupAfterHtml = $var['group'][1] ?? '';
-            switch ($var['type']) {
-                case 'text':
-                    $result .= '<div class="row dd_input_group">
-                            <div class="form-group">
-                                <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">' . $var['title'] . '</label>
-                                <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-                                    <div class="input-group">
-                                    ' . $groupBeforeHtml . '
-                                    <input type="text" name="' . $var['name'] . '" class="form-control ' . $var['extra_class'] . '" placeholder="' . $var['placeholder'] . '" value="' . $var['value'] . '" ' . $var['extra_attr'] . '>
-                                    ' . $groupAfterHtml . '
-                                    </div>
-                                </div>
-                                <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">' . $requiredHtml . $tipsHtml . '</div>
-                            </div>
-                        </div>';
-                    break;
-                case 'textarea':
-                    $result .= '<div class="row dd_input_group">
-                            <div class="form-group">
-                                <div class="col-xs-11 col-sm-8 col-md-6 col-lg-5">
-                                    <label class="text-lable">' . $var['title'] . '</label>
-                                    <textarea class="form-control ' . $var['extra_class'] . '" name="' . $var['name'] . '" rows="3" placeholder="' . $var['placeholder'] . '" ' . $var['extra_attr'] . '>' . $var['value'] . '</textarea>
-                                </div>
-                                <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">' . $requiredHtml . $tipsHtml . '</div>
-                            </div>
-                        </div>';
-                    break;
-                default:
-            }
-        }
-        return $result;
-    }
-
 }
