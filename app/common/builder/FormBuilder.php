@@ -816,6 +816,44 @@ class FormBuilder
     }
 
     /**
+     * 添加多文件上传
+     * @param string $name        字段名称
+     * @param string $title       字段别名
+     * @param string $tips        提示信息
+     * @param string $default     默认值
+     * @param string $size        文件大小，单位为kb，0为不限制
+     * @param string $ext         文件后缀
+     * @param string $extra_attr  额外属性
+     * @param string $extra_class 额外css类名
+     * @param string $placeholder 占位符
+     * @param bool   $required    是否必填
+     * @return $this|array
+     */
+    public function addFiles($name = '', $title = '', $tips = '', $default = '', $size = '', $ext = '',$extra_attr = '', $extra_class = '', $placeholder = '', $required = false)
+    {
+        $item = [
+            'type'        => 'files',
+            'name'        => $name,
+            'title'       => $title,
+            'tips'        => $tips,
+            'value'       => $default,
+            'size'        => $size,
+            'ext'         => $ext,
+            'extra_attr'  => $extra_attr,
+            'extra_class' => $extra_class,
+            'placeholder' => !empty($placeholder) ? $placeholder : '请点击按钮上传或手动输入地址',
+            'required'    => $required,
+        ];
+
+        if ($this->_is_group) {
+            return $item;
+        }
+
+        $this->_vars['form_items'][] = $item;
+        return $this;
+    }
+
+    /**
      * 添加编辑器
      * @param string $name        字段名称
      * @param string $title       字段别名
@@ -850,34 +888,31 @@ class FormBuilder
     }
 
     /**
-     * 添加多文件上传
-     * @param string $name        字段名称
+     * 添加按钮
+     * @param string $name        按钮名称(id)
      * @param string $title       字段别名
-     * @param string $tips        提示信息
-     * @param string $default     默认值
-     * @param string $size        文件大小，单位为kb，0为不限制
-     * @param string $ext         文件后缀
-     * @param string $extra_attr  额外属性
-     * @param string $extra_class 额外css类名
-     * @param string $placeholder 占位符
-     * @param bool   $required    是否必填
+     * @param array  $attr        按钮属性
+     * @param string $elemtype    按钮类型，默认为button，也可以为a标签
      * @return $this|array
      */
-    public function addFiles($name = '', $title = '', $tips = '', $default = '', $size = '', $ext = '',$extra_attr = '', $extra_class = '', $placeholder = '', $required = false)
+    public function addButton($name = '',$title = '', $attr = [], $elemtype = 'button')
     {
         $item = [
-            'type'        => 'files',
-            'name'        => $name,
-            'title'       => $title,
-            'tips'        => $tips,
-            'value'       => $default,
-            'size'        => $size,
-            'ext'         => $ext,
-            'extra_attr'  => $extra_attr,
-            'extra_class' => $extra_class,
-            'placeholder' => !empty($placeholder) ? $placeholder : '请点击按钮上传或手动输入地址',
-            'required'    => $required,
+            'type'     => 'button',
+            'name'     => $name,
+            'title'    => $title,
+            'id'       => $name,
+            'elemtype' => $elemtype,
+            'data'     => '',
         ];
+        if ($attr) {
+            foreach ($attr as $key => $value) {
+                if (substr($key, 0, 5) == 'data-') {
+                    $item['data'] .= $key . '="' . $value . '" ';
+                }
+            }
+            $item = array_merge($item, $attr);
+        }
 
         if ($this->_is_group) {
             return $item;
