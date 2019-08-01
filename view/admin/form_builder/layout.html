@@ -67,7 +67,13 @@
                             {// 数字 }
                             {include file="form_builder/items/number" type='' /}
                         {/case}
-                        {default /}默认情况
+                        {case value="password"}
+                            {// 密码 }
+                            {include file="form_builder/items/password" type='' /}
+                        {/case}
+
+                        {default /}
+
                     {/switch}
                     {/volist}
                     <!---->

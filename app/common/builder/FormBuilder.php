@@ -596,6 +596,40 @@ class FormBuilder
     }
 
     /**
+     * 添加密码框
+     * @param string $name        字段名称
+     * @param string $title       字段别名
+     * @param string $tips        提示信息
+     * @param string $default     默认值
+     * @param string $extra_attr  额外属性
+     * @param string $extra_class 额外css类
+     * @param string $placeholder 占位符
+     * @param bool   $required    是否必填
+     * @return mixed
+     */
+    public function addPassword($name = '', $title = '', $tips = '', $default = '', $extra_attr = '', $extra_class = '', $placeholder = '', $required = false)
+    {
+        $item = [
+            'type'        => 'password',
+            'name'        => $name,
+            'title'       => $title,
+            'tips'        => $tips,
+            'value'       => $default,
+            'extra_attr'  => $extra_attr,
+            'extra_class' => $extra_class,
+            'placeholder' => !empty($placeholder) ? $placeholder : '请输入' . $title,
+            'required'    => $required,
+        ];
+
+        if ($this->_is_group) {
+            return $item;
+        }
+
+        $this->_vars['form_items'][] = $item;
+        return $this;
+    }
+
+    /**
      * 一次性添加多个表单项
      * @param array $items 表单项
      * @return $this
