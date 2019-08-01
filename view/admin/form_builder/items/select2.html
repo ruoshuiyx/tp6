@@ -1,0 +1,23 @@
+<div class="row dd_input_group {$form[type].extra_class|default=''}" id="form_group_{$form[type].name}">
+    <div class="form-group">
+        <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l" for="{$form[type].name}">{$form[type].title|htmlspecialchars}</label>
+        <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
+            <select class="select2 form-control" id="{$form[type].name}" name="{$form[type].name}[]" {$form[type].extra_attr|default=''}>
+                <option>{$form[type].placeholder}</option>
+                {volist name="form[type].options" id="option"}
+                <option value="{$key}" {in name="key" value="$form[type].value"}selected{/in}>{$option}</option>
+                {/volist}
+            </select>
+        </div>
+        <div class="col-xs-{if $form[type].tips}12{else /}1{/if} col-sm-4 col-md-6 col-lg-6 dd_ts">
+            {notempty name="form[type].required"} *{/notempty}
+            {notempty name="form[type].tips"} {$form[type].tips|raw}{/notempty}
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        //Initialize Select2 Elements
+        $('.select2').select2()
+    })
+</script>

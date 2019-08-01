@@ -665,6 +665,41 @@ class FormBuilder
     }
 
     /**
+     * 添加下拉菜单select2
+     * @param string $name        字段名称
+     * @param string $title       字段别名
+     * @param string $tips        提示信息
+     * @param array  $options     选项
+     * @param string $default     默认值
+     * @param string $extra_attr  额外属性
+     * @param string $extra_class 额外css类
+     * @param bool   $required    是否必填
+     * @return mixed
+     */
+    public function addSelect2($name = '', $title = '', $tips = '', $options = [], $default = '', $extra_attr = '', $extra_class = '', $placeholder = '', $required = false)
+    {
+        $item = [
+            'type'        => 'select2',
+            'name'        => $name,
+            'title'       => $title,
+            'tips'        => $tips,
+            'options'     => $options,
+            'value'       => $default,
+            'extra_class' => $extra_class,
+            'extra_attr'  => $extra_attr,
+            'placeholder' => !empty($placeholder) ? $placeholder : '请选择',
+            'required'    => $required,
+        ];
+
+        if ($this->_is_group) {
+            return $item;
+        }
+
+        $this->_vars['form_items'][] = $item;
+        return $this;
+    }
+
+    /**
      * 一次性添加多个表单项
      * @param array $items 表单项
      * @return $this
