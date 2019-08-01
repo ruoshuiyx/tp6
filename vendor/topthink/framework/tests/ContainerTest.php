@@ -207,16 +207,6 @@ class ContainerTest extends TestCase
         $container->invokeFunction('ContainerTestCallStub', []);
     }
 
-    public function testInvokeClosureFunctionWithoutMethodThrowsException()
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessageRegExp('/function not exists: {Closure}@.+#L\d+-\d+/');
-        $container = new Container;
-        $container->invokeFunction(function () {
-            throw new \ReflectionException('test exception');
-        });
-    }
-
     public function testInvoke()
     {
         $container = new Container();

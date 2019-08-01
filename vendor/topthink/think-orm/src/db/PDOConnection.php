@@ -490,7 +490,7 @@ abstract class PDOConnection extends Connection
         // 返回结果集
         while ($result = $this->PDOStatement->fetch($this->fetchType)) {
             if ($model) {
-                yield $model->newInstance($result, $condition)->setQuery($query);
+                yield $model->newInstance($result, $condition);
             } else {
                 yield $result;
             }
@@ -1031,7 +1031,7 @@ abstract class PDOConnection extends Connection
                 list($alias, $key) = explode('.', $key);
             }
 
-            $result = array_column($resultSet, $column, $key);
+            $result = array_column($resultSet, strpos($column, ',') ? null : $column, $key);
         }
 
         if (isset($cacheItem)) {

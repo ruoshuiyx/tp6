@@ -263,8 +263,7 @@ class Container implements ContainerInterface, ArrayAccess, IteratorAggregate, C
             $bind = $this->bind[$name];
 
             if (is_string($bind)) {
-                $this->delete($bind);
-                return;
+                return $this->delete($bind);
             }
         }
 
@@ -276,7 +275,7 @@ class Container implements ContainerInterface, ArrayAccess, IteratorAggregate, C
     /**
      * 执行函数或者闭包方法 支持参数调用
      * @access public
-     * @param string|array|Closure $function 函数或者闭包
+     * @param mixed $function 函数或者闭包
      * @param array $vars     参数
      * @return mixed
      */
@@ -287,20 +286,9 @@ class Container implements ContainerInterface, ArrayAccess, IteratorAggregate, C
 
             $args = $this->bindParams($reflect, $vars);
 
-            if ($reflect->isClosure()) {
-                // 解决在`php7.1`调用时会产生`$this`上下文不存在的错误 (https://bugs.php.net/bug.php?id=66430)
-                return $function->__invoke(...$args);
-            } else {
-                return $reflect->invokeArgs($args);
-            }
+            return call_user_func_array($function, $args);
         } catch (ReflectionException $e) {
-            // 如果是调用闭包时发生错误则尝试获取闭包的真实位置
-            if (isset($reflect) && $reflect->isClosure() && $function instanceof Closure) {
-                $function = "{Closure}@{$reflect->getFileName()}#L{$reflect->getStartLine()}-{$reflect->getEndLine()}";
-            } else {
-                $function .= '()';
-            }
-            throw new Exception('function not exists: ' . $function, 0, $e);
+            throw new Exception('function not exists: ' . $function . '()');
         }
     }
 
@@ -333,7 +321,7 @@ class Container implements ContainerInterface, ArrayAccess, IteratorAggregate, C
                 $callback = $method;
             }
 
-            throw new Exception('method not exists: ' . $callback . '()', 0, $e);
+            throw new Exception('method not exists: ' . $callback . '()');
         }
     }
 
@@ -399,7 +387,7 @@ class Container implements ContainerInterface, ArrayAccess, IteratorAggregate, C
 
             return $object;
         } catch (ReflectionException $e) {
-            throw new ClassNotFoundException('class not exists: ' . $class, $class, $e);
+            throw new ClassNotFoundException('class not exists: ' . $class, $class);
         }
     }
 
@@ -470,7 +458,6 @@ class Container implements ContainerInterface, ArrayAccess, IteratorAggregate, C
     /**
      * 字符串命名风格转换
      * type 0 将Java风格转换为C的风格 1 将C风格转换为Java的风格
-     * @deprecated
      * @access public
      * @param string  $name    字符串
      * @param integer $type    转换类型
@@ -491,7 +478,6 @@ class Container implements ContainerInterface, ArrayAccess, IteratorAggregate, C
 
     /**
      * 获取类名(不包含命名空间)
-     * @deprecated
      * @access public
      * @param string|object $class
      * @return string
@@ -504,7 +490,6 @@ class Container implements ContainerInterface, ArrayAccess, IteratorAggregate, C
 
     /**
      * 创建工厂对象实例
-     * @deprecated
      * @access public
      * @param string $name      工厂类名
      * @param string $namespace 默认命名空间
