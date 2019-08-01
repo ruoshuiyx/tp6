@@ -816,6 +816,40 @@ class FormBuilder
     }
 
     /**
+     * 添加编辑器
+     * @param string $name        字段名称
+     * @param string $title       字段别名
+     * @param string $tips        提示信息
+     * @param string $default     默认值
+     * @param string $height      高度
+     * @param string $extra_attr  额外属性
+     * @param string $extra_class 额外css类名
+     * @param bool   $required    是否必填
+     * @return $this|array
+     */
+    public function addEditor($name = '', $title = '', $tips = '', $default = '', $height = '',$extra_attr = '', $extra_class = '', $required = false)
+    {
+        $item = [
+            'type'        => 'editor',
+            'name'        => $name,
+            'title'       => $title,
+            'tips'        => $tips,
+            'value'       => $default,
+            'height'      => !empty($height) ? $height : '400',
+            'extra_attr'  => $extra_attr,
+            'extra_class' => $extra_class,
+            'required'    => $required,
+        ];
+
+        if ($this->_is_group) {
+            return $item;
+        }
+
+        $this->_vars['form_items'][] = $item;
+        return $this;
+    }
+
+    /**
      * 添加多文件上传
      * @param string $name        字段名称
      * @param string $title       字段别名
