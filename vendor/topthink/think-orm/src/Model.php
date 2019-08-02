@@ -129,9 +129,9 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
 
     /**
      * 服务注入
-     * @var Closure
+     * @var Closure[]
      */
-    protected static $maker;
+    protected static $maker = [];
 
     /**
      * 设置服务注入
@@ -141,7 +141,7 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
      */
     public static function maker(Closure $maker)
     {
-        static::$maker = $maker;
+        static::$maker[] = $maker;
     }
 
     /**
@@ -169,18 +169,18 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
     /**
      * 调用反射执行模型方法 支持参数绑定
      * @access public
-     * @param string $method
-     * @param array  $vars 参数
+     * @param mixed $method
+     * @param array $vars 参数
      * @return mixed
      */
-    public function invoke(string $method, array $vars = [])
+    public function invoke($method, array $vars = [])
     {
         if (self::$invoker) {
             $call = self::$invoker;
-            return $call([$this, $method], $vars);
-        } else {
-            return call_user_func_array([$this, $method], $vars);
+            return $call($method instanceof Closure ? $method : Closure::fromCallable([$this, $method]), $vars);
         }
+
+        return call_user_func_array($method instanceof Closure ? $method : [$this, $method], $vars);
     }
 
     /**
@@ -210,8 +210,10 @@ abstract class Model implements JsonSerializable, ArrayAccess, Arrayable, Jsonab
             $this->name = basename($name);
         }
 
-        if (static::$maker) {
-            call_user_func(static::$maker, $this);
+        if (!empty(static::$maker)) {
+            foreach (static::$maker as $maker) {
+                call_user_func($maker, $this);
+            }
         }
 
         // 执行初始化操作

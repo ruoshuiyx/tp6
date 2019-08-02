@@ -1007,16 +1007,16 @@
         },
         {
             "name": "topthink/think-orm",
-            "version": "v2.0.20",
+            "version": "v2.0.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/think-orm.git",
-                "reference": "f49db1016443a090cb0e75c71a50c83851e04e25"
+                "reference": "ea0240aa04d1085576064e7164ac563838f0f79c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/top-think/think-orm/zipball/f49db1016443a090cb0e75c71a50c83851e04e25",
-                "reference": "f49db1016443a090cb0e75c71a50c83851e04e25",
+                "url": "https://api.github.com/repos/top-think/think-orm/zipball/ea0240aa04d1085576064e7164ac563838f0f79c",
+                "reference": "ea0240aa04d1085576064e7164ac563838f0f79c",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -1053,7 +1053,7 @@
                 "database",
                 "orm"
             ],
-            "time": "2019-08-01T07:00:19+00:00"
+            "time": "2019-08-02T03:54:20+00:00"
         },
         {
             "name": "topthink/think-template",
