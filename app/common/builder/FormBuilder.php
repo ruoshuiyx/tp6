@@ -526,6 +526,64 @@ class FormBuilder
     }
 
     /**
+     * 添加日期范围
+     * @param string $name        字段名称
+     * @param string $title       字段别名
+     * @param string $tips        提示信息
+     * @param string $default     默认值
+     * @param string $format      日期格式
+     * @param string $extra_attr  额外属性
+     * @param string $extra_class 额外css类名
+     * @param bool   $required    是否必填
+     * @return $this|array
+     */
+    public function addDaterange($name = '', $title = '', $tips = '', $default = '', $format = '', $extra_attr = '', $extra_class = '', $required = false)
+    {
+        if (strpos($name, ',')) {
+            list($name_from, $name_to) = explode(',', $name);
+            $id_from = $name_from;
+            $id_to   = $name_to;
+            $id      = $name_from;
+        } else {
+            $name_from = $name_to = $name . '[]';
+            $id_from = $name . '_from';
+            $id_to   = $name . '_to';
+            $id      = $name;
+        }
+
+        if (strpos($default, ',') !== false) {
+            list($value_from, $value_to) = explode(',', $default);
+        } else {
+            $value_from = $default;
+            $value_to   = '';
+        }
+
+        $item = [
+            'type'        => 'daterange',
+            'id'          => $id,
+            'name_from'   => $name_from,
+            'name_to'     => $name_to,
+            'id_from'     => $id_from,
+            'id_to'       => $id_to,
+            'title'       => $title,
+            'tips'        => $tips,
+            'value_from'  => $value_from,
+            'value_to'    => $value_to,
+            'format'      => $format == '' ? 'yyyy-mm-dd' : $format,
+            'extra_class' => $extra_class,
+            'extra_attr'  => $extra_attr,
+            'required'    => $required,
+        ];
+
+        if ($this->_is_group) {
+            return $item;
+        }
+
+        $this->_vars['form_items'][] = $item;
+        return $this;
+    }
+
+    /**
      * 添加标签
      * @param string $name        字段名称
      * @param string $title       字段别名

@@ -179,3 +179,10 @@ ul.ztree>li>a>span{font-size:15px;font-weight:700}
 /*多图上传细节处理*/
 .more_images{border: 1px solid #d2d6de;border-top: none;}
 .more_images .row{padding: 5px;}
+
+/*日期范围细节处理*/
+.input-daterange input:first-child,.input-daterange input:last-child {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
