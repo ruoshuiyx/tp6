@@ -949,6 +949,26 @@ class FormBuilder
     }
 
     /**
+     * 添加自定义Html
+     * @param string $html        html代码
+     * @return $this|array
+     */
+    public function addHtml($html = '')
+    {
+        $item = [
+            'type'        => 'html',
+            'html'        => $html,
+        ];
+
+        if ($this->_is_group) {
+            return $item;
+        }
+
+        $this->_vars['form_items'][] = $item;
+        return $this;
+    }
+
+    /**
      * 一次性添加多个表单项
      * @param array $items 表单项
      * @return $this
