@@ -13,7 +13,6 @@
     <div class="search">
         <form class="form-inline" action="">
             {notempty name="page_tips_search"}{$page_tips_search|raw}{/notempty}
-            <a class="btn btn-flat btn-primary m_10" href="{:url('index')}">显示全部</a>
             <a class="btn btn-flat btn-success m_10 f_r m_t_5" onclick="javascript :history.back(-1)"><i class="fa fa-undo m-r-10"></i>返 回</a>
         </form>
     </div>
@@ -164,7 +163,7 @@
     </div>
     {/notempty}
     {// 额外HTML代码 }
-	{$extra_html_content_bottom|raw|default=''}
+    {$extra_html_content_bottom|raw|default=''}
 </section>
 
 <!--内容结束-->

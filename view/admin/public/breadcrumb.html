@@ -1,4 +1,8 @@
-{if $breadCrumb}
+{if isset($page_title) && !empty($page_title)}
+<section class="content-header">
+    {$page_title|raw|default=''}
+</section>
+{else if $breadCrumb /}
 <section class="content-header">
     <h1>
         {$breadCrumb.left.0}

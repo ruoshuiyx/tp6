@@ -40,6 +40,7 @@ class FormBuilder
      * @var array 模板变量
      */
     private $_vars = [
+        'page_title'      => '',    // 页面标题
         'page_tips'       => '',    // 页面提示
         'tips_type'       => '',    // 提示类型
         'form_url'        => '',    // 表单提交地址
@@ -103,6 +104,19 @@ class FormBuilder
     private function __clone()
     {
         // TODO: Implement __clone() method.
+    }
+
+    /**
+     * 设置页面标题
+     * @param string $title 页面标题
+     * @return $this
+     */
+    public function setPageTitle($title = '')
+    {
+        if ($title != '') {
+            $this->_vars['page_title'] = trim($title);
+        }
+        return $this;
     }
 
     /**
