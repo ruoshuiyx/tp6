@@ -1,21 +1,20 @@
 {if isset($page_title) && !empty($page_title)}
-<section class="content-header">
-    {$page_title|raw|default=''}
-</section>
-{else if $breadCrumb /}
-<section class="content-header">
-    <h1>
-        {$breadCrumb.left.0}
-        <small>{$breadCrumb.left.1}</small>
-    </h1>
-
-    <!-- breadcrumb start -->
-    <ol class="breadcrumb">
-        <li><a href="{:url('index/index')}"><i class="fa fa-dashboard"></i> 首页</a></li>
-        <li>
-            <a href="{:url($breadCrumb.right.url)}">{$breadCrumb.right.title}</a>
-        </li>
-    </ol>
-    <!-- breadcrumb end -->
-</section>
+    <section class="content-header">
+        {$page_title|raw|default=''}
+    </section>
+{elseif $breadCrumb /}
+    <section class="content-header">
+        <h1>
+            {$breadCrumb.left.0}
+            <small>{$breadCrumb.left.1}</small>
+        </h1>
+        <!-- breadcrumb start -->
+        <ol class="breadcrumb">
+            <li><a href="{:url('index/index')}"><i class="fa fa-dashboard"></i> 首页</a></li>
+            <li>
+                <a href="{:url($breadCrumb.right.url)}">{$breadCrumb.right.title}</a>
+            </li>
+        </ol>
+        <!-- breadcrumb end -->
+    </section>
 {/if}
