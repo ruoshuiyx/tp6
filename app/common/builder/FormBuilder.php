@@ -923,6 +923,32 @@ class FormBuilder
     }
 
     /**
+     * 添加隐藏表单项
+     * @param string $name        字段名称
+     * @param string $default     默认值
+     * @param string $extra_attr  额外属性
+     * @param string $extra_class 额外css类名
+     * @return $this|array
+     */
+    public function addHidden($name = '', $default = '',$extra_attr = '', $extra_class = '')
+    {
+        $item = [
+            'type'        => 'hidden',
+            'name'        => $name,
+            'value'       => $default,
+            'extra_attr'  => $extra_attr,
+            'extra_class' => $extra_class,
+        ];
+
+        if ($this->_is_group) {
+            return $item;
+        }
+
+        $this->_vars['form_items'][] = $item;
+        return $this;
+    }
+
+    /**
      * 一次性添加多个表单项
      * @param array $items 表单项
      * @return $this
