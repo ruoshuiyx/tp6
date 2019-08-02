@@ -54,6 +54,7 @@ class FormBuilder
         'extra_css'       => '',    // 额外CSS代码
         'submit_confirm'  => false, // 提交确认
         'form_items'      => [],    // 表单项目
+        'form_data'       => [],    // 表单数据
     ];
 
     /**
@@ -1077,7 +1078,7 @@ class FormBuilder
     /**
      * 一次性添加多个表单项
      * @param array $items 表单项
-     * @return $this
+     * @return $this|array
      */
     public function addFormItems($items = [])
     {
@@ -1087,6 +1088,80 @@ class FormBuilder
             }
         }
         return $this;
+    }
+
+    /**
+     * 设置表单数据
+     * @param array $form_data 表单数据
+     * @return $this|array
+     */
+    public function setFormData($form_data = [])
+    {
+        if (!empty($form_data)) {
+            $this->_vars['form_data'] = $form_data;
+        }
+        return $this;
+    }
+
+    /***
+     * 设置表单项的值
+     */
+    private function setFormValue()
+    {
+        if ($this->_vars['form_data']) {
+            foreach ($this->_vars['form_items'] as &$item) {
+                // 判断是否为分组
+                if ($item['type'] == 'group') {
+                    foreach ($item['options'] as &$group) {
+                        foreach ($group as $key => $value) {
+                            // 针对日期范围特殊处理
+                            switch ($value['type']) {
+                                case 'daterange':
+                                    if ($value['name_from'] == $value['name_to']) {
+                                        list($group[$key]['value_from'], $group[$key]['value_to']) = $this->_vars['form_data'][$value['id']];
+                                    } else {
+                                        $group[$key]['value_from'] = $this->_vars['form_data'][$value['name_from']];
+                                        $group[$key]['value_to']   = $this->_vars['form_data'][$value['name_to']];
+                                    }
+                                    break;
+                                case 'datetime':
+                                case 'date':
+                                case 'time':
+                                default:
+                                    if (isset($this->_vars['form_data'][$value['name']])) {
+                                        $group[$key]['value'] = $this->_vars['form_data'][$value['name']];
+                                    } else {
+                                        $group[$key]['value'] = '';
+                                    }
+                            }
+                        }
+                    }
+                } else {
+                    // 针对日期范围特殊处理
+                    switch ($item['type']) {
+                        case 'daterange':
+                            if ($item['name_from'] == $item['name_to']) {
+                                list($item['value_from'], $item['value_to']) = $this->_vars['form_data'][$item['id']];
+                            } else {
+                                $item['value_from'] = $this->_vars['form_data'][$item['name_from']];
+                                $item['value_to']   = $this->_vars['form_data'][$item['name_to']];
+                            }
+                            break;
+                        case 'datetime':
+                        case 'date':
+                        case 'time':
+                        default:
+                            if (isset($this->_vars['form_data'][$item['name']])) {
+                                $item['value'] = $this->_vars['form_data'][$item['name']];
+                            } else {
+                                $item['value'] = isset($item['value']) ? $item['value'] : '';
+                            }
+
+                    }
+
+                }
+            }
+        }
     }
 
     /**
@@ -1130,6 +1205,9 @@ class FormBuilder
      */
     public function fetch(string $template = '', bool $renderContent = false)
     {
+        // 设置表单值
+        $this->setFormValue();
+
         // 单独设置模板
         if ($template != '') {
             $this->_template = $template;
