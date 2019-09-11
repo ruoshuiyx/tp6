@@ -99,10 +99,18 @@ class CacheTest extends TestCase
         $this->assertEquals('foobar', $this->cache->get('bar'));
         $this->cache->tag('foo')->clear();
         $this->assertFalse($this->cache->has('bar'));
+
+        //multiple
+        $this->cache->setMultiple(['foo' => ['foobar', 'bar'], 'foobar' => ['foo', 'bar']]);
+        $this->assertEquals(['foo' => ['foobar', 'bar'], 'foobar' => ['foo', 'bar']], $this->cache->getMultiple(['foo', 'foobar']));
+        $this->assertTrue($this->cache->deleteMultiple(['foo', 'foobar']));
     }
 
     public function testRedisCache()
     {
+        if (extension_loaded('redis')) {
+            return;
+        }
         $this->config->shouldReceive('get')->with("cache.default", null)->andReturn('redis');
         $this->config->shouldReceive('get')->with("cache.stores.redis", null)->andReturn(['type' => 'redis']);
 

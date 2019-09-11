@@ -92,13 +92,15 @@ class DbManager
      */
     protected function modelMaker()
     {
+        $this->triggerSql();
+
+        Model::setDb($this);
+
+        if (is_object($this->event)) {
+            Model::setEvent($this->event);
+        }
+
         Model::maker(function (Model $model) {
-            $model->setDb($this);
-
-            if (is_object($this->event)) {
-                $model->setEvent($this->event);
-            }
-
             $isAutoWriteTimestamp = $model->getAutoWriteTimestamp();
 
             if (is_null($isAutoWriteTimestamp)) {
@@ -112,6 +114,27 @@ class DbManager
                 // 设置时间戳格式
                 $model->setDateFormat($this->getConfig('datetime_format', 'Y-m-d H:i:s'));
             }
+        });
+    }
+
+    /**
+     * 监听SQL
+     * @access protected
+     * @return void
+     */
+    protected function triggerSql()
+    {
+        // 监听SQL
+        $this->listen(function ($sql, $time, $master) {
+            // 记录SQL
+            if (is_bool($master)) {
+                // 分布式记录当前操作的主从
+                $master = $master ? 'master|' : 'slave|';
+            } else {
+                $master = '';
+            }
+
+            $this->log($sql . ' [ ' . $master . 'RunTime:' . $time . 's ]');
         });
     }
 
@@ -155,7 +178,7 @@ class DbManager
      * @param string $type 日志类型
      * @return void
      */
-    public function log($log, $type = 'sql')
+    public function log(string $log, string $type = 'sql')
     {
         if ($this->log) {
             $this->log->log($type, $log);
@@ -167,11 +190,17 @@ class DbManager
     /**
      * 获得查询日志（没有设置日志对象使用）
      * @access public
+     * @param bool $clear 是否清空
      * @return array
      */
-    public function getDbLog(): array
+    public function getDbLog(bool $clear = false): array
     {
-        return $this->dbLog;
+        $logs = $this->dbLog;
+        if ($clear) {
+            $this->dbLog = [];
+        }
+
+        return $logs;
     }
 
     /**
@@ -322,7 +351,7 @@ class DbManager
      */
     public function event(string $event, callable $callback): void
     {
-        $this->event[$event] = $callback;
+        $this->event[$event][] = $callback;
     }
 
     /**
@@ -330,13 +359,14 @@ class DbManager
      * @access public
      * @param string $event  事件名
      * @param mixed  $params 传入参数
-     * @param bool   $once
      * @return mixed
      */
-    public function trigger(string $event, $params = null, bool $once = false)
+    public function trigger(string $event, $params = null)
     {
         if (isset($this->event[$event])) {
-            return call_user_func_array($this->event[$event], [$this]);
+            foreach ($this->event[$event] as $callback) {
+                call_user_func_array($callback, [$this]);
+            }
         }
     }
 

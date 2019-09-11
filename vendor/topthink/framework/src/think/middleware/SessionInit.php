@@ -15,7 +15,7 @@ namespace think\middleware;
 use Closure;
 use think\App;
 use think\Request;
-use think\response\Redirect as RedirectResponse;
+use think\Response;
 use think\Session;
 
 /**
@@ -31,32 +31,33 @@ class SessionInit
      * @param Closure $next
      * @param App     $app
      * @param Session $session
-     * @return void
+     * @return Response
      */
     public function handle($request, Closure $next, App $app, Session $session)
     {
         // Session初始化
         $varSessionId = $app->config->get('session.var_session_id');
-        $cookieName   = $app->config->get('session.name') ?: 'PHPSESSID';
+        $cookieName   = $session->getName();
 
         if ($varSessionId && $request->request($varSessionId)) {
             $sessionId = $request->request($varSessionId);
         } else {
-            $sessionId = $request->cookie($cookieName) ?: '';
+            $sessionId = $request->cookie($cookieName);
         }
 
         $session->setId($sessionId);
+        $session->init();
 
         $request->withSession($session);
 
-        $response = $next($request)->setSession($session);
+        /** @var Response $response */
+        $response = $next($request);
+
+        $response->setSession($session);
 
         $app->cookie->set($cookieName, $session->getId());
 
-        // 清空当次请求有效的数据
-        if (!($response instanceof RedirectResponse)) {
-            $session->flush();
-        }
+        $session->save();
 
         return $response;
     }

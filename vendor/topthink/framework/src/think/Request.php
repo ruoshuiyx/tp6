@@ -624,7 +624,7 @@ class Request
                 unset($this->get[$this->varPathinfo]);
             } elseif ($this->server('PATH_INFO')) {
                 $pathinfo = $this->server('PATH_INFO');
-            } elseif ('cli-server' == PHP_SAPI) {
+            } elseif (false !== strpos(PHP_SAPI, 'cli')) {
                 $pathinfo = strpos($this->server('REQUEST_URI'), '?') ? strstr($this->server('REQUEST_URI'), '?', true) : $this->server('REQUEST_URI');
             }
 
@@ -1000,7 +1000,7 @@ class Request
 
     protected function getInputData($content): array
     {
-        if ($this->isJson()) {
+        if (false !== strpos($this->contentType(), 'json')) {
             return (array) json_decode($content, true);
         } elseif (strpos($content, '=')) {
             parse_str($content, $data);
@@ -1081,10 +1081,9 @@ class Request
     public function session(string $name = '', $default = null)
     {
         if ('' === $name) {
-            return $this->session->get();
+            return $this->session->all();
         }
-
-        return $this->getData($this->session->get(), $name, $default);
+        return $this->session->get($name, $default);
     }
 
     /**
@@ -1547,10 +1546,9 @@ class Request
      */
     public function isJson(): bool
     {
-        $contentType = $this->contentType();
-        $acceptType  = $this->type();
+        $acceptType = $this->type();
 
-        return false !== strpos($contentType, 'json') || false !== strpos($acceptType, 'json');
+        return false !== strpos($acceptType, 'json');
     }
 
     /**

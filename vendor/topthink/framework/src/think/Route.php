@@ -61,6 +61,8 @@ class Route
         'route_rule_merge'      => false,
         // 路由是否完全匹配
         'route_complete_match'  => false,
+        // 去除斜杠
+        'remove_slash'          => false,
         // 使用注解路由
         'route_annotation'      => false,
         // 路由缓存设置
@@ -157,11 +159,22 @@ class Route
      */
     protected $mergeRuleRegex = false;
 
+    /**
+     * 是否去除URL最后的斜线
+     * @var bool
+     */
+    protected $removeSlash = false;
+
     public function __construct(App $app)
     {
         $this->app      = $app;
         $this->ruleName = new RuleName();
         $this->setDefaultDomain();
+
+        if (is_file($this->app->getRuntimePath() . 'route.php')) {
+            // 读取路由映射文件
+            $this->import(include $this->app->getRuntimePath() . 'route.php');
+        }
     }
 
     protected function init()
@@ -170,14 +183,12 @@ class Route
 
         $this->lazy($this->config['url_lazy_route']);
         $this->mergeRuleRegex = $this->config['route_rule_merge'];
+        $this->removeSlash    = $this->config['remove_slash'];
+
+        $this->group->removeSlash($this->removeSlash);
 
         if ($this->config['route_check_cache']) {
             $this->cache = $this->app->cache->store(true === $this->config['route_check_cache'] ? '' : $this->config['route_check_cache']);
-        }
-
-        if (is_file($this->app->getRuntimePath() . 'route.php')) {
-            // 读取路由映射文件
-            $this->import(include $this->app->getRuntimePath() . 'route.php');
         }
     }
 
@@ -315,6 +326,7 @@ class Route
         if (!isset($this->domains[$domainName])) {
             $domain = (new Domain($this, $domainName, $rule))
                 ->lazy($this->lazy)
+                ->removeSlash($this->removeSlash)
                 ->mergeRuleRegex($this->mergeRuleRegex);
 
             $this->domains[$domainName] = $domain;
@@ -543,6 +555,7 @@ class Route
 
         return (new RuleGroup($this, $this->group, $name, $route))
             ->lazy($this->lazy)
+            ->removeSlash($this->removeSlash)
             ->mergeRuleRegex($this->mergeRuleRegex);
     }
 

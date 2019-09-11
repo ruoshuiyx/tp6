@@ -1,0 +1,170 @@
+<!--内容开始-->
+<section class="content">
+    {// 额外HTML代码 }
+    {$extra_html_content_top|raw|default=''}
+    <!--顶部提示-->
+    {notempty name="page_tips_top"}
+    <div class="alert alert-{$tips_type} alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <p>{$page_tips_top|raw}</p>
+    </div>
+    {/notempty}
+    <!--搜索区域-->
+    <div class="search">
+        <form class="form-inline" action="/index.php/admin/Ad/index.html" data-pjax="">
+            {notempty name="page_tips_search"}{$page_tips_search|raw}{/notempty}
+            <input type="text" class="form-control" name="keyword" placeholder="广告名称 | 描述" value="">
+            <select name="type_id" class="form-control">
+                <option value="0">请选择</option>
+                <option value="1">【首页】顶部通栏</option>
+                <option value="2">【内页】顶部通栏</option>
+            </select>
+            <input type="text" class="form-control" name="dateran" autocomplete="off" placeholder="选择日期" value="">
+
+            <input class="btn btn-flat btn-primary" type="submit" value="搜索">
+            <a class="btn btn-flat btn-primary m_10" href="/index.php/admin/Ad/index.html">显示全部</a>
+            <input class="btn btn-flat btn-warning m_10 select_del" type="button" value="批量删除">
+            <a class="btn btn-flat btn-success m_10 f_r" href="/index.php/admin/Ad/add.html"><i
+                    class="fa fa-plus m-r-10"></i>添 加</a>
+        </form>
+    </div>
+    <!--数据表开始-->
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <!-- /.box-header -->
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-bordered table-hover">
+                            <tr>
+                                {if (!$hide_checkbox)}
+                                <th class="text-center">
+                                    <input type="checkbox" id="check">
+                                </th>
+                                {/if}
+                                {volist name="columns" id="column"}
+                                <th class="column-{$column['name']} {$column.class|default=''}">
+                                    {// 字段标题}
+                                    {$column.title|default=''}
+                                </th>
+                                {/volist}
+                            </tr>
+                            {volist name="row_list" id="row"}
+                            <tr>
+                                {if (!$hide_checkbox)}
+                                <td class="text-center">
+                                    <input type="checkbox" name="key[]">
+                                </td>
+                                {/if}
+                                {volist name="columns" id="column"}
+                                <td class="{$column['class']|default=''}">
+                                    {php}if($column['type'] == '' || $column['type'] == 'btn' || $column['type'] == 'text'):{/php}
+                                        {$row[$column['name']]|raw|default=''}
+                                    {php}else:{/php}
+                                        {$row[$column['name'].'__'.$column['type']]|raw|default=''}
+                                    {php}endif;{/php}
+                                </td>
+                                {/volist}
+                            </tr>
+                            {/volist}
+                            {empty name="row_list"}
+                            {notempty name="empty_tips"}
+                            <tr class="table-empty">
+                                {php}$colspan = count($columns)+2{/php}
+                                <td class="text-center empty-info" colspan="{$colspan}">
+                                    {$empty_tips}<br>
+                                </td>
+                            </tr>
+                            {/notempty}
+                            {/empty}
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer clearfix page">
+                        {notempty name="row_list"}
+                            <!---->
+                            {$page|raw|default=''}
+                            <!---->
+                            {$page_size|raw|default=''}
+                            <!---->
+                        {/notempty}
+                    </div>
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+    </div>
+    <!--数据表结束-->
+    <!--底部提示-->
+    {notempty name="page_tips_bottom"}
+    <div class="alert alert-{$tips_type} alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <p>{$page_tips_bottom|raw}</p>
+    </div>
+    {/notempty}
+    {// 额外HTML代码 }
+    {$extra_html_content_bottom|raw|default=''}
+</section>
+<!--内容结束-->
+
+<script>
+    //排序
+    $(".changeSort").blur(function () {
+        var url = "/index.php/admin/Ad/sort.html";
+        var id = $(this).data("id");
+        var sort = $(this).val();
+        changeSort(url, id, sort);
+    })
+
+    //设置状态
+    $(".state").click(function () {
+        var url = "/index.php/admin/Ad/state.html";
+        var id = $(this).data("id");
+        changeState(url, id);
+    })
+
+    //批量删除
+    $(".select_del").click(function () {
+        var url = "/index.php/admin/Ad/selectDel.html";
+        delSelect(url);
+    })
+
+    //显示数量[待完善]
+    $(".page_size").change(function () {
+        var page_size = $(this).val();
+        var url = "{:url('index',['page_size'=>'pagesize'])}";
+        url = url.replace("pagesize", page_size);
+        pjaxReplace(url);
+    });
+
+
+    $(document).ready(function () {
+
+    })
+    // 表格自定义按钮
+    $(".confirm").click(function () {
+        var url         = $(this).attr('href');
+        var id          = $(this).data("id");
+        var text        = $(this).data('tips');
+        var title       = $(this).data('title') || '确定要执行该操作吗？';
+        var confirm_btn = $(this).data('confirm') || '确定';
+        var cancel_btn  = $(this).data('cancel') || '取消';
+        confirmOne(url, id, text, title, confirm_btn, cancel_btn);
+        return false;
+    });
+
+</script>
+
+<input type="checkbox" name="test">
+# 给选择框应用样式
+<script type="text/javascript">
+    $("[name='test']").bootstrapSwitch({
+        state:false,
+        onText: "上线",      // 设置ON文本  
+        offText: "下线",    // 设置OFF文本  
+        onColor: "success",// 设置ON文本颜色     (info/success/warning/danger/primary)  
+        offColor: "danger",  // 设置OFF文本颜色        (info/success/warning/danger/primary)  
+        size: "mini",    // 设置控件大小,从小到大  (mini/small/normal/large)  
+        handleWidth: "35",//设置控件宽度
+    });
+</script>

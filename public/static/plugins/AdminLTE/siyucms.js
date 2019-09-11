@@ -59,6 +59,32 @@ function delOne(url, id) {
     })
 }
 
+//通用执行确认
+function confirmOne(url, id, text, title, confirm_btn, cancel_btn) {
+    swal({
+        title: title,
+        text: text,
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3c8dbc',
+        cancelButtonColor: '#d33',
+        confirmButtonText: confirm_btn,
+        cancelButtonText: cancel_btn
+    }).then(function (isConfirm) {
+        if (isConfirm) {
+            $.post(url, {id: id}, function (result) {
+                if (result.error == 0) {
+                    swal(result.msg, '', 'success').then(function () {
+                        $.pjax.reload('.content-wrapper')
+                    });
+                } else {
+                    swal(result.msg, '', 'error');
+                }
+            }, 'json');
+        }
+    })
+}
+
 //批量删除
 function delSelect(url) {
     if (!getCheckboxNum()) {

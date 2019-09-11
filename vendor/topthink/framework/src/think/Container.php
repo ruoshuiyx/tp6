@@ -25,6 +25,7 @@ use ReflectionException;
 use ReflectionFunction;
 use ReflectionMethod;
 use think\exception\ClassNotFoundException;
+use think\helper\Str;
 
 /**
  * 容器管理类 支持PSR-11
@@ -87,8 +88,8 @@ class Container implements ContainerInterface, ArrayAccess, IteratorAggregate, C
     /**
      * 注册一个容器对象回调
      *
-     * @param  string|Closure $abstract
-     * @param  Closure|null   $callback
+     * @param string|Closure $abstract
+     * @param Closure|null   $callback
      * @return void
      */
     public function resolving($abstract, Closure $callback = null): void
@@ -98,9 +99,7 @@ class Container implements ContainerInterface, ArrayAccess, IteratorAggregate, C
             return;
         }
 
-        if (isset($this->bind[$abstract])) {
-            $abstract = $this->bind[$abstract];
-        }
+        $abstract = $this->getAlias($abstract);
 
         $this->invokeCallback[$abstract][] = $callback;
     }
@@ -143,16 +142,38 @@ class Container implements ContainerInterface, ArrayAccess, IteratorAggregate, C
     public function bind($abstract, $concrete = null)
     {
         if (is_array($abstract)) {
-            $this->bind = array_merge($this->bind, $abstract);
+            foreach ($abstract as $key => $val) {
+                $this->bind($key, $val);
+            }
         } elseif ($concrete instanceof Closure) {
             $this->bind[$abstract] = $concrete;
         } elseif (is_object($concrete)) {
             $this->instance($abstract, $concrete);
         } else {
+            $abstract = $this->getAlias($abstract);
+
             $this->bind[$abstract] = $concrete;
         }
 
         return $this;
+    }
+
+    /**
+     * 根据别名获取真实类名
+     * @param  string $abstract
+     * @return string
+     */
+    public function getAlias(string $abstract): string
+    {
+        if (isset($this->bind[$abstract])) {
+            $bind = $this->bind[$abstract];
+
+            if (is_string($bind)) {
+                return $this->getAlias($bind);
+            }
+        }
+
+        return $abstract;
     }
 
     /**
@@ -164,13 +185,7 @@ class Container implements ContainerInterface, ArrayAccess, IteratorAggregate, C
      */
     public function instance(string $abstract, $instance)
     {
-        if (isset($this->bind[$abstract])) {
-            $bind = $this->bind[$abstract];
-
-            if (is_string($bind)) {
-                return $this->instance($bind, $instance);
-            }
-        }
+        $abstract = $this->getAlias($abstract);
 
         $this->instances[$abstract] = $instance;
 
@@ -207,13 +222,7 @@ class Container implements ContainerInterface, ArrayAccess, IteratorAggregate, C
      */
     public function exists(string $abstract): bool
     {
-        if (isset($this->bind[$abstract])) {
-            $bind = $this->bind[$abstract];
-
-            if (is_string($bind)) {
-                return $this->exists($bind);
-            }
-        }
+        $abstract = $this->getAlias($abstract);
 
         return isset($this->instances[$abstract]);
     }
@@ -228,18 +237,14 @@ class Container implements ContainerInterface, ArrayAccess, IteratorAggregate, C
      */
     public function make(string $abstract, array $vars = [], bool $newInstance = false)
     {
+        $abstract = $this->getAlias($abstract);
+
         if (isset($this->instances[$abstract]) && !$newInstance) {
             return $this->instances[$abstract];
         }
 
-        if (isset($this->bind[$abstract])) {
-            $concrete = $this->bind[$abstract];
-
-            if ($concrete instanceof Closure) {
-                $object = $this->invokeFunction($concrete, $vars);
-            } else {
-                return $this->make($concrete, $vars, $newInstance);
-            }
+        if (isset($this->bind[$abstract]) && $this->bind[$abstract] instanceof Closure) {
+            $object = $this->invokeFunction($this->bind[$abstract], $vars);
         } else {
             $object = $this->invokeClass($abstract, $vars);
         }
@@ -259,14 +264,7 @@ class Container implements ContainerInterface, ArrayAccess, IteratorAggregate, C
      */
     public function delete($name)
     {
-        if (isset($this->bind[$name])) {
-            $bind = $this->bind[$name];
-
-            if (is_string($bind)) {
-                $this->delete($bind);
-                return;
-            }
-        }
+        $name = $this->getAlias($name);
 
         if (isset($this->instances[$name])) {
             unset($this->instances[$name]);
@@ -277,7 +275,7 @@ class Container implements ContainerInterface, ArrayAccess, IteratorAggregate, C
      * 执行函数或者闭包方法 支持参数调用
      * @access public
      * @param string|array|Closure $function 函数或者闭包
-     * @param array $vars     参数
+     * @param array                $vars     参数
      * @return mixed
      */
     public function invokeFunction($function, array $vars = [])
@@ -307,8 +305,8 @@ class Container implements ContainerInterface, ArrayAccess, IteratorAggregate, C
     /**
      * 调用反射执行类的方法 支持参数绑定
      * @access public
-     * @param mixed $method 方法
-     * @param array $vars   参数
+     * @param mixed $method     方法
+     * @param array $vars       参数
      * @param bool  $accessible 设置是否可访问
      * @return mixed
      */
@@ -361,7 +359,7 @@ class Container implements ContainerInterface, ArrayAccess, IteratorAggregate, C
      * 调用反射执行callable 支持参数绑定
      * @access public
      * @param mixed $callable
-     * @param array $vars 参数
+     * @param array $vars       参数
      * @param bool  $accessible 设置是否可访问
      * @return mixed
      */
@@ -452,7 +450,7 @@ class Container implements ContainerInterface, ArrayAccess, IteratorAggregate, C
 
         foreach ($params as $param) {
             $name      = $param->getName();
-            $lowerName = self::parseName($name);
+            $lowerName = Str::snake($name);
             $class     = $param->getClass();
 
             if ($class) {
@@ -474,48 +472,13 @@ class Container implements ContainerInterface, ArrayAccess, IteratorAggregate, C
     }
 
     /**
-     * 字符串命名风格转换
-     * type 0 将Java风格转换为C的风格 1 将C风格转换为Java的风格
-     * @deprecated
-     * @access public
-     * @param string  $name    字符串
-     * @param integer $type    转换类型
-     * @param bool    $ucfirst 首字母是否大写（驼峰规则）
-     * @return string
-     */
-    public static function parseName(string $name = null, int $type = 0, bool $ucfirst = true): string
-    {
-        if ($type) {
-            $name = preg_replace_callback('/_([a-zA-Z])/', function ($match) {
-                return strtoupper($match[1]);
-            }, $name);
-            return $ucfirst ? ucfirst($name) : lcfirst($name);
-        }
-
-        return strtolower(trim(preg_replace("/[A-Z]/", "_\\0", $name), "_"));
-    }
-
-    /**
-     * 获取类名(不包含命名空间)
-     * @deprecated
-     * @access public
-     * @param string|object $class
-     * @return string
-     */
-    public static function classBaseName($class): string
-    {
-        $class = is_object($class) ? get_class($class) : $class;
-        return basename(str_replace('\\', '/', $class));
-    }
-
-    /**
      * 创建工厂对象实例
-     * @deprecated
-     * @access public
      * @param string $name      工厂类名
      * @param string $namespace 默认命名空间
      * @param array  $args
      * @return mixed
+     * @deprecated
+     * @access public
      */
     public static function factory(string $name, string $namespace = '', ...$args)
     {

@@ -173,12 +173,13 @@ class Http
         $this->initialize();
 
         // 加载全局中间件
-        if (is_file($this->app->getBasePath() . 'middleware.php')) {
-            $this->app->middleware->import(include $this->app->getBasePath() . 'middleware.php');
-        }
+        $this->loadMiddleware();
 
-        if ($this->multi) {
-            $this->parseMultiApp();
+        $autoMulti = $this->app->config->get('app.auto_multi_app', false);
+
+        if ($this->multi || $autoMulti) {
+            $this->multi(true);
+            $this->parseMultiApp($autoMulti);
         }
 
         // 设置开启事件机制
@@ -187,11 +188,26 @@ class Http
         // 监听HttpRun
         $this->app->event->trigger('HttpRun');
 
+        return $this->dispatchToRoute($request);
+    }
+
+    protected function dispatchToRoute($request)
+    {
         $withRoute = $this->app->config->get('app.with_route', true) ? function () {
             $this->loadRoutes();
         } : null;
 
         return $this->app->route->dispatch($request, $withRoute);
+    }
+
+    /**
+     * 加载全局中间件
+     */
+    protected function loadMiddleware(): void
+    {
+        if (is_file($this->app->getBasePath() . 'middleware.php')) {
+            $this->app->middleware->import(include $this->app->getBasePath() . 'middleware.php');
+        }
     }
 
     /**
@@ -270,12 +286,14 @@ class Http
 
     /**
      * 解析多应用
+     * @param bool $autoMulti 自动多应用
      */
-    protected function parseMultiApp(): void
+    protected function parseMultiApp(bool $autoMulti): void
     {
-        if ($this->app->config->get('app.auto_multi_app', false)) {
+        if ($autoMulti) {
             // 自动多应用识别
             $this->bindDomain = false;
+            $appName          = null;
 
             $bind = $this->app->config->get('app.domain_bind', []);
 
@@ -326,7 +344,25 @@ class Http
             $appName = $this->name ?: $this->getScriptName();
         }
 
-        $this->loadApp($appName ?: $this->app->config->get('app.default_app', 'index'));
+        $this->setApp($appName ?: $this->app->config->get('app.default_app', 'index'));
+    }
+
+    /**
+     * 设置应用
+     * @param string $appName
+     */
+    protected function setApp(string $appName): void
+    {
+        $this->name = $appName;
+        $this->app->request->setApp($appName);
+        $this->app->setAppPath($this->path ?: $this->app->getBasePath() . $appName . DIRECTORY_SEPARATOR);
+        $this->app->setRuntimePath($this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . $appName . DIRECTORY_SEPARATOR);
+
+        // 设置应用命名空间
+        $this->app->setNamespace($this->app->config->get('app.app_namespace') ?: 'app\\' . $appName);
+
+        //加载应用
+        $this->loadApp($appName);
     }
 
     /**
@@ -336,11 +372,6 @@ class Http
      */
     protected function loadApp(string $appName): void
     {
-        $this->name = $appName;
-        $this->app->request->setApp($appName);
-        $this->app->setAppPath($this->path ?: $this->app->getBasePath() . $appName . DIRECTORY_SEPARATOR);
-        $this->app->setRuntimePath($this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . $appName . DIRECTORY_SEPARATOR);
-
         //加载app文件
         if (is_dir($this->app->getAppPath())) {
             $appPath = $this->app->getAppPath();
@@ -378,9 +409,6 @@ class Http
 
         // 加载应用默认语言包
         $this->app->loadLangPack($this->app->lang->defaultLangSet());
-
-        // 设置应用命名空间
-        $this->app->setNamespace($this->app->config->get('app.app_namespace') ?: 'app\\' . $appName);
     }
 
     /**
@@ -394,8 +422,6 @@ class Http
 
         // 写入日志
         $this->app->log->save();
-        // 写入Session
-        $this->app->session->save();
     }
 
     public function __debugInfo()

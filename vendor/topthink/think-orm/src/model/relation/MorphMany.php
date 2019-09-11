@@ -71,7 +71,7 @@ class MorphMany extends Relation
     public function getRelation(array $subRelation = [], Closure $closure = null): Collection
     {
         if ($closure) {
-            $closure($this);
+            $closure($this->getClosureType($closure));
         }
 
         $this->baseQuery();
@@ -92,9 +92,10 @@ class MorphMany extends Relation
      * @param  integer $count    个数
      * @param  string  $id       关联表的统计字段
      * @param  string  $joinType JOIN类型
+     * @param  Query   $query    Query对象
      * @return Query
      */
-    public function has(string $operator = '>=', int $count = 1, string $id = '*', string $joinType = '')
+    public function has(string $operator = '>=', int $count = 1, string $id = '*', string $joinType = '', Query $query = null)
     {
         throw new Exception('relation not support: has');
     }
@@ -105,9 +106,10 @@ class MorphMany extends Relation
      * @param  mixed  $where 查询条件（数组或者闭包）
      * @param  mixed  $fields 字段
      * @param  string $joinType JOIN类型
+     * @param  Query  $query    Query对象
      * @return Query
      */
-    public function hasWhere($where = [], $fields = null, string $joinType = '')
+    public function hasWhere($where = [], $fields = null, string $joinType = '', Query $query = null)
     {
         throw new Exception('relation not support: hasWhere');
     }
@@ -206,7 +208,7 @@ class MorphMany extends Relation
         }
 
         if ($closure) {
-            $closure($this, $name);
+            $closure($this->getClosureType($closure), $name);
         }
 
         return $this->query
@@ -229,7 +231,7 @@ class MorphMany extends Relation
     public function getRelationCountQuery(Closure $closure = null, string $aggregate = 'count', string $field = '*', string &$name = null): string
     {
         if ($closure) {
-            $closure($this, $name);
+            $closure($this->getClosureType($closure), $name);
         }
 
         return $this->query
@@ -256,7 +258,7 @@ class MorphMany extends Relation
 
         if ($closure) {
             $this->baseQuery = true;
-            $closure($this);
+            $closure($this->getClosureType($closure));
         }
 
         $list = $this->query

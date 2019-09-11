@@ -67,10 +67,9 @@ class MorphTo extends Relation
     /**
      * 获取当前的关联模型类的实例
      * @access public
-     * @param bool $clear 是否需要清空查询条件
      * @return Model
      */
-    public function getModel(bool $clear = true): Model
+    public function getModel(): Model
     {
         $morphType = $this->morphType;
         $model     = $this->parseModel($this->parent->$morphType);
@@ -112,9 +111,10 @@ class MorphTo extends Relation
      * @param  integer $count    个数
      * @param  string  $id       关联表的统计字段
      * @param  string  $joinType JOIN类型
+     * @param  Query   $query    Query对象
      * @return Query
      */
-    public function has(string $operator = '>=', int $count = 1, string $id = '*', string $joinType = '')
+    public function has(string $operator = '>=', int $count = 1, string $id = '*', string $joinType = '', Query $query = null)
     {
         return $this->parent;
     }
@@ -125,9 +125,10 @@ class MorphTo extends Relation
      * @param  mixed  $where 查询条件（数组或者闭包）
      * @param  mixed  $fields 字段
      * @param  string $joinType JOIN类型
+     * @param  Query  $query    Query对象
      * @return Query
      */
-    public function hasWhere($where = [], $fields = null, string $joinType = '')
+    public function hasWhere($where = [], $fields = null, string $joinType = '', Query $query = null)
     {
         throw new Exception('relation not support: hasWhere');
     }
