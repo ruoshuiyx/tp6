@@ -139,7 +139,7 @@ class TableBuilder
      * @return string
      * @throws \Exception
      */
-    public function fetch(string $template = '', bool $renderContent = false)
+    public function fetch(string $template = '')
     {
 
         // 编译表格数据row_list的值
@@ -151,7 +151,7 @@ class TableBuilder
         }
         View::assign($this->_vars);
 
-        return View::fetch($this->_template, $renderContent);
+        return View::fetch($this->_template);
     }
 
     /**

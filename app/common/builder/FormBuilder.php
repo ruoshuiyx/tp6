@@ -1198,12 +1198,11 @@ class FormBuilder
 
     /**
      * 渲染模版
-     * @param string $template       模板文件名或者内容
-     * @param bool   $renderContent  是否渲染内容
+     * @param string $template  模板文件名或者内容
      * @return string
      * @throws \Exception
      */
-    public function fetch(string $template = '', bool $renderContent = false)
+    public function fetch(string $template = '')
     {
         // 设置表单值
         $this->setFormValue();
@@ -1214,7 +1213,7 @@ class FormBuilder
         }
         View::assign($this->_vars);
 
-        return View::fetch($this->_template, $renderContent);
+        return View::fetch($this->_template);
     }
 
 }
