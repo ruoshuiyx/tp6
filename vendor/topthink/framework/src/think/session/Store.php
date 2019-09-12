@@ -135,7 +135,7 @@ class Store
      * 获取所有数据
      * @return array
      */
-    public function all()
+    public function all(): array
     {
         return $this->data;
     }
@@ -199,7 +199,7 @@ class Store
      */
     public function has(string $name): bool
     {
-        return Arr::exists($this->data, $name);
+        return Arr::has($this->data, $name);
     }
 
     /**
@@ -251,7 +251,7 @@ class Store
      * @access public
      * @return void
      */
-    public function save()
+    public function save(): void
     {
         $this->clearFlashData();
 
@@ -287,7 +287,7 @@ class Store
      *
      * @return void
      */
-    public function reflash()
+    public function reflash(): void
     {
         $keys   = $this->get('__flash__.__current__', []);
         $values = array_unique(array_merge($this->get('__flash__.__next__', []), $keys));
@@ -300,7 +300,7 @@ class Store
      * @access public
      * @return void
      */
-    public function clearFlashData()
+    public function clearFlashData(): void
     {
         Arr::forget($this->data, $this->get('__flash__.__current__', []));
         if (!empty($next = $this->get('__flash__.__next__', []))) {

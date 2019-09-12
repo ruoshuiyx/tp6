@@ -165,9 +165,9 @@ class File implements SessionHandlerInterface
      * 写文件（加锁）
      * @param $path
      * @param $content
-     * @return bool|int
+     * @return bool
      */
-    protected function writeFile($path, $content)
+    protected function writeFile($path, $content): bool
     {
         return (bool) file_put_contents($path, $content, LOCK_EX);
     }
