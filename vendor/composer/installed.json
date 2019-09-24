@@ -1077,12 +1077,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/framework.git",
-            "reference": "3f851f5d2105ea43843363093c3c945f0bdc2e3c"
+            "reference": "9744571904a008bff8567d5fc929ed161cad0f8b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/framework/zipball/3f851f5d2105ea43843363093c3c945f0bdc2e3c",
-            "reference": "3f851f5d2105ea43843363093c3c945f0bdc2e3c",
+            "url": "https://api.github.com/repos/top-think/framework/zipball/9744571904a008bff8567d5fc929ed161cad0f8b",
+            "reference": "9744571904a008bff8567d5fc929ed161cad0f8b",
             "shasum": "",
             "mirrors": [
                 {
@@ -1109,7 +1109,7 @@
             "mockery/mockery": "^1.2",
             "phpunit/phpunit": "^7.0"
         },
-        "time": "2019-09-16T03:49:50+00:00",
+        "time": "2019-09-20T08:52:29+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1340,17 +1340,17 @@
     },
     {
         "name": "topthink/think-view",
-        "version": "v1.0.11",
-        "version_normalized": "1.0.11.0",
+        "version": "v1.0.12",
+        "version_normalized": "1.0.12.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/think-view.git",
-            "reference": "2110794aad592e007f2a8949c07ff50928028073"
+            "reference": "41dd64d023f312d2e73a14aac81edd25cffa336b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/think-view/zipball/2110794aad592e007f2a8949c07ff50928028073",
-            "reference": "2110794aad592e007f2a8949c07ff50928028073",
+            "url": "https://api.github.com/repos/top-think/think-view/zipball/41dd64d023f312d2e73a14aac81edd25cffa336b",
+            "reference": "41dd64d023f312d2e73a14aac81edd25cffa336b",
             "shasum": "",
             "mirrors": [
                 {
@@ -1363,7 +1363,7 @@
             "php": ">=7.1.0",
             "topthink/think-template": "^2.0"
         },
-        "time": "2019-09-10T14:58:31+00:00",
+        "time": "2019-09-17T08:05:04+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
