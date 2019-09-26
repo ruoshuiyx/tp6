@@ -13,6 +13,8 @@ declare (strict_types = 1);
 namespace think;
 
 use Closure;
+use think\event\HttpEnd;
+use think\event\HttpRun;
 use think\event\RouteLoaded;
 use think\exception\Handle;
 use think\exception\HttpException;
@@ -186,7 +188,7 @@ class Http
         $this->app->event->withEvent($this->app->config->get('app.with_event', true));
 
         // 监听HttpRun
-        $this->app->event->trigger('HttpRun');
+        $this->app->event->trigger(HttpRun::class);
 
         return $this->dispatchToRoute($request);
     }
@@ -384,10 +386,10 @@ class Http
 
             $files = [];
 
-            if (is_dir($configPath . $appName)) {
-                $files = array_merge($files, glob($configPath . $appName . DIRECTORY_SEPARATOR . '*' . $this->app->getConfigExt()));
-            } elseif (is_dir($appPath . 'config')) {
+            if (is_dir($appPath . 'config')) {
                 $files = array_merge($files, glob($appPath . 'config' . DIRECTORY_SEPARATOR . '*' . $this->app->getConfigExt()));
+            } elseif (is_dir($configPath . $appName)) {
+                $files = array_merge($files, glob($configPath . $appName . DIRECTORY_SEPARATOR . '*' . $this->app->getConfigExt()));
             }
 
             foreach ($files as $file) {
@@ -418,7 +420,7 @@ class Http
      */
     public function end(Response $response): void
     {
-        $this->app->event->trigger('HttpEnd', $response);
+        $this->app->event->trigger(HttpEnd::class, $response);
 
         //执行中间件
         $this->app->middleware->end($response);
