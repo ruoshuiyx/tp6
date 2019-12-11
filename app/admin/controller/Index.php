@@ -38,9 +38,13 @@ use think\facade\View;
 class Index extends Base
 {
     //上传验证规则
-    protected $uploadValidate = [
-        'image' => 'fileExt:jpg,png,gif,jpeg,rar,zip,avi,rmvb,3gp,flv,mp3,txt,doc,xls,ppt,pdf,xls,docx,xlsx,doc'
-    ];
+    protected $uploadValidate = ['file' => [
+        // 限制文件大小(单位b)，这里限制为4M
+        //'fileSize' => 4 * 1024 * 1024,
+        // 限制文件后缀，多个后缀以英文逗号分割
+        'fileExt'  => 'jpg,png,gif,jpeg,rar,zip,avi,rmvb,3gp,flv,mp3,txt,doc,xls,ppt,pdf,xls,docx,xlsx,doc'
+        // 更多规则请看“上传验证”的规则，文档地址https://www.kancloud.cn/manual/thinkphp6_0/1037629#_444
+    ]];
 
     // 首页
     public function index()
@@ -99,7 +103,7 @@ class Index extends Base
                 $file = request()->file($fileKey[$i]);
                 try {
                     validate($this->uploadValidate)
-                        ->check(object2array($file));
+                        ->check(['file' => $file]);
                     $savename = \think\facade\Filesystem::disk('public')->putFile('uploads', $file);
                     $path[] = '/' . $savename;
                 } catch (think\exception\ValidateException $e) {
@@ -129,7 +133,7 @@ class Index extends Base
             $file = request()->file('file');
             try {
                 validate($this->uploadValidate)
-                    ->check(object2array($file));
+                    ->check(['file' => $file]);
                 $savename = \think\facade\Filesystem::disk('public')->putFile('uploads', $file);
                 return '/' . $savename;
             } catch (think\exception\ValidateException $e) {
