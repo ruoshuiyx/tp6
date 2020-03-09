@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2020-03-09 18:11:04
+Date: 2020-03-09 18:25:13
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -62,7 +62,7 @@ CREATE TABLE `tp_admin` (
 -- Records of tp_admin
 -- ----------------------------
 INSERT INTO `tp_admin` VALUES ('1', '1580695622', '1583672118', '1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '1583748582', '127.0.0.1', 'admin', '/uploads/20181228/e5885dc546eb1369482cdf29fb07decd.jpg');
-INSERT INTO `tp_admin` VALUES ('2', '1583727997', '1583748601', '1', 'test', 'e10adc3949ba59abbe56e057f20f883e', '1583748408', '127.0.0.1', 'test', '/uploads/20181228/e5885dc546eb1369482cdf29fb07decd.jpg');
+INSERT INTO `tp_admin` VALUES ('2', '1583727997', '1583749457', '0', 'test', 'e10adc3949ba59abbe56e057f20f883e', '1583748408', '127.0.0.1', 'test', '/uploads/20181228/e5885dc546eb1369482cdf29fb07decd.jpg');
 
 -- ----------------------------
 -- Table structure for tp_admin_log
