@@ -36,7 +36,7 @@ class Index extends Base
     public function index()
     {
         $view = [
-            'cate'        => null,
+            'cate'       => ['topid' => 0],          // 栏目信息
             'system'      => $this->system,          // 系统信息
             'public'      => $this->public,          // 公共目录
             'title'       => $this->system['title'] ? $this->system['title'] : $this->system['name'], // seo信息
