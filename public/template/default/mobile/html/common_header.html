@@ -33,11 +33,11 @@
             <ul id="nav"> 
              <li {if empty($cate['topid'])}class="current"{/if}><a href="/">首 页</a></li> 
              {tp:nav name='nav' limit='10'}
-             <li {if $nav['id'] == $cate['topid']}class="current"{/if}><a data-id="nav_key_{$key}" href="{$nav.url}">{$nav.catname}</a>
+             <li {if $nav['id'] == $cate['topid']}class="current"{/if}><a data-id="nav_key_{$key}" href="{$nav.url}">{$nav.cate_name}</a>
              	 {if $nav.sub}
              	 <ul class="sub-menu"> 
                    {volist name="$nav.sub" id="v"}
-                   <li><a data-id="nav_sub_key_{$key}" href="{$v.url}">{$v.catname}</a></li> 
+                   <li><a data-id="nav_sub_key_{$key}" href="{$v.url}">{$v.cate_name}</a></li>
                    {/volist}
                  </ul>
                  {/if}
@@ -74,11 +74,11 @@
            <ul> 
             <li class="current"><a href="/">首 页</a></li> 
              {tp:nav name='nav' limit='10'}
-             <li><a href="{$nav.url}">{$nav.catname}</a>
+             <li><a href="{$nav.url}">{$nav.cate_name}</a>
              	 {if $nav.sub}
              	 <ul class="sub-menu"> 
                    {volist name="$nav.sub" id="v"}
-                   <li><a href="{$v.url}">{$v.catname}</a></li> 
+                   <li><a href="{$v.url}">{$v.cate_name}</a></li>
                    {/volist}
                  </ul>
                  {/if}
