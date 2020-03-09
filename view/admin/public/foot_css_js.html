@@ -1,0 +1,57 @@
+<!-- Bootstrap 3.3.7 -->
+<script src="/static/plugins/AdminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<!-- Bootstrap Table 表格插件样式 -->
+<script src="/static/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="/static/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="/static/plugins/bootstrap-table/extensions/mobile/bootstrap-table-mobile.js"></script>
+<script src="/static/plugins/bootstrap-table/extensions/toolbar/bootstrap-table-toolbar.min.js"></script>
+<link rel="stylesheet" href="/static/plugins/bootstrap-table/extensions/fixed-columns/bootstrap-table-fixed-columns.min.css"/>
+<script src="/static/plugins/bootstrap-table/extensions/fixed-columns/bootstrap-table-fixed-columns.min.js"></script>
+<!-- SIYUCMS 常用封装 -->
+<script src="/static/plugins/siyu-ui.js"></script>
+
+<!-- daterangepicker -->
+<script src="/static/plugins/AdminLTE/bower_components/moment/min/moment.min.js"></script>
+<script src="/static/plugins/AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- datepicker -->
+<script src="/static/plugins/AdminLTE/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<script src="/static/plugins/AdminLTE/bower_components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js"></script>
+<!-- timepicker -->
+<script src="/static/plugins/AdminLTE/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+<!-- datetimepicker -->
+<script src="/static/plugins/AdminLTE/bower_components/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/static/plugins/AdminLTE/bower_components/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<!-- color picker -->
+<script src="/static/plugins/AdminLTE/bower_components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
+
+<!-- Select2 -->
+<script src="/static/plugins/AdminLTE/bower_components/select2/dist/js/select2.full.min.js"></script>
+<!-- Slimscroll -->
+<script src="/static/plugins/AdminLTE/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="/static/plugins/AdminLTE/bower_components/fastclick/lib/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="/static/plugins/AdminLTE/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="/static/plugins/AdminLTE/dist/js/demo.js"></script>
+<!-- pjax -->
+<script src="/static/plugins/AdminLTE/plugins/pjax/jquery.pjax.js"></script>
+<script type="text/javascript">
+    $(function () {
+        //a 链接
+        $(document).pjax('a[target!=_blank]', '.content-wrapper');
+        //form 表单
+        $(document).on('submit', 'form[data-pjax]', function(event) {
+            $.pjax.submit(event, '.content-wrapper');
+        });
+        //重新加载
+        //$.pjax.reload('.content-wrapper');
+    })
+</script>
+<!-- PACE -->
+<script src="/static/plugins/AdminLTE/bower_components/PACE/pace.min.js"></script>
+<!-- jQueryForm -->
+<script src="/static/plugins/AdminLTE/plugins/jQueryForm/jquery.form.js"></script>
+<!-- SIYUCMS -->
+<script src="/static/plugins/AdminLTE/siyucms.js"></script>

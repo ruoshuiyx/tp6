@@ -39,7 +39,7 @@ use think\initializer\RegisterService;
  */
 class App extends Container
 {
-    const VERSION = '6.0.0RC4';
+    const VERSION = '6.0.2';
 
     /**
      * 应用调试模式
@@ -88,6 +88,12 @@ class App extends Container
      * @var string
      */
     protected $runtimePath = '';
+
+    /**
+     * 路由定义目录
+     * @var string
+     */
+    protected $routePath = '';
 
     /**
      * 配置后缀
@@ -313,9 +319,9 @@ class App extends Container
 
     /**
      * 设置应用目录
-     * @param $path
+     * @param string $path 应用目录
      */
-    public function setAppPath($path)
+    public function setAppPath(string $path)
     {
         $this->appPath = $path;
     }
@@ -332,9 +338,9 @@ class App extends Container
 
     /**
      * 设置runtime目录
-     * @param $path
+     * @param string $path 定义目录
      */
-    public function setRuntimePath($path)
+    public function setRuntimePath(string $path): void
     {
         $this->runtimePath = $path;
     }

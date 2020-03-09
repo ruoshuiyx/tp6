@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2019-06-25 09:23:19
+Date: 2020-03-09 18:11:04
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -20,66 +20,66 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_ad`;
 CREATE TABLE `tp_ad` (
-  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
-  `type_id` mediumint(8) NOT NULL COMMENT '类型ID',
-  `name` varchar(250) NOT NULL COMMENT '广告名称',
-  `image` varchar(250) DEFAULT NULL COMMENT '图片',
-  `thumb` varchar(250) DEFAULT NULL COMMENT '缩略图',
-  `url` varchar(250) DEFAULT NULL COMMENT '链接地址',
-  `description` varchar(250) DEFAULT NULL COMMENT '备注',
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
+  `create_time` int(11) NOT NULL,
+  `update_time` int(11) NOT NULL,
   `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
   `status` tinyint(1) DEFAULT NULL COMMENT '状态',
-  `create_time` int(11) DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
+  `type_id` text NOT NULL COMMENT '广告位',
+  `name` varchar(255) NOT NULL DEFAULT '' COMMENT '广告名称',
+  `image` varchar(80) NOT NULL DEFAULT '' COMMENT '图片',
+  `thumb` varchar(80) NOT NULL DEFAULT '' COMMENT '缩略图',
+  `url` varchar(255) NOT NULL DEFAULT '' COMMENT '链接地址',
+  `description` varchar(250) NOT NULL DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='广告表';
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='广告列表';
 
 -- ----------------------------
 -- Records of tp_ad
 -- ----------------------------
-INSERT INTO `tp_ad` VALUES ('1', '1', 'banner_1 ', '/uploads/20181225/b671c6f234a72c2e6560c63ddd9dc0ff.jpg', '/uploads/20181225/b671c6f234a72c2e6560c63ddd9dc0ff.jpg', '', '免费、开源\r\n快速、简单', '1', '1', '1541128222', '1553154525');
-INSERT INTO `tp_ad` VALUES ('2', '1', 'banner_2', '/uploads/20181225/25670f5712b4acfb61c5d2a1bce79225.jpg', '/uploads/20181225/25670f5712b4acfb61c5d2a1bce79225.jpg', '', 'banner_2', '2', '1', '1545719151', '1551937531');
+INSERT INTO `tp_ad` VALUES ('1', '1580378718', '1580378718', '1', '1', '1', 'banner_1 ', '/uploads/20181225/b671c6f234a72c2e6560c63ddd9dc0ff.jpg', '/uploads/20181225/b671c6f234a72c2e6560c63ddd9dc0ff.jpg', '', '免费、开源\n快速、简单');
+INSERT INTO `tp_ad` VALUES ('2', '1580378773', '1583585682', '2', '1', '1', 'banner_2', '/uploads/20181225/25670f5712b4acfb61c5d2a1bce79225.jpg', '/uploads/20181225/25670f5712b4acfb61c5d2a1bce79225.jpg', '', 'banner_2');
 
 -- ----------------------------
 -- Table structure for tp_admin
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_admin`;
 CREATE TABLE `tp_admin` (
-  `id` int(20) NOT NULL AUTO_INCREMENT,
-  `username` char(20) NOT NULL COMMENT '用户名',
-  `password` char(32) NOT NULL COMMENT '密码',
-  `logintime` int(10) DEFAULT NULL COMMENT '时间',
-  `loginip` char(20) DEFAULT NULL COMMENT 'IP',
-  `status` int(1) DEFAULT '0' COMMENT '状态（1 正常，0 锁定）',
-  `nickname` char(100) DEFAULT NULL COMMENT '真实姓名',
-  `image` varchar(200) DEFAULT NULL COMMENT '头像',
-  `create_time` int(11) DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
+  `create_time` int(11) NOT NULL,
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `status` tinyint(1) DEFAULT NULL COMMENT '状态',
+  `username` varchar(25) NOT NULL DEFAULT '' COMMENT '用户名',
+  `password` varchar(255) NOT NULL DEFAULT '' COMMENT '密码',
+  `login_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '登录时间',
+  `login_ip` varchar(255) NOT NULL DEFAULT '' COMMENT '登录IP',
+  `nickname` varchar(25) NOT NULL DEFAULT '' COMMENT '昵称',
+  `image` varchar(80) NOT NULL DEFAULT '' COMMENT '头像',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='管理员表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='管理员列表';
 
 -- ----------------------------
 -- Records of tp_admin
 -- ----------------------------
-INSERT INTO `tp_admin` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '1560482373', '127.0.0.1', '1', 'admin', '/uploads/20181228/e5885dc546eb1369482cdf29fb07decd.jpg', '1553846932', '1553846932');
+INSERT INTO `tp_admin` VALUES ('1', '1580695622', '1583672118', '1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '1583748582', '127.0.0.1', 'admin', '/uploads/20181228/e5885dc546eb1369482cdf29fb07decd.jpg');
+INSERT INTO `tp_admin` VALUES ('2', '1583727997', '1583748601', '1', 'test', 'e10adc3949ba59abbe56e057f20f883e', '1583748408', '127.0.0.1', 'test', '/uploads/20181228/e5885dc546eb1369482cdf29fb07decd.jpg');
 
 -- ----------------------------
 -- Table structure for tp_admin_log
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_admin_log`;
 CREATE TABLE `tp_admin_log` (
-  `id` int(12) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `admin_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '管理员ID',
-  `username` varchar(30) DEFAULT '' COMMENT '管理员',
-  `url` varchar(1500) DEFAULT '' COMMENT '操作页面',
-  `title` varchar(100) DEFAULT '' COMMENT '日志标题',
-  `content` text COMMENT '内容',
-  `ip` varchar(50) DEFAULT '' COMMENT 'IP',
-  `useragent` varchar(255) DEFAULT '' COMMENT 'User-Agent',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '操作时间',
-  PRIMARY KEY (`id`),
-  KEY `name` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='管理员日志表';
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
+  `create_time` int(11) NOT NULL,
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `admin_id` text NOT NULL COMMENT '管理员',
+  `url` varchar(255) NOT NULL DEFAULT '' COMMENT '操作页面	',
+  `title` varchar(100) NOT NULL DEFAULT '' COMMENT '日志标题',
+  `content` text NOT NULL COMMENT '日志内容',
+  `ip` varchar(20) NOT NULL DEFAULT '' COMMENT '操作IP',
+  `user_agent` text NOT NULL COMMENT 'User-Agent',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='管理员日志';
 
 -- ----------------------------
 -- Records of tp_admin_log
@@ -90,94 +90,89 @@ CREATE TABLE `tp_admin_log` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_ad_type`;
 CREATE TABLE `tp_ad_type` (
-  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL COMMENT '名称',
-  `description` varchar(255) DEFAULT NULL COMMENT '备注',
-  `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
-  `status` int(1) DEFAULT '0' COMMENT '状态',
-  `create_time` int(11) DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
+  `create_time` int(11) NOT NULL,
+  `update_time` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL DEFAULT '' COMMENT '分组名称',
+  `description` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
+  `sort` int(10) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
+  `status` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='广告位表';
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='广告分组';
 
 -- ----------------------------
 -- Records of tp_ad_type
 -- ----------------------------
-INSERT INTO `tp_ad_type` VALUES ('1', '【首页】顶部通栏', '导航下的焦点图', '1', '1', '0', '1551936878');
-INSERT INTO `tp_ad_type` VALUES ('2', '【内页】顶部通栏', '内页顶部通栏', '2', '1', '0', '1551936840');
+INSERT INTO `tp_ad_type` VALUES ('1', '1580372414', '1580372414', '【首页】顶部通栏', '导航下的焦点图', '1', '1');
+INSERT INTO `tp_ad_type` VALUES ('2', '1580372431', '1580372431', '【内页】顶部通栏', '内页顶部通栏', '2', '1');
 
 -- ----------------------------
 -- Table structure for tp_article
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_article`;
 CREATE TABLE `tp_article` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `cate_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
-  `title` varchar(70) NOT NULL DEFAULT '' COMMENT '标题',
-  `title_style` varchar(225) NOT NULL DEFAULT '' COMMENT '标题样式',
-  `thumb` varchar(225) NOT NULL DEFAULT '' COMMENT '缩略图',
-  `keywords` varchar(80) NOT NULL DEFAULT '' COMMENT '关键词',
-  `description` mediumtext NOT NULL COMMENT 'SEO简介',
-  `content` text NOT NULL COMMENT '内容',
-  `template` varchar(80) NOT NULL DEFAULT '' COMMENT '模板',
-  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态',
-  `sort` int(10) unsigned NOT NULL DEFAULT '100' COMMENT '排序',
-  `hits` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
-  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
+  `create_time` int(11) NOT NULL,
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  `image` varchar(80) NOT NULL DEFAULT '' COMMENT '缩略图',
-  `images` mediumtext NOT NULL COMMENT '图片集',
-  `download` varchar(80) NOT NULL DEFAULT '' COMMENT '文件下载',
-  `author` varchar(50) NOT NULL DEFAULT 'Admin' COMMENT '作者',
+  `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
+  `status` tinyint(1) DEFAULT NULL COMMENT '状态',
+  `cate_id` tinyint(10) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
+  `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
+  `author` varchar(255) NOT NULL DEFAULT '' COMMENT '作者',
   `source` varchar(255) NOT NULL DEFAULT '' COMMENT '来源',
+  `content` text NOT NULL COMMENT '内容',
   `summary` text NOT NULL COMMENT '摘要',
-  `tags` varchar(100) NOT NULL DEFAULT '' COMMENT 'TAG',
-  PRIMARY KEY (`id`),
-  KEY `status` (`id`,`status`,`sort`),
-  KEY `cate_id` (`id`,`cate_id`,`status`),
-  KEY `sort` (`id`,`cate_id`,`status`,`sort`)
-) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COMMENT='文章模型表';
+  `image` varchar(80) NOT NULL DEFAULT '' COMMENT '图片',
+  `images` varchar(255) NOT NULL DEFAULT '' COMMENT '图片集',
+  `download` varchar(80) NOT NULL DEFAULT '' COMMENT '文件下载',
+  `tags` varchar(255) NOT NULL DEFAULT '' COMMENT 'TAG',
+  `hits` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
+  `keywords` varchar(255) NOT NULL DEFAULT '' COMMENT '关键词',
+  `description` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
+  `template` varchar(30) NOT NULL DEFAULT '' COMMENT '模板',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='文章模块';
 
 -- ----------------------------
 -- Records of tp_article
 -- ----------------------------
-INSERT INTO `tp_article` VALUES ('5', '9', 'PHP是什么', '', '', '', '', '<p>PHP（外文名:PHP: Hypertext Preprocessor，中文名：&ldquo;超文本预处理器&rdquo;）是一种通用开源脚本语言。语法吸收了C语言、Java和Perl的特点，利于学习，使用广泛，主要适用于Web开发领域。</p>\n\n<p>用PHP做出的动态页面与其他的编程语言相比，PHP是将程序嵌入到HTML（标准通用标记语言下的一个应用）文档中去执行，执行效率比完全生成HTML标记的CGI要高许多；PHP还可以执行编译后代码，编译可以达到加密和优化代码运行，使代码运行更快。</p>\n\n<p>全球市场分析</p>\n\n<p>目前PHP在全球网页市场、手机网页市场还有为手机提供API（程序接口）排名第一。</p>\n\n<p>在中国微信开发大量使用PHP来进行开发。</p>\n\n<p>北京、上海的用人需求</p>\n\n<p style=\"text-align: center;\">上海2016年11月份中某一天用人低峰的招聘量：</p>\n\n<p style=\"text-align: center;\"><img alt=\"2.png\" src=\"/uploads/ueditor/image/20181224/1545620471.png\" title=\"1545620471.png\" /></p>\n\n<p>&nbsp;</p>\n\n<p style=\"text-align: center;\">北京2016年11月份中某一天用人低峰的招聘量：</p>\n\n<p>&nbsp;</p>\n\n<p style=\"text-align: center;\"><img alt=\"1.png\" src=\"/uploads/ueditor/image/20181224/1545620478.png\" title=\"1545620478.png\" /></p>\n', '', '1', '100', '52', '1540451280', '0', '/uploads/20181224/fc3112ab0fab9f255726674dc1fd0d17.jpg', '[{\"image\":\"\\/uploads\\/20181025\\/0138d7987d3e56758ab4d49c57002401.jpg\",\"title\":\"3.jpg\"}]', '', '未知', 'php中文网', 'PHP（外文名:PHP: Hypertext Preprocessor，中文名：“超文本预处理器”）是一种通用开源脚本语言。语法吸收了C语言、Java和Perl的特点，利于学习，使用广泛，主要适用于Web开发领域。', '1');
-INSERT INTO `tp_article` VALUES ('4', '9', '为什么学习PHP？', '', '', '', '', '<p>回答本书的几个问题吧。你到底，为什么要学习PHP？</p>\n\n<p>全国都缺PHP人才，非常好就业，PHP现在的工资水平很高，刚毕业可以拿到5000-9000每个月，特别优秀还可以破万。并且有非常多的就业机会。</p>\n\n<p>PHP入门简单，学习入门易入手。</p>\n\n<p>很多人反馈上完大学的C语言课程、java课程不会写任何东西。<br />\n诚然，中国的大学都以C语言作为主要的入门语言。但是，我们认为PHP是最简单入门，也是最合适入门的语言。</p>\n\n<p>你将学习到编程的思路，更加程序化的去处理问题。处理问题，将会更加规范化。</p>\n\n<p>如果你要创业，如果你要与互联网人沟通。未来互联网、移动互联网、信息化将会进一步围绕在你身边。你需要与人沟通，与人打交道。</p>\n\n<p>还有机会进入BAT（百度、阿里、腾讯），BAT这些企业他们在用PHP。国内和国外超一线的互联网公司，在超过90%在使用PHP来做手机API或者是网站。连微信等开放平台中的公众号的服务端也可以使用到PHP。</p>\n\n<p>大并发，还能免费。一天1个亿的访问量怎么办？PHP拥有大量优秀的开发者，在一定数据量的情况下完全能满足你的需求。国内外一线的互联网公司，很多将自己的大并发方案进行开源了。你可以免费获得很多成熟的、免费的、开源的大并发解决方案。</p>\n\n<p>开源更加节约成本也更加安全。windows很多都要收取授权费用，而使用linux的LAMP架构或者LNMP架构会更加安全。全球的黑客在帮你找漏洞。全球的工程师在帮忙修复漏洞。你发现一个他人已经消灭10个。</p>\n', '', '1', '100', '0', '1539850020', '0', '/uploads/20181224/168eb2135c7abbc3f2efcad91c7106e3.jpg', '', '', '未知', 'php中文网', '回答本书的几个问题吧。你到底，为什么要学习PHP？\n全国都缺PHP人才，非常好就业，PHP现在的工资水平很高，刚毕业可以拿到5000-9000每个月，特别优秀还可以破万。并且有非常多的就业机会。', '1');
-INSERT INTO `tp_article` VALUES ('6', '9', '零基础也能学习', '', '', '', '', '<p>学习PHP前很多人担心PHP是不是能真的学会。</p><p>学习PHP学历要求不高，数学水平要求也不高，只需要会下面这些，你就可以跟着PHP中文网，开始愉快、高薪的PHP学习之旅：</p><p>有一台电脑</p><p>初中及以上文化水平</p><p>必须会打字（五笔、拼音均可）</p><p>会word（微软的office办公软件中的文字编辑软件）</p><p>会上网（QQ，写邮件，玩微信，看小说，看电影，注册网站帐号，网上购物等）</p><p>有一颗坚持的心</p><p>如果会一点html就更好了.学习HTML可以去看我们开源的另外一本HTML入门书籍。</p><p>不会HTML怎么办？也可以学习我们免费的HTML入门视频。</p>', '', '1', '100', '0', '1540452240', '0', '/uploads/20181224/894485902f96b13551b5450c7ddca081.jpg', '', '', '未知', 'php中文网', '学习PHP前很多人担心PHP是不是能真的学会。\r\n\r\n学习PHP学历要求不高，数学水平要求也不高，只需要会下面这些，你就可以跟着PHP中文网，开始愉快、高薪的PHP学习之旅：\r\n有一台电脑', '');
-INSERT INTO `tp_article` VALUES ('7', '9', '为什么有些人学不会', '', '', '', '', '<p>互联网进入到人们生活中的方方面面了，世界首富比尔盖茨多次提到青少年编程，而编程是一种思维习惯的转化。</p><p>作为写了10几年程序的人，我听到过一些说编程不好学的抱怨。</p><p>从目前见到的数据统计，主要是因为在大学学习时遇到了C语言，学完后还不知道能干什么。很多人大学上完也就这么糊涂、恐惧的就过来了。</p><p>只有很少的不到1%的人学不会，这部份往往是专业的艺术家，在艺术家里面极少一部份人外，他们的思维模式和我们遇到的大多数人不太一样，并且不进行编程思维的训练，所以学不会。</p><p>而造成这个原因主要是因为社会、文化、背景、生活圈子多方面造成的。而不是因为笨。</p><p>那我们绝大多数的人是哪些原因学不会的呢？</p><p>1. 不相信自己能学会</p><p>这一块很多人可能不相信，涉及到很深的心理学知识。与心理暗示、诅咒的原理一样。</p><p>如果不相信自己能够学好，心里潜意识的念头里如果总是：PHP很难，我学不会。那么这个人肯定很难学会。</p><p>把不相信自己能学会的负面情绪和观念给抛掉。</p><p>只要你每天练习代码并相信自己。你肯定能学会，并且能学得很好，代码写的很成功，成为大牛！</p><p>2. 懒</p><p>人的天性有善有恶，而学不好程序的人，身上的一个通病，只有一个字就是————懒！<br/>基本语法，需要去背<br/>函数需要去默写</p><p>3. 自以为是</p><p>一看就会，一写就错。以为自己是神童。</p><p>4. 英文单词</p><p>计算机里面常用的英文单词就那么一些。</p><p>不要找英语的借口。本书会把英语单词都会跟你标注出来。看到不会的，就去翻一翻。</p><p>5. 不坚持</p><p>学着学着就放弃了。</p><p>6. 不去提问，不会提问，不去思考</p><p>解决问题前，先去搜索</p><p>搜索解决不了再去提问</p><p>PHP学院为大家准备了视频，也为大家准备了问答中心。</p><p>大多数的人，不把问题详述清楚，不把错误代码贴完整。</p><p>张嘴就来提问。我想神仙也不知道你的问题是什么吧？问题发出来前。换位思考一下自己看不看得懂这个问题。</p><p>7. 你还需要自我鼓励</p><p>在学习过程中，你会否定自己。其实任何人都会。大多数人都会遇到跟你一样的困难。只不过他们在克服困难，而一些人在逃避困难。</p><p>学累的时候，放松一会儿。再去多读几遍。不断的告诉自己，你就是最棒的！</p><p>学会交流和倾诉而非抱怨，并且不断的自我鼓励</p>', '', '1', '100', '25', '1540452720', '0', '/uploads/20181224/b640f82ccf862c3b34e11f792220a1f5.jpg', '', '', '未知', 'php中文网', '互联网进入到人们生活中的方方面面了，世界首富比尔盖茨多次提到青少年编程，而编程是一种思维习惯的转化。\r\n作为写了10几年程序的人，我听到过一些说编程不好学的抱怨。', '');
-INSERT INTO `tp_article` VALUES ('8', '9', '开发环境是什么？', '', '', '', '', '<p>PHP是一门开发语言。而开发语言写出来的代码，通常需要在指定的软件下才能运行。因此，我们写好的代码需要（运行）显示出来看到，就需要安装这几个软件来运行代码。</p>\n\n<p>我们把运行我们写代码的几个软件和运行代码的软件统一都可称为开发环境。</p>\n\n<p>新手学习前常遇到的环境问题</p>\n\n<p>很多朋友最开始学习的时候，听说某个环境好就安装某些软件。由于缺乏相关知识，所以没有主见。陷入人云即云的怪圈里。今天换这个，明天换那个。</p>\n\n<p>当前验证真理的唯一标准，请始终保证一点：</p>\n\n<p>环境能满足你的学习需求。不要在环境上面反复纠结，耽误宝贵的学习时间。</p>\n\n<p>我们认为环境只要能满足学习要求即可。等学会了后，再去着磨一些更加复杂的互联网线上的、生产环境中的具体配置。</p>\n', '', '1', '100', '210', '1540605000', '0', '/uploads/20181224/a11e9ab3e8dc289dca70a105a7f177ee.jpg', '[{\"image\":\"\\/uploads\\/20181026\\/c90a371acbfc377a3ebb781b9e6c22af.jpg\",\"title\":\"4.jpg\"},{\"image\":\"\\/uploads\\/20181026\\/02afd01ca8661ce5ec14d60abd48673d.jpg\",\"title\":\"3.jpg\"}]', '', '未知', 'php中文网', 'PHP是一门开发语言。而开发语言写出来的代码，通常需要在指定的软件下才能运行。因此，我们写好的代码需要（运行）显示出来看到，就需要安装这几个软件来运行代码。', '8');
-INSERT INTO `tp_article` VALUES ('9', '9', 'windows环境安装', '', '', '', '', '<p>所谓服务器：不要把它想的太过于高深，不过就是提供一项特殊功能（服务）的电脑而已。</p>\n\n<p>显示网页的叫网页(web)服务器（server）。</p>\n\n<p>帮我们代为收发电子邮件(Email)的服务器叫邮件服务器。</p>\n\n<p>帮我们把各个游戏玩家连接在一起的叫游戏服务器。</p>\n\n<p>帮我们存储数据的叫数据库服务器</p>\n\n<p>... ...等等</p>\n\n<p>我们现在使用的一部手机的性能比10年前的一台电脑和服务器的性能还要强劲、给力。</p>\n\n<p>而我们的学习过程当中完全可以把自己使用的这一台windows电脑作为服务器来使用。</p>\n\n<p>原来如此，一讲就通了吧？</p>\n\n<p>我们大多数人使用的电脑通常是windows操作系统的电脑。而我们的讲解主要在windows电脑上进行。</p>\n\n<p>你不需要去理解所谓高深的电脑知识、操作系统原型等。在这一章节当中，你只需要会安装QQ、杀毒软件一样，点击：下一步、下一步即可完成本章的学习。</p>\n\n<p>在最开始学习时，我们强烈建议初学者使用集成环境包进行安装。</p>\n\n<p>什么是集成环境包？</p>\n\n<p>我们学习PHP要安装的东西有很多。例如：网页服务器、数据库服务器和PHP语言核心的解释器。</p>\n\n<p>我们可以分开安装各部份，也可以合在一起安装一个集成好的软件。</p>\n\n<p>将这些合在一起的一个软件我们就叫作：集成环境包。</p>\n\n<p>这个过程需要修改很多配置文件才能完成。并且每个人的电脑情况，权限，经常容易操作出错。</p>\n\n<p>很容易因为环境问题影响到心情，我们的学习计划在初期非常绝对化：</p>\n\n<p>请使用集成环境包完成最开始的学习。</p>\n\n<p>等你学好PHP NB后，你爱用啥用啥，网上成堆的文章教你配置各种环境。</p>\n\n<p>选用什么样的集成环境包？</p>\n\n<p>集成环境包比较多。以下的这些全是各种英文名。只不过代表的是不同集成环境包的名字，不用去深纠。如下所示：</p>\n\n<p>AppServ</p>\n\n<p>PHPStudy</p>\n\n<p>APMserv</p>\n\n<p>XAMPP</p>\n\n<p>WAMPServer<br />\n... ...等等</p>\n\n<p>对于我们才入门的学习者来说，选择集成环境包的原则：</p>\n\n<p>更新快，版本比较新</p>\n\n<p>操作简单易于上手</p>\n\n<p>选择项不要过多</p>\n\n<p>因此，我们下面使用的集成环境包是：PHPstudy。当然，如果你对此块很熟悉了，也可以自行选择选择集成环境包。</p>\n\n<p>可以以在官方网址下载：<br />\nhttp://www.phpstudy.net/&nbsp;</p>\n\n<p>也可以在百度中搜索：*PHPstudy *&nbsp;&nbsp;这个5个字文字母进行下载。</p>\n\n<p>对学习PHP的新手来说，WINDOWS下PHP环境配置是一件很困难的事，就是老手也是一件烦琐的事。因此，无论你是新手还是老手，phpStudy 2016都是一个不错的选择，该程序集成Apache+PHP+MySQL+phpMyAdmin+ZendOptimizer，最新版本已集成最新的&nbsp;PHP7。</p>\n', '', '1', '100', '22', '1544593260', '0', '/uploads/20181224/f5421f965b0f46d9c1b8f1a927df7894.jpg', '', '', '未知', 'php中文网', '所谓服务器：不要把它想的太过于高深，不过就是提供一项特殊功能（服务）的电脑而已。\n显示网页的叫网页(web)服务器（server）。', '10');
-INSERT INTO `tp_article` VALUES ('13', '9', 'php中的变量－读过初中你就会变量', '', '', '', '', '<p>大家在读初中的时候呀。老师经常会这么教大家。</p>\n\n<p>请问，李磊和韩梅梅同学，假如：</p>\n\n<p>x&nbsp;=&nbsp;5<br />\ny&nbsp;=&nbsp;6</p>\n\n<p>那么x + y 等于多少呢？大家会义无反顾的回答。x + y 等于11。</p>\n\n<p>接下来我们看下面的初中的数学知识，请问x + y 的结果是多少？</p>\n\n<p>x&nbsp;=&nbsp;5<br />\ny&nbsp;=&nbsp;6<br />\nx&nbsp;＝&nbsp;8</p>\n\n<p>我估计大家也会义无反顾的回答：x + y 的结果为14。</p>\n\n<p>这就是变量！</p>\n\n<p>变量的几个特点：</p>\n\n<p>1.x = 5 将右边值5，赋值给左边的x</p>\n\n<p>2.第二段x ＝ 8，最后x + y 的结果等于14，说明x在从上到下的运算（执行）中，可以被重新赋值。</p>\n\n<p>我们在PHP中的变量也是如此。不过有几个特点：</p>\n\n<p>1.必须要以$开始。如变量x必须要写成$x</p>\n\n<p>2.变量的首字母不能以数字开始</p>\n\n<p>3.变量的名字区分大小写</p>\n\n<p>4.变量不要用特殊符号、中文，_不算特殊符号</p>\n\n<p>5.变量命名要有意义（别写xxx，aaa，ccc这种 变量名）</p>\n\n<p>错误举列：</p>\n\n<p>错误：变量以数字开始</p>\n\n<p><!--?php<br/-->$123&nbsp;=&nbsp;345;<br />\n?&gt;</p>\n\n<p>错误：变量中有特殊字符，中文</p>\n\n<p><!--?php<br/-->//$a*d&nbsp;=&nbsp;345;<br />\n<br />\n//$中国&nbsp;=&nbsp;123;<br />\n?&gt;</p>\n\n<p>错误：变量命名没有意义aaa容易数错，也没有含意</p>\n\n<p><!--?php<br/-->$aaaaaaa&nbsp;=&nbsp;345;<br />\n?&gt;</p>\n\n<p>错误：变量严格区分大小写 $dog 和 $Dog是PHP学院的变量,尝试将$dog的值改为8.结果D写成了大写。</p>\n\n<p><!--?php<br/-->$dog&nbsp;=&nbsp;5;<br />\n//重新修改$dog的值，将$dog改为8<br />\n$Dog&nbsp;=&nbsp;8;<br />\n?&gt;</p>\n\n<p>正确举例：</p>\n\n<p>正确：变量不能以数字开始,但是数字可以夹在变量名中间和结尾</p>\n\n<p><!--?php<br/-->$iphone6&nbsp;=&nbsp;5880;<br />\n$iphone6plus&nbsp;=&nbsp;6088;<br />\n?&gt;</p>\n\n<p>正确：变量不能有特殊符号，但是_(下划线不算特殊符号)</p>\n\n<p><!--?php<br/-->$_cup&nbsp;=&nbsp;123;<br />\n?&gt;</p>\n\n<p>注：你会发现代码是从上向下执行的。</p>\n\n<p>$ 叫作美元符，英文单词：dollar。PHP的变量必须以美元符开始。说明搞PHP有&ldquo;钱&rdquo;途。</p>\n\n<p>dollar<br />\n读音：[&#39;dɒlə(r)]<br />\n解释：美元</p>\n\n<p>&nbsp;</p>\n', '', '1', '100', '6', '1545620940', '0', '', '', '', '未知', 'php中文网', '大家在读初中的时候呀。老师经常会这么教大家。\n请问，李磊和韩梅梅同学，假如：', '6');
-INSERT INTO `tp_article` VALUES ('10', '9', 'Linux环境安装', '', '', '', '', '<p>这一个章节是本书中永远不会写的一个章节，很多人被一些市面上的书籍误导，认为学习PHP前要学习Linux。结果，一看Linux，就对人生和学习失去了希望。我们作为有过10年以上开发经验和内部训经验的专业人士告戒各位：</p>\n\n<p>Linux学习与PHP学习没有必然的联系，这是两个不同的知识体系。</p>\n\n<p>作为有多年开发经验和教学经验的我们。</p>\n\n<p>我们强烈不建议没有接触过Linux的学生，为了学习PHP而去安装Linux环境</p>\n\n<p>如果您有经验，我们相信你一定能解决，如果解决不了。</p>\n\n<p>请加QQ群和访问官网：PHP中文网&nbsp;学习视频和提问。</p>\n', '', '1', '100', '0', '1545620820', '0', '/uploads/20181224/5cd61fb68c8bc8fe6d24be4229ec0ca5.jpg', '', '', '未知', 'php中文网', '这一个章节是本书中永远不会写的一个章节，很多人被一些市面上的书籍误导，认为学习PHP前要学习Linux。结果，一看Linux，就对人生和学习失去了希望。我们作为有过10年以上开发经验和内部训经验的专业人士告戒各位：', '9');
-INSERT INTO `tp_article` VALUES ('11', '9', '其他开发环境', '', '', '', '', '<p>对本章不感兴趣，可以略过，只是介绍和说明。</p>\n\n<p>其他开发环境有很多：</p>\n\n<p>1，比如 苹果电脑的系统 Mac os</p>\n\n<p>2，比如 &nbsp;在线环境（你使用了百度、新浪、阿里等云计算环境）</p>\n\n<p>3，其他更多... ...</p>\n\n<p>当然，你甚至可以使用安卓手机和苹果手机来部署你的开发环境。就像有些人可以在各种复杂的环境，甚至U衣酷的试衣间里M..L。我想，这应该不是正常人类该进行的尝试吧。</p>\n\n<p>如果你在使用这些环境遇到了问题，相信你已经有过一定的开发经验和处理问题的经验了，这不是刚开始学习编程该掌握的内容。</p>\n\n<p>但是，如果你真遇到了这些问题。你可以上PHP中文网来提问。</p>\n', '', '1', '100', '0', '1545620880', '0', '', '', '', '未知', 'php中文网', '对本章不感兴趣，可以略过，只是介绍和说明。\n其他开发环境有很多：\n1，比如 苹果电脑的系统 Mac os\n2，比如  在线环境（你使用了百度、新浪、阿里等云计算环境）\n3，其他更多... ...', '8');
-INSERT INTO `tp_article` VALUES ('12', '9', '写代码的工具选择', '', '', '', '', '<p>写代码的工具有很多。对于刚开始学习PHP的朋友来说。选择工具有几个原则：</p>\n\n<p>1，不要使用带自动提示的工具（例如eclipse、zend studio等PHP开发工具集）</p>\n\n<p>2，写完的代码必须要有颜色高亮显示。（不能使用：txt文本编辑器等无代码颜色显示的编辑器）</p>\n\n<p>你可能想问，为什么呀？</p>\n\n<p>我们发现电视、电影和现实生活中的编程高手，噼里哗啦就写一堆代码，一点都不报错，点击就能运行。而我们对着他们的代码抄袭反倒抄错。这种感觉特别不好！！！</p>\n\n<p>&mdash;&mdash;传说中的这些高手，他们都曾经在基础代码上反复练习过，所以他们不会写错。</p>\n\n<p>而我们需要高手之境界，在学习初期就不能使用先进的工具。这样会浪费我们保贵的练习代码的机会、调试错误的机会。</p>\n\n<p>因为先进的编辑器通常有很多先进的功能，例如：</p>\n\n<p>代码自动显示错误</p>\n\n<p>代码自动换行</p>\n\n<p>这些先进的工具，对于开始入门学习的你，不利于新手产生独立解决问题的能力！</p>\n\n<p>推荐的开发工具</p>\n\n<p>1. NotePad++&nbsp;</p>\n\n<p>https://notepad-plus-plus.org/&nbsp;由于某些不可抗的原因，请使用百度搜索NotePad++&nbsp;</p>\n\n<p>2.phpstorm（强烈推荐）</p>\n\n<p>https://www.jetbrains.com/phpstorm/&nbsp;</p>\n\n<p>这些工具，你只需要下载下来，一直点击下一步，安装到你的电脑上即可。</p>\n', '', '1', '100', '2', '1545620880', '0', '', '', '', '未知', 'php中文网', '写代码的工具有很多。对于刚开始学习PHP的朋友来说。选择工具有几个原则：\n1，不要使用带自动提示的工具（例如eclipse、zend studio等PHP开发工具集）\n2，写完的代码必须要有颜色高亮显示。（不能使用：txt文本编辑器等无代码颜色显示的编辑器）', '7');
-INSERT INTO `tp_article` VALUES ('14', '9', 'echo 显示命令', '', '', '', '', '<p>echo 是在PHP里面最常用的一个输出、显示功能的命令。</p>\n\n<p>我们可以让他显示任何可见的字符。</p>\n\n<p><!--?php<br/--><br />\necho&nbsp;123;<br />\n<br />\n?&gt;<br />\n<!--?php<br/--><br />\n$iphone&nbsp;=&nbsp;6088;<br />\n<br />\necho&nbsp;$iphone;<br />\n<br />\n?&gt;</p>\n\n<p>你可以对着做做实验。等下一章，我们讲数据类型的时候，我教大家输出中文和用PHP显示网页内容。</p>\n\n<p>单词：</p>\n\n<p>*echo *&nbsp;读音： [&#39;ekoʊ]<br />\n解释：发出回声；回响。<br />\n功能解释：输出、显示</p>\n', '', '1', '100', '0', '1545621000', '0', '', '', '', '未知', 'php中文网', 'echo 是在PHP里面最常用的一个输出、显示功能的命令。\n我们可以让他显示任何可见的字符。', '4,5');
-INSERT INTO `tp_article` VALUES ('15', '9', 'php注释的学习', '', '', '', '', '<p>注释的功能很强大</p>\n\n<p>所谓注释，汉语解释可以为：注解。更为准确一些。<br />\n因为代码是英文的、并且代码很长，时间长了人会忘。<br />\n所以我们会加上注释。</p>\n\n<p>注释的功能有很多：</p>\n\n<p>&nbsp;&nbsp;&nbsp;&nbsp;1.对重点进行标注</p>\n\n<p>&nbsp;&nbsp;&nbsp;&nbsp;2.时间长了容易忘快速回忆，方便查找</p>\n\n<p>&nbsp;&nbsp;&nbsp;&nbsp;3.让其他人看的时候快速看懂</p>\n\n<p>&nbsp;&nbsp;&nbsp;&nbsp;4.还可以生成文档，代码写完相关的文档就写完了，提高工作效率</p>\n\n<p>&nbsp;&nbsp;&nbsp;&nbsp;5.注释、空行、回车之后的代码看起来更优美</p>\n\n<p>&nbsp;&nbsp;&nbsp;&nbsp;6.注释可用来排错。不确定代码中哪一块写错了，可以将一大段注释，确定错误区间</p>\n\n<p>&nbsp;&nbsp;&nbsp;&nbsp;7.注释中间的部份的内容，电脑不会执行它</p>\n\n<p>先给大家看看我们觉得优美的代码，整齐、规范、说明清楚、一看就懂。（不需要理解代码的含义）：</p>\n\n<p>&nbsp;</p>\n\n<p>再看看我们眼中觉得丑陋的代码，对齐丑陋不说，并且没有功能说明（不需要理解代码的含义）：</p>\n\n<p>&nbsp;</p>\n\n<p>我们了解了注释的好处，接下来我们来说PHP的注释，注释分别：</p>\n\n<p>单行注释（只注释一行）</p>\n\n<p>多行注释（注释多行）</p>\n\n<p>单行注释</p>\n\n<p>//&nbsp;&nbsp;&nbsp;表示单行注释<br />\n#&nbsp;&nbsp;&nbsp;&nbsp;#号也表示单行注释，用的比较少</p>\n\n<p>多行注释</p>\n\n<p>/*&nbsp;<br />\n多行注释&nbsp;这里是注释区域代码<br />\n&nbsp;*/</p>\n\n<p>单行注释举例：</p>\n\n<p><!--?php<br/--><br />\n//声明一部iphone6手机的价格变量<br />\n$iphone6_price&nbsp;=&nbsp;6088;<br />\n<br />\n//显示输出手机价格<br />\necho&nbsp;$iphone6_price;<br />\n?&gt;</p>\n\n<p>注：通过上例我们知道，注释通常写代码上面。</p>\n\n<p>多行注释举例：</p>\n\n<p><!--?php<br/-->/*<br />\n作者：PHP中文网<br />\n时间：2048.12.23<br />\n功能：这是一个假的多行注释的例子<br />\n*/<br />\n<br />\n/*<br />\n&nbsp;&nbsp;声明一个爱情变量<br />\n&nbsp;&nbsp;$love&nbsp;是指爱情<br />\n&nbsp;&nbsp;爱情是一个变量，因为人的爱总是在发生变化<br />\n&nbsp;&nbsp;所以，爱情变量的值为250<br />\n*/<br />\n$love&nbsp;=&nbsp;250;<br />\n<br />\n?&gt;</p>\n\n<p>注：通过上面的例子我们发现，我们要写上很多注释的时候，释用多行注释。</p>\n\n<p>注：暂进不讲解如何通过专门的工具生成注释</p>\n\n<p>&nbsp;</p>\n', '', '1', '100', '3', '1545621060', '0', '/uploads/20181224/2d208c7893a9981a6216b83ef9fcb11f.jpg', '', '', '', '', '注释的功能很强大\n所谓注释，汉语解释可以为：注解。更为准确一些。\n因为代码是英文的、并且代码很长，时间长了人会忘。', '1,3');
-INSERT INTO `tp_article` VALUES ('16', '9', 'php整型就是整数', '', '', '', '', '<p>我&nbsp; &nbsp;一直在讲，不要被名词的含义所吓唬住。</p>\n\n<p>到底什么是整型呀？</p>\n\n<p>所谓整型，就是大家数学中所学的整数。</p>\n\n<p>整型&mdash;&mdash;整数也，英文称之:integer。英文简写：int</p>\n\n<p>整型分为：</p>\n\n<p>&nbsp;&nbsp;&nbsp;&nbsp;1.10进行</p>\n\n<p>&nbsp;&nbsp;&nbsp;&nbsp;2.8进制 （了解，基本不用）</p>\n\n<p>&nbsp;&nbsp;&nbsp;&nbsp;3.16进制（了解，基本不用）</p>\n\n<p>整型（整数）在计算机里面是有最大值和最小值范围的。</p>\n\n<p>【了解知识点，开发中不常用】大家经常听说32位计算机，也就是32位计算机一次运算处理的最大范围为-232至232-1。<br />\n64位计算机呢？&mdash;&mdash;</p>\n\n<p>10 进制声明：</p>\n\n<p><!--?php<br-->//为了方便大家记忆和前期学习，英文不好的朋友也可用拼音来声明变量。以后再用英文来声明变量也无所谓<br />\n//声明变量&nbsp;整数，英文&nbsp;int<br />\n//$int&nbsp;=&nbsp;1000;<br />\n$zhengshu&nbsp;=&nbsp;1000;<br />\necho&nbsp;$zhengshu;<br />\n?&gt;</p>\n\n<p>8进制声明：&nbsp;以0开始，后面跟0-7的整数（了解知识点）</p>\n\n<p><!--?php<br-->//8进制的取值范围最大为0-7,即0,1,2,3,4,5,6,7<br />\n<br />\n$bajingzhi&nbsp;=&nbsp;&nbsp;033145;<br />\necho&nbsp;$bajingzhi;<br />\n<br />\n?&gt;</p>\n\n<p>16进制声明：&nbsp;以0x开始，后面跟0-f的，0x的abcdef不区分大小写。（了解知识点）</p>\n\n<p><!--?php<br-->//16进制的取值范围最大为0-f,即0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f<br />\n$shiliu&nbsp;=&nbsp;&nbsp;0x6ff;<br />\necho&nbsp;$shiliu;<br />\n?&gt;</p>\n\n<p>本章学习重点，学会如何声明10制制整数即可。了解8制制和16进制的声明，实在不会也不要紧。</p>\n\n<p>思维误区：容易去考虑8进制和16进制到底是怎么产生的。</p>\n\n<p>&nbsp;</p>\n', '', '1', '100', '5', '1545621120', '0', '/uploads/20181224/588ac2b0eca6de73b61c125db692e020.jpg', '', '', '未知', 'php中文网', '我一直在讲，不要被名词的含义所吓唬住。\n到底什么是整型呀？\n所谓整型，就是大家数学中所学的整数。', '1,2');
-INSERT INTO `tp_article` VALUES ('17', '13', 'PHP中的流程控制', '', '', '', '', '<p>流程控制就是人类社会的做事和思考和处理问题的方式和方法。通过本章，你将会发现采用计算机的思维去考虑问题，我们在做事的过程当中会更加严谨。</p>\n\n<p>我们通过一个一个的场景来去推理流程：</p>\n\n<p>有一个高富帅，他姓王。他的名字叫&mdash;&mdash;王。王同学计划要投资一个项目。如果这个项目计划开始，为了这个投资项目每周往返一次北京和大连。什么时候王思总同学不再往返呢？项目失败后或者万（da）集团临时除知除外，他就可以不再这么每周往返了。</p>\n\n<p>王同学呢，有一个好习惯，就是每次往返的时候，害怕自己到底一年往返了多少次。王同学都会在自己的记事本上记上往返的次数，第一次就写上一，第2次就写上2... ...直至最后项目停止。</p>\n\n<p>王同学家里头特别有钱，所以他的行程方式和正常人的又有些不同。不仅有更多的方式，而且王同学还迷信。</p>\n\n<p>他的出行方式呢有6种，如下：</p>\n\n<p>1，司机开车<br />\n2，民航<br />\n3，自己家的专机<br />\n4，火车动车<br />\n5，骑马<br />\n6，游轮</p>\n\n<p>每次王同学，都自己会在骰子上写上1，2，3，4，5，6。摇到哪种方式，王同学就会采用哪种方式进行往返两地。</p>\n\n<p>并且呢，王同学是生活极度充满娱乐化和享受生活的人。他抵达北京或者大连的时候不同，他抵达后做的事情都不同，如下：</p>\n\n<p>半夜到达，先去夜店参加假面舞会<br />\n早上抵达，爱在酒店泡个澡<br />\n中午到达，会吃上一份神户牛肉<br />\n晚上到达，总爱去找朋友去述说一下心中的寂寞</p>\n\n<p>王同学在出行和项目中也是极度有计划性。他给自己的生活秘书和工作秘书分别指派了出差的行程：</p>\n\n<p>生活上：<br />\n先查天气，下雨带雨具和毛巾。不下雨要带防晒霜<br />\n雨具、毛巾和防晒霜的情况要提前检查，如果没有要及时买</p>\n\n<p>工作上：<br />\n要提前沟通去大连前的工作计划，准备好了要及时检查，检查合格，要提前打印现来。<br />\n及时没有及时准备好的情况下，要列出主要的项目沟通议题。</p>\n', '', '1', '100', '0', '1545628260', '0', '', '', '', '未知', 'php中文网', '流程控制就是人类社会的做事和思考和处理问题的方式和方法。通过本章，你将会发现采用计算机的思维去考虑问题，我们在做事的过程当中会更加严谨。我们通过一个一个的场景来去推理流程：', '11,1');
-INSERT INTO `tp_article` VALUES ('18', '13', 'php流程控制之if条件结构流程', '', '', '', '', '<p>if条件结构流程</p>\n\n<p>if和else 语句，在之前的3.2.5章节中已经做了说明。我们配合王思总同学的例子，再次进行说明，方便大家对此章节的理解。</p>\n\n<p>本章的知识点为：【默写级】</p>\n\n<p>基本语法，不能有半点马乎，完全是语法规范规定的，不这么写就错！</p>\n\n<p><!--?php <br/-->$week=date(&quot;4&quot;);<br />\n//判断星期小于6，则输出：还没到周末，继续上班.....<br />\nif&nbsp;($week&lt;&quot;6&quot;)&nbsp;{<br />\n&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;&quot;还没到周末，继续上班.....&quot;;<br />\n}&nbsp;<br />\n?&gt;</p>\n\n<p>在之前我们也讲过，因此if的结构可以根据人类思维推理出来两种结构：</p>\n\n<p>//if单行判断<br />\nif(布尔值判断)<br />\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只写一句话;<br />\n后续代码<br />\n//if多行判断<br />\nif(布尔值判断){<br />\n&nbsp;&nbsp;&nbsp;&nbsp;可以写多句话;<br />\n}<br />\n后续代码</p>\n\n<p>&nbsp;</p>\n', '', '1', '100', '0', '1545628260', '0', '', '', '', '未知', 'php中文网', 'if条件结构流程\nif和else 语句，在之前的3.2.5章节中已经做了说明。我们配合王思总同学的例子，再次进行说明，方便大家对此章节的理解。\n本章的知识点为：【默写级】', '11,1');
-INSERT INTO `tp_article` VALUES ('19', '13', 'PHP流程控制之if语句', '', '', '', '', '<p>我们为了加强大家对代码的理解，我们串了一个故事恶搞了一个王思总同学。</p>\n\n<p>在4.1和3.2.5这两个章节中我们都介绍到了if和if...else结构。并且我们讲解的很清楚。</p>\n\n<p>我们现在来用if...else结构来写一个小东西，加强大家对逻辑的理解。</p>\n\n<p>我们配合之前的知识点来写一个计算器：</p>\n\n<p>&nbsp;</p>\n\n<form><br />\n&nbsp;&nbsp;&nbsp;&nbsp;<input name=\"num1\" type=\"text\" /><br />\n<br />\n&nbsp;&nbsp;&nbsp;&nbsp;<select name=\"fh\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<option value=\"jia\">&nbsp;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option><option value=\"jian\">&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option><option value=\"c\">&nbsp;x&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option><option value=\"chu\">&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option><option value=\"qy\">&nbsp;%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option></select><input name=\"num2\" type=\"text\" /><br />\n<br />\n<select name=\"fh\">&nbsp;&nbsp;&nbsp;&nbsp;</select><input type=\"submit\" value=\"运算\" /><br />\n<br />\n<br />\n<br />\n<br />\n<select name=\"fh\"><!--?php<br/-->&nbsp;&nbsp;&nbsp;&nbsp;$num1&nbsp;=&nbsp;$_GET[&#39;num1&#39;];&nbsp;&nbsp;&nbsp;&nbsp;$num2&nbsp;=&nbsp;$_GET[&#39;num2&#39;];&nbsp;&nbsp;&nbsp;&nbsp;$fh&nbsp;=&nbsp;$_GET[&#39;fh&#39;];&nbsp;&nbsp;&nbsp;&nbsp;if(!is_numeric($num1)&nbsp;||&nbsp;!is_numeric($num2)){&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;&#39;请输入数值类型&#39;;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;&nbsp;&nbsp;if($fh&nbsp;==&nbsp;&#39;jia&#39;){&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;$num1&nbsp;.&nbsp;&#39;+&#39;&nbsp;.&nbsp;$num2&nbsp;.&nbsp;&#39;=&#39;&nbsp;.&nbsp;($num1+$num2);&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;&nbsp;&nbsp;if($fh==&#39;jian&#39;){&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;$num1&nbsp;.&nbsp;&#39;-&#39;&nbsp;.&nbsp;$num2&nbsp;.&nbsp;&#39;=&#39;&nbsp;.&nbsp;($num1-$num2);&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;&nbsp;&nbsp;if($fh==&#39;c&#39;){&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;$num1&nbsp;.&nbsp;&#39;x&#39;&nbsp;.&nbsp;$num2&nbsp;.&nbsp;&#39;=&#39;&nbsp;.&nbsp;($num1*$num2);&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;&nbsp;&nbsp;if($fh==&#39;chu&#39;){&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;$num1&nbsp;.&nbsp;&#39;/&#39;&nbsp;.&nbsp;$num2&nbsp;.&nbsp;&#39;=&#39;&nbsp;.&nbsp;($num1/$num2);&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;&nbsp;&nbsp;if($fh==&#39;qy&#39;){&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;$num1&nbsp;.&nbsp;&#39;%&#39;&nbsp;.&nbsp;$num2&nbsp;.&nbsp;&#39;=&#39;&nbsp;.&nbsp;($num1%$num2);&nbsp;&nbsp;&nbsp;&nbsp;}?&gt;</select>\n\n<p>&nbsp;</p>\n\n<p><select name=\"fh\">作业：写一个平年、闰年计算器。写一个form表单，通过get将年份给传来过来，判断传进来的年份是否为数值类型。并且要求，如果是闰年就提示这是闰年，如果是平年就提示这一年是平年。</select></p>\n\n<p><select name=\"fh\">平年闰年规则：年份能被4整除，但是不能被100整除。 &nbsp;或者能被400整除，即为闰年，其他情况全为平年</select></p>\n</form>\n', '', '1', '100', '11', '1545628320', '0', '', '', '', '未知', 'php中文网', '我们为了加强大家对代码的理解，我们串了一个故事恶搞了一个王思总同学。\n在4.1和3.2.5这两个章节中我们都介绍到了if和if...else结构。并且我们讲解的很清楚。\n我们现在来用if...else结构来写一个小东西，加强大家对逻辑的理解。', '11,1');
-INSERT INTO `tp_article` VALUES ('20', '13', 'PHP流程控制之嵌套if...else...elseif结构', '', '', '', '', '<p>还记得本章开篇我们讲了一个王思总同学的例子：</p>\n\n<p>王同学是生活极度充满娱乐化和享受生活的人。他抵达北京或者大连的时候做的事，他抵达后做的事情，如下：</p>\n\n<p>半夜到达，先去夜店参加假面舞会<br />\n&nbsp;早上抵达，爱在酒店泡个澡<br />\n&nbsp;中午到达，会吃上一份神户牛肉<br />\n&nbsp;晚上到达，总爱去找朋友去述说一下心中的寂寞</p>\n\n<p>我们来了解一下他的语法规则【知识点要求：默写】</p>\n\n<p><!--?php<br/-->if（判断语句1）{<br />\n&nbsp;&nbsp;&nbsp;&nbsp;执行语句体1<br />\n}elseif(判断语句2){<br />\n&nbsp;&nbsp;&nbsp;&nbsp;执行语句体2<br />\n}else&nbsp;if(判断语句n){<br />\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行语句体n<br />\n}else{<br />\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最后的else语句可选<br />\n}<br />\n<br />\n//后续代码<br />\n?&gt;</p>\n\n<p>上述结构表示：<br />\n如果判断语句1的值为真，则执行语句体 1。执行完成后进入后续代码段。<br />\n否则转入后面的判断语句2（elsif），判断语句2若为真，则执行语句体 2。<br />\n否则转入后面的判断语句n（elsif），判断语句2若为真，则执行语句体 n。<br />\n如果均不匹配则执行else语句。这种循环嵌套可以不含else语句，即只含有if、elseif语句。</p>\n\n<p>注：elseif()也可以写成else if()</p>\n\n<p>我们把上面的代码用流程图的形式表示清楚就如下图了：</p>\n\n<p>我们可以把王思总同学的例子通过PHP代码表示出来，代码表示结果如下：</p>\n\n<p><!--?php<br/-->//定义一个随机变量，抵达时间,随机0点至23点<br />\n$dida&nbsp;=&nbsp;rand(0,23);<br />\n<br />\nif($dida&nbsp;&gt;&nbsp;6&nbsp;&amp;&amp;&nbsp;$dida&nbsp;&lt;&nbsp;10){<br />\n&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;&#39;我爱泡澡&#39;;<br />\n}else&nbsp;if($dida&nbsp;&gt;10&nbsp;&amp;&amp;&nbsp;$dida&nbsp;&lt;&nbsp;14){<br />\n&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;&#39;吃神户牛肉&#39;;<br />\n}else&nbsp;if($dida&nbsp;&gt;=19&nbsp;&amp;&amp;&nbsp;$dida&nbsp;&lt;&nbsp;22){<br />\n&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;&#39;找一个朋友聊聊内心的寂寞&#39;;<br />\n}elseif($dida&nbsp;&gt;&nbsp;22&nbsp;&amp;&amp;&nbsp;$dida&nbsp;&lt;=&nbsp;23){<br />\n&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;&#39;泡澡&#39;;<br />\n<br />\n}elseif($dida&nbsp;&gt;=&nbsp;1&nbsp;&amp;&amp;&nbsp;$dida&nbsp;&lt;3){<br />\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;&#39;泡澡&#39;;<br />\n}else{<br />\n&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;&#39;睡觉或者工作&#39;;<br />\n}<br />\n<br />\n<br />\n?&gt;</p>\n\n<p>作业：<br />\n写一个网页cj.html，向panduan.php页面以post方式提交分数段。分数段和显示的结果如下，要求如下：</p>\n\n<p>0----60以下，不及格</p>\n\n<p>60---70及格了，要努力</p>\n\n<p>70---80 &nbsp;还不错</p>\n\n<p>80---90 &nbsp; 上清华有希望</p>\n\n<p>90---100 &nbsp; 你这辈子没希望了</p>\n\n<p>100 &nbsp; &nbsp; &nbsp; &nbsp; 更没希望了</p>\n\n<p>100分以上 &nbsp; &nbsp;爱因斯坦转世啊，思密达！</p>\n\n<p>不是一个数值类型或者小于0 &nbsp;请输入正确的分数。</p>\n', '', '1', '100', '5', '1545628380', '0', '', '', '', '未知', 'php中文网', '还记得本章开篇我们讲了一个王思总同学的例子：\n王同学是生活极度充满娱乐化和享受生活的人。他抵达北京或者大连的时候做的事，他抵达后做的事情，如下：\n半夜到达，先去夜店参加假面舞会', '11,1');
+INSERT INTO `tp_article` VALUES ('1', '1581052220', '1581052220', '50', '1', '5', '为什么学习PHP？', '未知', 'php中文网', '<p>回答本书的几个问题吧。你到底，为什么要学习PHP？</p>\n\n<p>全国都缺PHP人才，非常好就业，PHP现在的工资水平很高，刚毕业可以拿到5000-9000每个月，特别优秀还可以破万。并且有非常多的就业机会。</p>\n\n<p>PHP入门简单，学习入门易入手。</p>\n\n<p>很多人反馈上完大学的C语言课程、java课程不会写任何东西。<br />\n诚然，中国的大学都以C语言作为主要的入门语言。但是，我们认为PHP是最简单入门，也是最合适入门的语言。</p>\n\n<p>你将学习到编程的思路，更加程序化的去处理问题。处理问题，将会更加规范化。</p>\n\n<p>如果你要创业，如果你要与互联网人沟通。未来互联网、移动互联网、信息化将会进一步围绕在你身边。你需要与人沟通，与人打交道。</p>\n\n<p>还有机会进入BAT（百度、阿里、腾讯），BAT这些企业他们在用PHP。国内和国外超一线的互联网公司，在超过90%在使用PHP来做手机API或者是网站。连微信等开放平台中的公众号的服务端也可以使用到PHP。</p>\n\n<p>大并发，还能免费。一天1个亿的访问量怎么办？PHP拥有大量优秀的开发者，在一定数据量的情况下完全能满足你的需求。国内外一线的互联网公司，很多将自己的大并发方案进行开源了。你可以免费获得很多成熟的、免费的、开源的大并发解决方案。</p>\n\n<p>开源更加节约成本也更加安全。windows很多都要收取授权费用，而使用linux的LAMP架构或者LNMP架构会更加安全。全球的黑客在帮你找漏洞。全球的工程师在帮忙修复漏洞。你发现一个他人已经消灭10个。</p>\n', '回答本书的几个问题吧。你到底，为什么要学习PHP？\n全国都缺PHP人才，非常好就业，PHP现在的工资水平很高，刚毕业可以拿到5000-9000每个月，特别优秀还可以破万。并且有非常多的就业机会。', '/uploads/20181224/168eb2135c7abbc3f2efcad91c7106e3.jpg', '', '', 'php', '0', '', '', '');
+INSERT INTO `tp_article` VALUES ('2', '1581052888', '1581052888', '50', '1', '5', 'PHP是什么', '未知', 'php中文网', '<p>PHP（外文名:PHP: Hypertext Preprocessor，中文名：&ldquo;超文本预处理器&rdquo;）是一种通用开源脚本语言。语法吸收了C语言、Java和Perl的特点，利于学习，使用广泛，主要适用于Web开发领域。</p>\n\n<p>用PHP做出的动态页面与其他的编程语言相比，PHP是将程序嵌入到HTML（标准通用标记语言下的一个应用）文档中去执行，执行效率比完全生成HTML标记的CGI要高许多；PHP还可以执行编译后代码，编译可以达到加密和优化代码运行，使代码运行更快。</p>\n\n<p>全球市场分析</p>\n\n<p>目前PHP在全球网页市场、手机网页市场还有为手机提供API（程序接口）排名第一。</p>\n\n<p>在中国微信开发大量使用PHP来进行开发。</p>\n', 'PHP（外文名:PHP: Hypertext Preprocessor，中文名：“超文本预处理器”）是一种通用开源脚本语言。语法吸收了C语言、Java和Perl的特点，利于学习，使用广泛，主要适用于Web开发领域。', '/uploads/20181224/fc3112ab0fab9f255726674dc1fd0d17.jpg', '', '', 'PHP', '0', '', '', '');
+INSERT INTO `tp_article` VALUES ('3', '1581052950', '1581052950', '50', '1', '5', '零基础也能学习', '未知', 'php中文网', '<p>学习PHP前很多人担心PHP是不是能真的学会。</p>\n\n<p>学习PHP学历要求不高，数学水平要求也不高，只需要会下面这些，你就可以跟着PHP中文网，开始愉快、高薪的PHP学习之旅：</p>\n\n<p>有一台电脑</p>\n\n<p>初中及以上文化水平</p>\n\n<p>必须会打字（五笔、拼音均可）</p>\n\n<p>会word（微软的office办公软件中的文字编辑软件）</p>\n\n<p>会上网（QQ，写邮件，玩微信，看小说，看电影，注册网站帐号，网上购物等）</p>\n\n<p>有一颗坚持的心</p>\n\n<p>如果会一点html就更好了.学习HTML可以去看我们开源的另外一本HTML入门书籍。</p>\n\n<p>不会HTML怎么办？也可以学习我们免费的HTML入门视频。</p>\n', '学习PHP前很多人担心PHP是不是能真的学会。\n学习PHP学历要求不高，数学水平要求也不高，只需要会下面这些，你就可以跟着PHP中文网，开始愉快、高薪的PHP学习之旅：\n有一台电脑', '/uploads/20181224/894485902f96b13551b5450c7ddca081.jpg', '', '', '零基础', '0', '', '', '');
+INSERT INTO `tp_article` VALUES ('4', '1581053047', '1581053047', '50', '1', '5', '为什么有些人学不会', '未知', 'php中文网', '<p>互联网进入到人们生活中的方方面面了，世界首富比尔盖茨多次提到青少年编程，而编程是一种思维习惯的转化。</p>\n\n<p>作为写了10几年程序的人，我听到过一些说编程不好学的抱怨。</p>\n\n<p>从目前见到的数据统计，主要是因为在大学学习时遇到了C语言，学完后还不知道能干什么。很多人大学上完也就这么糊涂、恐惧的就过来了。</p>\n\n<p>只有很少的不到1%的人学不会，这部份往往是专业的艺术家，在艺术家里面极少一部份人外，他们的思维模式和我们遇到的大多数人不太一样，并且不进行编程思维的训练，所以学不会。</p>\n\n<p>而造成这个原因主要是因为社会、文化、背景、生活圈子多方面造成的。而不是因为笨。</p>\n\n<p>那我们绝大多数的人是哪些原因学不会的呢？</p>\n\n<p>1. 不相信自己能学会</p>\n\n<p>这一块很多人可能不相信，涉及到很深的心理学知识。与心理暗示、诅咒的原理一样。</p>\n\n<p>如果不相信自己能够学好，心里潜意识的念头里如果总是：PHP很难，我学不会。那么这个人肯定很难学会。</p>\n\n<p>把不相信自己能学会的负面情绪和观念给抛掉。</p>\n\n<p>只要你每天练习代码并相信自己。你肯定能学会，并且能学得很好，代码写的很成功，成为大牛！</p>\n\n<p>2. 懒</p>\n\n<p>人的天性有善有恶，而学不好程序的人，身上的一个通病，只有一个字就是&mdash;&mdash;&mdash;&mdash;懒！<br />\n基本语法，需要去背<br />\n函数需要去默写</p>\n\n<p>3. 自以为是</p>\n\n<p>一看就会，一写就错。以为自己是神童。</p>\n\n<p>4. 英文单词</p>\n\n<p>计算机里面常用的英文单词就那么一些。</p>\n\n<p>不要找英语的借口。本书会把英语单词都会跟你标注出来。看到不会的，就去翻一翻。</p>\n\n<p>5. 不坚持</p>\n\n<p>学着学着就放弃了。</p>\n\n<p>6. 不去提问，不会提问，不去思考</p>\n\n<p>解决问题前，先去搜索</p>\n\n<p>搜索解决不了再去提问</p>\n\n<p>PHP学院为大家准备了视频，也为大家准备了问答中心。</p>\n\n<p>大多数的人，不把问题详述清楚，不把错误代码贴完整。</p>\n\n<p>张嘴就来提问。我想神仙也不知道你的问题是什么吧？问题发出来前。换位思考一下自己看不看得懂这个问题。</p>\n\n<p>7. 你还需要自我鼓励</p>\n\n<p>在学习过程中，你会否定自己。其实任何人都会。大多数人都会遇到跟你一样的困难。只不过他们在克服困难，而一些人在逃避困难。</p>\n\n<p>学累的时候，放松一会儿。再去多读几遍。不断的告诉自己，你就是最棒的！</p>\n\n<p>学会交流和倾诉而非抱怨，并且不断的自我鼓励</p>\n', '', '/uploads/20181224/b640f82ccf862c3b34e11f792220a1f5.jpg', '', '', '不会', '0', '', '', '');
+INSERT INTO `tp_article` VALUES ('5', '1581053131', '1581053131', '50', '1', '5', '开发环境是什么？', '未知', 'php中文网', '<p>PHP是一门开发语言。而开发语言写出来的代码，通常需要在指定的软件下才能运行。因此，我们写好的代码需要（运行）显示出来看到，就需要安装这几个软件来运行代码。</p>\n\n<p>我们把运行我们写代码的几个软件和运行代码的软件统一都可称为开发环境。</p>\n\n<p>新手学习前常遇到的环境问题</p>\n\n<p>很多朋友最开始学习的时候，听说某个环境好就安装某些软件。由于缺乏相关知识，所以没有主见。陷入人云即云的怪圈里。今天换这个，明天换那个。</p>\n\n<p>当前验证真理的唯一标准，请始终保证一点：</p>\n\n<p>环境能满足你的学习需求。不要在环境上面反复纠结，耽误宝贵的学习时间。</p>\n\n<p>我们认为环境只要能满足学习要求即可。等学会了后，再去着磨一些更加复杂的互联网线上的、生产环境中的具体配置。</p>\n', 'PHP是一门开发语言。而开发语言写出来的代码，通常需要在指定的软件下才能运行。因此，我们写好的代码需要（运行）显示出来看到，就需要安装这几个软件来运行代码。', '/uploads/20181224/a11e9ab3e8dc289dca70a105a7f177ee.jpg', '', '', '开发环境', '0', '', '', '');
+INSERT INTO `tp_article` VALUES ('6', '1581053179', '1581053179', '50', '1', '5', 'windows环境安装', '未知', 'php中文网', '<p>所谓服务器：不要把它想的太过于高深，不过就是提供一项特殊功能（服务）的电脑而已。</p>\n\n<p>显示网页的叫网页(web)服务器（server）。</p>\n\n<p>帮我们代为收发电子邮件(Email)的服务器叫邮件服务器。</p>\n\n<p>帮我们把各个游戏玩家连接在一起的叫游戏服务器。</p>\n\n<p>帮我们存储数据的叫数据库服务器</p>\n\n<p>... ...等等</p>\n\n<p>我们现在使用的一部手机的性能比10年前的一台电脑和服务器的性能还要强劲、给力。</p>\n\n<p>而我们的学习过程当中完全可以把自己使用的这一台windows电脑作为服务器来使用。</p>\n\n<p>原来如此，一讲就通了吧？</p>\n\n<p>我们大多数人使用的电脑通常是windows操作系统的电脑。而我们的讲解主要在windows电脑上进行。</p>\n\n<p>你不需要去理解所谓高深的电脑知识、操作系统原型等。在这一章节当中，你只需要会安装QQ、杀毒软件一样，点击：下一步、下一步即可完成本章的学习。</p>\n\n<p>在最开始学习时，我们强烈建议初学者使用集成环境包进行安装。</p>\n\n<p>什么是集成环境包？</p>\n\n<p>我们学习PHP要安装的东西有很多。例如：网页服务器、数据库服务器和PHP语言核心的解释器。</p>\n\n<p>我们可以分开安装各部份，也可以合在一起安装一个集成好的软件。</p>\n\n<p>将这些合在一起的一个软件我们就叫作：集成环境包。</p>\n\n<p>这个过程需要修改很多配置文件才能完成。并且每个人的电脑情况，权限，经常容易操作出错。</p>\n\n<p>很容易因为环境问题影响到心情，我们的学习计划在初期非常绝对化：</p>\n\n<p>请使用集成环境包完成最开始的学习。</p>\n\n<p>等你学好PHP NB后，你爱用啥用啥，网上成堆的文章教你配置各种环境。</p>\n\n<p>选用什么样的集成环境包？</p>\n\n<p>集成环境包比较多。以下的这些全是各种英文名。只不过代表的是不同集成环境包的名字，不用去深纠。如下所示：</p>\n\n<p>AppServ</p>\n\n<p>PHPStudy</p>\n\n<p>APMserv</p>\n\n<p>XAMPP</p>\n\n<p>WAMPServer<br />\n... ...等等</p>\n\n<p>对于我们才入门的学习者来说，选择集成环境包的原则：</p>\n\n<p>更新快，版本比较新</p>\n\n<p>操作简单易于上手</p>\n\n<p>选择项不要过多</p>\n\n<p>因此，我们下面使用的集成环境包是：PHPstudy。当然，如果你对此块很熟悉了，也可以自行选择选择集成环境包。</p>\n\n<p>可以以在官方网址下载：<br />\nhttp://www.phpstudy.net/&nbsp;</p>\n\n<p>也可以在百度中搜索：*PHPstudy *&nbsp;&nbsp;这个5个字文字母进行下载。</p>\n\n<p>对学习PHP的新手来说，WINDOWS下PHP环境配置是一件很困难的事，就是老手也是一件烦琐的事。因此，无论你是新手还是老手，phpStudy 2016都是一个不错的选择，该程序集成Apache+PHP+MySQL+phpMyAdmin+ZendOptimizer，最新版本已集成最新的&nbsp;PHP7。</p>\n', '所谓服务器：不要把它想的太过于高深，不过就是提供一项特殊功能（服务）的电脑而已。\n显示网页的叫网页(web)服务器（server）。', '/uploads/20181224/f5421f965b0f46d9c1b8f1a927df7894.jpg', '', '', '开发环境', '0', '', '', '');
+INSERT INTO `tp_article` VALUES ('7', '1581053231', '1581053231', '50', '1', '5', 'Linux环境安装', '未知', 'php中文网', '<p>这一个章节是本书中永远不会写的一个章节，很多人被一些市面上的书籍误导，认为学习PHP前要学习Linux。结果，一看Linux，就对人生和学习失去了希望。我们作为有过10年以上开发经验和内部训经验的专业人士告戒各位：</p>\n\n<p>Linux学习与PHP学习没有必然的联系，这是两个不同的知识体系。</p>\n\n<p>作为有多年开发经验和教学经验的我们。</p>\n\n<p>我们强烈不建议没有接触过Linux的学生，为了学习PHP而去安装Linux环境</p>\n\n<p>如果您有经验，我们相信你一定能解决，如果解决不了。</p>\n\n<p>请加QQ群和访问官网：PHP中文网&nbsp;学习视频和提问。</p>\n', '这一个章节是本书中永远不会写的一个章节，很多人被一些市面上的书籍误导，认为学习PHP前要学习Linux。结果，一看Linux，就对人生和学习失去了希望。我们作为有过10年以上开发经验和内部训经验的专业人士告戒各位：', '/uploads/20181224/5cd61fb68c8bc8fe6d24be4229ec0ca5.jpg', '', '', '开发环境', '0', '', '', '');
+INSERT INTO `tp_article` VALUES ('8', '1581054083', '1581054083', '50', '1', '5', '其他开发环境', '未知', 'php中文网', '<p>对本章不感兴趣，可以略过，只是介绍和说明。</p>\n\n<p>其他开发环境有很多：</p>\n\n<p>1，比如 苹果电脑的系统 Mac os</p>\n\n<p>2，比如 &nbsp;在线环境（你使用了百度、新浪、阿里等云计算环境）</p>\n\n<p>3，其他更多... ...</p>\n\n<p>当然，你甚至可以使用安卓手机和苹果手机来部署你的开发环境。就像有些人可以在各种复杂的环境，甚至U衣酷的试衣间里M..L。我想，这应该不是正常人类该进行的尝试吧。</p>\n\n<p>如果你在使用这些环境遇到了问题，相信你已经有过一定的开发经验和处理问题的经验了，这不是刚开始学习编程该掌握的内容。</p>\n\n<p>但是，如果你真遇到了这些问题。你可以上PHP中文网来提问。</p>\n', '对本章不感兴趣，可以略过，只是介绍和说明。\n其他开发环境有很多：\n1，比如 苹果电脑的系统 Mac os\n2，比如  在线环境（你使用了百度、新浪、阿里等云计算环境）\n3，其他更多... ...', '', '', '', '开发环境,其他', '0', '', '', '');
+INSERT INTO `tp_article` VALUES ('9', '1581054168', '1581054168', '50', '1', '5', '写代码的工具选择', '未知', 'php中文网', '<p>写代码的工具有很多。对于刚开始学习PHP的朋友来说。选择工具有几个原则：</p>\n\n<p>1，不要使用带自动提示的工具（例如eclipse、zend studio等PHP开发工具集）</p>\n\n<p>2，写完的代码必须要有颜色高亮显示。（不能使用：txt文本编辑器等无代码颜色显示的编辑器）</p>\n\n<p>你可能想问，为什么呀？</p>\n\n<p>我们发现电视、电影和现实生活中的编程高手，噼里哗啦就写一堆代码，一点都不报错，点击就能运行。而我们对着他们的代码抄袭反倒抄错。这种感觉特别不好！！！</p>\n\n<p>&mdash;&mdash;传说中的这些高手，他们都曾经在基础代码上反复练习过，所以他们不会写错。</p>\n\n<p>而我们需要高手之境界，在学习初期就不能使用先进的工具。这样会浪费我们保贵的练习代码的机会、调试错误的机会。</p>\n\n<p>因为先进的编辑器通常有很多先进的功能，例如：</p>\n\n<p>代码自动显示错误</p>\n\n<p>代码自动换行</p>\n\n<p>这些先进的工具，对于开始入门学习的你，不利于新手产生独立解决问题的能力！</p>\n\n<p>推荐的开发工具</p>\n\n<p>1. NotePad++&nbsp;</p>\n\n<p>https://notepad-plus-plus.org/&nbsp;由于某些不可抗的原因，请使用百度搜索NotePad++&nbsp;</p>\n\n<p>2.phpstorm（强烈推荐）</p>\n\n<p>https://www.jetbrains.com/phpstorm/&nbsp;</p>\n\n<p>这些工具，你只需要下载下来，一直点击下一步，安装到你的电脑上即可。</p>\n', '写代码的工具有很多。对于刚开始学习PHP的朋友来说。选择工具有几个原则：\n1，不要使用带自动提示的工具（例如eclipse、zend studio等PHP开发工具集）\n2，写完的代码必须要有颜色高亮显示。（不能使用：txt文本编辑器等无代码颜色显示的编辑器）', '', '', '', '代码工具', '0', '', '', '');
+INSERT INTO `tp_article` VALUES ('10', '1581054212', '1581054212', '50', '1', '5', 'php中的变量－读过初中你就会变量', '未知', 'php中文网', '<p>大家在读初中的时候呀。老师经常会这么教大家。</p>\n\n<p>请问，李磊和韩梅梅同学，假如：</p>\n\n<p>x&nbsp;=&nbsp;5<br />\ny&nbsp;=&nbsp;6</p>\n\n<p>那么x + y 等于多少呢？大家会义无反顾的回答。x + y 等于11。</p>\n\n<p>接下来我们看下面的初中的数学知识，请问x + y 的结果是多少？</p>\n\n<p>x&nbsp;=&nbsp;5<br />\ny&nbsp;=&nbsp;6<br />\nx&nbsp;＝&nbsp;8</p>\n\n<p>我估计大家也会义无反顾的回答：x + y 的结果为14。</p>\n\n<p>这就是变量！</p>\n\n<p>变量的几个特点：</p>\n\n<p>1.x = 5 将右边值5，赋值给左边的x</p>\n\n<p>2.第二段x ＝ 8，最后x + y 的结果等于14，说明x在从上到下的运算（执行）中，可以被重新赋值。</p>\n\n<p>我们在PHP中的变量也是如此。不过有几个特点：</p>\n\n<p>1.必须要以$开始。如变量x必须要写成$x</p>\n\n<p>2.变量的首字母不能以数字开始</p>\n\n<p>3.变量的名字区分大小写</p>\n\n<p>4.变量不要用特殊符号、中文，_不算特殊符号</p>\n\n<p>5.变量命名要有意义（别写xxx，aaa，ccc这种 变量名）</p>\n\n<p>错误举列：</p>\n\n<p>错误：变量以数字开始</p>\n\n<p><!--?php<br/-->$123&nbsp;=&nbsp;345;<br />\n?&gt;</p>\n\n<p>错误：变量中有特殊字符，中文</p>\n\n<p><!--?php<br/-->//$a*d&nbsp;=&nbsp;345;<br />\n<br />\n//$中国&nbsp;=&nbsp;123;<br />\n?&gt;</p>\n\n<p>错误：变量命名没有意义aaa容易数错，也没有含意</p>\n\n<p><!--?php<br/-->$aaaaaaa&nbsp;=&nbsp;345;<br />\n?&gt;</p>\n\n<p>错误：变量严格区分大小写 $dog 和 $Dog是PHP学院的变量,尝试将$dog的值改为8.结果D写成了大写。</p>\n\n<p><!--?php<br/-->$dog&nbsp;=&nbsp;5;<br />\n//重新修改$dog的值，将$dog改为8<br />\n$Dog&nbsp;=&nbsp;8;<br />\n?&gt;</p>\n\n<p>正确举例：</p>\n\n<p>正确：变量不能以数字开始,但是数字可以夹在变量名中间和结尾</p>\n\n<p><!--?php<br/-->$iphone6&nbsp;=&nbsp;5880;<br />\n$iphone6plus&nbsp;=&nbsp;6088;<br />\n?&gt;</p>\n\n<p>正确：变量不能有特殊符号，但是_(下划线不算特殊符号)</p>\n\n<p><!--?php<br/-->$_cup&nbsp;=&nbsp;123;<br />\n?&gt;</p>\n\n<p>注：你会发现代码是从上向下执行的。</p>\n\n<p>$ 叫作美元符，英文单词：dollar。PHP的变量必须以美元符开始。说明搞PHP有&ldquo;钱&rdquo;途。</p>\n\n<p>dollar<br />\n读音：[&#39;dɒlə(r)]<br />\n解释：美元</p>\n', '大家在读初中的时候呀。老师经常会这么教大家。\n请问，李磊和韩梅梅同学，假如：', '', '', '', 'PHP变量', '0', '', '', '');
+INSERT INTO `tp_article` VALUES ('11', '1581054249', '1581054249', '50', '1', '5', 'echo 显示命令', '未知', 'php中文网', '<p>echo 是在PHP里面最常用的一个输出、显示功能的命令。</p>\n\n<p>我们可以让他显示任何可见的字符。</p>\n\n<p><!--?php<br/--><br />\necho&nbsp;123;<br />\n<br />\n?&gt;<br />\n<!--?php<br/--><br />\n$iphone&nbsp;=&nbsp;6088;<br />\n<br />\necho&nbsp;$iphone;<br />\n<br />\n?&gt;</p>\n\n<p>你可以对着做做实验。等下一章，我们讲数据类型的时候，我教大家输出中文和用PHP显示网页内容。</p>\n\n<p>单词：</p>\n\n<p>*echo *&nbsp;读音： [&#39;ekoʊ]<br />\n解释：发出回声；回响。<br />\n功能解释：输出、显示</p>\n', 'echo 是在PHP里面最常用的一个输出、显示功能的命令。\n我们可以让他显示任何可见的字符。', '', '', '', 'echo,echo命令', '0', '', '', '');
+INSERT INTO `tp_article` VALUES ('12', '1581054302', '1581054302', '50', '1', '5', 'php注释的学习', '未知', 'php中文网', '<p>注释的功能很强大</p>\n\n<p>所谓注释，汉语解释可以为：注解。更为准确一些。<br />\n因为代码是英文的、并且代码很长，时间长了人会忘。<br />\n所以我们会加上注释。</p>\n\n<p>注释的功能有很多：</p>\n\n<p>&nbsp;&nbsp;&nbsp;&nbsp;1.对重点进行标注</p>\n\n<p>&nbsp;&nbsp;&nbsp;&nbsp;2.时间长了容易忘快速回忆，方便查找</p>\n\n<p>&nbsp;&nbsp;&nbsp;&nbsp;3.让其他人看的时候快速看懂</p>\n\n<p>&nbsp;&nbsp;&nbsp;&nbsp;4.还可以生成文档，代码写完相关的文档就写完了，提高工作效率</p>\n\n<p>&nbsp;&nbsp;&nbsp;&nbsp;5.注释、空行、回车之后的代码看起来更优美</p>\n\n<p>&nbsp;&nbsp;&nbsp;&nbsp;6.注释可用来排错。不确定代码中哪一块写错了，可以将一大段注释，确定错误区间</p>\n\n<p>&nbsp;&nbsp;&nbsp;&nbsp;7.注释中间的部份的内容，电脑不会执行它</p>\n\n<p>先给大家看看我们觉得优美的代码，整齐、规范、说明清楚、一看就懂。（不需要理解代码的含义）：</p>\n\n<p>&nbsp;</p>\n\n<p>再看看我们眼中觉得丑陋的代码，对齐丑陋不说，并且没有功能说明（不需要理解代码的含义）：</p>\n\n<p>&nbsp;</p>\n\n<p>我们了解了注释的好处，接下来我们来说PHP的注释，注释分别：</p>\n\n<p>单行注释（只注释一行）</p>\n\n<p>多行注释（注释多行）</p>\n\n<p>单行注释</p>\n\n<p>//&nbsp;&nbsp;&nbsp;表示单行注释<br />\n#&nbsp;&nbsp;&nbsp;&nbsp;#号也表示单行注释，用的比较少</p>\n\n<p>多行注释</p>\n\n<p>/*&nbsp;<br />\n多行注释&nbsp;这里是注释区域代码<br />\n&nbsp;*/</p>\n\n<p>单行注释举例：</p>\n\n<p><!--?php<br/--><br />\n//声明一部iphone6手机的价格变量<br />\n$iphone6_price&nbsp;=&nbsp;6088;<br />\n<br />\n//显示输出手机价格<br />\necho&nbsp;$iphone6_price;<br />\n?&gt;</p>\n\n<p>注：通过上例我们知道，注释通常写代码上面。</p>\n\n<p>多行注释举例：</p>\n\n<p><!--?php<br/-->/*<br />\n作者：PHP中文网<br />\n时间：2048.12.23<br />\n功能：这是一个假的多行注释的例子<br />\n*/<br />\n<br />\n/*<br />\n&nbsp;&nbsp;声明一个爱情变量<br />\n&nbsp;&nbsp;$love&nbsp;是指爱情<br />\n&nbsp;&nbsp;爱情是一个变量，因为人的爱总是在发生变化<br />\n&nbsp;&nbsp;所以，爱情变量的值为250<br />\n*/<br />\n$love&nbsp;=&nbsp;250;<br />\n<br />\n?&gt;</p>\n\n<p>注：通过上面的例子我们发现，我们要写上很多注释的时候，释用多行注释。</p>\n\n<p>注：暂进不讲解如何通过专门的工具生成注释</p>\n', '注释的功能很强大\n所谓注释，汉语解释可以为：注解。更为准确一些。\n因为代码是英文的、并且代码很长，时间长了人会忘。', '/uploads/20181224/2d208c7893a9981a6216b83ef9fcb11f.jpg', '', '', 'php,php注释', '0', '', '', '');
+INSERT INTO `tp_article` VALUES ('13', '1581054369', '1581054369', '50', '1', '5', 'php整型就是整数', '未知', 'php中文网', '<p>我&nbsp; &nbsp;一直在讲，不要被名词的含义所吓唬住。</p>\n\n<p>到底什么是整型呀？</p>\n\n<p>所谓整型，就是大家数学中所学的整数。</p>\n\n<p>整型&mdash;&mdash;整数也，英文称之:integer。英文简写：int</p>\n\n<p>整型分为：</p>\n\n<p>&nbsp;&nbsp;&nbsp;&nbsp;1.10进行</p>\n\n<p>&nbsp;&nbsp;&nbsp;&nbsp;2.8进制 （了解，基本不用）</p>\n\n<p>&nbsp;&nbsp;&nbsp;&nbsp;3.16进制（了解，基本不用）</p>\n\n<p>整型（整数）在计算机里面是有最大值和最小值范围的。</p>\n\n<p>【了解知识点，开发中不常用】大家经常听说32位计算机，也就是32位计算机一次运算处理的最大范围为-232至232-1。<br />\n64位计算机呢？&mdash;&mdash;</p>\n\n<p>10 进制声明：</p>\n\n<p><!--?php<br-->//为了方便大家记忆和前期学习，英文不好的朋友也可用拼音来声明变量。以后再用英文来声明变量也无所谓<br />\n//声明变量&nbsp;整数，英文&nbsp;int<br />\n//$int&nbsp;=&nbsp;1000;<br />\n$zhengshu&nbsp;=&nbsp;1000;<br />\necho&nbsp;$zhengshu;<br />\n?&gt;</p>\n\n<p>8进制声明：&nbsp;以0开始，后面跟0-7的整数（了解知识点）</p>\n\n<p><!--?php<br-->//8进制的取值范围最大为0-7,即0,1,2,3,4,5,6,7<br />\n<br />\n$bajingzhi&nbsp;=&nbsp;&nbsp;033145;<br />\necho&nbsp;$bajingzhi;<br />\n<br />\n?&gt;</p>\n\n<p>16进制声明：&nbsp;以0x开始，后面跟0-f的，0x的abcdef不区分大小写。（了解知识点）</p>\n\n<p><!--?php<br-->//16进制的取值范围最大为0-f,即0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f<br />\n$shiliu&nbsp;=&nbsp;&nbsp;0x6ff;<br />\necho&nbsp;$shiliu;<br />\n?&gt;</p>\n\n<p>本章学习重点，学会如何声明10制制整数即可。了解8制制和16进制的声明，实在不会也不要紧。</p>\n\n<p>思维误区：容易去考虑8进制和16进制到底是怎么产生的。</p>\n', '我一直在讲，不要被名词的含义所吓唬住。\n到底什么是整型呀？\n所谓整型，就是大家数学中所学的整数。', '/uploads/20181224/588ac2b0eca6de73b61c125db692e020.jpg', '', '', 'php,php整型', '0', '', '', '');
+INSERT INTO `tp_article` VALUES ('14', '1581054439', '1581054439', '50', '1', '6', 'PHP中的流程控制', '未知', 'php中文网', '<p>流程控制就是人类社会的做事和思考和处理问题的方式和方法。通过本章，你将会发现采用计算机的思维去考虑问题，我们在做事的过程当中会更加严谨。</p>\n\n<p>我们通过一个一个的场景来去推理流程：</p>\n\n<p>有一个高富帅，他姓王。他的名字叫&mdash;&mdash;王。王同学计划要投资一个项目。如果这个项目计划开始，为了这个投资项目每周往返一次北京和大连。什么时候王思总同学不再往返呢？项目失败后或者万（da）集团临时除知除外，他就可以不再这么每周往返了。</p>\n\n<p>王同学呢，有一个好习惯，就是每次往返的时候，害怕自己到底一年往返了多少次。王同学都会在自己的记事本上记上往返的次数，第一次就写上一，第2次就写上2... ...直至最后项目停止。</p>\n\n<p>王同学家里头特别有钱，所以他的行程方式和正常人的又有些不同。不仅有更多的方式，而且王同学还迷信。</p>\n\n<p>他的出行方式呢有6种，如下：</p>\n\n<p>1，司机开车<br />\n2，民航<br />\n3，自己家的专机<br />\n4，火车动车<br />\n5，骑马<br />\n6，游轮</p>\n\n<p>每次王同学，都自己会在骰子上写上1，2，3，4，5，6。摇到哪种方式，王同学就会采用哪种方式进行往返两地。</p>\n\n<p>并且呢，王同学是生活极度充满娱乐化和享受生活的人。他抵达北京或者大连的时候不同，他抵达后做的事情都不同，如下：</p>\n\n<p>半夜到达，先去夜店参加假面舞会<br />\n早上抵达，爱在酒店泡个澡<br />\n中午到达，会吃上一份神户牛肉<br />\n晚上到达，总爱去找朋友去述说一下心中的寂寞</p>\n\n<p>王同学在出行和项目中也是极度有计划性。他给自己的生活秘书和工作秘书分别指派了出差的行程：</p>\n\n<p>生活上：<br />\n先查天气，下雨带雨具和毛巾。不下雨要带防晒霜<br />\n雨具、毛巾和防晒霜的情况要提前检查，如果没有要及时买</p>\n\n<p>工作上：<br />\n要提前沟通去大连前的工作计划，准备好了要及时检查，检查合格，要提前打印现来。<br />\n及时没有及时准备好的情况下，要列出主要的项目沟通议题。</p>\n', '流程控制就是人类社会的做事和思考和处理问题的方式和方法。通过本章，你将会发现采用计算机的思维去考虑问题，我们在做事的过程当中会更加严谨。我们通过一个一个的场景来去推理流程：', '', '', '', 'php,php流程', '0', '', '', '');
+INSERT INTO `tp_article` VALUES ('15', '1581054482', '1581054482', '50', '1', '6', 'php流程控制之if条件结构流程', '未知', 'php中文网', '<p>if条件结构流程</p>\n\n<p>if和else 语句，在之前的3.2.5章节中已经做了说明。我们配合王思总同学的例子，再次进行说明，方便大家对此章节的理解。</p>\n\n<p>本章的知识点为：【默写级】</p>\n\n<p>基本语法，不能有半点马乎，完全是语法规范规定的，不这么写就错！</p>\n\n<p><!--?php <br/-->$week=date(&quot;4&quot;);<br />\n//判断星期小于6，则输出：还没到周末，继续上班.....<br />\nif&nbsp;($week&lt;&quot;6&quot;)&nbsp;{<br />\n&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;&quot;还没到周末，继续上班.....&quot;;<br />\n}&nbsp;<br />\n?&gt;</p>\n\n<p>在之前我们也讲过，因此if的结构可以根据人类思维推理出来两种结构：</p>\n\n<p>//if单行判断<br />\nif(布尔值判断)<br />\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;只写一句话;<br />\n后续代码<br />\n//if多行判断<br />\nif(布尔值判断){<br />\n&nbsp;&nbsp;&nbsp;&nbsp;可以写多句话;<br />\n}<br />\n后续代码</p>\n', 'if条件结构流程\nif和else 语句，在之前的3.2.5章节中已经做了说明。我们配合王思总同学的例子，再次进行说明，方便大家对此章节的理解。\n本章的知识点为：【默写级】', '', '', '', 'php,php流程', '0', '', '', '');
+INSERT INTO `tp_article` VALUES ('16', '1581054524', '1581054524', '50', '1', '6', 'PHP流程控制之if语句', '未知', 'php中文网', '<p>我们为了加强大家对代码的理解，我们串了一个故事恶搞了一个王思总同学。</p>\n\n<p>在4.1和3.2.5这两个章节中我们都介绍到了if和if...else结构。并且我们讲解的很清楚。</p>\n\n<p>我们现在来用if...else结构来写一个小东西，加强大家对逻辑的理解。</p>\n', '我们为了加强大家对代码的理解，我们串了一个故事恶搞了一个王思总同学。\n在4.1和3.2.5这两个章节中我们都介绍到了if和if...else结构。并且我们讲解的很清楚。\n我们现在来用if...else结构来写一个小东西，加强大家对逻辑的理解。', '', '', '', 'php,if', '45', '', '', '');
+INSERT INTO `tp_article` VALUES ('17', '1581054590', '1581054590', '50', '1', '6', 'PHP流程控制之嵌套if...else...elseif结构', '未知', 'php中文网', '<p>还记得本章开篇我们讲了一个王思总同学的例子：</p>\n\n<p>王同学是生活极度充满娱乐化和享受生活的人。他抵达北京或者大连的时候做的事，他抵达后做的事情，如下：</p>\n\n<p>半夜到达，先去夜店参加假面舞会<br />\n&nbsp;早上抵达，爱在酒店泡个澡<br />\n&nbsp;中午到达，会吃上一份神户牛肉<br />\n&nbsp;晚上到达，总爱去找朋友去述说一下心中的寂寞</p>\n\n<p>我们来了解一下他的语法规则【知识点要求：默写】</p>\n\n<p><!--?php<br/-->if（判断语句1）{<br />\n&nbsp;&nbsp;&nbsp;&nbsp;执行语句体1<br />\n}elseif(判断语句2){<br />\n&nbsp;&nbsp;&nbsp;&nbsp;执行语句体2<br />\n}else&nbsp;if(判断语句n){<br />\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;执行语句体n<br />\n}else{<br />\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最后的else语句可选<br />\n}<br />\n<br />\n//后续代码<br />\n?&gt;</p>\n', '还记得本章开篇我们讲了一个王思总同学的例子：\n王同学是生活极度充满娱乐化和享受生活的人。他抵达北京或者大连的时候做的事，他抵达后做的事情。', '', '', '', 'if', '7', '', '', '');
 
 -- ----------------------------
 -- Table structure for tp_auth_group
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_auth_group`;
 CREATE TABLE `tp_auth_group` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `title` char(100) NOT NULL DEFAULT '',
-  `status` tinyint(1) NOT NULL DEFAULT '1',
-  `rules` text,
-  `create_time` int(11) DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
+  `create_time` int(11) NOT NULL,
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `status` tinyint(1) DEFAULT NULL COMMENT '状态',
+  `title` varchar(255) NOT NULL DEFAULT '' COMMENT '角色组',
+  `rules` text NOT NULL COMMENT '权限',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='角色组管理';
 
 -- ----------------------------
 -- Records of tp_auth_group
 -- ----------------------------
-INSERT INTO `tp_auth_group` VALUES ('1', '超级管理员', '1', '0,1,4,124,166,167,168,169,170,171,172,173,174,5,125,38,107,126,108,157,158,159,160,161,162,163,164,165,6,7,10,11,12,14,13,8,15,16,17,18,19,20,21,9,22,23,24,25,28,27,26,152,153,154,155,156,29,30,34,32,33,31,35,36,37,39,40,41,148,42,149,43,44,45,46,150,47,151,48,49,50,51,52,53,146,54,147,55,56,57,58,59,60,61,62,127,63,128,64,65,67,66,68,70,133,71,134,72,75,74,73,69,76,135,77,136,78,79,137,80,95,96,129,97,130,98,99,131,132,247,248,249,109,138,100,101,102,144,103,145,104,105,106,81,82,84,122,85,123,86,88,87,94,83,89,90,91,92,93,119,120,121,176,177,184,185,186,187,188,189,190,191,192,178,193,194,195,196,197,198,199,200,201,179,202,203,204,205,206,207,208,209,210,180,211,212,213,214,215,216,217,218,219,181,220,221,222,223,224,225,226,227,228,182,229,230,231,232,233,234,235,236,237,183,238,239,240,241,242,243,244,245,246,', '1537944508', '1561424164');
-INSERT INTO `tp_auth_group` VALUES ('2', '测试组', '1', '0,1,4,166,167,169,5,107,157,158,160,6,152,153,154,155,29,30,34,32,33,31,35,36,39,40,41,42,44,45,46,47,48,49,51,52,53,54,60,61,62,63,64,67,68,70,71,74,73,69,76,77,137,80,95,96,97,131,132,247,109,138,100,101,102,103,105,81,82,84,85,88,94,83,89,91,120,121,176,177,184,186,178,193,195,179,202,204,180,211,213,181,220,222,182,229,231,183,238,240,', '1536304526', '1561424180');
+INSERT INTO `tp_auth_group` VALUES ('1', '1580633995', '1583732574', '1', '超级管理员', '0,157,92,93,94,95,96,97,98,99,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,171,172,173,174,175,176,268,269,270,271,272,273,274,275,276,158,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,106,107,108,109,110,111,112,113,114,115,100,101,102,103,104,105,159,163,164,165,166,167,168,169,170,160,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,39,40,41,42,43,44,45,46,47,48,187,177,178,179,180,181,182,183,184,185,186,161,49,50,51,52,53,54,55,56,57,58,69,70,71,72,73,74,75,76,77,78,59,60,61,62,63,64,65,66,67,68,79,80,81,82,83,84,85,86,87,88,162,1,2,3,4,5,6,7,8,29,30,31,32,33,34,35,36,37,38,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,258,260,261,262,263,264,265,266,267,');
+INSERT INTO `tp_auth_group` VALUES ('2', '1580634019', '1583732719', '1', '测试组', '0,157,92,93,95,99,9,10,12,16,19,20,22,26,171,174,268,269,271,274,158,116,117,119,123,125,126,128,132,134,106,107,109,113,100,101,105,159,163,164,165,166,167,169,170,160,136,137,139,143,147,148,150,154,39,40,42,46,187,177,178,180,184,161,49,50,52,56,69,70,72,76,59,60,62,66,79,80,82,86,162,1,2,4,8,29,30,32,36,188,189,190,192,196,199,200,202,206,209,210,212,216,219,220,222,226,229,230,232,236,239,240,242,246,249,252,256,258,260,261,262,263,264,265,266,267,');
 
 -- ----------------------------
 -- Table structure for tp_auth_group_access
@@ -197,6 +192,7 @@ CREATE TABLE `tp_auth_group_access` (
 -- Records of tp_auth_group_access
 -- ----------------------------
 INSERT INTO `tp_auth_group_access` VALUES ('1', '1', '1553846932', '1553846932');
+INSERT INTO `tp_auth_group_access` VALUES ('2', '2', '1583728403', '1583748601');
 
 -- ----------------------------
 -- Table structure for tp_auth_rule
@@ -204,304 +200,345 @@ INSERT INTO `tp_auth_group_access` VALUES ('1', '1', '1553846932', '1553846932')
 DROP TABLE IF EXISTS `tp_auth_rule`;
 CREATE TABLE `tp_auth_rule` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `pid` mediumint(8) NOT NULL DEFAULT '0' COMMENT '父栏目ID',
-  `name` char(80) NOT NULL DEFAULT '',
+  `pid` text NOT NULL COMMENT '父ID',
+  `name` varchar(255) NOT NULL DEFAULT '' COMMENT '控制器/方法',
   `title` char(20) NOT NULL DEFAULT '',
   `type` tinyint(1) NOT NULL DEFAULT '1',
-  `status` tinyint(1) NOT NULL DEFAULT '1',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '菜单状态',
   `condition` char(100) NOT NULL DEFAULT '',
   `sort` mediumint(8) NOT NULL DEFAULT '0' COMMENT '排序',
   `auth_open` tinyint(2) DEFAULT '1',
-  `icon` char(50) DEFAULT NULL,
+  `icon` char(50) DEFAULT '',
   `create_time` int(11) DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `param` varchar(50) NOT NULL DEFAULT '' COMMENT '参数',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=250 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=277 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tp_auth_rule
 -- ----------------------------
-INSERT INTO `tp_auth_rule` VALUES ('1', '0', 'System', '系统设置', '1', '1', '', '1', '1', 'fa fa-cogs', '1536819134', '1536819134');
-INSERT INTO `tp_auth_rule` VALUES ('4', '1', 'System/system', '系统设置', '1', '1', '', '11', '1', 'fa fa-cog', '1536327129', '1547520976');
-INSERT INTO `tp_auth_rule` VALUES ('5', '1', 'System/email', '邮箱配置', '1', '1', '', '12', '1', 'fa  fa-mail-forward', '1536327444', '1536327838');
-INSERT INTO `tp_auth_rule` VALUES ('6', '0', 'Auth', '权限管理', '1', '1', '', '2', '1', 'fa fa-group', '1536327468', '1547520856');
-INSERT INTO `tp_auth_rule` VALUES ('7', '6', 'Auth/adminList', '管理员管理', '1', '1', '', '21', '1', 'fa fa-user', '1536327753', '1547523425');
-INSERT INTO `tp_auth_rule` VALUES ('8', '6', 'Auth/adminGroup', '角色组管理', '1', '1', '', '22', '1', 'fa fa-group', '1536327787', '1547520881');
-INSERT INTO `tp_auth_rule` VALUES ('9', '6', 'Auth/adminRule', '菜单规则', '1', '1', '', '23', '1', 'fa fa-bars', '1536327826', '1547520923');
-INSERT INTO `tp_auth_rule` VALUES ('10', '7', 'Auth/adminAdd', '操作-添加', '1', '1', '', '211', '1', '', '1536327882', '1536327952');
-INSERT INTO `tp_auth_rule` VALUES ('11', '7', 'Auth/adminEdit', '操作-修改', '1', '1', '', '212', '1', '', '1536327906', '1536327955');
-INSERT INTO `tp_auth_rule` VALUES ('12', '7', 'Auth/adminDel', '操作-删除', '1', '1', '', '213', '1', '', '1536327924', '1536327959');
-INSERT INTO `tp_auth_rule` VALUES ('13', '7', 'Auth/adminState', '操作-状态', '1', '1', '', '215', '1', '', '1536327944', '1536328025');
-INSERT INTO `tp_auth_rule` VALUES ('14', '7', 'Auth/adminSelectDel', '操作-批量删除', '1', '1', '', '214', '1', '', '1536328014', '1536328028');
-INSERT INTO `tp_auth_rule` VALUES ('15', '8', 'Auth/groupAdd', '操作-添加', '1', '1', '', '221', '1', '', '1536329901', '1536329910');
-INSERT INTO `tp_auth_rule` VALUES ('16', '8', 'Auth/groupEdit', '操作-修改', '1', '1', '', '222', '1', '', '1536329944', '1536329944');
-INSERT INTO `tp_auth_rule` VALUES ('17', '8', 'Auth/groupDel', ' 操作-删除', '1', '1', '', '223', '1', '', '1536329962', '1536329986');
-INSERT INTO `tp_auth_rule` VALUES ('18', '8', 'Auth/groupSelectDel', '操作-批量删除', '1', '1', '', '224', '1', '', '1536330024', '1536330033');
-INSERT INTO `tp_auth_rule` VALUES ('19', '8', 'Auth/groupState', '操作-状态', '1', '1', '', '225', '1', '', '1536330069', '1536330069');
-INSERT INTO `tp_auth_rule` VALUES ('20', '8', 'Auth/groupAccess', '操作-权限', '1', '1', '', '226', '1', '', '1536330111', '1536330111');
-INSERT INTO `tp_auth_rule` VALUES ('21', '8', 'Auth/groupRunaccess', '操作-保存权限', '1', '1', '', '227', '1', '', '1536330174', '1536330179');
-INSERT INTO `tp_auth_rule` VALUES ('22', '9', 'Auth/ruleAdd', '操作-添加', '1', '1', '', '231', '1', '', '1536330209', '1536330455');
-INSERT INTO `tp_auth_rule` VALUES ('23', '9', 'Auth/ruleEdit', '操作-修改', '1', '1', '', '232', '1', '', '1536330222', '1536330462');
-INSERT INTO `tp_auth_rule` VALUES ('24', '9', 'Auth/ruleDel', '操作-删除', '1', '1', '', '233', '1', '', '1536330236', '1536330463');
-INSERT INTO `tp_auth_rule` VALUES ('25', '9', 'Auth/ruleSelectDel', '操作-批量删除', '1', '1', '', '234', '1', '', '1536330261', '1536330465');
-INSERT INTO `tp_auth_rule` VALUES ('26', '9', 'Auth/ruleState', '操作-菜单状态', '1', '1', '', '237', '1', '', '1536330275', '1536330933');
-INSERT INTO `tp_auth_rule` VALUES ('27', '9', 'Auth/ruleOpen', ' 操作-是否验证', '1', '1', '', '236', '1', '', '1536330318', '1536330480');
-INSERT INTO `tp_auth_rule` VALUES ('28', '9', 'Auth/ruleSort', '操作-排序', '1', '1', '', '235', '1', '', '1536330434', '1536330478');
-INSERT INTO `tp_auth_rule` VALUES ('29', '0', 'Database', '数据库管理', '1', '1', '', '3', '1', 'fa fa-database', '1536635655', '1536636028');
-INSERT INTO `tp_auth_rule` VALUES ('30', '29', 'Database/database', '数据库备份', '1', '1', '', '31', '1', 'fa fa-server', '1536635724', '1536635724');
-INSERT INTO `tp_auth_rule` VALUES ('31', '29', 'Database/restore', '还原数据库', '1', '1', '', '32', '1', 'fa fa-recycle', '1536635740', '1536635740');
-INSERT INTO `tp_auth_rule` VALUES ('32', '30', 'Database/repair', '操作-修复', '1', '1', '', '311', '1', '', '1536635767', '1536635767');
-INSERT INTO `tp_auth_rule` VALUES ('33', '30', 'Database/optimize', '操作-优化', '1', '1', '', '312', '1', '', '1536635780', '1536635780');
-INSERT INTO `tp_auth_rule` VALUES ('34', '30', 'Database/backup', '操作-备份', '1', '1', '', '50', '1', '', '1536635798', '1553763716');
-INSERT INTO `tp_auth_rule` VALUES ('35', '31', 'Database/import', '操作-还原', '1', '1', '', '321', '1', '', '1536635831', '1536635831');
-INSERT INTO `tp_auth_rule` VALUES ('36', '31', 'Database/downFile', '操作-下载', '1', '1', '', '322', '1', '', '1536635860', '1536635860');
-INSERT INTO `tp_auth_rule` VALUES ('37', '31', 'Database/delSqlFiles', '操作-删除', '1', '1', '', '323', '1', '', '1536635871', '1536635871');
-INSERT INTO `tp_auth_rule` VALUES ('38', '5', 'System/trySend', '操作-测试邮件发送', '1', '1', '', '122', '1', '', '1536653622', '1551863852');
-INSERT INTO `tp_auth_rule` VALUES ('39', '0', 'Module', '模型管理', '1', '1', '', '4', '1', 'fa fa-th-list', '1536806647', '1536807712');
-INSERT INTO `tp_auth_rule` VALUES ('40', '39', 'Module/index', '模型列表', '1', '1', '', '41', '1', 'fa fa-bolt', '1536806669', '1536806669');
-INSERT INTO `tp_auth_rule` VALUES ('41', '40', 'Module/add', '操作-添加', '1', '1', '', '411', '1', '', '1536806738', '1536806738');
-INSERT INTO `tp_auth_rule` VALUES ('42', '40', 'Module/edit', '操作-修改', '1', '1', '', '413', '1', '', '1536806774', '1553760852');
-INSERT INTO `tp_auth_rule` VALUES ('43', '40', 'Module/del', '操作-删除', '1', '1', '', '415', '1', '', '1536806788', '1553760858');
-INSERT INTO `tp_auth_rule` VALUES ('44', '40', 'Module/moduleState', '操作-状态', '1', '1', '', '416', '1', '', '1536806809', '1553760862');
-INSERT INTO `tp_auth_rule` VALUES ('45', '40', 'Module/field', '模型字段', '1', '1', '', '417', '1', '', '1536806827', '1553760866');
-INSERT INTO `tp_auth_rule` VALUES ('46', '45', 'Module/fieldAdd', '操作-添加', '1', '1', '', '4171', '1', '', '1536806876', '1553761041');
-INSERT INTO `tp_auth_rule` VALUES ('47', '45', 'Module/fieldEdit', '操作-修改', '1', '1', '', '4173', '1', '', '1536806894', '1553761048');
-INSERT INTO `tp_auth_rule` VALUES ('48', '45', 'Module/listOrder', '操作-排序', '1', '1', '', '4175', '1', '', '1536806907', '1553761056');
-INSERT INTO `tp_auth_rule` VALUES ('49', '45', 'Module/fieldStatus', '操作-状态', '1', '1', '', '4176', '1', '', '1536806921', '1553761059');
-INSERT INTO `tp_auth_rule` VALUES ('50', '45', 'Module/fieldDel', '操作-删除', '1', '1', '', '4177', '1', '', '1536806938', '1553761061');
-INSERT INTO `tp_auth_rule` VALUES ('51', '0', 'Cate', '栏目管理', '1', '1', '', '5', '1', 'fa fa-th', '1537932344', '1537932720');
-INSERT INTO `tp_auth_rule` VALUES ('52', '51', 'Cate/index', '栏目列表', '1', '1', '', '51', '1', 'fa  fa-navicon', '1537932760', '1537932760');
-INSERT INTO `tp_auth_rule` VALUES ('53', '52', 'Cate/add', '操作-添加', '1', '1', '', '511', '1', '', '1537932869', '1537932869');
-INSERT INTO `tp_auth_rule` VALUES ('54', '52', 'Cate/edit', '操作-修改', '1', '1', '', '513', '1', '', '1537932909', '1553760586');
-INSERT INTO `tp_auth_rule` VALUES ('55', '52', 'Cate/del', '操作-删除', '1', '1', '', '515', '1', '', '1537932950', '1553760595');
-INSERT INTO `tp_auth_rule` VALUES ('56', '52', 'Cate/selectDel', '操作-批量删除', '1', '1', '', '516', '1', '', '1537932981', '1553760597');
-INSERT INTO `tp_auth_rule` VALUES ('57', '52', 'Cate/sort', '操作-排序', '1', '1', '', '517', '1', '', '1537933010', '1553760598');
-INSERT INTO `tp_auth_rule` VALUES ('58', '52', 'Cate/isMenu', '操作-导航显示', '1', '1', '', '518', '1', '', '1537933076', '1553760602');
-INSERT INTO `tp_auth_rule` VALUES ('59', '52', 'Cate/isNext', '操作-跳转下级', '1', '1', '', '519', '1', '', '1537933111', '1553760603');
-INSERT INTO `tp_auth_rule` VALUES ('60', '0', 'Function', '网站功能', '1', '1', '', '6', '1', 'fa fa-gear', '1540965627', '1540966350');
-INSERT INTO `tp_auth_rule` VALUES ('61', '60', 'Link/index', '友情链接', '1', '1', '', '61', '1', 'fa fa-link', '1540966407', '1540966418');
-INSERT INTO `tp_auth_rule` VALUES ('62', '61', 'Link/add', '操作-添加', '1', '1', '', '611', '1', '', '1540966465', '1540966465');
-INSERT INTO `tp_auth_rule` VALUES ('63', '61', 'Link/edit', '操作-修改', '1', '1', '', '613', '1', '', '1540966488', '1551929946');
-INSERT INTO `tp_auth_rule` VALUES ('64', '61', 'Link/state', '操作-状态', '1', '1', '', '615', '1', '', '1540966534', '1551930026');
-INSERT INTO `tp_auth_rule` VALUES ('65', '61', 'Link/del', '操作-删除', '1', '1', '', '616', '1', '', '1540966564', '1551930029');
-INSERT INTO `tp_auth_rule` VALUES ('66', '61', 'Link/selectDel', '操作-批量删除', '1', '1', '', '617', '1', '', '1540966605', '1551930033');
-INSERT INTO `tp_auth_rule` VALUES ('67', '61', 'Link/sort', '操作-排序', '1', '1', '', '616', '1', '', '1540967631', '1540967631');
-INSERT INTO `tp_auth_rule` VALUES ('68', '60', 'Ad/index', ' 广告管理', '1', '1', '', '62', '1', 'fa fa-tv', '1541120280', '1551936480');
-INSERT INTO `tp_auth_rule` VALUES ('69', '60', 'AdType/index', '广告位管理', '1', '1', '', '63', '1', 'fa  fa-desktop', '1541120316', '1551936598');
-INSERT INTO `tp_auth_rule` VALUES ('70', '68', 'Ad/add', '操作-添加', '1', '1', '', '621', '1', '', '1541120344', '1551936492');
-INSERT INTO `tp_auth_rule` VALUES ('71', '68', 'Ad/edit', '操作-修改', '1', '1', '', '623', '1', '', '1541120377', '1551936511');
-INSERT INTO `tp_auth_rule` VALUES ('72', '68', 'Ad/del', '操作-删除', '1', '1', '', '625', '1', '', '1541120423', '1551936530');
-INSERT INTO `tp_auth_rule` VALUES ('73', '68', 'Ad/sort', '操作-排序', '1', '1', '', '628', '1', '', '1541120532', '1551936356');
-INSERT INTO `tp_auth_rule` VALUES ('74', '68', 'Ad/state', '操作-状态', '1', '1', '', '627', '1', '', '1541120573', '1551936544');
-INSERT INTO `tp_auth_rule` VALUES ('75', '68', 'Ad/selectDel', '操作-批量删除', '1', '1', '', '626', '1', '', '1541120586', '1551936538');
-INSERT INTO `tp_auth_rule` VALUES ('76', '69', 'AdType/add', '操作-添加', '1', '1', '', '631', '1', '', '1541120670', '1551936612');
-INSERT INTO `tp_auth_rule` VALUES ('77', '69', 'AdType/edit', '操作-修改', '1', '1', '', '633', '1', '', '1541120703', '1551936647');
-INSERT INTO `tp_auth_rule` VALUES ('78', '69', 'AdType/del', '操作-删除', '1', '1', '', '635', '1', '', '1541120724', '1551936721');
-INSERT INTO `tp_auth_rule` VALUES ('79', '69', 'AdType/selectDel', '操作-批量删除', '1', '1', '', '636', '1', '', '1541120754', '1551936734');
-INSERT INTO `tp_auth_rule` VALUES ('80', '69', 'AdType/sort', '操作-排序', '1', '1', '', '638', '1', '', '1541120809', '1551936816');
-INSERT INTO `tp_auth_rule` VALUES ('81', '0', 'Users', '会员管理', '1', '1', '', '9', '1', 'fa fa-user', '1541399456', '1551774271');
-INSERT INTO `tp_auth_rule` VALUES ('82', '81', 'Users/index', '会员列表', '1', '1', '', '91', '1', 'fa fa-user', '1541399506', '1551774272');
-INSERT INTO `tp_auth_rule` VALUES ('83', '81', 'UsersType/index', '会员组', '1', '1', '', '92', '1', 'fa fa-users', '1541399529', '1551835915');
-INSERT INTO `tp_auth_rule` VALUES ('84', '82', 'Users/add', '操作-添加', '1', '1', '', '911', '1', '', '1541399593', '1551774275');
-INSERT INTO `tp_auth_rule` VALUES ('85', '82', 'Users/edit', '操作-修改', '1', '1', '', '913', '1', '', '1541399618', '1551849024');
-INSERT INTO `tp_auth_rule` VALUES ('86', '82', 'Users/del', '操作-删除', '1', '1', '', '915', '1', '', '1541399639', '1551849072');
-INSERT INTO `tp_auth_rule` VALUES ('87', '82', 'Users/selectDel', '操作-批量删除', '1', '1', '', '916', '1', '', '1541399652', '1551849077');
-INSERT INTO `tp_auth_rule` VALUES ('88', '82', 'Users/state', '操作-状态', '1', '1', '', '915', '1', '', '1541399712', '1551774281');
-INSERT INTO `tp_auth_rule` VALUES ('89', '83', 'UsersType/add	', '操作-添加', '1', '1', '', '921', '1', '', '1541399760', '1551835957');
-INSERT INTO `tp_auth_rule` VALUES ('90', '83', 'UsersType/addPost', '操作-添加保存', '1', '1', '', '922', '1', '', '1541399771', '1551835996');
-INSERT INTO `tp_auth_rule` VALUES ('91', '83', 'UsersType/edit', '操作-修改', '1', '1', '', '923', '1', '', '1541399787', '1551836024');
-INSERT INTO `tp_auth_rule` VALUES ('92', '83', 'UsersType/editPost', '操作-修改保存', '1', '1', '', '924', '1', '', '1541399799', '1551836049');
-INSERT INTO `tp_auth_rule` VALUES ('93', '83', 'UsersType/del', '操作-删除', '1', '1', '', '925', '1', '', '1541399809', '1551836070');
-INSERT INTO `tp_auth_rule` VALUES ('94', '82', 'Users/download', '操作-下载', '1', '1', '', '917', '1', '', '1541482111', '1551849111');
-INSERT INTO `tp_auth_rule` VALUES ('95', '60', 'Debris/index', '碎片管理', '1', '1', '', '64', '1', 'fa fa-gift', '1545728477', '1545728477');
-INSERT INTO `tp_auth_rule` VALUES ('96', '95', 'Debris/add', '操作-添加', '1', '1', '', '641', '1', '', '1545728513', '1545728513');
-INSERT INTO `tp_auth_rule` VALUES ('97', '95', 'Debris/edit', '  操作-修改', '1', '1', '', '643', '1', '', '1545728548', '1551930413');
-INSERT INTO `tp_auth_rule` VALUES ('98', '95', 'Debris/del', '操作-删除', '1', '1', '', '645', '1', '', '1545728564', '1551930402');
-INSERT INTO `tp_auth_rule` VALUES ('99', '95', 'Debris/selectDel', '操作-批量删除', '1', '1', '', '646', '1', '', '1545728706', '1551930405');
-INSERT INTO `tp_auth_rule` VALUES ('100', '0', 'Template', '模板管理', '1', '1', '', '8', '1', 'fa fa-code', '1545898118', '1551774253');
-INSERT INTO `tp_auth_rule` VALUES ('101', '100', 'Template/index', '模板管理', '1', '1', '', '81', '1', 'fa fa-file-code-o', '1545898150', '1551774256');
-INSERT INTO `tp_auth_rule` VALUES ('102', '101', 'Template/add', '  操作-添加', '1', '1', '', '811', '1', '', '1545898173', '1553760044');
-INSERT INTO `tp_auth_rule` VALUES ('103', '101', 'Template/edit', '操作-修改', '1', '1', '', '813', '1', '', '1545898195', '1553760052');
-INSERT INTO `tp_auth_rule` VALUES ('104', '101', 'Template/delete', '操作-删除', '1', '1', '', '815', '1', '', '1545898234', '1553760059');
-INSERT INTO `tp_auth_rule` VALUES ('105', '101', 'Template/img', '媒体文件-列表', '1', '1', '', '816', '1', '', '1545962259', '1553760061');
-INSERT INTO `tp_auth_rule` VALUES ('106', '101', 'Template/imgDel', '媒体文件-删除', '1', '1', '', '817', '1', '', '1545962287', '1553760065');
-INSERT INTO `tp_auth_rule` VALUES ('107', '1', 'System/sms', '短信配置', '1', '1', '', '13', '1', 'fa fa-send', '1548400960', '1548400980');
-INSERT INTO `tp_auth_rule` VALUES ('108', '107', 'System/trySms', '操作-测试短信发送', '1', '1', '', '132', '1', '', '1548401007', '1551864103');
-INSERT INTO `tp_auth_rule` VALUES ('109', '0', 'Addons', '插件管理', '1', '0', '', '7', '1', 'fa fa-plug', '1551774339', '1551774539');
-INSERT INTO `tp_auth_rule` VALUES ('119', '83', 'UsersType/selectDel', '操作-批量删除', '1', '1', '', '926', '1', '', '1551836092', '1551836092');
-INSERT INTO `tp_auth_rule` VALUES ('120', '83', 'UsersType/sort', '操作-排序', '1', '1', '', '927', '1', '', '1551836104', '1551836104');
-INSERT INTO `tp_auth_rule` VALUES ('121', '83', 'UsersType/state', '操作-状态', '1', '1', '', '928', '1', '', '1551836132', '1551836132');
-INSERT INTO `tp_auth_rule` VALUES ('122', '82', 'Users/addPost', '操作-添加保存', '1', '1', '', '912', '1', '', '1551848993', '1551848993');
-INSERT INTO `tp_auth_rule` VALUES ('123', '82', 'Users/editPost', '操作-修改保存', '1', '1', '', '914', '1', '', '1551849010', '1551849040');
-INSERT INTO `tp_auth_rule` VALUES ('124', '4', 'System/systemPost', '操作-修改保存', '1', '1', '', '111', '1', '', '1551863272', '1551863272');
-INSERT INTO `tp_auth_rule` VALUES ('125', '5', 'System/emailPost', '操作-修改保存', '1', '1', '', '121', '1', '', '1551863826', '1551863826');
-INSERT INTO `tp_auth_rule` VALUES ('126', '107', 'System/smsPost', '操作-修改保存', '1', '1', '', '131', '1', '', '1551864090', '1551864090');
-INSERT INTO `tp_auth_rule` VALUES ('127', '61', 'Link/addPost', '操作-添加保存', '1', '1', '', '612', '1', '', '1551929778', '1551929778');
-INSERT INTO `tp_auth_rule` VALUES ('128', '61', 'Link/editPost', '操作-修改保存', '1', '1', '', '614', '1', '', '1551930004', '1551930017');
-INSERT INTO `tp_auth_rule` VALUES ('129', '95', 'Debris/addPost', '操作-添加保存', '1', '1', '', '642', '1', '', '1551930385', '1551930385');
-INSERT INTO `tp_auth_rule` VALUES ('130', '95', 'Debris/editPost', '操作-修改保存', '1', '1', '', '644', '1', '', '1551930435', '1551930435');
-INSERT INTO `tp_auth_rule` VALUES ('131', '95', 'Debris/sort', '操作-排序', '1', '1', '', '647', '1', '', '1551930477', '1551930477');
-INSERT INTO `tp_auth_rule` VALUES ('132', '95', 'Debris/state', '操作-状态', '1', '1', '', '648', '1', '', '1551930531', '1551930531');
-INSERT INTO `tp_auth_rule` VALUES ('133', '68', 'Ad/addPost', '操作-添加保存', '1', '1', '', '622', '1', '', '1551936291', '1551936504');
-INSERT INTO `tp_auth_rule` VALUES ('134', '68', 'Ad/editPost', '操作-修改保存', '1', '1', '', '624', '1', '', '1551936330', '1551936518');
-INSERT INTO `tp_auth_rule` VALUES ('135', '69', 'AdType/addPost', '操作-添加保存', '1', '1', '', '632', '1', '', '1551936630', '1551936630');
-INSERT INTO `tp_auth_rule` VALUES ('136', '69', 'AdType/editPost', '操作-修改保存', '1', '1', '', '634', '1', '', '1551936663', '1551936663');
-INSERT INTO `tp_auth_rule` VALUES ('137', '69', 'AdType/state', '操作-状态', '1', '1', '', '637', '1', '', '1551936803', '1551936814');
-INSERT INTO `tp_auth_rule` VALUES ('138', '109', 'Addons/index', '插件管理', '1', '1', '', '71', '1', '', '1552455295', '1552455295');
-INSERT INTO `tp_auth_rule` VALUES ('144', '101', 'Template/addPost', '操作-添加保存', '1', '1', '', '812', '1', '', '1553759995', '1553760047');
-INSERT INTO `tp_auth_rule` VALUES ('145', '101', 'Template/editPost', '操作-修改保存', '1', '1', '', '814', '1', '', '1553760016', '1553760056');
-INSERT INTO `tp_auth_rule` VALUES ('146', '52', 'Cate/addPost', '操作-添加保存', '1', '1', '', '512', '1', '', '1553760556', '1553760556');
-INSERT INTO `tp_auth_rule` VALUES ('147', '52', 'Cate/editPost', '操作-修改保存', '1', '1', '', '514', '1', '', '1553760573', '1553760589');
-INSERT INTO `tp_auth_rule` VALUES ('148', '40', 'Module/addPost', '操作-添加保存', '1', '1', '', '412', '1', '', '1553760823', '1553760823');
-INSERT INTO `tp_auth_rule` VALUES ('149', '40', 'Module/editPost', '操作-修改保存', '1', '1', '', '414', '1', '', '1553760841', '1553760855');
-INSERT INTO `tp_auth_rule` VALUES ('150', '45', 'Module/fieldAddPost', '操作-添加保存', '1', '1', '', '4172', '1', '', '1553761010', '1553761046');
-INSERT INTO `tp_auth_rule` VALUES ('151', '45', 'Module/fieldEditPost', '操作-修改保存', '1', '1', '', '4174', '1', '', '1553761029', '1553761053');
-INSERT INTO `tp_auth_rule` VALUES ('152', '6', 'AdminLog/index', '管理员日志', '1', '1', '', '24', '1', ' fa fa-book', '1553845141', '1553845141');
-INSERT INTO `tp_auth_rule` VALUES ('153', '152', 'AdminLog/del', '操作-删除', '1', '1', '', '241', '1', '', '1553845181', '1553845181');
-INSERT INTO `tp_auth_rule` VALUES ('154', '152', 'AdminLog/selectDel', '操作-批量删除', '1', '1', '', '242', '1', '', '1553845204', '1553845204');
-INSERT INTO `tp_auth_rule` VALUES ('155', '152', 'AdminLog/edit', '操作-查看', '1', '1', '', '243', '1', '', '1553848110', '1553848110');
-INSERT INTO `tp_auth_rule` VALUES ('156', '152', 'AdminLog/download', '操作-下载', '1', '1', '', '244', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('157', '1', 'SystemGroup/index', '系统设置分组', '1', '1', '', '14', '1', 'fa  fa-cubes', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('158', '157', 'SystemGroup/add', '操作-添加', '1', '1', '', '141', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('159', '157', 'SystemGroup/addPost', '操作-添加保存', '1', '1', '', '142', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('160', '157', 'SystemGroup/edit', '操作-修改', '1', '1', '', '143', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('161', '157', 'SystemGroup/editPost', '操作-修改保存', '1', '1', '', '144', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('162', '157', 'SystemGroup/del', '修改-删除', '1', '1', '', '145', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('163', '157', 'SystemGroup/selectDel', '修改-批量删除', '1', '1', '', '146', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('164', '157', 'SystemGroup/sort', '修改-排序', '1', '1', '', '147', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('165', '157', 'SystemGroup/state', '修改-状态', '1', '1', '', '147', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('166', '4', 'System/index', '操作-字段列表', '1', '1', '', '112', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('167', '4', 'System/add', '操作-字段添加', '1', '1', '', '113', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('168', '4', 'System/addPost', '操作-字段添加保存', '1', '1', '', '114', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('169', '4', 'System/edit', '操作-字段修改', '1', '1', '', '115', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('170', '4', 'System/editPost', '操作-字段修改保存', '1', '1', '', '116', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('171', '4', 'System/del', '操作-字段删除', '1', '1', '', '117', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('172', '4', 'System/selectDel', '操作-字段批量删除', '1', '1', '', '118', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('173', '4', 'System/sort', '操作-字段排序', '1', '1', '', '119', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('174', '4', 'System/state', '操作-字段状态', '1', '1', '', '120', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('176', '0', 'Content', '内容管理', '1', '0', '', '99', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('177', '176', 'Page/index', '单页模型', '1', '1', '', '991', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('178', '176', 'Article/index', '文章模型', '1', '1', '', '992', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('179', '176', 'Picture/index', '图片模型', '1', '1', '', '993', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('180', '176', 'Product/index', '产品模型', '1', '1', '', '994', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('181', '176', 'Download/index', '下载模型', '1', '1', '', '995', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('182', '176', 'Team/index', '团队模型', '1', '1', '', '996', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('183', '176', 'Message/index', '在线留言', '1', '1', '', '997', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('184', '177', 'Page/add', '操作-添加', '1', '1', '', '9911', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('185', '177', 'Page/addPost', '操作-添加保存', '1', '1', '', '9912', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('186', '177', 'Page/edit', '操作-修改', '1', '1', '', '9913', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('187', '177', 'Page/editPost', '操作-修改保存', '1', '1', '', '9914', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('188', '177', 'Page/del', '操作-删除', '1', '1', '', '9915', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('189', '177', 'Page/selectDel', '操作-批量删除', '1', '1', '', '9916', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('190', '177', 'Page/sort', '操作-排序', '1', '1', '', '9917', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('191', '177', 'Page/state', '操作-状态', '1', '1', '', '9918', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('192', '177', 'Page/selectMove', '操作-批量移动', '1', '1', '', '9919', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('193', '178', 'Article/add', '操作-添加', '1', '1', '', '9921', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('194', '178', 'Article/addPost', '操作-添加保存', '1', '1', '', '9922', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('195', '178', 'Article/edit', '操作-修改', '1', '1', '', '9923', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('196', '178', 'Article/editPost', '操作-修改保存', '1', '1', '', '9924', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('197', '178', 'Article/del', '操作-删除', '1', '1', '', '9925', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('198', '178', 'Article/selectDel', '操作-批量删除', '1', '1', '', '9926', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('199', '178', 'Article/sort', '操作-排序', '1', '1', '', '9927', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('200', '178', 'Article/state', '操作-状态', '1', '1', '', '9928', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('201', '178', 'Article/selectMove', '操作-批量移动', '1', '1', '', '9929', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('202', '179', 'Picture/add', '操作-添加', '1', '1', '', '9931', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('203', '179', 'Picture/addPost', '操作-添加保存', '1', '1', '', '9932', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('204', '179', 'Picture/edit', '操作-修改', '1', '1', '', '9933', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('205', '179', 'Picture/editPost', '操作-修改保存', '1', '1', '', '9934', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('206', '179', 'Picture/del', '操作-删除', '1', '1', '', '9935', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('207', '179', 'Picture/selectDel', '操作-批量删除', '1', '1', '', '9936', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('208', '179', 'Picture/sort', '操作-排序', '1', '1', '', '9937', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('209', '179', 'Picture/state', '操作-状态', '1', '1', '', '9938', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('210', '179', 'Picture/selectMove', '操作-批量移动', '1', '1', '', '9939', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('211', '180', 'Product/add', '操作-添加', '1', '1', '', '9941', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('212', '180', 'Product/addPost', '操作-添加保存', '1', '1', '', '9942', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('213', '180', 'Product/edit', '操作-修改', '1', '1', '', '9943', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('214', '180', 'Product/editPost', '操作-修改保存', '1', '1', '', '9944', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('215', '180', 'Product/del', '操作-删除', '1', '1', '', '9945', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('216', '180', 'Product/selectDel', '操作-批量删除', '1', '1', '', '9946', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('217', '180', 'Product/sort', '操作-排序', '1', '1', '', '9947', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('218', '180', 'Product/state', '操作-状态', '1', '1', '', '9948', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('219', '180', 'Product/selectMove', '操作-批量移动', '1', '1', '', '9949', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('220', '181', 'Download/add', '操作-添加', '1', '1', '', '9951', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('221', '181', 'Download/addPost', '操作-添加保存', '1', '1', '', '9952', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('222', '181', 'Download/edit', '操作-修改', '1', '1', '', '9953', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('223', '181', 'Download/editPost', '操作-修改保存', '1', '1', '', '9954', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('224', '181', 'Download/del', '操作-删除', '1', '1', '', '9955', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('225', '181', 'Download/selectDel', '操作-批量删除', '1', '1', '', '9956', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('226', '181', 'Download/sort', '操作-排序', '1', '1', '', '9957', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('227', '181', 'Download/state', '操作-状态', '1', '1', '', '9958', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('228', '181', 'Download/selectMove', '操作-批量移动', '1', '1', '', '9959', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('229', '182', 'Team/add', '操作-添加', '1', '1', '', '9961', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('230', '182', 'Team/addPost', '操作-添加保存', '1', '1', '', '9962', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('231', '182', 'Team/edit', '操作-修改', '1', '1', '', '9963', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('232', '182', 'Team/editPost', '操作-修改保存', '1', '1', '', '9964', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('233', '182', 'Team/del', '操作-删除', '1', '1', '', '9965', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('234', '182', 'Team/selectDel', '操作-批量删除', '1', '1', '', '9966', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('235', '182', 'Team/sort', '操作-排序', '1', '1', '', '9967', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('236', '182', 'Team/state', '操作-状态', '1', '1', '', '9968', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('237', '182', 'Team/selectMove', '操作-批量移动', '1', '1', '', '9969', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('238', '183', 'Message/add', '操作-添加', '1', '1', '', '9971', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('239', '183', 'Message/addPost', '操作-添加保存', '1', '1', '', '9972', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('240', '183', 'Message/edit', '操作-修改', '1', '1', '', '9973', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('241', '183', 'Message/editPost', '操作-修改保存', '1', '1', '', '9974', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('242', '183', 'Message/del', '操作-删除', '1', '1', '', '9975', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('243', '183', 'Message/selectDel', '操作-批量删除', '1', '1', '', '9976', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('244', '183', 'Message/sort', '操作-排序', '1', '1', '', '9977', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('245', '183', 'Message/state', '操作-状态', '1', '1', '', '9978', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('246', '183', 'Message/selectMove', '操作-批量移动', '1', '1', '', '9979', '1', '', '0', '0');
-INSERT INTO `tp_auth_rule` VALUES ('247', '60', 'Tags/index', '标签管理', '1', '1', '', '65', '1', 'fa fa-tags', '1561424004', '1561424004');
-INSERT INTO `tp_auth_rule` VALUES ('248', '247', 'Tags/del', '操作-删除', '1', '1', '', '651', '1', '', '1561424063', '1561424063');
-INSERT INTO `tp_auth_rule` VALUES ('249', '247', 'Tags/selectDel', '操作-批量删除', '1', '1', '', '652', '1', '', '1561424099', '1561424099');
+INSERT INTO `tp_auth_rule` VALUES ('1', '162', 'Users/index', '会员管理', '1', '1', '', '71', '1', 'fa fa-user', '1580861016', '1580908159', '');
+INSERT INTO `tp_auth_rule` VALUES ('2', '1', 'Users/add', '操作-添加', '1', '0', '', '1', '1', '', '1580861016', '1580861016', '');
+INSERT INTO `tp_auth_rule` VALUES ('3', '1', 'Users/addPost', '操作-添加保存', '1', '0', '', '2', '1', '', '1580861016', '1580861016', '');
+INSERT INTO `tp_auth_rule` VALUES ('4', '1', 'Users/edit', '操作-修改', '1', '0', '', '3', '1', '', '1580861016', '1580861016', '');
+INSERT INTO `tp_auth_rule` VALUES ('5', '1', 'Users/editPost', '操作-修改保存', '1', '0', '', '4', '1', '', '1580861016', '1580861016', '');
+INSERT INTO `tp_auth_rule` VALUES ('6', '1', 'Users/del', '操作-删除', '1', '0', '', '5', '1', '', '1580861016', '1580861016', '');
+INSERT INTO `tp_auth_rule` VALUES ('7', '1', 'Users/selectDel', '操作-批量删除', '1', '0', '', '6', '1', '', '1580861016', '1580861016', '');
+INSERT INTO `tp_auth_rule` VALUES ('8', '1', 'Users/export', '操作-导出', '1', '0', '', '7', '1', '', '1580861016', '1580861016', '');
+INSERT INTO `tp_auth_rule` VALUES ('9', '157', 'DictionaryType/index', '字典类型', '1', '1', '', '12', '1', '', '1580861057', '1580861057', '');
+INSERT INTO `tp_auth_rule` VALUES ('10', '9', 'DictionaryType/add', '操作-添加', '1', '0', '', '1', '1', '', '1580861057', '1580861057', '');
+INSERT INTO `tp_auth_rule` VALUES ('11', '9', 'DictionaryType/addPost', '操作-添加保存', '1', '0', '', '2', '1', '', '1580861057', '1580861057', '');
+INSERT INTO `tp_auth_rule` VALUES ('12', '9', 'DictionaryType/edit', '操作-修改', '1', '0', '', '3', '1', '', '1580861057', '1580861057', '');
+INSERT INTO `tp_auth_rule` VALUES ('13', '9', 'DictionaryType/editPost', '操作-修改保存', '1', '0', '', '4', '1', '', '1580861057', '1580861057', '');
+INSERT INTO `tp_auth_rule` VALUES ('14', '9', 'DictionaryType/del', '操作-删除', '1', '0', '', '5', '1', '', '1580861057', '1580861057', '');
+INSERT INTO `tp_auth_rule` VALUES ('15', '9', 'DictionaryType/selectDel', '操作-批量删除', '1', '0', '', '6', '1', '', '1580861057', '1580861057', '');
+INSERT INTO `tp_auth_rule` VALUES ('16', '9', 'DictionaryType/export', '操作-导出', '1', '0', '', '7', '1', '', '1580861057', '1580861057', '');
+INSERT INTO `tp_auth_rule` VALUES ('17', '9', 'DictionaryType/sort', '操作-排序', '1', '0', '', '8', '1', '', '1580861057', '1580861057', '');
+INSERT INTO `tp_auth_rule` VALUES ('18', '9', 'DictionaryType/state', '操作-状态', '1', '0', '', '9', '1', '', '1580861057', '1580861057', '');
+INSERT INTO `tp_auth_rule` VALUES ('19', '157', 'Dictionary/index', '字典数据', '1', '1', '', '13', '1', '', '1580861065', '1580861065', '');
+INSERT INTO `tp_auth_rule` VALUES ('20', '19', 'Dictionary/add', '操作-添加', '1', '0', '', '1', '1', '', '1580861065', '1580861065', '');
+INSERT INTO `tp_auth_rule` VALUES ('21', '19', 'Dictionary/addPost', '操作-添加保存', '1', '0', '', '2', '1', '', '1580861065', '1580861065', '');
+INSERT INTO `tp_auth_rule` VALUES ('22', '19', 'Dictionary/edit', '操作-修改', '1', '0', '', '3', '1', '', '1580861065', '1580861065', '');
+INSERT INTO `tp_auth_rule` VALUES ('23', '19', 'Dictionary/editPost', '操作-修改保存', '1', '0', '', '4', '1', '', '1580861065', '1580861065', '');
+INSERT INTO `tp_auth_rule` VALUES ('24', '19', 'Dictionary/del', '操作-删除', '1', '0', '', '5', '1', '', '1580861065', '1580861065', '');
+INSERT INTO `tp_auth_rule` VALUES ('25', '19', 'Dictionary/selectDel', '操作-批量删除', '1', '0', '', '6', '1', '', '1580861065', '1580861065', '');
+INSERT INTO `tp_auth_rule` VALUES ('26', '19', 'Dictionary/export', '操作-导出', '1', '0', '', '7', '1', '', '1580861065', '1580861065', '');
+INSERT INTO `tp_auth_rule` VALUES ('27', '19', 'Dictionary/sort', '操作-排序', '1', '0', '', '8', '1', '', '1580861065', '1580861065', '');
+INSERT INTO `tp_auth_rule` VALUES ('28', '19', 'Dictionary/state', '操作-状态', '1', '0', '', '9', '1', '', '1580861065', '1580861065', '');
+INSERT INTO `tp_auth_rule` VALUES ('29', '162', 'UsersType/index', '会员分组', '1', '1', '', '72', '1', 'fa fa-users', '1580861073', '1580908165', '');
+INSERT INTO `tp_auth_rule` VALUES ('30', '29', 'UsersType/add', '操作-添加', '1', '0', '', '1', '1', '', '1580861073', '1580861073', '');
+INSERT INTO `tp_auth_rule` VALUES ('31', '29', 'UsersType/addPost', '操作-添加保存', '1', '0', '', '2', '1', '', '1580861073', '1580861073', '');
+INSERT INTO `tp_auth_rule` VALUES ('32', '29', 'UsersType/edit', '操作-修改', '1', '0', '', '3', '1', '', '1580861073', '1580861073', '');
+INSERT INTO `tp_auth_rule` VALUES ('33', '29', 'UsersType/editPost', '操作-修改保存', '1', '0', '', '4', '1', '', '1580861073', '1580861073', '');
+INSERT INTO `tp_auth_rule` VALUES ('34', '29', 'UsersType/del', '操作-删除', '1', '0', '', '5', '1', '', '1580861073', '1580861073', '');
+INSERT INTO `tp_auth_rule` VALUES ('35', '29', 'UsersType/selectDel', '操作-批量删除', '1', '0', '', '6', '1', '', '1580861073', '1580861073', '');
+INSERT INTO `tp_auth_rule` VALUES ('36', '29', 'UsersType/export', '操作-导出', '1', '0', '', '7', '1', '', '1580861073', '1580861073', '');
+INSERT INTO `tp_auth_rule` VALUES ('37', '29', 'UsersType/sort', '操作-排序', '1', '0', '', '8', '1', '', '1580861073', '1580861073', '');
+INSERT INTO `tp_auth_rule` VALUES ('38', '29', 'UsersType/state', '操作-状态', '1', '0', '', '9', '1', '', '1580861073', '1580861073', '');
+INSERT INTO `tp_auth_rule` VALUES ('39', '160', 'FieldGroup/index', '字段分组', '1', '1', '', '43', '1', 'fa fa-bullseye', '1580861081', '1580861081', '');
+INSERT INTO `tp_auth_rule` VALUES ('40', '39', 'FieldGroup/add', '操作-添加', '1', '0', '', '1', '1', '', '1580861081', '1580861081', '');
+INSERT INTO `tp_auth_rule` VALUES ('41', '39', 'FieldGroup/addPost', '操作-添加保存', '1', '0', '', '2', '1', '', '1580861081', '1580861081', '');
+INSERT INTO `tp_auth_rule` VALUES ('42', '39', 'FieldGroup/edit', '操作-修改', '1', '0', '', '3', '1', '', '1580861081', '1580861081', '');
+INSERT INTO `tp_auth_rule` VALUES ('43', '39', 'FieldGroup/editPost', '操作-修改保存', '1', '0', '', '4', '1', '', '1580861081', '1580861081', '');
+INSERT INTO `tp_auth_rule` VALUES ('44', '39', 'FieldGroup/del', '操作-删除', '1', '0', '', '5', '1', '', '1580861081', '1580861081', '');
+INSERT INTO `tp_auth_rule` VALUES ('45', '39', 'FieldGroup/selectDel', '操作-批量删除', '1', '0', '', '6', '1', '', '1580861081', '1580861081', '');
+INSERT INTO `tp_auth_rule` VALUES ('46', '39', 'FieldGroup/export', '操作-导出', '1', '0', '', '7', '1', '', '1580861081', '1580861081', '');
+INSERT INTO `tp_auth_rule` VALUES ('47', '39', 'FieldGroup/sort', '操作-排序', '1', '0', '', '8', '1', '', '1580861081', '1580861081', '');
+INSERT INTO `tp_auth_rule` VALUES ('48', '39', 'FieldGroup/state', '操作-状态', '1', '0', '', '9', '1', '', '1580861081', '1580861081', '');
+INSERT INTO `tp_auth_rule` VALUES ('49', '161', 'Link/index', '友情链接', '1', '1', '', '61', '1', 'fa fa-link', '1580861091', '1580908119', '');
+INSERT INTO `tp_auth_rule` VALUES ('50', '49', 'Link/add', '操作-添加', '1', '0', '', '1', '1', '', '1580861091', '1580861091', '');
+INSERT INTO `tp_auth_rule` VALUES ('51', '49', 'Link/addPost', '操作-添加保存', '1', '0', '', '2', '1', '', '1580861091', '1580861091', '');
+INSERT INTO `tp_auth_rule` VALUES ('52', '49', 'Link/edit', '操作-修改', '1', '0', '', '3', '1', '', '1580861091', '1580861091', '');
+INSERT INTO `tp_auth_rule` VALUES ('53', '49', 'Link/editPost', '操作-修改保存', '1', '0', '', '4', '1', '', '1580861091', '1580861091', '');
+INSERT INTO `tp_auth_rule` VALUES ('54', '49', 'Link/del', '操作-删除', '1', '0', '', '5', '1', '', '1580861091', '1580861091', '');
+INSERT INTO `tp_auth_rule` VALUES ('55', '49', 'Link/selectDel', '操作-批量删除', '1', '0', '', '6', '1', '', '1580861091', '1580861091', '');
+INSERT INTO `tp_auth_rule` VALUES ('56', '49', 'Link/export', '操作-导出', '1', '0', '', '7', '1', '', '1580861091', '1580861091', '');
+INSERT INTO `tp_auth_rule` VALUES ('57', '49', 'Link/sort', '操作-排序', '1', '0', '', '8', '1', '', '1580861091', '1580861091', '');
+INSERT INTO `tp_auth_rule` VALUES ('58', '49', 'Link/state', '操作-状态', '1', '0', '', '9', '1', '', '1580861091', '1580861091', '');
+INSERT INTO `tp_auth_rule` VALUES ('59', '161', 'AdType/index', '广告分组', '1', '1', '', '63', '1', 'fa fa-tv', '1580861099', '1580908135', '');
+INSERT INTO `tp_auth_rule` VALUES ('60', '59', 'AdType/add', '操作-添加', '1', '0', '', '1', '1', '', '1580861099', '1580861099', '');
+INSERT INTO `tp_auth_rule` VALUES ('61', '59', 'AdType/addPost', '操作-添加保存', '1', '0', '', '2', '1', '', '1580861099', '1580861099', '');
+INSERT INTO `tp_auth_rule` VALUES ('62', '59', 'AdType/edit', '操作-修改', '1', '0', '', '3', '1', '', '1580861099', '1580861099', '');
+INSERT INTO `tp_auth_rule` VALUES ('63', '59', 'AdType/editPost', '操作-修改保存', '1', '0', '', '4', '1', '', '1580861099', '1580861099', '');
+INSERT INTO `tp_auth_rule` VALUES ('64', '59', 'AdType/del', '操作-删除', '1', '0', '', '5', '1', '', '1580861099', '1580861099', '');
+INSERT INTO `tp_auth_rule` VALUES ('65', '59', 'AdType/selectDel', '操作-批量删除', '1', '0', '', '6', '1', '', '1580861099', '1580861099', '');
+INSERT INTO `tp_auth_rule` VALUES ('66', '59', 'AdType/export', '操作-导出', '1', '0', '', '7', '1', '', '1580861099', '1580861099', '');
+INSERT INTO `tp_auth_rule` VALUES ('67', '59', 'AdType/sort', '操作-排序', '1', '0', '', '8', '1', '', '1580861099', '1580861099', '');
+INSERT INTO `tp_auth_rule` VALUES ('68', '59', 'AdType/state', '操作-状态', '1', '0', '', '9', '1', '', '1580861099', '1580861099', '');
+INSERT INTO `tp_auth_rule` VALUES ('69', '161', 'Ad/index', '广告管理', '1', '1', '', '62', '1', 'fa fa-tv', '1580861106', '1580908132', '');
+INSERT INTO `tp_auth_rule` VALUES ('70', '69', 'Ad/add', '操作-添加', '1', '0', '', '1', '1', '', '1580861106', '1580861106', '');
+INSERT INTO `tp_auth_rule` VALUES ('71', '69', 'Ad/addPost', '操作-添加保存', '1', '0', '', '2', '1', '', '1580861106', '1580861106', '');
+INSERT INTO `tp_auth_rule` VALUES ('72', '69', 'Ad/edit', '操作-修改', '1', '0', '', '3', '1', '', '1580861106', '1580861106', '');
+INSERT INTO `tp_auth_rule` VALUES ('73', '69', 'Ad/editPost', '操作-修改保存', '1', '0', '', '4', '1', '', '1580861106', '1580861106', '');
+INSERT INTO `tp_auth_rule` VALUES ('74', '69', 'Ad/del', '操作-删除', '1', '0', '', '5', '1', '', '1580861106', '1580861106', '');
+INSERT INTO `tp_auth_rule` VALUES ('75', '69', 'Ad/selectDel', '操作-批量删除', '1', '0', '', '6', '1', '', '1580861106', '1580861106', '');
+INSERT INTO `tp_auth_rule` VALUES ('76', '69', 'Ad/export', '操作-导出', '1', '0', '', '7', '1', '', '1580861106', '1580861106', '');
+INSERT INTO `tp_auth_rule` VALUES ('77', '69', 'Ad/sort', '操作-排序', '1', '0', '', '8', '1', '', '1580861107', '1580861107', '');
+INSERT INTO `tp_auth_rule` VALUES ('78', '69', 'Ad/state', '操作-状态', '1', '0', '', '9', '1', '', '1580861107', '1580861107', '');
+INSERT INTO `tp_auth_rule` VALUES ('79', '161', 'Debris/index', '碎片管理', '1', '1', '', '64', '1', 'fa fa-gift', '1580861113', '1580908138', '');
+INSERT INTO `tp_auth_rule` VALUES ('80', '79', 'Debris/add', '操作-添加', '1', '0', '', '1', '1', '', '1580861113', '1580861113', '');
+INSERT INTO `tp_auth_rule` VALUES ('81', '79', 'Debris/addPost', '操作-添加保存', '1', '0', '', '2', '1', '', '1580861113', '1580861113', '');
+INSERT INTO `tp_auth_rule` VALUES ('82', '79', 'Debris/edit', '操作-修改', '1', '0', '', '3', '1', '', '1580861113', '1580861113', '');
+INSERT INTO `tp_auth_rule` VALUES ('83', '79', 'Debris/editPost', '操作-修改保存', '1', '0', '', '4', '1', '', '1580861113', '1580861113', '');
+INSERT INTO `tp_auth_rule` VALUES ('84', '79', 'Debris/del', '操作-删除', '1', '0', '', '5', '1', '', '1580861113', '1580861113', '');
+INSERT INTO `tp_auth_rule` VALUES ('85', '79', 'Debris/selectDel', '操作-批量删除', '1', '0', '', '6', '1', '', '1580861113', '1580861113', '');
+INSERT INTO `tp_auth_rule` VALUES ('86', '79', 'Debris/export', '操作-导出', '1', '0', '', '7', '1', '', '1580861113', '1580861113', '');
+INSERT INTO `tp_auth_rule` VALUES ('87', '79', 'Debris/sort', '操作-排序', '1', '0', '', '8', '1', '', '1580861113', '1580861113', '');
+INSERT INTO `tp_auth_rule` VALUES ('88', '79', 'Debris/state', '操作-状态', '1', '0', '', '9', '1', '', '1580861113', '1580861113', '');
+INSERT INTO `tp_auth_rule` VALUES ('268', '157', 'Template/index', '模板管理', '1', '1', '', '16', '1', 'fa fa-code', '1581385089', '1581385089', '');
+INSERT INTO `tp_auth_rule` VALUES ('269', '268', 'Template/add', '操作-添加', '1', '0', '', '1', '1', '', '1581385125', '1581385125', '');
+INSERT INTO `tp_auth_rule` VALUES ('92', '157', 'System/index', '系统设置', '1', '1', '', '11', '1', 'fa fa-cog', '1580861127', '1580874204', '');
+INSERT INTO `tp_auth_rule` VALUES ('93', '92', 'System/add', '操作-添加', '1', '0', '', '1', '1', '', '1580861127', '1580861127', '');
+INSERT INTO `tp_auth_rule` VALUES ('94', '92', 'System/addPost', '操作-添加保存', '1', '0', '', '2', '1', '', '1580861127', '1580861127', '');
+INSERT INTO `tp_auth_rule` VALUES ('95', '92', 'System/edit', '操作-修改', '1', '0', '', '3', '1', '', '1580861127', '1580861127', '');
+INSERT INTO `tp_auth_rule` VALUES ('96', '92', 'System/editPost', '操作-修改保存', '1', '0', '', '4', '1', '', '1580861127', '1580861127', '');
+INSERT INTO `tp_auth_rule` VALUES ('97', '92', 'System/del', '操作-删除', '1', '0', '', '5', '1', '', '1580861127', '1580861127', '');
+INSERT INTO `tp_auth_rule` VALUES ('98', '92', 'System/selectDel', '操作-批量删除', '1', '0', '', '6', '1', '', '1580861127', '1580861127', '');
+INSERT INTO `tp_auth_rule` VALUES ('99', '92', 'System/export', '操作-导出', '1', '0', '', '7', '1', '', '1580861127', '1580861127', '');
+INSERT INTO `tp_auth_rule` VALUES ('100', '158', 'AdminLog/index', '管理员日志', '1', '1', '', '24', '1', 'fa fa-book', '1580871750', '1580871750', '');
+INSERT INTO `tp_auth_rule` VALUES ('101', '100', 'AdminLog/edit', '操作-修改', '1', '0', '', '3', '1', '', '1580871750', '1580871750', '');
+INSERT INTO `tp_auth_rule` VALUES ('102', '100', 'AdminLog/editPost', '操作-修改保存', '1', '0', '', '4', '1', '', '1580871750', '1580871750', '');
+INSERT INTO `tp_auth_rule` VALUES ('103', '100', 'AdminLog/del', '操作-删除', '1', '0', '', '5', '1', '', '1580871750', '1580871750', '');
+INSERT INTO `tp_auth_rule` VALUES ('104', '100', 'AdminLog/selectDel', '操作-批量删除', '1', '0', '', '6', '1', '', '1580871750', '1580871750', '');
+INSERT INTO `tp_auth_rule` VALUES ('105', '100', 'AdminLog/export', '操作-导出', '1', '0', '', '7', '1', '', '1580871750', '1580871750', '');
+INSERT INTO `tp_auth_rule` VALUES ('106', '158', 'AuthRule/index', '菜单规则', '1', '1', '', '23', '1', 'fa fa-bars', '1580871826', '1580871826', '');
+INSERT INTO `tp_auth_rule` VALUES ('107', '106', 'AuthRule/add', '操作-添加', '1', '0', '', '1', '1', '', '1580871826', '1580871826', '');
+INSERT INTO `tp_auth_rule` VALUES ('108', '106', 'AuthRule/addPost', '操作-添加保存', '1', '0', '', '2', '1', '', '1580871826', '1580871826', '');
+INSERT INTO `tp_auth_rule` VALUES ('109', '106', 'AuthRule/edit', '操作-修改', '1', '0', '', '3', '1', '', '1580871826', '1580871826', '');
+INSERT INTO `tp_auth_rule` VALUES ('110', '106', 'AuthRule/editPost', '操作-修改保存', '1', '0', '', '4', '1', '', '1580871826', '1580871826', '');
+INSERT INTO `tp_auth_rule` VALUES ('111', '106', 'AuthRule/del', '操作-删除', '1', '0', '', '5', '1', '', '1580871826', '1580871826', '');
+INSERT INTO `tp_auth_rule` VALUES ('112', '106', 'AuthRule/selectDel', '操作-批量删除', '1', '0', '', '6', '1', '', '1580871826', '1580871826', '');
+INSERT INTO `tp_auth_rule` VALUES ('113', '106', 'AuthRule/export', '操作-导出', '1', '0', '', '7', '1', '', '1580871826', '1580871826', '');
+INSERT INTO `tp_auth_rule` VALUES ('114', '106', 'AuthRule/sort', '操作-排序', '1', '0', '', '8', '1', '', '1580871826', '1580871826', '');
+INSERT INTO `tp_auth_rule` VALUES ('115', '106', 'AuthRule/state', '操作-状态', '1', '0', '', '9', '1', '', '1580871826', '1580871826', '');
+INSERT INTO `tp_auth_rule` VALUES ('116', '158', 'Admin/index', '管理员管理', '1', '1', '', '21', '1', 'fa fa-user', '1580871882', '1580871882', '');
+INSERT INTO `tp_auth_rule` VALUES ('117', '116', 'Admin/add', '操作-添加', '1', '0', '', '1', '1', '', '1580871882', '1580871882', '');
+INSERT INTO `tp_auth_rule` VALUES ('118', '116', 'Admin/addPost', '操作-添加保存', '1', '0', '', '2', '1', '', '1580871882', '1580871882', '');
+INSERT INTO `tp_auth_rule` VALUES ('119', '116', 'Admin/edit', '操作-修改', '1', '0', '', '3', '1', '', '1580871882', '1580871882', '');
+INSERT INTO `tp_auth_rule` VALUES ('120', '116', 'Admin/editPost', '操作-修改保存', '1', '0', '', '4', '1', '', '1580871882', '1580871882', '');
+INSERT INTO `tp_auth_rule` VALUES ('121', '116', 'Admin/del', '操作-删除', '1', '0', '', '5', '1', '', '1580871882', '1580871882', '');
+INSERT INTO `tp_auth_rule` VALUES ('122', '116', 'Admin/selectDel', '操作-批量删除', '1', '0', '', '6', '1', '', '1580871882', '1580871882', '');
+INSERT INTO `tp_auth_rule` VALUES ('123', '116', 'Admin/export', '操作-导出', '1', '0', '', '7', '1', '', '1580871882', '1580871882', '');
+INSERT INTO `tp_auth_rule` VALUES ('124', '116', 'Admin/state', '操作-状态', '1', '0', '', '9', '1', '', '1580871882', '1580871882', '');
+INSERT INTO `tp_auth_rule` VALUES ('125', '158', 'AuthGroup/index', '角色组管理', '1', '1', '', '22', '1', 'fa fa-group', '1580871965', '1580871965', '');
+INSERT INTO `tp_auth_rule` VALUES ('126', '125', 'AuthGroup/add', '操作-添加', '1', '0', '', '1', '1', '', '1580871965', '1580871965', '');
+INSERT INTO `tp_auth_rule` VALUES ('127', '125', 'AuthGroup/addPost', '操作-添加保存', '1', '0', '', '2', '1', '', '1580871965', '1580871965', '');
+INSERT INTO `tp_auth_rule` VALUES ('128', '125', 'AuthGroup/edit', '操作-修改', '1', '0', '', '3', '1', '', '1580871965', '1580871965', '');
+INSERT INTO `tp_auth_rule` VALUES ('129', '125', 'AuthGroup/editPost', '操作-修改保存', '1', '0', '', '4', '1', '', '1580871965', '1580871965', '');
+INSERT INTO `tp_auth_rule` VALUES ('130', '125', 'AuthGroup/del', '操作-删除', '1', '0', '', '5', '1', '', '1580871965', '1580871965', '');
+INSERT INTO `tp_auth_rule` VALUES ('131', '125', 'AuthGroup/selectDel', '操作-批量删除', '1', '0', '', '6', '1', '', '1580871965', '1580871965', '');
+INSERT INTO `tp_auth_rule` VALUES ('132', '125', 'AuthGroup/export', '操作-导出', '1', '0', '', '7', '1', '', '1580871965', '1580871965', '');
+INSERT INTO `tp_auth_rule` VALUES ('133', '125', 'AuthGroup/state', '操作-状态', '1', '0', '', '9', '1', '', '1580871965', '1580871965', '');
+INSERT INTO `tp_auth_rule` VALUES ('134', '125', 'AuthGroup/access', '操作-权限', '1', '0', '', '10', '1', '', '1580872096', '1580872096', '');
+INSERT INTO `tp_auth_rule` VALUES ('135', '125', 'AuthGroup/accessPost', '操作-权限保存', '1', '0', '', '11', '1', '', '1580872132', '1580872132', '');
+INSERT INTO `tp_auth_rule` VALUES ('136', '160', 'Module/index', '模块管理', '1', '1', '', '41', '1', 'fa fa-th-list', '1580872182', '1580878146', '');
+INSERT INTO `tp_auth_rule` VALUES ('137', '136', 'Module/add', '操作-添加', '1', '0', '', '1', '1', '', '1580872182', '1580872182', '');
+INSERT INTO `tp_auth_rule` VALUES ('138', '136', 'Module/addPost', '操作-添加保存', '1', '0', '', '2', '1', '', '1580872182', '1580872182', '');
+INSERT INTO `tp_auth_rule` VALUES ('139', '136', 'Module/edit', '操作-修改', '1', '0', '', '3', '1', '', '1580872182', '1580872182', '');
+INSERT INTO `tp_auth_rule` VALUES ('140', '136', 'Module/editPost', '操作-修改保存', '1', '0', '', '4', '1', '', '1580872182', '1580872182', '');
+INSERT INTO `tp_auth_rule` VALUES ('141', '136', 'Module/del', '操作-删除', '1', '0', '', '5', '1', '', '1580872182', '1580872182', '');
+INSERT INTO `tp_auth_rule` VALUES ('142', '136', 'Module/selectDel', '操作-批量删除', '1', '0', '', '6', '1', '', '1580872182', '1580872182', '');
+INSERT INTO `tp_auth_rule` VALUES ('143', '136', 'Module/export', '操作-导出', '1', '0', '', '7', '1', '', '1580872182', '1580872182', '');
+INSERT INTO `tp_auth_rule` VALUES ('144', '136', 'Module/sort', '操作-排序', '1', '0', '', '8', '1', '', '1580872182', '1580872182', '');
+INSERT INTO `tp_auth_rule` VALUES ('145', '136', 'Module/build', '操作-生成代码', '1', '0', '', '9', '1', '', '1580872699', '1580872699', '');
+INSERT INTO `tp_auth_rule` VALUES ('146', '136', 'Module/makeRule', '操作-生成菜单规则', '1', '0', '', '10', '1', '', '1580872730', '1580872730', '');
+INSERT INTO `tp_auth_rule` VALUES ('147', '160', 'Field/index', '字段管理', '1', '1', '', '42', '1', 'fa fa-bullhorn', '1580872859', '1580872859', '');
+INSERT INTO `tp_auth_rule` VALUES ('148', '147', 'Field/add', '操作-添加', '1', '0', '', '1', '1', '', '1580872859', '1580872859', '');
+INSERT INTO `tp_auth_rule` VALUES ('149', '147', 'Field/addPost', '操作-添加保存', '1', '0', '', '2', '1', '', '1580872859', '1580872859', '');
+INSERT INTO `tp_auth_rule` VALUES ('150', '147', 'Field/edit', '操作-修改', '1', '0', '', '3', '1', '', '1580872859', '1580872859', '');
+INSERT INTO `tp_auth_rule` VALUES ('151', '147', 'Field/editPost', '操作-修改保存', '1', '0', '', '4', '1', '', '1580872859', '1580872859', '');
+INSERT INTO `tp_auth_rule` VALUES ('152', '147', 'Field/del', '操作-删除', '1', '0', '', '5', '1', '', '1580872859', '1580872859', '');
+INSERT INTO `tp_auth_rule` VALUES ('153', '147', 'Field/selectDel', '操作-批量删除', '1', '0', '', '6', '1', '', '1580872859', '1580872859', '');
+INSERT INTO `tp_auth_rule` VALUES ('154', '147', 'Field/changeType', '操作-加载配置', '1', '0', '', '7', '1', '', '1580872859', '1580872859', '');
+INSERT INTO `tp_auth_rule` VALUES ('155', '147', 'Field/sort', '操作-排序', '1', '0', '', '8', '1', '', '1580872859', '1580872859', '');
+INSERT INTO `tp_auth_rule` VALUES ('156', '147', 'Field/state', '操作-状态', '1', '0', '', '9', '1', '', '1580872859', '1580872859', '');
+INSERT INTO `tp_auth_rule` VALUES ('157', '0', 'System', '系统管理', '1', '1', '', '1', '1', 'fa fa-cogs', '1580874149', '1580874149', '');
+INSERT INTO `tp_auth_rule` VALUES ('158', '0', 'Auth', '权限管理', '1', '1', '', '2', '1', 'fa fa-group', '1580874265', '1580874265', '');
+INSERT INTO `tp_auth_rule` VALUES ('159', '0', 'Database', '数据库管理', '1', '1', '', '3', '1', 'fa fa-database', '1580876394', '1580876394', '');
+INSERT INTO `tp_auth_rule` VALUES ('160', '0', 'Module', '模块管理', '1', '1', '', '4', '1', 'fa fa-bolt', '1580876437', '1580876437', '');
+INSERT INTO `tp_auth_rule` VALUES ('161', '0', 'Link', '网站功能', '1', '1', '', '6', '1', 'fa fa-gear', '1580878492', '1580908102', '');
+INSERT INTO `tp_auth_rule` VALUES ('162', '0', 'Users', '会员管理', '1', '1', '', '7', '1', 'fa fa-user', '1580878687', '1580908154', '');
+INSERT INTO `tp_auth_rule` VALUES ('163', '159', 'Database/database', '数据库备份', '1', '1', '', '31', '1', 'fa fa-server', '1580881507', '1580881507', '');
+INSERT INTO `tp_auth_rule` VALUES ('164', '163', 'Database/backup', '操作-备份', '1', '0', '', '1', '1', '', '1580881536', '1580881536', '');
+INSERT INTO `tp_auth_rule` VALUES ('165', '163', 'Database/repair', '操作-修复', '1', '0', '', '2', '1', '', '1580881567', '1580881567', '');
+INSERT INTO `tp_auth_rule` VALUES ('166', '163', 'Database/optimize', '操作-优化', '1', '0', '', '3', '1', '', '1580881596', '1580881596', '');
+INSERT INTO `tp_auth_rule` VALUES ('167', '159', 'Database/restore', '数据库还原', '1', '1', '', '32', '1', 'fa fa-recycle', '1580881718', '1580881729', '');
+INSERT INTO `tp_auth_rule` VALUES ('168', '167', 'Database/import', '操作-还原', '1', '0', '', '1', '1', '', '1580881791', '1580881791', '');
+INSERT INTO `tp_auth_rule` VALUES ('169', '167', 'Database/downFile', '操作-下载', '1', '0', '', '2', '1', '', '1580881823', '1580881823', '');
+INSERT INTO `tp_auth_rule` VALUES ('170', '167', 'Database/del', '操作-删除', '1', '0', '', '3', '1', '', '1580881861', '1580881861', '');
+INSERT INTO `tp_auth_rule` VALUES ('171', '157', 'Config/email', '邮件配置', '1', '1', '', '14', '1', 'fa fa-mail-forward', '1580882102', '1580882122', '');
+INSERT INTO `tp_auth_rule` VALUES ('172', '171', 'Config/emailPost', '操作-修改保存', '1', '0', '', '1', '1', '', '1580882214', '1580882214', '');
+INSERT INTO `tp_auth_rule` VALUES ('173', '171', 'Config/emailSend', '操作-测试邮箱', '1', '0', '', '2', '1', '', '1580882294', '1580882294', '');
+INSERT INTO `tp_auth_rule` VALUES ('174', '157', 'Config/sms', '短信配置', '1', '1', '', '15', '1', 'fa fa-send', '1580882360', '1580882360', '');
+INSERT INTO `tp_auth_rule` VALUES ('175', '174', 'Config/smsPost', '操作-修改保存', '1', '0', '', '1', '1', '', '1580882449', '1580882449', '');
+INSERT INTO `tp_auth_rule` VALUES ('176', '174', 'Config/smsSend', '操作-测试短信', '1', '0', '', '2', '1', '', '1580882486', '1580882486', '');
+INSERT INTO `tp_auth_rule` VALUES ('177', '187', 'Cate/index', '栏目管理', '1', '1', '', '51', '1', 'fa fa-navicon', '1580907966', '1580908113', '');
+INSERT INTO `tp_auth_rule` VALUES ('178', '177', 'Cate/add', '操作-添加', '1', '0', '', '1', '1', '', '1580907966', '1580907966', '');
+INSERT INTO `tp_auth_rule` VALUES ('179', '177', 'Cate/addPost', '操作-添加保存', '1', '0', '', '2', '1', '', '1580907966', '1580907966', '');
+INSERT INTO `tp_auth_rule` VALUES ('180', '177', 'Cate/edit', '操作-修改', '1', '0', '', '3', '1', '', '1580907966', '1580907966', '');
+INSERT INTO `tp_auth_rule` VALUES ('181', '177', 'Cate/editPost', '操作-修改保存', '1', '0', '', '4', '1', '', '1580907966', '1580907966', '');
+INSERT INTO `tp_auth_rule` VALUES ('182', '177', 'Cate/del', '操作-删除', '1', '0', '', '5', '1', '', '1580907966', '1580907966', '');
+INSERT INTO `tp_auth_rule` VALUES ('183', '177', 'Cate/selectDel', '操作-批量删除', '1', '0', '', '6', '1', '', '1580907966', '1580907966', '');
+INSERT INTO `tp_auth_rule` VALUES ('184', '177', 'Cate/export', '操作-导出', '1', '0', '', '7', '1', '', '1580907966', '1580907966', '');
+INSERT INTO `tp_auth_rule` VALUES ('185', '177', 'Cate/sort', '操作-排序', '1', '0', '', '8', '1', '', '1580907966', '1580907966', '');
+INSERT INTO `tp_auth_rule` VALUES ('186', '177', 'Cate/state', '操作-状态', '1', '0', '', '9', '1', '', '1580907966', '1580907966', '');
+INSERT INTO `tp_auth_rule` VALUES ('187', '0', 'Cate', '栏目管理', '1', '1', '', '5', '1', 'fa fa-th', '1580908039', '1580908039', '');
+INSERT INTO `tp_auth_rule` VALUES ('188', '0', 'Page', '内容管理', '1', '1', '', '8', '1', 'fa fa-briefcase', '1581080617', '1581080617', '');
+INSERT INTO `tp_auth_rule` VALUES ('189', '188', 'Page/index', '单页模块', '1', '1', '', '81', '1', '', '1581080630', '1581080705', '');
+INSERT INTO `tp_auth_rule` VALUES ('190', '189', 'Page/add', '操作-添加', '1', '0', '', '1', '1', '', '1581080630', '1581080630', '');
+INSERT INTO `tp_auth_rule` VALUES ('191', '189', 'Page/addPost', '操作-添加保存', '1', '0', '', '2', '1', '', '1581080630', '1581080630', '');
+INSERT INTO `tp_auth_rule` VALUES ('192', '189', 'Page/edit', '操作-修改', '1', '0', '', '3', '1', '', '1581080630', '1581080630', '');
+INSERT INTO `tp_auth_rule` VALUES ('193', '189', 'Page/editPost', '操作-修改保存', '1', '0', '', '4', '1', '', '1581080630', '1581080630', '');
+INSERT INTO `tp_auth_rule` VALUES ('194', '189', 'Page/del', '操作-删除', '1', '0', '', '5', '1', '', '1581080630', '1581080630', '');
+INSERT INTO `tp_auth_rule` VALUES ('195', '189', 'Page/selectDel', '操作-批量删除', '1', '0', '', '6', '1', '', '1581080630', '1581080630', '');
+INSERT INTO `tp_auth_rule` VALUES ('196', '189', 'Page/export', '操作-导出', '1', '0', '', '7', '1', '', '1581080630', '1581080630', '');
+INSERT INTO `tp_auth_rule` VALUES ('197', '189', 'Page/sort', '操作-排序', '1', '0', '', '8', '1', '', '1581080630', '1581080630', '');
+INSERT INTO `tp_auth_rule` VALUES ('198', '189', 'Page/state', '操作-状态', '1', '0', '', '9', '1', '', '1581080630', '1581080630', '');
+INSERT INTO `tp_auth_rule` VALUES ('199', '188', 'Article/index', '文章模块', '1', '1', '', '82', '1', '', '1581080635', '1581080712', '');
+INSERT INTO `tp_auth_rule` VALUES ('200', '199', 'Article/add', '操作-添加', '1', '0', '', '1', '1', '', '1581080635', '1581080635', '');
+INSERT INTO `tp_auth_rule` VALUES ('201', '199', 'Article/addPost', '操作-添加保存', '1', '0', '', '2', '1', '', '1581080635', '1581080635', '');
+INSERT INTO `tp_auth_rule` VALUES ('202', '199', 'Article/edit', '操作-修改', '1', '0', '', '3', '1', '', '1581080635', '1581080635', '');
+INSERT INTO `tp_auth_rule` VALUES ('203', '199', 'Article/editPost', '操作-修改保存', '1', '0', '', '4', '1', '', '1581080635', '1581080635', '');
+INSERT INTO `tp_auth_rule` VALUES ('204', '199', 'Article/del', '操作-删除', '1', '0', '', '5', '1', '', '1581080635', '1581080635', '');
+INSERT INTO `tp_auth_rule` VALUES ('205', '199', 'Article/selectDel', '操作-批量删除', '1', '0', '', '6', '1', '', '1581080635', '1581080635', '');
+INSERT INTO `tp_auth_rule` VALUES ('206', '199', 'Article/export', '操作-导出', '1', '0', '', '7', '1', '', '1581080635', '1581080635', '');
+INSERT INTO `tp_auth_rule` VALUES ('207', '199', 'Article/sort', '操作-排序', '1', '0', '', '8', '1', '', '1581080635', '1581080635', '');
+INSERT INTO `tp_auth_rule` VALUES ('208', '199', 'Article/state', '操作-状态', '1', '0', '', '9', '1', '', '1581080635', '1581080635', '');
+INSERT INTO `tp_auth_rule` VALUES ('209', '188', 'Picture/index', '图片模块', '1', '1', '', '83', '1', '', '1581080640', '1581080717', '');
+INSERT INTO `tp_auth_rule` VALUES ('210', '209', 'Picture/add', '操作-添加', '1', '0', '', '1', '1', '', '1581080640', '1581080640', '');
+INSERT INTO `tp_auth_rule` VALUES ('211', '209', 'Picture/addPost', '操作-添加保存', '1', '0', '', '2', '1', '', '1581080640', '1581080640', '');
+INSERT INTO `tp_auth_rule` VALUES ('212', '209', 'Picture/edit', '操作-修改', '1', '0', '', '3', '1', '', '1581080640', '1581080640', '');
+INSERT INTO `tp_auth_rule` VALUES ('213', '209', 'Picture/editPost', '操作-修改保存', '1', '0', '', '4', '1', '', '1581080640', '1581080640', '');
+INSERT INTO `tp_auth_rule` VALUES ('214', '209', 'Picture/del', '操作-删除', '1', '0', '', '5', '1', '', '1581080640', '1581080640', '');
+INSERT INTO `tp_auth_rule` VALUES ('215', '209', 'Picture/selectDel', '操作-批量删除', '1', '0', '', '6', '1', '', '1581080640', '1581080640', '');
+INSERT INTO `tp_auth_rule` VALUES ('216', '209', 'Picture/export', '操作-导出', '1', '0', '', '7', '1', '', '1581080640', '1581080640', '');
+INSERT INTO `tp_auth_rule` VALUES ('217', '209', 'Picture/sort', '操作-排序', '1', '0', '', '8', '1', '', '1581080640', '1581080640', '');
+INSERT INTO `tp_auth_rule` VALUES ('218', '209', 'Picture/state', '操作-状态', '1', '0', '', '9', '1', '', '1581080640', '1581080640', '');
+INSERT INTO `tp_auth_rule` VALUES ('219', '188', 'Product/index', '产品模块', '1', '1', '', '84', '1', '', '1581080644', '1581080721', '');
+INSERT INTO `tp_auth_rule` VALUES ('220', '219', 'Product/add', '操作-添加', '1', '0', '', '1', '1', '', '1581080644', '1581080644', '');
+INSERT INTO `tp_auth_rule` VALUES ('221', '219', 'Product/addPost', '操作-添加保存', '1', '0', '', '2', '1', '', '1581080644', '1581080644', '');
+INSERT INTO `tp_auth_rule` VALUES ('222', '219', 'Product/edit', '操作-修改', '1', '0', '', '3', '1', '', '1581080644', '1581080644', '');
+INSERT INTO `tp_auth_rule` VALUES ('223', '219', 'Product/editPost', '操作-修改保存', '1', '0', '', '4', '1', '', '1581080644', '1581080644', '');
+INSERT INTO `tp_auth_rule` VALUES ('224', '219', 'Product/del', '操作-删除', '1', '0', '', '5', '1', '', '1581080644', '1581080644', '');
+INSERT INTO `tp_auth_rule` VALUES ('225', '219', 'Product/selectDel', '操作-批量删除', '1', '0', '', '6', '1', '', '1581080644', '1581080644', '');
+INSERT INTO `tp_auth_rule` VALUES ('226', '219', 'Product/export', '操作-导出', '1', '0', '', '7', '1', '', '1581080644', '1581080644', '');
+INSERT INTO `tp_auth_rule` VALUES ('227', '219', 'Product/sort', '操作-排序', '1', '0', '', '8', '1', '', '1581080644', '1581080644', '');
+INSERT INTO `tp_auth_rule` VALUES ('228', '219', 'Product/state', '操作-状态', '1', '0', '', '9', '1', '', '1581080644', '1581080644', '');
+INSERT INTO `tp_auth_rule` VALUES ('229', '188', 'Download/index', '下载模块', '1', '1', '', '85', '1', '', '1581080647', '1581080726', '');
+INSERT INTO `tp_auth_rule` VALUES ('230', '229', 'Download/add', '操作-添加', '1', '0', '', '1', '1', '', '1581080647', '1581080647', '');
+INSERT INTO `tp_auth_rule` VALUES ('231', '229', 'Download/addPost', '操作-添加保存', '1', '0', '', '2', '1', '', '1581080647', '1581080647', '');
+INSERT INTO `tp_auth_rule` VALUES ('232', '229', 'Download/edit', '操作-修改', '1', '0', '', '3', '1', '', '1581080647', '1581080647', '');
+INSERT INTO `tp_auth_rule` VALUES ('233', '229', 'Download/editPost', '操作-修改保存', '1', '0', '', '4', '1', '', '1581080647', '1581080647', '');
+INSERT INTO `tp_auth_rule` VALUES ('234', '229', 'Download/del', '操作-删除', '1', '0', '', '5', '1', '', '1581080647', '1581080647', '');
+INSERT INTO `tp_auth_rule` VALUES ('235', '229', 'Download/selectDel', '操作-批量删除', '1', '0', '', '6', '1', '', '1581080647', '1581080647', '');
+INSERT INTO `tp_auth_rule` VALUES ('236', '229', 'Download/export', '操作-导出', '1', '0', '', '7', '1', '', '1581080647', '1581080647', '');
+INSERT INTO `tp_auth_rule` VALUES ('237', '229', 'Download/sort', '操作-排序', '1', '0', '', '8', '1', '', '1581080647', '1581080647', '');
+INSERT INTO `tp_auth_rule` VALUES ('238', '229', 'Download/state', '操作-状态', '1', '0', '', '9', '1', '', '1581080647', '1581080647', '');
+INSERT INTO `tp_auth_rule` VALUES ('239', '188', 'Team/index', '团队模块', '1', '1', '', '86', '1', '', '1581080650', '1581080731', '');
+INSERT INTO `tp_auth_rule` VALUES ('240', '239', 'Team/add', '操作-添加', '1', '0', '', '1', '1', '', '1581080650', '1581080650', '');
+INSERT INTO `tp_auth_rule` VALUES ('241', '239', 'Team/addPost', '操作-添加保存', '1', '0', '', '2', '1', '', '1581080650', '1581080650', '');
+INSERT INTO `tp_auth_rule` VALUES ('242', '239', 'Team/edit', '操作-修改', '1', '0', '', '3', '1', '', '1581080650', '1581080650', '');
+INSERT INTO `tp_auth_rule` VALUES ('243', '239', 'Team/editPost', '操作-修改保存', '1', '0', '', '4', '1', '', '1581080650', '1581080650', '');
+INSERT INTO `tp_auth_rule` VALUES ('244', '239', 'Team/del', '操作-删除', '1', '0', '', '5', '1', '', '1581080650', '1581080650', '');
+INSERT INTO `tp_auth_rule` VALUES ('245', '239', 'Team/selectDel', '操作-批量删除', '1', '0', '', '6', '1', '', '1581080650', '1581080650', '');
+INSERT INTO `tp_auth_rule` VALUES ('246', '239', 'Team/export', '操作-导出', '1', '0', '', '7', '1', '', '1581080650', '1581080650', '');
+INSERT INTO `tp_auth_rule` VALUES ('247', '239', 'Team/sort', '操作-排序', '1', '0', '', '8', '1', '', '1581080650', '1581080650', '');
+INSERT INTO `tp_auth_rule` VALUES ('248', '239', 'Team/state', '操作-状态', '1', '0', '', '9', '1', '', '1581080650', '1581080650', '');
+INSERT INTO `tp_auth_rule` VALUES ('249', '188', 'Message/index', '留言模块', '1', '1', '', '87', '1', '', '1581080655', '1581080741', '');
+INSERT INTO `tp_auth_rule` VALUES ('250', '249', 'Message/add', '操作-添加', '1', '0', '', '1', '1', '', '1581080655', '1581080655', '');
+INSERT INTO `tp_auth_rule` VALUES ('251', '249', 'Message/addPost', '操作-添加保存', '1', '0', '', '2', '1', '', '1581080655', '1581080655', '');
+INSERT INTO `tp_auth_rule` VALUES ('252', '249', 'Message/edit', '操作-修改', '1', '0', '', '3', '1', '', '1581080655', '1581080655', '');
+INSERT INTO `tp_auth_rule` VALUES ('253', '249', 'Message/editPost', '操作-修改保存', '1', '0', '', '4', '1', '', '1581080655', '1581080655', '');
+INSERT INTO `tp_auth_rule` VALUES ('254', '249', 'Message/del', '操作-删除', '1', '0', '', '5', '1', '', '1581080655', '1581080655', '');
+INSERT INTO `tp_auth_rule` VALUES ('255', '249', 'Message/selectDel', '操作-批量删除', '1', '0', '', '6', '1', '', '1581080655', '1581080655', '');
+INSERT INTO `tp_auth_rule` VALUES ('256', '249', 'Message/export', '操作-导出', '1', '0', '', '7', '1', '', '1581080655', '1581080655', '');
+INSERT INTO `tp_auth_rule` VALUES ('257', '249', 'Message/state', '操作-状态', '1', '0', '', '9', '1', '', '1581080655', '1581214069', '');
+INSERT INTO `tp_auth_rule` VALUES ('258', '0', 'Demo', '实例演示', '1', '1', '', '9', '1', 'fa fa-desktop', '1581210913', '1581210922', '');
+INSERT INTO `tp_auth_rule` VALUES ('261', '258', 'Demo/icons', '图标', '1', '1', '', '92', '1', '', '1581217423', '1581217753', '');
+INSERT INTO `tp_auth_rule` VALUES ('260', '258', 'Demo/button', '按钮', '1', '1', '', '91', '1', '', '1581212447', '1581212473', '');
+INSERT INTO `tp_auth_rule` VALUES ('262', '258', 'Demo/general', '常规', '1', '1', '', '93', '1', '', '1581217729', '1581217756', '');
+INSERT INTO `tp_auth_rule` VALUES ('263', '258', 'Demo/modals', '模态框', '1', '1', '', '94', '1', '', '1581218146', '1581218146', '');
+INSERT INTO `tp_auth_rule` VALUES ('264', '258', 'Demo/timeline', '时间轴', '1', '1', '', '95', '1', '', '1581218342', '1581218342', '');
+INSERT INTO `tp_auth_rule` VALUES ('265', '258', 'Demo/layer', '弹层', '1', '1', '', '96', '1', '', '1581223849', '1581223863', '');
+INSERT INTO `tp_auth_rule` VALUES ('266', '258', 'Demo/layerForm', 'layer表单', '1', '1', '', '97', '1', '', '1581297357', '1581297367', '');
+INSERT INTO `tp_auth_rule` VALUES ('267', '258', 'Demo/addPost', '提交演示', '1', '0', '', '98', '0', '', '1581299002', '1581299009', '');
+INSERT INTO `tp_auth_rule` VALUES ('270', '268', 'Template/addPost', '操作-添加保存', '1', '0', '', '2', '1', '', '1581385157', '1581385157', '');
+INSERT INTO `tp_auth_rule` VALUES ('271', '268', 'Template/edit', '操作-修改', '1', '0', '', '3', '1', '', '1581385175', '1581385175', '');
+INSERT INTO `tp_auth_rule` VALUES ('272', '268', 'Template/editPost', '操作-修改保存', '1', '0', '', '4', '1', '', '1581385230', '1581385230', '');
+INSERT INTO `tp_auth_rule` VALUES ('273', '268', 'Template/del', '操作-删除', '1', '0', '', '5', '1', '', '1581385315', '1581385315', '');
+INSERT INTO `tp_auth_rule` VALUES ('274', '268', 'Template/img', '媒体文件-列表', '1', '0', '', '6', '1', '', '1581385347', '1581385347', '');
+INSERT INTO `tp_auth_rule` VALUES ('275', '268', 'Template/imgDel', '媒体文件-删除', '1', '0', '', '7', '1', '', '1581385377', '1581385377', '');
+INSERT INTO `tp_auth_rule` VALUES ('276', '268', 'Template/selectDel', '操作-批量删除', '1', '0', '', '8', '1', '', '1583732028', '1583732057', '');
 
 -- ----------------------------
 -- Table structure for tp_cate
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_cate`;
 CREATE TABLE `tp_cate` (
-  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
-  `catname` char(100) NOT NULL COMMENT '栏目名称',
-  `enname` char(100) DEFAULT NULL COMMENT '栏目英文名称',
-  `catdir` char(100) DEFAULT NULL COMMENT '目录',
-  `parentid` int(20) NOT NULL DEFAULT '0' COMMENT '父栏目ID',
-  `moduleid` int(20) DEFAULT '1' COMMENT '类型',
-  `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
-  `url` varchar(255) DEFAULT NULL COMMENT '跳转链接',
-  `content` text COMMENT '内容',
-  `image` char(255) DEFAULT NULL COMMENT '图片',
-  `icoimage` char(255) DEFAULT NULL COMMENT '小图片',
-  `title` varchar(255) DEFAULT NULL COMMENT '标题',
-  `keywords` varchar(255) DEFAULT NULL COMMENT '关键词',
-  `description` varchar(800) DEFAULT NULL COMMENT '描述',
-  `summary` varchar(800) DEFAULT NULL COMMENT '简介',
-  `template_list` char(100) DEFAULT NULL,
-  `template_show` char(100) DEFAULT NULL,
-  `pagesize` int(4) DEFAULT '20' COMMENT '分页显示数量',
-  `is_menu` int(2) NOT NULL DEFAULT '1' COMMENT '是否导航显示',
-  `is_next` int(2) NOT NULL DEFAULT '0' COMMENT '是否跳转到下级栏目',
-  `is_blank` int(2) DEFAULT '0' COMMENT '是否新窗口打开',
-  `status` int(1) NOT NULL DEFAULT '1' COMMENT '状态（前后台状态）',
-  PRIMARY KEY (`id`),
-  KEY `pid` (`parentid`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COMMENT='栏目表';
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
+  `create_time` int(11) NOT NULL,
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `sort` int(8) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
+  `cate_name` varchar(255) NOT NULL DEFAULT '' COMMENT '栏目名称',
+  `en_name` varchar(255) NOT NULL DEFAULT '' COMMENT '英文名称',
+  `cate_folder` varchar(255) NOT NULL DEFAULT '' COMMENT '栏目目录',
+  `parent_id` text NOT NULL COMMENT '上级栏目',
+  `module_id` text NOT NULL COMMENT '所属模块',
+  `url` varchar(255) NOT NULL DEFAULT '' COMMENT '外部链接',
+  `image` varchar(255) NOT NULL DEFAULT '' COMMENT '栏目图片',
+  `ico_image` varchar(255) NOT NULL DEFAULT '' COMMENT 'ICO图片',
+  `title` varchar(255) NOT NULL DEFAULT '' COMMENT 'SEO标题',
+  `keywords` varchar(255) NOT NULL DEFAULT '' COMMENT 'SEO关键字',
+  `description` varchar(255) NOT NULL DEFAULT '' COMMENT 'SEO描述',
+  `summary` text NOT NULL COMMENT '简介',
+  `template_list` varchar(255) NOT NULL DEFAULT '' COMMENT '列表模板',
+  `template_show` varchar(255) NOT NULL DEFAULT '' COMMENT '详情模版',
+  `page_size` char(5) NOT NULL DEFAULT '0' COMMENT '分页条数',
+  `is_menu` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '导航状态',
+  `is_next` tinyint(10) unsigned NOT NULL DEFAULT '0' COMMENT '跳转下级',
+  `is_blank` tinyint(10) unsigned NOT NULL DEFAULT '0' COMMENT '新窗口打开',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='栏目管理';
 
 -- ----------------------------
 -- Records of tp_cate
 -- ----------------------------
-INSERT INTO `tp_cate` VALUES ('6', '关于我们', 'About Us', 'about', '0', '1', '1', '', null, '/uploads/20181224/65ea8dcb1cbd16c8dc46144069afeaf5.jpg', '', '', '', '', '', 'page_list.html', '', '0', '1', '0', '0', '1');
-INSERT INTO `tp_cate` VALUES ('7', '公司介绍', 'Company Introduction', 'introduction', '6', '1', '11', '', null, '', '', '', '', '', '', 'page_list.html', '', '0', '1', '0', '0', '1');
-INSERT INTO `tp_cate` VALUES ('8', '新闻中心', 'News Center', 'news', '0', '2', '2', '', null, '/uploads/20181224/65ea8dcb1cbd16c8dc46144069afeaf5.jpg', '', '', '', '', '', '', '', '0', '1', '0', '0', '1');
-INSERT INTO `tp_cate` VALUES ('9', '公司新闻', '', '', '8', '2', '21', '', null, '', '', '', '', '', '', null, null, '0', '1', '0', '0', '1');
-INSERT INTO `tp_cate` VALUES ('10', '公司文化', '', 'culture', '6', '1', '12', '', null, '', '', '', '', '', '', null, null, '0', '1', '0', '0', '1');
-INSERT INTO `tp_cate` VALUES ('11', '资质荣誉', 'Qualifications & Honours', 'honours', '0', '3', '3', '', null, '/uploads/20181224/bf913edfcd8dcdeeec910860f12a0542.jpg', '', '', '', '', '', '', '', '0', '1', '0', '0', '1');
-INSERT INTO `tp_cate` VALUES ('13', '行业资讯', 'Industry Information', 'information', '8', '2', '22', '', null, '', '', '', '', '', '', 'article_list.html', 'article_show.html', '0', '1', '0', '0', '1');
-INSERT INTO `tp_cate` VALUES ('14', '产品中心', 'Pdoduct  Center', 'product', '0', '4', '4', '', null, '/uploads/20181224/643f5b9e297a0bd3accd79981ce347a1.jpg', '', '', '', '', '', 'product_list.html', 'product_show.html', '0', '1', '0', '0', '1');
-INSERT INTO `tp_cate` VALUES ('15', '精选产品', '', '', '14', '4', '41', '', null, '', '', '', '', '', '', 'product_list.html', 'product_show.html', '0', '1', '0', '0', '1');
-INSERT INTO `tp_cate` VALUES ('16', '热销产品', '', '', '14', '4', '42', '', null, '', '', '', '', '', '', 'product_list.html', 'product_show.html', '0', '1', '0', '0', '1');
-INSERT INTO `tp_cate` VALUES ('17', '资料下载', 'Download', '', '0', '5', '5', '', null, '/uploads/20181224/f4ef6f5df6abac86e8c685b2f2549079.jpg', '', '', '', '', '', 'download_list.html', 'download_show.html', '0', '1', '0', '0', '1');
-INSERT INTO `tp_cate` VALUES ('18', '优秀团队', 'Team', 'team', '0', '6', '6', '', null, '/uploads/20181224/bf3d6e8ff8f21760572ac25dd216daf9.jpg', '', '', '', '', '', 'team_list.html', 'team_show.html', '0', '1', '0', '0', '1');
-INSERT INTO `tp_cate` VALUES ('19', '联系我们', 'Contact Us', 'contact', '0', '7', '7', '', null, '/uploads/20181224/65ea8dcb1cbd16c8dc46144069afeaf5.jpg', '', '', '', '', '', 'message_list.html', '', '0', '1', '0', '0', '1');
+INSERT INTO `tp_cate` VALUES ('1', '1580900049', '1583671301', '1', '1', '关于我们', 'About Us', 'about', '', '18', '', '/uploads/20181224/65ea8dcb1cbd16c8dc46144069afeaf5.jpg', '', '', '', '', '', '', '', '0', '1', '0', '0');
+INSERT INTO `tp_cate` VALUES ('2', '1580906596', '1580906596', '11', '1', '公司介绍', 'Company Introduction', 'introduction', '1', '18', '', '', '', '', '', '', '', '', '', '0', '1', '0', '0');
+INSERT INTO `tp_cate` VALUES ('3', '1580907009', '1580907009', '12', '1', '公司文化', 'culture', 'culture', '1', '18', '', '', '', '', '', '', '', '', '', '0', '1', '0', '0');
+INSERT INTO `tp_cate` VALUES ('4', '1580907057', '1580907057', '2', '1', '新闻中心', 'News Center', 'news', '', '19', '', '/uploads/20181224/65ea8dcb1cbd16c8dc46144069afeaf5.jpg', '', '', '', '', '', '', '', '0', '1', '0', '0');
+INSERT INTO `tp_cate` VALUES ('5', '1580907159', '1580907159', '21', '1', '公司新闻', '', '', '4', '19', '', '', '', '', '', '', '', '', '', '0', '1', '0', '0');
+INSERT INTO `tp_cate` VALUES ('6', '1580907197', '1580907197', '22', '1', '行业资讯', 'Industry Information', 'information', '4', '19', '', '', '', '', '', '', '', '', '', '0', '1', '0', '0');
+INSERT INTO `tp_cate` VALUES ('7', '1580907252', '1580907252', '3', '1', '资质荣誉', 'Qualifications & Honours', 'honours', '', '21', '', '/uploads/20181224/bf913edfcd8dcdeeec910860f12a0542.jpg', '', '', '', '', '', '', '', '0', '1', '0', '0');
+INSERT INTO `tp_cate` VALUES ('8', '1580907289', '1580907289', '4', '1', '产品中心', 'Pdoduct  Center', 'product', '', '22', '', '/uploads/20181224/643f5b9e297a0bd3accd79981ce347a1.jpg', '', '', '', '', '', '', '', '0', '1', '0', '0');
+INSERT INTO `tp_cate` VALUES ('9', '1580907315', '1580907315', '41', '1', '精选产品', '', '', '8', '22', '', '', '', '', '', '', '', '', '', '0', '1', '0', '0');
+INSERT INTO `tp_cate` VALUES ('10', '1580907339', '1580907339', '42', '1', '热销产品', '', '', '8', '22', '', '', '', '', '', '', '', '', '', '0', '1', '0', '0');
+INSERT INTO `tp_cate` VALUES ('11', '1580907374', '1580907374', '5', '1', '资料下载', 'Download', 'download', '', '23', '', '/uploads/20181224/f4ef6f5df6abac86e8c685b2f2549079.jpg', '', '', '', '', '', '', '', '0', '1', '0', '0');
+INSERT INTO `tp_cate` VALUES ('12', '1580907407', '1580907407', '6', '1', '优秀团队', 'Team', 'team', '', '24', '', '/uploads/20181224/bf3d6e8ff8f21760572ac25dd216daf9.jpg', '', '', '', '', '', '', '', '0', '1', '0', '0');
+INSERT INTO `tp_cate` VALUES ('13', '1580907441', '1580907441', '7', '1', '联系我们', 'Contact Us', 'contact', '', '25', '', '/uploads/20181224/65ea8dcb1cbd16c8dc46144069afeaf5.jpg', '', '', '', '', '', '', '', '0', '1', '0', '0');
 
 -- ----------------------------
 -- Table structure for tp_config
@@ -522,79 +559,145 @@ CREATE TABLE `tp_config` (
 INSERT INTO `tp_config` VALUES ('60', 'smtp_server', 'smtp.qq.com', 'smtp', '0');
 INSERT INTO `tp_config` VALUES ('61', 'smtp_port', '465', 'smtp', '0');
 INSERT INTO `tp_config` VALUES ('62', 'smtp_user', '407593529@qq.com', 'smtp', '0');
-INSERT INTO `tp_config` VALUES ('63', 'smtp_pwd', '', 'smtp', '0');
-INSERT INTO `tp_config` VALUES ('64', 'regis_smtp_enable', '1', 'smtp', '0');
-INSERT INTO `tp_config` VALUES ('65', 'test_eamil', '', 'smtp', '0');
+INSERT INTO `tp_config` VALUES ('63', 'smtp_pwd', '发ff', 'smtp', '0');
+INSERT INTO `tp_config` VALUES ('64', 'regis_smtp_enable', '测试', 'smtp', '0');
+INSERT INTO `tp_config` VALUES ('65', 'test_eamil', '123@qq.com', 'smtp', '0');
 INSERT INTO `tp_config` VALUES ('94', 'test_mobile', '', 'sms', null);
 INSERT INTO `tp_config` VALUES ('93', 'signName', '', 'sms', null);
 INSERT INTO `tp_config` VALUES ('92', 'templateCode', '', 'sms', null);
 INSERT INTO `tp_config` VALUES ('91', 'accessKeySecret', '', 'sms', null);
 INSERT INTO `tp_config` VALUES ('90', 'accessKeyId', 'LTAIqinwPNwEawUK', 'sms', null);
 INSERT INTO `tp_config` VALUES ('88', 'email_id', 'SIYUCMS', 'smtp', '0');
-INSERT INTO `tp_config` VALUES ('89', 'test_eamil_info', ' 您好！这是一封来自SIYUCMS的测试邮件！', 'smtp', '0');
+INSERT INTO `tp_config` VALUES ('89', 'test_eamil_info', '<p>您好！这是一封来自SIYUCMS的测试邮件！</p>\n', 'smtp', '0');
 
 -- ----------------------------
 -- Table structure for tp_debris
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_debris`;
 CREATE TABLE `tp_debris` (
-  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) DEFAULT NULL COMMENT '标题',
-  `name` varchar(255) DEFAULT NULL COMMENT '调用',
-  `content` text COMMENT '内容',
-  `url` varchar(255) DEFAULT NULL COMMENT '链接地址',
-  `image` varchar(255) DEFAULT NULL COMMENT '图片',
-  `description` varchar(255) DEFAULT NULL COMMENT '描述',
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
+  `create_time` int(11) NOT NULL,
+  `update_time` int(11) NOT NULL,
   `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
-  `status` int(1) DEFAULT '0' COMMENT '状态（1 正常，0 锁定）',
-  `create_time` int(11) DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
+  `status` tinyint(1) DEFAULT NULL COMMENT '状态',
+  `title` varchar(255) NOT NULL DEFAULT '' COMMENT '碎片标题',
+  `name` varchar(255) NOT NULL DEFAULT '' COMMENT '调用名称',
+  `content` text NOT NULL COMMENT '碎片内容',
+  `url` varchar(255) NOT NULL DEFAULT '' COMMENT '链接地址',
+  `image` varchar(80) NOT NULL DEFAULT '' COMMENT '图片',
+  `description` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='碎片表';
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='碎片列表';
 
 -- ----------------------------
 -- Records of tp_debris
 -- ----------------------------
-INSERT INTO `tp_debris` VALUES ('1', '关于我们', 'AboutUs', '<p>SIYUCMS内容管理系统，包含系统设置，权限管理，模型管理，数据库管理，栏目管理，会员管理，网站功能，模版管理，微信管理等相关模块。<br>SIYUCMS内容管理系统，包含系统设置，权限管理，模型管理，数据库管理，栏目管理，会员管理，网站功能，模版管理，微信管理等相关模块。&nbsp;&nbsp;</p><p><br></p>', '12', '', '3', '1', '1', '1545729604', '1551930573');
+INSERT INTO `tp_debris` VALUES ('1', '1580388141', '1580388225', '1', '1', '关于我们', 'AboutUs', '<p>SIYUCMS内容管理系统，包含系统设置，权限管理，模型管理，数据库管理，栏目管理，会员管理，网站功能，模版管理，微信管理等相关模块。<br />\nSIYUCMS内容管理系统，包含系统设置，权限管理，模型管理，数据库管理，栏目管理，会员管理，网站功能，模版管理，微信管理等相关模块。&nbsp;&nbsp;</p>\n\n<p>&nbsp;</p>\n', '', '', '首页调用');
+
+-- ----------------------------
+-- Table structure for tp_dictionary
+-- ----------------------------
+DROP TABLE IF EXISTS `tp_dictionary`;
+CREATE TABLE `tp_dictionary` (
+  `id` int(8) NOT NULL AUTO_INCREMENT,
+  `dict_label` varchar(100) NOT NULL DEFAULT '' COMMENT '字典标签',
+  `dict_value` varchar(255) NOT NULL DEFAULT '' COMMENT '字典键值',
+  `dict_type` char(5) NOT NULL DEFAULT '' COMMENT '字典类型',
+  `remark` varchar(200) NOT NULL DEFAULT '' COMMENT '备注',
+  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+  `sort` int(5) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
+  `status` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tp_dictionary
+-- ----------------------------
+INSERT INTO `tp_dictionary` VALUES ('1', '显示', '1', '1', '显示', '1579227398', '1579484762', '1', '1');
+INSERT INTO `tp_dictionary` VALUES ('2', '隐藏', '0', '1', '隐藏', '1579227507', '1579484767', '2', '1');
+INSERT INTO `tp_dictionary` VALUES ('3', '是', '1', '2', '是', '1579227536', '1579227536', '1', '1');
+INSERT INTO `tp_dictionary` VALUES ('4', '否', '0', '2', '否', '1579227552', '1579488433', '2', '1');
+INSERT INTO `tp_dictionary` VALUES ('5', 'CMS', '1', '3', 'CMS', '1579490699', '1579490699', '1', '1');
+INSERT INTO `tp_dictionary` VALUES ('6', '后台', '2', '3', '后台', '1579490732', '1579490732', '2', '1');
+INSERT INTO `tp_dictionary` VALUES ('7', '保密', '0', '4', '', '1579586378', '1579586378', '1', '1');
+INSERT INTO `tp_dictionary` VALUES ('8', '男', '1', '4', '', '1579586392', '1579586392', '1', '1');
+INSERT INTO `tp_dictionary` VALUES ('9', '女', '2', '4', '', '1579586406', '1579586406', '2', '1');
+INSERT INTO `tp_dictionary` VALUES ('10', '已验证', '1', '5', '', '1579587175', '1579587175', '1', '1');
+INSERT INTO `tp_dictionary` VALUES ('11', '未验证', '0', '5', '', '1579587190', '1579587190', '2', '1');
+INSERT INTO `tp_dictionary` VALUES ('12', '新增', 'add', '6', '新增按钮', '1580442656', '1580442656', '1', '1');
+INSERT INTO `tp_dictionary` VALUES ('13', '修改', 'edit', '6', '修改按钮', '1580442715', '1580442715', '2', '1');
+INSERT INTO `tp_dictionary` VALUES ('14', '删除', 'del', '6', '批量删除按钮', '1580442742', '1580442742', '3', '1');
+INSERT INTO `tp_dictionary` VALUES ('15', '导出', 'export', '6', '导出按钮', '1580442770', '1580442770', '4', '1');
+INSERT INTO `tp_dictionary` VALUES ('16', '修改', 'edit', '7', '修改按钮', '1580444389', '1580444389', '1', '1');
+INSERT INTO `tp_dictionary` VALUES ('17', '删除', 'delete', '7', '删除按钮', '1580444406', '1580444406', '2', '1');
+INSERT INTO `tp_dictionary` VALUES ('18', '开启', '1', '8', '开启', '1580559235', '1580559235', '1', '1');
+INSERT INTO `tp_dictionary` VALUES ('19', '关闭', '0', '8', '关闭', '1580559262', '1580559262', '2', '1');
+INSERT INTO `tp_dictionary` VALUES ('20', '字段本身', '0', '9', '字段本身', '1580793928', '1580793928', '1', '1');
+INSERT INTO `tp_dictionary` VALUES ('21', '系统字典', '1', '9', '系统字典', '1580793956', '1580793956', '2', '1');
+INSERT INTO `tp_dictionary` VALUES ('22', '模型数据', '2', '9', '模型数据', '1580793975', '1580793975', '3', '1');
+
+-- ----------------------------
+-- Table structure for tp_dictionary_type
+-- ----------------------------
+DROP TABLE IF EXISTS `tp_dictionary_type`;
+CREATE TABLE `tp_dictionary_type` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `dict_name` char(100) NOT NULL DEFAULT '' COMMENT '字典名称',
+  `status` tinyint(10) unsigned NOT NULL DEFAULT '0' COMMENT '状态',
+  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+  `remark` varchar(200) NOT NULL DEFAULT '' COMMENT '备注',
+  `sort` int(5) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tp_dictionary_type
+-- ----------------------------
+INSERT INTO `tp_dictionary_type` VALUES ('1', '显示状态', '1', '1579167978', '1579167978', '1 显示， 0 隐藏', '1');
+INSERT INTO `tp_dictionary_type` VALUES ('2', '系统是否', '1', '1579168087', '1579168087', '1 是， 0 否', '2');
+INSERT INTO `tp_dictionary_type` VALUES ('3', '表类型', '1', '1579168087', '1581165223', '1 CMS,2 后台', '7');
+INSERT INTO `tp_dictionary_type` VALUES ('4', '性别', '1', '1579586355', '1581165215', '0 保密，1 男，2 女', '9');
+INSERT INTO `tp_dictionary_type` VALUES ('5', '验证状态', '1', '1579587122', '1581165094', '1 已验证， 0 未验证	', '4');
+INSERT INTO `tp_dictionary_type` VALUES ('6', '顶部按钮', '1', '1580442606', '1581165100', '列表页顶部按钮组', '5');
+INSERT INTO `tp_dictionary_type` VALUES ('7', '右侧按钮', '1', '1580444354', '1581165102', '列表页右侧按钮组', '6');
+INSERT INTO `tp_dictionary_type` VALUES ('8', '开关状态', '1', '1580559205', '1581165084', '1 开启， 0 关闭	', '3');
+INSERT INTO `tp_dictionary_type` VALUES ('9', '数据源', '1', '1580793811', '1581165226', '0 字段本身，1 系统字典， 2  模型数据', '8');
 
 -- ----------------------------
 -- Table structure for tp_download
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_download`;
 CREATE TABLE `tp_download` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `cate_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
-  `title` varchar(70) NOT NULL DEFAULT '' COMMENT '标题',
-  `title_style` varchar(225) NOT NULL DEFAULT '' COMMENT '标题样式',
-  `thumb` varchar(225) NOT NULL DEFAULT '' COMMENT '缩略图',
-  `keywords` varchar(80) NOT NULL DEFAULT '' COMMENT '关键词',
-  `description` mediumtext NOT NULL COMMENT 'SEO简介',
-  `content` text NOT NULL COMMENT '内容',
-  `template` varchar(80) NOT NULL DEFAULT '' COMMENT '模板',
-  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态',
-  `sort` int(10) unsigned NOT NULL DEFAULT '100' COMMENT '排序',
-  `hits` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
-  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
+  `create_time` int(11) NOT NULL,
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  `image` varchar(80) NOT NULL DEFAULT '' COMMENT '缩略图',
-  `images` mediumtext NOT NULL COMMENT '图片集',
-  `download` varchar(80) NOT NULL DEFAULT '' COMMENT '文件下载',
-  `author` varchar(50) NOT NULL DEFAULT 'Admin' COMMENT '作者',
+  `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
+  `status` tinyint(1) DEFAULT NULL COMMENT '状态',
+  `cate_id` tinyint(10) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
+  `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
+  `author` varchar(255) NOT NULL DEFAULT '' COMMENT '作者',
   `source` varchar(255) NOT NULL DEFAULT '' COMMENT '来源',
+  `content` text NOT NULL COMMENT '内容',
   `summary` text NOT NULL COMMENT '摘要',
-  `tags` varchar(100) NOT NULL DEFAULT '' COMMENT 'TAG',
-  PRIMARY KEY (`id`),
-  KEY `status` (`id`,`status`,`sort`),
-  KEY `cate_id` (`id`,`cate_id`,`status`),
-  KEY `sort` (`id`,`cate_id`,`status`,`sort`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='下载模型表';
+  `image` varchar(80) NOT NULL DEFAULT '' COMMENT '图片',
+  `images` varchar(255) NOT NULL DEFAULT '' COMMENT '图片集',
+  `download` varchar(80) NOT NULL DEFAULT '' COMMENT '文件下载',
+  `tags` varchar(255) NOT NULL DEFAULT '' COMMENT 'TAG',
+  `hits` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
+  `keywords` varchar(255) NOT NULL DEFAULT '' COMMENT '关键词',
+  `description` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
+  `template` varchar(30) NOT NULL DEFAULT '' COMMENT '模板',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='下载模块';
 
 -- ----------------------------
 -- Records of tp_download
 -- ----------------------------
-INSERT INTO `tp_download` VALUES ('10', '17', '招聘表格下载', '', '', '', '', '', '', '1', '100', '0', '1545633670', '0', '/uploads/20181224/6b449574a2358edd20c10f10f64bd09c.jpg', '', '/uploads/20181224/06d08f008e54d9ac4eae3d0a6d53cff7.rar', '管理员', '本站', '', '');
-INSERT INTO `tp_download` VALUES ('11', '17', '报名表格下载', '', '', '', '', '', '', '1', '100', '0', '1545635098', '0', '/uploads/20181224/d6df5528408d8974777ae29280428ad6.jpg', '', '/uploads/20181224/4d3569541beb373334582df5aaaa126b.rar', '管理员', '本站', '', '');
-INSERT INTO `tp_download` VALUES ('12', '17', '供应商表格下载', '', '', '', '', '', '', '1', '100', '0', '1545635131', '0', '/uploads/20181224/363944f333897882e4424bacb186e693.jpg', '', '/uploads/20181224/d21fb51f503d487d67a4c8c10577c458.rar', '管理员', '本站', '', '');
+INSERT INTO `tp_download` VALUES ('1', '1581079500', '1581079500', '50', '1', '11', '招聘表格下载', '管理员', '本站', '', '', '/uploads/20181224/6b449574a2358edd20c10f10f64bd09c.jpg', '', '/uploads/20181224/06d08f008e54d9ac4eae3d0a6d53cff7.rar', '', '0', '', '', '');
+INSERT INTO `tp_download` VALUES ('2', '1581079531', '1581079531', '50', '1', '11', '报名表格下载', '管理员', '本站', '', '', '/uploads/20181224/d6df5528408d8974777ae29280428ad6.jpg', '', '/uploads/20181224/4d3569541beb373334582df5aaaa126b.rar', '', '0', '', '', '');
+INSERT INTO `tp_download` VALUES ('3', '1581079561', '1581079561', '50', '1', '11', '供应商表格下载', '管理员', '本站', '', '', '/uploads/20181224/363944f333897882e4424bacb186e693.jpg', '', '/uploads/20181224/d21fb51f503d487d67a4c8c10577c458.rar', '', '0', '', '', '');
 
 -- ----------------------------
 -- Table structure for tp_field
@@ -602,364 +705,624 @@ INSERT INTO `tp_download` VALUES ('12', '17', '供应商表格下载', '', '', '
 DROP TABLE IF EXISTS `tp_field`;
 CREATE TABLE `tp_field` (
   `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
-  `moduleid` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `field` varchar(20) NOT NULL DEFAULT '',
-  `name` varchar(30) NOT NULL DEFAULT '',
-  `tips` varchar(150) NOT NULL DEFAULT '',
-  `required` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `minlength` int(10) unsigned NOT NULL DEFAULT '0',
-  `maxlength` int(10) unsigned NOT NULL DEFAULT '0',
-  `pattern` varchar(255) NOT NULL DEFAULT '',
-  `errormsg` varchar(255) NOT NULL DEFAULT '',
-  `class` varchar(20) NOT NULL DEFAULT '',
-  `type` varchar(20) NOT NULL DEFAULT '',
-  `setup` text,
-  `ispost` tinyint(1) NOT NULL DEFAULT '0',
-  `unpostgroup` varchar(60) NOT NULL DEFAULT '',
-  `sort` int(10) unsigned NOT NULL DEFAULT '0',
+  `module_id` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '所属模块',
+  `field` varchar(100) NOT NULL DEFAULT '' COMMENT '字段名',
+  `name` varchar(100) NOT NULL DEFAULT '' COMMENT '字段别名',
+  `tips` varchar(200) NOT NULL DEFAULT '' COMMENT '提示信息',
+  `required` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否必填',
+  `minlength` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最小长度',
+  `maxlength` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最大长度',
+  `type` varchar(20) NOT NULL DEFAULT '' COMMENT '字段类型',
+  `data_source` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '数据源',
+  `relation_model` varchar(100) NOT NULL DEFAULT '' COMMENT '模型关联',
+  `relation_field` varchar(100) NOT NULL DEFAULT '' COMMENT '展示字段',
+  `dict_code` varchar(100) NOT NULL DEFAULT '' COMMENT '字典类型',
+  `is_add` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否可插入',
+  `is_edit` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否可编辑',
+  `is_list` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否可列表展示',
+  `is_search` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否可查询',
+  `is_sort` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否可排序',
+  `search_type` varchar(100) NOT NULL DEFAULT '' COMMENT '查询类型',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `issystem` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `sort` int(10) unsigned NOT NULL DEFAULT '0',
+  `remark` varchar(200) NOT NULL DEFAULT '' COMMENT '备注',
+  `setup` text COMMENT '其他设置',
+  `group_id` char(8) NOT NULL DEFAULT '0' COMMENT '字段分组',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=112 DEFAULT CHARSET=utf8 COMMENT='模型字段表';
+) ENGINE=MyISAM AUTO_INCREMENT=337 DEFAULT CHARSET=utf8 COMMENT='模型字段表';
 
 -- ----------------------------
 -- Records of tp_field
 -- ----------------------------
-INSERT INTO `tp_field` VALUES ('1', '2', 'cate_id', '栏目', '', '1', '1', '6', '', '必须选择一个栏目', '', 'cate', '', '1', '', '1', '1', '1');
-INSERT INTO `tp_field` VALUES ('2', '2', 'title', '标题', '', '1', '1', '70', '', '标题必须为1-80个字符', '', 'title', '', '1', '', '2', '1', '1');
-INSERT INTO `tp_field` VALUES ('3', '2', 'keywords', '关键词', '', '0', '0', '80', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '1', '', '16', '1', '1');
-INSERT INTO `tp_field` VALUES ('4', '2', 'description', 'SEO简介', '', '0', '0', '1200', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'mediumtext\',\n  \'default\' => \'发3\',\n)', '1', '', '17', '1', '1');
-INSERT INTO `tp_field` VALUES ('5', '2', 'content', '内容', '', '0', '0', '0', '', '', '', 'editor', 'array (\n  \'edittype\' => \'ckeditor\',\n)', '1', '', '5', '1', '1');
-INSERT INTO `tp_field` VALUES ('6', '2', 'create_time', '添加时间', '', '1', '0', '0', 'date', '', 'createtime', 'datetime', '', '1', '', '10', '1', '1');
-INSERT INTO `tp_field` VALUES ('7', '2', 'status', '状态', '', '0', '0', '0', '', '', '', 'radio', 'array (\n  \'options\' => \'显示|1\r\n隐藏|0\',\n  \'fieldtype\' => \'tinyint\',\n  \'numbertype\' => \'1\',\n  \'labelwidth\' => \'75\',\n  \'default\' => \'1\',\n)', '1', '', '11', '1', '1');
-INSERT INTO `tp_field` VALUES ('8', '2', 'hits', '点击次数', '', '0', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'\',\n)', '1', '', '14', '1', '1');
-INSERT INTO `tp_field` VALUES ('10', '2', 'template', '模板', '', '0', '0', '0', '', '', '', 'template', '', '1', '', '15', '1', '1');
-INSERT INTO `tp_field` VALUES ('13', '2', 'image', '缩略图', '', '0', '0', '120', '', '', '', 'image', 'array (\n  \'upload_allowext\' => \'jpg|jpeg|gif|png\',\n)', '0', '', '7', '1', '0');
-INSERT INTO `tp_field` VALUES ('14', '2', 'images', '图片集', '', '0', '0', '0', '', '', '', 'images', 'array (\n  \'upload_allowext\' => \'jpg|jpeg|gif|png\',\n)', '0', '', '8', '1', '0');
-INSERT INTO `tp_field` VALUES ('15', '2', 'download', '文件下载', '', '0', '0', '0', '', '', '', 'file', 'array (\n  \'upload_allowext\' => \'zip|rar|doc|ppt\',\n)', '0', '', '9', '1', '0');
-INSERT INTO `tp_field` VALUES ('29', '2', 'source', '来源', '', '0', '0', '0', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '4', '1', '0');
-INSERT INTO `tp_field` VALUES ('28', '2', 'author', '作者', '', '0', '0', '50', '', '', '', 'text', 'array (\n  \'default\' => \'Admin\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '3', '1', '0');
-INSERT INTO `tp_field` VALUES ('21', '2', 'sort', '排序', '', '1', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'100\',\n)', '0', '', '13', '1', '1');
-INSERT INTO `tp_field` VALUES ('22', '1', 'cate_id', '栏目', '', '1', '0', '0', '', '', '', 'cate', null, '0', '', '0', '1', '0');
-INSERT INTO `tp_field` VALUES ('23', '1', 'title', '标题', '', '1', '0', '0', '', '', '', 'title', null, '0', '', '0', '1', '0');
-INSERT INTO `tp_field` VALUES ('24', '1', 'keywords', '关键词', '', '0', '0', '0', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '0', '1', '0');
-INSERT INTO `tp_field` VALUES ('25', '1', 'description', 'SEO简介', '', '0', '0', '0', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'text\',\n  \'default\' => \'\',\n)', '0', '', '0', '1', '0');
-INSERT INTO `tp_field` VALUES ('26', '1', 'content', '内容', '', '0', '0', '0', '', '', '', 'editor', 'array (\n  \'edittype\' => \'ckeditor\',\n)', '0', '', '0', '1', '0');
-INSERT INTO `tp_field` VALUES ('27', '1', 'hits', '点击次数', '', '1', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'100\',\n)', '0', '', '0', '1', '0');
-INSERT INTO `tp_field` VALUES ('30', '3', 'cate_id', '栏目', '', '1', '1', '6', '', '必须选择一个栏目', '', 'cate', '', '1', '', '1', '1', '1');
-INSERT INTO `tp_field` VALUES ('31', '3', 'title', '标题', '', '1', '1', '70', '', '标题必须为1-80个字符', '', 'title', '', '1', '', '2', '1', '1');
-INSERT INTO `tp_field` VALUES ('32', '3', 'keywords', '关键词', '', '0', '0', '80', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '1', '', '16', '1', '1');
-INSERT INTO `tp_field` VALUES ('33', '3', 'description', 'SEO简介', '', '0', '0', '1200', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'mediumtext\',\n  \'default\' => \'发3\',\n)', '1', '', '17', '1', '1');
-INSERT INTO `tp_field` VALUES ('34', '3', 'content', '内容', '', '0', '0', '0', '', '', '', 'editor', 'array (\n  \'edittype\' => \'ckeditor\',\n)', '1', '', '5', '1', '1');
-INSERT INTO `tp_field` VALUES ('35', '3', 'create_time', '添加时间', '', '1', '0', '0', 'date', '', 'createtime', 'datetime', '', '1', '', '10', '1', '1');
-INSERT INTO `tp_field` VALUES ('36', '3', 'status', '状态', '', '0', '0', '0', '', '', '', 'radio', 'array (\n  \'options\' => \'显示|1\r\n隐藏|0\',\n  \'fieldtype\' => \'tinyint\',\n  \'numbertype\' => \'1\',\n  \'labelwidth\' => \'75\',\n  \'default\' => \'1\',\n)', '1', '', '11', '1', '1');
-INSERT INTO `tp_field` VALUES ('37', '3', 'hits', '点击次数', '', '0', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'\',\n)', '1', '', '13', '1', '1');
-INSERT INTO `tp_field` VALUES ('38', '3', 'template', '模板', '', '0', '0', '0', '', '', '', 'template', '', '1', '', '15', '1', '1');
-INSERT INTO `tp_field` VALUES ('39', '3', 'image', '缩略图', '', '0', '0', '120', '', '', '', 'image', 'array (\n  \'upload_allowext\' => \'jpg|jpeg|gif|png\',\n)', '0', '', '7', '1', '0');
-INSERT INTO `tp_field` VALUES ('40', '3', 'images', '图片集', '', '0', '0', '0', '', '', '', 'images', 'array (\n  \'upload_allowext\' => \'jpg|jpeg|gif|png\',\n)', '0', '', '8', '1', '0');
-INSERT INTO `tp_field` VALUES ('41', '3', 'download', '文件下载', '', '0', '0', '0', '', '', '', 'file', 'array (\n  \'upload_allowext\' => \'zip|rar|doc|ppt\',\n)', '0', '', '9', '1', '0');
-INSERT INTO `tp_field` VALUES ('42', '3', 'source', '来源', '', '0', '0', '0', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '4', '1', '0');
-INSERT INTO `tp_field` VALUES ('43', '3', 'author', '作者', '', '0', '0', '50', '', '', '', 'text', 'array (\n  \'default\' => \'Admin\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '3', '1', '0');
-INSERT INTO `tp_field` VALUES ('44', '3', 'sort', '排序', '', '1', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'100\',\n)', '0', '', '14', '1', '1');
-INSERT INTO `tp_field` VALUES ('45', '4', 'cate_id', '栏目', '', '1', '1', '6', '', '必须选择一个栏目', '', 'cate', '', '1', '', '1', '1', '1');
-INSERT INTO `tp_field` VALUES ('46', '4', 'title', '标题', '', '1', '1', '70', '', '标题必须为1-80个字符', '', 'title', '', '1', '', '2', '1', '1');
-INSERT INTO `tp_field` VALUES ('47', '4', 'keywords', '关键词', '', '0', '0', '80', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '1', '', '16', '1', '1');
-INSERT INTO `tp_field` VALUES ('48', '4', 'description', 'SEO简介', '', '0', '0', '1200', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'mediumtext\',\n  \'default\' => \'发3\',\n)', '1', '', '17', '1', '1');
-INSERT INTO `tp_field` VALUES ('49', '4', 'content', '内容', '', '0', '0', '0', '', '', '', 'editor', 'array (\n  \'edittype\' => \'ckeditor\',\n)', '1', '', '5', '1', '1');
-INSERT INTO `tp_field` VALUES ('50', '4', 'create_time', '添加时间', '', '1', '0', '0', 'date', '', 'createtime', 'datetime', '', '1', '', '10', '1', '1');
-INSERT INTO `tp_field` VALUES ('51', '4', 'status', '状态', '', '0', '0', '0', '', '', '', 'radio', 'array (\n  \'options\' => \'显示|1\r\n隐藏|0\',\n  \'fieldtype\' => \'tinyint\',\n  \'numbertype\' => \'1\',\n  \'labelwidth\' => \'75\',\n  \'default\' => \'1\',\n)', '1', '', '11', '1', '1');
-INSERT INTO `tp_field` VALUES ('52', '4', 'hits', '点击次数', '', '0', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'\',\n)', '1', '', '13', '1', '1');
-INSERT INTO `tp_field` VALUES ('53', '4', 'template', '模板', '', '0', '0', '0', '', '', '', 'template', '', '1', '', '15', '1', '1');
-INSERT INTO `tp_field` VALUES ('54', '4', 'image', '缩略图', '', '0', '0', '120', '', '', '', 'image', 'array (\n  \'upload_allowext\' => \'jpg|jpeg|gif|png\',\n)', '0', '', '7', '1', '0');
-INSERT INTO `tp_field` VALUES ('55', '4', 'images', '图片集', '', '0', '0', '0', '', '', '', 'images', 'array (\n  \'upload_allowext\' => \'jpg|jpeg|gif|png\',\n)', '0', '', '8', '1', '0');
-INSERT INTO `tp_field` VALUES ('56', '4', 'download', '文件下载', '', '0', '0', '0', '', '', '', 'file', 'array (\n  \'upload_allowext\' => \'zip|rar|doc|ppt\',\n)', '0', '', '9', '1', '0');
-INSERT INTO `tp_field` VALUES ('57', '4', 'source', '来源', '', '0', '0', '0', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '4', '1', '0');
-INSERT INTO `tp_field` VALUES ('58', '4', 'author', '作者', '', '0', '0', '50', '', '', '', 'text', 'array (\n  \'default\' => \'Admin\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '3', '1', '0');
-INSERT INTO `tp_field` VALUES ('59', '4', 'sort', '排序', '', '1', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'100\',\n)', '0', '', '14', '1', '1');
-INSERT INTO `tp_field` VALUES ('60', '5', 'cate_id', '栏目', '', '1', '1', '6', '', '必须选择一个栏目', '', 'cate', '', '1', '', '1', '1', '1');
-INSERT INTO `tp_field` VALUES ('61', '5', 'title', '标题', '', '1', '1', '70', '', '标题必须为1-80个字符', '', 'title', '', '1', '', '2', '1', '1');
-INSERT INTO `tp_field` VALUES ('62', '5', 'keywords', '关键词', '', '0', '0', '80', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '1', '', '16', '1', '1');
-INSERT INTO `tp_field` VALUES ('63', '5', 'description', 'SEO简介', '', '0', '0', '1200', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'mediumtext\',\n  \'default\' => \'发3\',\n)', '1', '', '17', '1', '1');
-INSERT INTO `tp_field` VALUES ('64', '5', 'content', '内容', '', '0', '0', '0', '', '', '', 'editor', 'array (\n  \'edittype\' => \'ckeditor\',\n)', '1', '', '5', '1', '1');
-INSERT INTO `tp_field` VALUES ('65', '5', 'create_time', '添加时间', '', '1', '0', '0', 'date', '', 'createtime', 'datetime', '', '1', '', '10', '1', '1');
-INSERT INTO `tp_field` VALUES ('66', '5', 'status', '状态', '', '0', '0', '0', '', '', '', 'radio', 'array (\n  \'options\' => \'显示|1\r\n隐藏|0\',\n  \'fieldtype\' => \'tinyint\',\n  \'numbertype\' => \'1\',\n  \'labelwidth\' => \'75\',\n  \'default\' => \'1\',\n)', '1', '', '11', '1', '1');
-INSERT INTO `tp_field` VALUES ('67', '5', 'hits', '点击次数', '', '0', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'\',\n)', '1', '', '13', '1', '1');
-INSERT INTO `tp_field` VALUES ('68', '5', 'template', '模板', '', '0', '0', '0', '', '', '', 'template', '', '1', '', '15', '1', '1');
-INSERT INTO `tp_field` VALUES ('69', '5', 'image', '缩略图', '', '0', '0', '120', '', '', '', 'image', 'array (\n  \'upload_allowext\' => \'jpg|jpeg|gif|png\',\n)', '0', '', '7', '1', '0');
-INSERT INTO `tp_field` VALUES ('70', '5', 'images', '图片集', '', '0', '0', '0', '', '', '', 'images', 'array (\n  \'upload_allowext\' => \'jpg|jpeg|gif|png\',\n)', '0', '', '8', '1', '0');
-INSERT INTO `tp_field` VALUES ('71', '5', 'download', '文件下载', '', '0', '0', '0', '', '', '', 'file', 'array (\n  \'upload_allowext\' => \'zip|rar|doc|ppt\',\n)', '0', '', '9', '1', '0');
-INSERT INTO `tp_field` VALUES ('72', '5', 'source', '来源', '', '0', '0', '0', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '4', '1', '0');
-INSERT INTO `tp_field` VALUES ('73', '5', 'author', '作者', '', '0', '0', '50', '', '', '', 'text', 'array (\n  \'default\' => \'Admin\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '3', '1', '0');
-INSERT INTO `tp_field` VALUES ('74', '5', 'sort', '排序', '', '1', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'100\',\n)', '0', '', '14', '1', '1');
-INSERT INTO `tp_field` VALUES ('75', '6', 'cate_id', '栏目', '', '1', '1', '6', '', '必须选择一个栏目', '', 'cate', '', '1', '', '1', '1', '1');
-INSERT INTO `tp_field` VALUES ('76', '6', 'title', '标题', '', '1', '1', '70', '', '标题必须为1-80个字符', '', 'title', '', '1', '', '2', '1', '1');
-INSERT INTO `tp_field` VALUES ('77', '6', 'keywords', '关键词', '', '0', '0', '80', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '1', '', '16', '1', '1');
-INSERT INTO `tp_field` VALUES ('78', '6', 'description', 'SEO简介', '', '0', '0', '1200', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'mediumtext\',\n  \'default\' => \'发3\',\n)', '1', '', '17', '1', '1');
-INSERT INTO `tp_field` VALUES ('79', '6', 'content', '内容', '', '0', '0', '0', '', '', '', 'editor', 'array (\n  \'edittype\' => \'ckeditor\',\n)', '1', '', '5', '1', '1');
-INSERT INTO `tp_field` VALUES ('80', '6', 'create_time', '添加时间', '', '1', '0', '0', 'date', '', 'createtime', 'datetime', '', '1', '', '10', '1', '1');
-INSERT INTO `tp_field` VALUES ('81', '6', 'status', '状态', '', '0', '0', '0', '', '', '', 'radio', 'array (\n  \'options\' => \'显示|1\r\n隐藏|0\',\n  \'fieldtype\' => \'tinyint\',\n  \'numbertype\' => \'1\',\n  \'labelwidth\' => \'75\',\n  \'default\' => \'1\',\n)', '1', '', '11', '1', '1');
-INSERT INTO `tp_field` VALUES ('82', '6', 'hits', '点击次数', '', '0', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'\',\n)', '1', '', '13', '1', '1');
-INSERT INTO `tp_field` VALUES ('83', '6', 'template', '模板', '', '0', '0', '0', '', '', '', 'template', '', '1', '', '15', '1', '1');
-INSERT INTO `tp_field` VALUES ('84', '6', 'image', '缩略图', '', '0', '0', '120', '', '', '', 'image', 'array (\n  \'upload_allowext\' => \'jpg|jpeg|gif|png\',\n)', '0', '', '7', '1', '0');
-INSERT INTO `tp_field` VALUES ('85', '6', 'images', '图片集', '', '0', '0', '0', '', '', '', 'images', 'array (\n  \'upload_allowext\' => \'jpg|jpeg|gif|png\',\n)', '0', '', '8', '1', '0');
-INSERT INTO `tp_field` VALUES ('86', '6', 'download', '文件下载', '', '0', '0', '0', '', '', '', 'file', 'array (\n  \'upload_allowext\' => \'zip|rar|doc|ppt\',\n)', '0', '', '9', '1', '0');
-INSERT INTO `tp_field` VALUES ('87', '6', 'source', '来源', '', '0', '0', '0', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '4', '1', '0');
-INSERT INTO `tp_field` VALUES ('88', '6', 'author', '作者', '', '0', '0', '50', '', '', '', 'text', 'array (\n  \'default\' => \'Admin\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '3', '1', '0');
-INSERT INTO `tp_field` VALUES ('89', '6', 'sort', '排序', '', '1', '0', '8', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'100\',\n)', '0', '', '14', '1', '1');
-INSERT INTO `tp_field` VALUES ('90', '2', 'summary', '摘要', '', '0', '0', '0', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'text\',\n  \'default\' => \'\',\n)', '0', '', '6', '1', '0');
-INSERT INTO `tp_field` VALUES ('91', '3', 'summary', '摘要', '', '0', '0', '0', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'text\',\n  \'default\' => \'\',\n)', '0', '', '6', '1', '0');
-INSERT INTO `tp_field` VALUES ('92', '4', 'summary', '摘要', '', '0', '0', '0', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'text\',\n  \'default\' => \'\',\n)', '0', '', '6', '1', '0');
-INSERT INTO `tp_field` VALUES ('93', '5', 'summary', '摘要', '', '0', '0', '0', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'text\',\n  \'default\' => \'\',\n)', '0', '', '6', '1', '0');
-INSERT INTO `tp_field` VALUES ('94', '6', 'summary', '摘要', '', '0', '0', '0', '', '', '', 'textarea', 'array (\n  \'fieldtype\' => \'text\',\n  \'default\' => \'\',\n)', '0', '', '6', '1', '0');
-INSERT INTO `tp_field` VALUES ('95', '7', 'cate_id', '栏目', '', '0', '1', '6', '', '必须选择一个栏目', '', 'cate', '', '1', '', '1', '1', '1');
-INSERT INTO `tp_field` VALUES ('96', '7', 'title', '标题', '', '1', '1', '80', '', '标题必须为1-80个字符', '', 'title', '', '1', '', '2', '1', '1');
-INSERT INTO `tp_field` VALUES ('106', '7', 'contact', '联系方式', '', '1', '0', '0', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '9', '1', '0');
-INSERT INTO `tp_field` VALUES ('99', '7', 'content', '内容', '', '0', '0', '0', '', '', '', 'editor', 'array (\n  \'edittype\' => \'ckeditor\',\n)', '1', '', '3', '1', '1');
-INSERT INTO `tp_field` VALUES ('100', '7', 'create_time', '添加时间', '', '1', '0', '0', 'date', '', 'createtime', 'datetime', '', '1', '', '4', '1', '1');
-INSERT INTO `tp_field` VALUES ('101', '7', 'status', '状态', '', '0', '0', '0', '', '', '', 'radio', 'array (\n  \'options\' => \'已处理|1\r\n未处理|0\',\n  \'fieldtype\' => \'tinyint\',\n  \'default\' => \'1\',\n)', '1', '', '5', '1', '1');
-INSERT INTO `tp_field` VALUES ('104', '7', 'name', '姓名', '', '1', '0', '0', '', '', '', 'text', 'array (\n  \'default\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '8', '1', '0');
-INSERT INTO `tp_field` VALUES ('105', '7', 'hits', '点击次数', '', '0', '0', '0', '', '', '', 'number', 'array (\n  \'numbertype\' => \'1\',\n  \'decimaldigits\' => \'0\',\n  \'default\' => \'\',\n)', '0', '', '7', '1', '0');
-INSERT INTO `tp_field` VALUES ('103', '7', 'template', '模板', '', '0', '0', '0', '', '', '', 'template', '', '1', '', '6', '1', '1');
-INSERT INTO `tp_field` VALUES ('107', '2', 'tags', 'TAG', '', '0', '0', '100', '', '', '', 'tag', 'array (\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '12', '1', '0');
-INSERT INTO `tp_field` VALUES ('108', '4', 'tags', 'TAG', '', '0', '0', '100', '', '', '', 'tag', 'array (\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '12', '1', '0');
-INSERT INTO `tp_field` VALUES ('109', '3', 'tags', 'TAG', '', '0', '0', '100', '', '', '', 'tag', 'array (\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '12', '1', '0');
-INSERT INTO `tp_field` VALUES ('110', '5', 'tags', 'TAG', '', '0', '0', '100', '', '', '', 'tag', 'array (\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '12', '1', '0');
-INSERT INTO `tp_field` VALUES ('111', '6', 'tags', 'TAG', '', '0', '0', '100', '', '', '', 'tag', 'array (\n  \'fieldtype\' => \'varchar\',\n)', '0', '', '12', '1', '0');
+INSERT INTO `tp_field` VALUES ('1', '2', 'id', '编号', '', '0', '0', '0', 'hidden', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '1', '自增ID', 'array (\r\n  \'default\' => \'0\',\r\n  \'extra_attr\' => \'\',\r\n  \'extra_class\' => \'\',\r\n  \'step\' => \'1\',\r\n  \'fieldtype\' => \'int\',\r\n  \'group\' => \'\',\r\n)', '0');
+INSERT INTO `tp_field` VALUES ('2', '1', 'email', '邮箱', '', '1', '0', '100', 'text', '0', '', '', '', '1', '0', '1', '1', '0', '=', '1', '2', '邮箱', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('4', '3', 'id', '编号', '', '0', '0', '0', 'hidden', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '1', '自增ID', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'int\',\n)', '');
+INSERT INTO `tp_field` VALUES ('6', '4', 'id', '编号', '', '0', '0', '0', 'hidden', '0', '', '', '', '0', '0', '1', '1', '0', '=', '1', '1', '自增ID', 'array (\r\n  \'default\' => \'0\',\r\n  \'extra_attr\' => \'\',\r\n  \'extra_class\' => \'\',\r\n  \'step\' => \'1\',\r\n  \'fieldtype\' => \'int\',\r\n  \'group\' => \'\',\r\n)', '0');
+INSERT INTO `tp_field` VALUES ('7', '4', 'dict_name', '字典名称', '', '1', '0', '100', 'text', '0', '', '', '', '1', '1', '1', '1', '0', '=', '1', '2', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'char\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('41', '2', 'module_id', '所属模块', '', '1', '0', '3', 'select', '2', 'Module', 'module_name', '', '1', '1', '1', '1', '1', '=', '1', '2', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('9', '4', 'status', '状态', '', '1', '0', '0', 'radio', '1', '', '', '2', '1', '1', '1', '1', '0', '=', '1', '3', '', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('10', '4', 'create_time', '创建时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '5', '', 'array (\n  \'default\' => \'0\',\n  \'format\' => \'yyyy-mm-dd hh:ii:ss\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'int\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('11', '4', 'update_time', '更新时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '6', '', 'array (\n  \'default\' => \'0\',\n  \'format\' => \'yyyy-mm-dd hh:ii:ss\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'int\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('12', '4', 'remark', '备注', '', '0', '0', '200', 'textarea', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '7', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('13', '5', 'dict_label', '字典标签', '通常用做展示，如：男,女', '1', '0', '100', 'text', '0', '', '', '', '1', '1', '1', '1', '0', '=', '1', '1', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('14', '5', 'dict_value', '字典键值', '通常用做键值，如：0,1', '1', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '1', '1', '=', '1', '2', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('15', '5', 'dict_type', '字典类型', '', '1', '0', '5', 'select', '2', 'DictionaryType', 'dict_name', '', '1', '0', '1', '1', '1', '=', '1', '3', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'char\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('16', '5', 'remark', '备注', '', '0', '0', '200', 'textarea', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '5', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('17', '5', 'create_time', '创建时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '1', '=', '1', '50', '', 'array (\n  \'default\' => \'0\',\n  \'format\' => \'yyyy-mm-dd hh:ii:ss\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'int\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('18', '5', 'update_time', '更新时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '1', '=', '1', '50', '', 'array (\n  \'default\' => \'0\',\n  \'format\' => \'yyyy-mm-dd hh:ii:ss\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'int\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('19', '5', 'sort', '排序', '', '1', '0', '5', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '4', '', 'array (\n  \'default\' => \'50\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'step\' => \'1\',\n  \'fieldtype\' => \'int\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('20', '4', 'sort', '排序', '', '1', '0', '5', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '4', '', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'step\' => \'1\',\n  \'fieldtype\' => \'int\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('21', '5', 'id', '编号', '', '0', '0', '0', 'hidden', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\r\n  \'default\' => \'0\',\r\n  \'extra_attr\' => \'\',\r\n  \'extra_class\' => \'\',\r\n  \'step\' => \'1\',\r\n  \'fieldtype\' => \'int\',\r\n  \'group\' => \'\',\r\n)', '0');
+INSERT INTO `tp_field` VALUES ('22', '5', 'status', '状态', '', '1', '0', '0', 'radio', '1', '', '', '1', '1', '1', '1', '1', '1', '=', '1', '50', '', 'array (\n  \'default\' => \'1\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('23', '3', 'create_time', '创建时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '', 'array (\r\n  \'default\' => \'0\',\r\n  \'format\' => \'yyyy-mm-dd hh:ii:ss\',\r\n  \'extra_attr\' => \'\',\r\n  \'extra_class\' => \'\',\r\n  \'placeholder\' => \'\',\r\n  \'fieldtype\' => \'int\',\r\n)', '0');
+INSERT INTO `tp_field` VALUES ('24', '3', 'update_time', '更新时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '', 'array (\r\n  \'default\' => \'0\',\r\n  \'format\' => \'yyyy-mm-dd hh:ii:ss\',\r\n  \'extra_attr\' => \'\',\r\n  \'extra_class\' => \'\',\r\n  \'placeholder\' => \'\',\r\n  \'fieldtype\' => \'int\',\r\n)', '0');
+INSERT INTO `tp_field` VALUES ('25', '3', 'sort', '排序', '', '1', '0', '5', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '8', '', 'array (\r\n  \'default\' => \'50\',\r\n  \'extra_attr\' => \'\',\r\n  \'extra_class\' => \'\',\r\n  \'step\' => \'1\',\r\n  \'fieldtype\' => \'int\',\r\n  \'group\' => \'\',\r\n)', '0');
+INSERT INTO `tp_field` VALUES ('26', '3', 'module_name', '模块名称', '填写中文名称，如：友情链接', '1', '0', '100', 'text', '0', '', '', '', '1', '1', '1', '1', '0', 'like', '1', '2', '模块名称', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('27', '3', 'table_name', '表名称', '除去表前缀的数据表名称，全部小写并以`_`分割，如：user_group', '1', '0', '50', 'text', '0', '', '', '', '1', '1', '1', '1', '0', 'like', '1', '3', '表名称', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('28', '3', 'model_name', '模型名称', '除去表前缀的数据表名称，驼峰法命名，且首字母大写，如：UserGroup', '1', '0', '50', 'text', '0', '', '', '', '1', '1', '1', '1', '0', 'like', '1', '4', '模型名称', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('29', '3', 'table_comment', '表描述', '', '1', '0', '200', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '5', '表描述', 'array (\r\n  \'default\' => \'\',\r\n  \'extra_attr\' => \'\',\r\n  \'extra_class\' => \'\',\r\n  \'placeholder\' => \'\',\r\n  \'fieldtype\' => \'varchar\',\r\n  \'group\' => \'\',\r\n)', '0');
+INSERT INTO `tp_field` VALUES ('30', '3', 'table_type', '表类型', '', '1', '0', '10', 'select', '1', '', '', '3', '1', '1', '1', '1', '0', '=', '1', '6', '表类型', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('31', '3', 'pk', '主键', '', '1', '0', '50', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '6', '主键', 'array (\n  \'default\' => \'id\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('32', '3', 'list_fields', '列表页字段', '', '1', '0', '255', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '9', '列表页字段', 'array (\r\n  \'default\' => \'*\',\r\n  \'extra_attr\' => \'\',\r\n  \'extra_class\' => \'\',\r\n  \'placeholder\' => \'\',\r\n  \'fieldtype\' => \'varchar\',\r\n  \'group\' => \'\',\r\n)', '0');
+INSERT INTO `tp_field` VALUES ('33', '3', 'remark', '备注', '', '0', '0', '200', 'textarea', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '16', '', 'array (\r\n  \'default\' => \'\',\r\n  \'extra_attr\' => \'\',\r\n  \'extra_class\' => \'\',\r\n  \'placeholder\' => \'\',\r\n  \'fieldtype\' => \'varchar\',\r\n)', '0');
+INSERT INTO `tp_field` VALUES ('34', '6', 'id', '编号', '', '0', '0', '0', 'hidden', '0', '', '', '', '0', '0', '1', '0', '0', '', '1', '1', '自增ID', 'array (\'default\' => \'0\',\'extra_attr\' => \'\',\'extra_class\' => \'\',\'step\' => \'1\',\'fieldtype\' => \'int\',\'group\' => \'\')', '0');
+INSERT INTO `tp_field` VALUES ('35', '6', 'create_time', '创建时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\'default\' => \'0\', \'format\' => \'yyyy-mm-dd hh:ii:ss\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'placeholder\' => \'\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('36', '6', 'update_time', '更新时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\'default\' => \'0\', \'format\' => \'yyyy-mm-dd hh:ii:ss\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'placeholder\' => \'\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('37', '6', 'name', '分组名称', '', '1', '0', '100', 'text', '0', '', '', '', '1', '1', '1', '1', '1', '=', '1', '2', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('38', '6', 'remark', '描述', '', '0', '0', '0', 'textarea', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '3', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('39', '6', 'sort', '排序', '', '1', '0', '5', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '4', '', 'array (\n  \'default\' => \'50\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'step\' => \'1\',\n  \'fieldtype\' => \'int\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('40', '6', 'status', '状态', '', '1', '0', '0', 'radio', '1', '', '', '1', '1', '1', '1', '1', '0', '=', '1', '5', '', 'array (\n  \'default\' => \'1\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('42', '2', 'field', '字段名', '', '1', '0', '100', 'text', '0', '', '', '', '1', '1', '1', '1', '0', '=', '1', '3', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('43', '2', 'name', '字段别名', '', '1', '0', '100', 'text', '0', '', '', '', '1', '1', '1', '1', '0', '=', '1', '4', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('44', '2', 'tips', '提示信息', '', '0', '0', '200', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '5', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('45', '2', 'required', '是否必填', '', '1', '0', '1', 'radio', '1', '', '', '2', '1', '1', '1', '0', '0', '=', '1', '6', '', 'array (\n  \'default\' => \'1\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('46', '2', 'minlength', '最小长度', '', '0', '0', '10', 'number', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '7', '', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'step\' => \'1\',\n  \'fieldtype\' => \'int\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('47', '2', 'maxlength', '最大长度', '', '0', '0', '10', 'number', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '8', '', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'step\' => \'1\',\n  \'fieldtype\' => \'int\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('48', '2', 'type', '字段类型', '', '1', '0', '20', 'text', '0', '', '', '', '1', '1', '1', '1', '1', '=', '1', '9', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('49', '2', 'data_source', '数据源', '', '0', '0', '10', 'number', '1', '', '', '9', '1', '1', '1', '1', '0', '=', '1', '10', '', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'step\' => \'1\',\n  \'fieldtype\' => \'int\',\n)', '');
+INSERT INTO `tp_field` VALUES ('50', '2', 'relation_model', '模型关联', '', '0', '0', '100', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '11', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('51', '2', 'relation_field', '展示字段', '', '0', '0', '100', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '12', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('52', '2', 'dict_code', '字典类型', '', '0', '0', '100', 'text', '2', 'DictionaryType', 'module_name', '', '1', '1', '1', '0', '0', '=', '1', '13', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('53', '2', 'is_add', '添加', '', '0', '0', '1', 'radio', '1', '', '', '2', '1', '1', '1', '0', '0', '=', '1', '14', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('54', '2', 'is_edit', '修改', '', '0', '0', '1', 'radio', '1', '', '', '2', '1', '1', '1', '0', '0', '=', '1', '15', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('55', '2', 'is_list', '列表', '', '0', '0', '1', 'radio', '1', '', '', '2', '1', '1', '1', '0', '0', '=', '1', '16', '', 'array (\r\n  \'default\' => \'0\',\r\n  \'extra_attr\' => \'\',\r\n  \'extra_class\' => \'\',\r\n  \'fieldtype\' => \'tinyint\',\r\n)', '0');
+INSERT INTO `tp_field` VALUES ('56', '2', 'is_search', '搜索', '', '0', '0', '1', 'radio', '1', '', '', '2', '1', '1', '1', '0', '0', '=', '1', '17', '', 'array (\r\n  \'default\' => \'0\',\r\n  \'extra_attr\' => \'\',\r\n  \'extra_class\' => \'\',\r\n  \'fieldtype\' => \'tinyint\',\r\n)', '0');
+INSERT INTO `tp_field` VALUES ('57', '2', 'is_sort', '排序', '', '0', '0', '1', 'radio', '1', '', '', '2', '1', '1', '1', '0', '0', '=', '1', '18', '', 'array (\r\n  \'default\' => \'0\',\r\n  \'extra_attr\' => \'\',\r\n  \'extra_class\' => \'\',\r\n  \'fieldtype\' => \'tinyint\',\r\n)', '0');
+INSERT INTO `tp_field` VALUES ('58', '2', 'search_type', '查询类型', '', '0', '0', '100', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '19', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('59', '2', 'status', '状态', '', '1', '0', '0', 'radio', '1', '', '', '1', '1', '1', '1', '1', '0', '=', '1', '20', '', 'array (\r\n  \'default\' => \'1\',\r\n  \'extra_attr\' => \'\',\r\n  \'extra_class\' => \'\',\r\n  \'fieldtype\' => \'tinyint\',\r\n)', '0');
+INSERT INTO `tp_field` VALUES ('60', '2', 'sort', '排序', '', '1', '0', '5', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '21', '', 'array (\r\n  \'default\' => \'50\',\r\n  \'extra_attr\' => \'\',\r\n  \'extra_class\' => \'\',\r\n  \'step\' => \'1\',\r\n  \'fieldtype\' => \'int\',\r\n)', '0');
+INSERT INTO `tp_field` VALUES ('61', '2', 'remark', '备注', '', '0', '0', '200', 'textarea', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '22', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('62', '2', 'setup', '其他设置', '', '0', '0', '0', 'textarea', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '23', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('63', '1', 'id', '编号', '', '0', '0', '0', 'hidden', '0', '', '', '', '0', '0', '1', '0', '0', '', '1', '1', '自增ID', 'array (\'default\' => \'0\',\'extra_attr\' => \'\',\'extra_class\' => \'\',\'step\' => \'1\',\'fieldtype\' => \'int\',\'group\' => \'\')', '0');
+INSERT INTO `tp_field` VALUES ('64', '1', 'password', '密码', '', '1', '0', '100', 'password', '0', '', '', '', '1', '0', '0', '0', '0', '=', '1', '3', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('65', '1', 'sex', '性别', '', '1', '0', '1', 'radio', '1', '', '', '4', '1', '1', '1', '1', '1', '=', '1', '4', '', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('66', '1', 'last_login_time', '最后登录时间', '', '0', '0', '10', 'datetime', '0', '', '', '', '1', '0', '1', '0', '0', '=', '1', '5', '', 'array (\n  \'default\' => \'0\',\n  \'format\' => \'yyyy-mm-dd hh:ii:ss\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'int\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('67', '1', 'last_login_ip', '最后登录IP', '', '0', '0', '15', 'text', '0', '', '', '', '1', '0', '1', '1', '0', '=', '1', '6', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('68', '1', 'qq', 'QQ', '', '0', '0', '20', 'text', '0', '', '', '', '1', '0', '1', '1', '0', '=', '1', '7', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('69', '1', 'mobile', '手机', '', '0', '0', '20', 'text', '0', '', '', '', '1', '0', '1', '1', '0', '=', '1', '8', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('70', '1', 'mobile_validated', '手机验证', '', '1', '0', '3', 'radio', '1', '', '', '5', '1', '1', '1', '1', '1', '=', '1', '9', '', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('71', '1', 'email_validated', '邮箱验证', '', '1', '0', '3', 'radio', '1', '', '', '5', '1', '1', '1', '1', '1', '=', '1', '10', '', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('72', '1', 'type_id', '所属分组', '', '1', '0', '3', 'select', '2', 'UsersType', 'name', '', '1', '1', '1', '1', '1', '=', '1', '11', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('73', '1', 'status', '状态', '', '1', '0', '0', 'radio', '1', '', '', '1', '1', '1', '1', '1', '0', '=', '1', '12', '', 'array (\r\n  \'default\' => \'1\',\r\n  \'extra_attr\' => \'\',\r\n  \'extra_class\' => \'\',\r\n  \'fieldtype\' => \'tinyint\',\r\n)', '0');
+INSERT INTO `tp_field` VALUES ('74', '1', 'create_ip', '注册IP', '', '0', '0', '15', 'text', '0', '', '', '', '1', '0', '1', '0', '0', '=', '1', '13', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('75', '1', 'create_time', '创建时间', '', '0', '0', '10', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '14', '自增ID', 'array (\'default\' => \'0\', \'format\' => \'yyyy-mm-dd hh:ii:ss\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'placeholder\' => \'\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('76', '1', 'update_time', '更新时间', '', '0', '0', '10', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '15', '自增ID', 'array (\'default\' => \'0\', \'format\' => \'yyyy-mm-dd hh:ii:ss\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'placeholder\' => \'\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('77', '2', 'group_id', '字段分组', '用于添加和修改时显示在对应的分组中', '0', '0', '8', 'select', '2', 'FieldGrooup', 'group_name', '', '1', '1', '0', '0', '0', '=', '1', '50', '用于添加和修改时显示在对应的分组中', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'char\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('78', '7', 'id', '编号', '', '0', '0', '0', 'hidden', '0', '', '', '', '0', '0', '1', '0', '0', '', '1', '1', '自增ID', 'array (\'default\' => \'0\',\'extra_attr\' => \'\',\'extra_class\' => \'\',\'step\' => \'1\',\'fieldtype\' => \'int\',\'group\' => \'\')', '0');
+INSERT INTO `tp_field` VALUES ('79', '7', 'create_time', '创建时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\'default\' => \'0\', \'format\' => \'yyyy-mm-dd hh:ii:ss\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'placeholder\' => \'\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('80', '7', 'update_time', '更新时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\'default\' => \'0\', \'format\' => \'yyyy-mm-dd hh:ii:ss\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'placeholder\' => \'\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('81', '7', 'module_id', '所属模块', '用于判断当前字段所属模块', '1', '0', '5', 'select', '2', 'Module', 'module_name', '', '1', '1', '1', '1', '0', '=', '1', '2', '', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('82', '7', 'group_name', '分组名称', '用于添加/修改时显示对应的分组名称', '1', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '1', '0', '=', '1', '3', '用于添加/修改时显示对应的分组名称', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('83', '7', 'status', '状态', '', '1', '0', '0', 'radio', '1', '', '', '1', '1', '1', '1', '1', '0', '=', '1', '4', '', 'array (\n  \'default\' => \'1\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('84', '7', 'sort', '排序', '', '1', '0', '5', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '5', '', 'array (\n  \'default\' => \'50\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'step\' => \'1\',\n  \'fieldtype\' => \'int\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('85', '8', 'id', '编号', '', '0', '0', '0', 'hidden', '0', '', '', '', '0', '0', '1', '0', '0', '', '1', '1', '自增ID', 'array (\'default\' => \'0\',\'extra_attr\' => \'\',\'extra_class\' => \'\',\'step\' => \'1\',\'fieldtype\' => \'int\',\'group\' => \'\')', '0');
+INSERT INTO `tp_field` VALUES ('86', '8', 'create_time', '创建时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\'default\' => \'0\', \'format\' => \'yyyy-mm-dd hh:ii:ss\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'placeholder\' => \'\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('87', '8', 'update_time', '更新时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\'default\' => \'0\', \'format\' => \'yyyy-mm-dd hh:ii:ss\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'placeholder\' => \'\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('88', '8', 'name', '网站名称', '', '1', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '1', '0', 'LIKE', '1', '2', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('89', '8', 'url', '网站地址', '请填写完整的网站地址', '1', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '1', '0', 'LIKE', '1', '3', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('90', '8', 'logo', '网站logo', '', '0', '0', '0', 'image', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '4', '', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('91', '8', 'description', '描述', '', '0', '0', '0', 'textarea', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '5', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('92', '8', 'sort', '排序', '', '1', '0', '0', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '6', '', 'array (\n  \'default\' => \'50\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'step\' => \'1\',\n  \'fieldtype\' => \'int\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('93', '8', 'status', '状态', '', '1', '0', '0', 'radio', '1', '', '', '1', '1', '1', '1', '1', '0', '=', '1', '7', '', 'array (\n  \'default\' => \'1\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('94', '9', 'id', '编号', '', '0', '0', '0', 'hidden', '0', '', '', '', '0', '0', '1', '0', '0', '', '1', '1', '自增ID', 'array (\'default\' => \'0\',\'extra_attr\' => \'\',\'extra_class\' => \'\',\'step\' => \'1\',\'fieldtype\' => \'int\',\'group\' => \'\')', '0');
+INSERT INTO `tp_field` VALUES ('95', '9', 'create_time', '创建时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\'default\' => \'0\', \'format\' => \'yyyy-mm-dd hh:ii:ss\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'placeholder\' => \'\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('96', '9', 'update_time', '更新时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\'default\' => \'0\', \'format\' => \'yyyy-mm-dd hh:ii:ss\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'placeholder\' => \'\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('97', '9', 'name', '分组名称', '', '1', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '1', '1', 'LIKE', '1', '2', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('98', '9', 'description', '备注', '', '0', '0', '0', 'textarea', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '3', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('99', '9', 'sort', '排序', '', '1', '0', '0', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '4', '', 'array (\n  \'default\' => \'50\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'step\' => \'1\',\n  \'fieldtype\' => \'int\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('101', '9', 'status', '状态', '', '1', '0', '0', 'radio', '1', '', '', '1', '1', '1', '1', '1', '0', '=', '1', '5', '', 'array (\n  \'default\' => \'1\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('102', '3', 'is_sort', '排序字段', '选择是则在生成模块时自动创建`排序`字段', '0', '0', '0', 'radio', '1', '', '', '2', '1', '1', '1', '0', '0', '=', '1', '10', '生成模块时自动创建', 'array (\n  \'default\' => \'1\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('103', '3', 'is_status', '状态字段', '选择是则在生成模块时自动创建`状态`字段', '0', '0', '0', 'radio', '1', '', '', '2', '1', '1', '1', '0', '0', '=', '1', '11', '生成模块时自动创建', 'array (\n  \'default\' => \'1\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('104', '10', 'id', '编号', '', '0', '0', '0', 'hidden', '0', '', '', '', '0', '0', '1', '0', '0', '', '1', '1', '自增ID', 'array (\'default\' => \'0\',\'extra_attr\' => \'\',\'extra_class\' => \'\',\'step\' => \'1\',\'fieldtype\' => \'int\',\'group\' => \'\')', '0');
+INSERT INTO `tp_field` VALUES ('105', '10', 'create_time', '创建时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\'default\' => \'0\', \'format\' => \'yyyy-mm-dd hh:ii:ss\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'placeholder\' => \'\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('106', '10', 'update_time', '更新时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\'default\' => \'0\', \'format\' => \'yyyy-mm-dd hh:ii:ss\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'placeholder\' => \'\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('107', '10', 'sort', '排序', '', '1', '0', '8', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '49', '', 'array (\'default\' => \'50\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'step\' => \'1\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('108', '10', 'status', '状态', '', '1', '0', '1', 'radio', '1', '', '', '1', '1', '1', '1', '1', '0', '=', '1', '48', '', 'array (\'default\' => \'1\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'fieldtype\' => \'tinyint\',)', '0');
+INSERT INTO `tp_field` VALUES ('109', '10', 'type_id', '广告位', '', '1', '0', '0', 'select2', '2', 'AdType', 'name', '', '1', '1', '1', '1', '0', '=', '1', '2', '所属广告位', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'int\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('110', '10', 'name', '广告名称', '', '1', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '1', '0', 'LIKE', '1', '3', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('111', '10', 'image', '图片', '', '0', '0', '0', 'image', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '4', '', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('112', '10', 'thumb', '缩略图', '', '0', '0', '0', 'image', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '5', '', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('113', '10', 'url', '链接地址', '', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '6', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('114', '10', 'description', '备注', '', '0', '0', '250', 'textarea', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '7', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('115', '11', 'id', '编号', '', '0', '0', '0', 'hidden', '0', '', '', '', '0', '0', '1', '0', '0', '', '1', '1', '自增ID', 'array (\'default\' => \'0\',\'extra_attr\' => \'\',\'extra_class\' => \'\',\'step\' => \'1\',\'fieldtype\' => \'int\',\'group\' => \'\')', '0');
+INSERT INTO `tp_field` VALUES ('116', '11', 'create_time', '创建时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\'default\' => \'0\', \'format\' => \'yyyy-mm-dd hh:ii:ss\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'placeholder\' => \'\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('117', '11', 'update_time', '更新时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\'default\' => \'0\', \'format\' => \'yyyy-mm-dd hh:ii:ss\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'placeholder\' => \'\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('118', '11', 'sort', '排序', '', '1', '0', '8', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '49', '', 'array (\'default\' => \'50\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'step\' => \'1\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('119', '11', 'status', '状态', '', '1', '0', '1', 'radio', '1', '', '', '1', '1', '1', '1', '1', '0', '=', '1', '48', '', 'array (\'default\' => \'1\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'fieldtype\' => \'tinyint\',)', '0');
+INSERT INTO `tp_field` VALUES ('120', '11', 'title', '碎片标题', '通常为中文，如：关于我们', '1', '0', '255', 'text', '0', '', '', '', '1', '1', '1', '1', '0', 'LIKE', '1', '2', '标题', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('121', '11', 'name', '调用名称', '通常为英文，如：AboutUs', '1', '0', '255', 'text', '0', '', '', '', '1', '1', '1', '1', '0', 'LIKE', '1', '3', '调用名称', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('122', '11', 'content', '碎片内容', '', '0', '0', '0', 'editor', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '4', '碎片内容', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'height\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('123', '11', 'url', '链接地址', '', '0', '0', '255', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '5', '链接地址', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('124', '11', 'image', '图片', '', '0', '0', '0', 'image', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '6', '', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('125', '11', 'description', '描述', '', '0', '0', '255', 'textarea', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '7', '描述', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('133', '3', 'top_button', '顶部按钮', '列表页面顶部按钮组中的按钮', '0', '0', '255', 'checkbox', '1', '', '', '6', '1', '1', '0', '0', '0', '=', '1', '12', '列表页面顶部按钮组中的按钮', 'array (\n  \'default\' => \'add,edit,del,export\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('134', '3', 'right_button', '右侧按钮', '列表页面右侧按钮组中的按钮', '0', '0', '255', 'checkbox', '1', '', '', '7', '1', '1', '0', '0', '0', '=', '1', '13', '列表页面右侧按钮组中的按钮', 'array (\n  \'default\' => \'edit,delete\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('135', '13', 'id', '编号', '', '0', '0', '0', 'hidden', '0', '', '', '', '0', '0', '1', '0', '0', '', '1', '1', '自增ID', 'array (\'default\' => \'0\',\'extra_attr\' => \'\',\'extra_class\' => \'\',\'step\' => \'1\',\'fieldtype\' => \'int\',\'group\' => \'\')', '1');
+INSERT INTO `tp_field` VALUES ('136', '13', 'create_time', '添加时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\'default\' => \'0\', \'format\' => \'yyyy-mm-dd hh:ii:ss\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'placeholder\' => \'\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('137', '13', 'update_time', '更新时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\n  \'default\' => \'0\',\n  \'format\' => \'yyyy-mm-dd hh:ii:ss\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'int\',\n)', '');
+INSERT INTO `tp_field` VALUES ('138', '13', 'name', '网站名称', '', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '2', '网站名称', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '1');
+INSERT INTO `tp_field` VALUES ('139', '13', 'logo', '网站LOGO', '', '0', '0', '0', 'image', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '3', '', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '1');
+INSERT INTO `tp_field` VALUES ('140', '13', 'icp', '备案号', '', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '4', '备案号', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '1');
+INSERT INTO `tp_field` VALUES ('141', '13', 'copyright', '版权信息', '', '0', '0', '255', 'textarea', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '5', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '1');
+INSERT INTO `tp_field` VALUES ('142', '13', 'url', '网站地址', '', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '6', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '1');
+INSERT INTO `tp_field` VALUES ('143', '13', 'address', '公司地址', '', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '7', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '1');
+INSERT INTO `tp_field` VALUES ('144', '13', 'contacts', '联系人', '', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '8', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '1');
+INSERT INTO `tp_field` VALUES ('145', '13', 'tel', '联系电话', '', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '9', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '1');
+INSERT INTO `tp_field` VALUES ('146', '13', 'mobile_phone', '手机号码', '', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '10', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '1');
+INSERT INTO `tp_field` VALUES ('147', '13', 'fax', '传真号码', '', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '11', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '1');
+INSERT INTO `tp_field` VALUES ('148', '13', 'email', '邮箱账号', '', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '12', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '1');
+INSERT INTO `tp_field` VALUES ('149', '13', 'qq', 'QQ', '', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '13', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '1');
+INSERT INTO `tp_field` VALUES ('150', '13', 'qrcode', '二维码', '', '0', '0', '0', 'image', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '14', '', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '1');
+INSERT INTO `tp_field` VALUES ('151', '13', 'title', 'SEO标题', '', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '15', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '2');
+INSERT INTO `tp_field` VALUES ('152', '13', 'key', 'SEO关键字', '', '0', '0', '0', 'textarea', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '16', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '2');
+INSERT INTO `tp_field` VALUES ('153', '13', 'des', 'SEO描述', '', '0', '0', '0', 'textarea', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '17', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '2');
+INSERT INTO `tp_field` VALUES ('154', '13', 'mobile', '手机端', '开启后自动跳转到mobile，自适应网站或无手机端网站请关闭', '0', '0', '0', 'radio', '1', '', '', '8', '1', '1', '1', '0', '0', '=', '1', '18', '', 'array (\n  \'default\' => \'1\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '3');
+INSERT INTO `tp_field` VALUES ('156', '13', 'code', '后台验证码', '后台登录时是否需要验证码', '0', '0', '0', 'radio', '1', '', '', '8', '1', '1', '1', '0', '0', '=', '1', '19', '', 'array (\n  \'default\' => \'1\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '3');
+INSERT INTO `tp_field` VALUES ('157', '13', 'message_code', '前台验证码', '前台留言等是否需要验证码', '0', '0', '0', 'radio', '1', '', '', '8', '1', '1', '1', '0', '0', '=', '1', '20', '', 'array (\n  \'default\' => \'1\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '3');
+INSERT INTO `tp_field` VALUES ('158', '13', 'message_send_mail', '留言邮件提醒', '前台留言时是否需要邮件提醒，如开启请先进行邮箱配置', '0', '0', '0', 'radio', '1', '', '', '8', '1', '1', '1', '0', '0', '=', '1', '21', '', 'array (\n  \'default\' => \'1\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '3');
+INSERT INTO `tp_field` VALUES ('159', '13', 'template_opening', '模板修改备份', '开启后后台模板管理中修改文件时会进行自动备份', '0', '0', '0', 'radio', '1', '', '', '8', '1', '1', '1', '0', '0', '=', '1', '22', '', 'array (\n  \'default\' => \'1\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '3');
+INSERT INTO `tp_field` VALUES ('160', '13', 'template', '模板目录', '模版所在的目录名称，默认为 default', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '23', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '4');
+INSERT INTO `tp_field` VALUES ('161', '13', 'html', 'Html目录', 'Html所在的目录名称，默认为 html', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '24', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '4');
+INSERT INTO `tp_field` VALUES ('162', '13', 'other', '其他', '其他信息', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '25', '备用字段', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '5');
+INSERT INTO `tp_field` VALUES ('163', '14', 'id', '编号', '', '0', '0', '0', 'hidden', '0', '', '', '', '0', '0', '1', '0', '0', '', '1', '1', '自增ID', 'array (\'default\' => \'0\',\'extra_attr\' => \'\',\'extra_class\' => \'\',\'step\' => \'1\',\'fieldtype\' => \'int\',\'group\' => \'\')', '0');
+INSERT INTO `tp_field` VALUES ('164', '14', 'create_time', '添加时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\'default\' => \'0\', \'format\' => \'yyyy-mm-dd hh:ii:ss\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'placeholder\' => \'\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('165', '14', 'update_time', '更新时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\n  \'default\' => \'0\',\n  \'format\' => \'yyyy-mm-dd hh:ii:ss\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'int\',\n)', '');
+INSERT INTO `tp_field` VALUES ('166', '14', 'status', '状态', '', '1', '0', '1', 'radio', '1', '', '', '1', '1', '1', '1', '1', '0', '=', '1', '48', '', 'array (\'default\' => \'1\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'fieldtype\' => \'tinyint\',)', '0');
+INSERT INTO `tp_field` VALUES ('167', '14', 'title', '角色组', '', '1', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '2', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('168', '14', 'rules', '权限', '', '0', '0', '0', 'textarea', '0', '', '', '', '0', '0', '0', '0', '0', '=', '1', '3', '权限', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '');
+INSERT INTO `tp_field` VALUES ('169', '15', 'id', '编号', '', '0', '0', '0', 'hidden', '0', '', '', '', '0', '0', '1', '0', '0', '', '1', '1', '自增ID', 'array (\'default\' => \'0\',\'extra_attr\' => \'\',\'extra_class\' => \'\',\'step\' => \'1\',\'fieldtype\' => \'int\',\'group\' => \'\')', '0');
+INSERT INTO `tp_field` VALUES ('170', '15', 'create_time', '添加时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\'default\' => \'0\', \'format\' => \'yyyy-mm-dd hh:ii:ss\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'placeholder\' => \'\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('171', '15', 'update_time', '更新时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\n  \'default\' => \'0\',\n  \'format\' => \'yyyy-mm-dd hh:ii:ss\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'int\',\n)', '');
+INSERT INTO `tp_field` VALUES ('172', '15', 'status', '状态', '', '1', '0', '1', 'radio', '1', '', '', '1', '1', '1', '1', '1', '0', '=', '1', '48', '', 'array (\'default\' => \'1\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'fieldtype\' => \'tinyint\',)', '0');
+INSERT INTO `tp_field` VALUES ('173', '15', 'username', '用户名', '用户名在4到25个字符之间', '1', '4', '25', 'text', '0', '', '', '', '1', '1', '1', '1', '0', '=', '1', '2', '用户名', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('174', '15', 'password', '密码', '密码在5到25个字符之间', '1', '5', '25', 'password', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '3', '密码', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '');
+INSERT INTO `tp_field` VALUES ('175', '15', 'login_time', '登录时间', '', '0', '0', '0', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '4', '最后登录时间', 'array (\n  \'default\' => \'0\',\n  \'format\' => \'yyyy-mm-dd hh:ii:ss\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'int\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('176', '15', 'login_ip', '登录IP', '', '0', '0', '0', 'text', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '5', '最后登录IP', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('177', '15', 'nickname', '昵称', '昵称在4到25个字符之间', '1', '4', '25', 'text', '0', '', '', '', '1', '1', '1', '0', '0', 'LIKE', '1', '6', '昵称', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('178', '15', 'image', '头像', '', '1', '0', '0', 'image', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '6', '头像', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('179', '16', 'status', '菜单状态', '是否需要显示在左侧菜单', '1', '0', '1', 'radio', '1', '', '', '1', '1', '1', '1', '0', '0', '=', '1', '48', '', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '');
+INSERT INTO `tp_field` VALUES ('180', '16', 'update_time', '更新时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\n  \'default\' => \'0\',\n  \'format\' => \'yyyy-mm-dd hh:ii:ss\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'int\',\n)', '');
+INSERT INTO `tp_field` VALUES ('181', '16', 'create_time', '添加时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\'default\' => \'0\', \'format\' => \'yyyy-mm-dd hh:ii:ss\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'placeholder\' => \'\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('182', '16', 'id', '编号', '', '0', '0', '0', 'hidden', '0', '', '', '', '0', '0', '1', '0', '0', '', '1', '1', '自增ID', 'array (\'default\' => \'0\',\'extra_attr\' => \'\',\'extra_class\' => \'\',\'step\' => \'1\',\'fieldtype\' => \'int\',\'group\' => \'\')', '0');
+INSERT INTO `tp_field` VALUES ('183', '16', 'pid', '父ID', '', '0', '0', '0', 'select2', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '2', '', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'int\',\n)', '');
+INSERT INTO `tp_field` VALUES ('184', '16', 'name', '控制器/方法', '', '1', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '4', '控制器/方法', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '');
+INSERT INTO `tp_field` VALUES ('185', '16', 'title', '权限名称', '', '1', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '5', '权限名称', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('186', '16', 'auth_open', '验证权限', '', '0', '0', '0', 'radio', '1', '', '', '2', '1', '1', '1', '0', '0', '=', '1', '7', '', 'array (\n  \'default\' => \'1\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('187', '16', 'icon', '图标名称', '如：fa fa-cogs', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '3', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('188', '16', 'sort', '排序', '', '1', '0', '8', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '49', '', 'array (\'default\' => \'50\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'step\' => \'1\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('189', '17', 'id', '编号', '', '0', '0', '0', 'hidden', '0', '', '', '', '0', '0', '1', '0', '0', '', '1', '1', '自增ID', 'array (\'default\' => \'0\',\'extra_attr\' => \'\',\'extra_class\' => \'\',\'step\' => \'1\',\'fieldtype\' => \'int\',\'group\' => \'\')', '0');
+INSERT INTO `tp_field` VALUES ('190', '17', 'create_time', '添加时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\'default\' => \'0\', \'format\' => \'yyyy-mm-dd hh:ii:ss\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'placeholder\' => \'\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('191', '17', 'update_time', '更新时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\n  \'default\' => \'0\',\n  \'format\' => \'yyyy-mm-dd hh:ii:ss\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'int\',\n)', '');
+INSERT INTO `tp_field` VALUES ('192', '17', 'admin_id', '管理员', '', '0', '0', '8', 'select', '2', 'Admin', 'username', '', '1', '0', '1', '1', '0', 'LIKE', '1', '2', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'int\',\n)', '');
+INSERT INTO `tp_field` VALUES ('193', '17', 'url', '操作页面	', '', '0', '0', '0', 'text', '0', '', '', '', '1', '0', '1', '1', '0', 'LIKE', '1', '3', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '');
+INSERT INTO `tp_field` VALUES ('194', '17', 'title', '日志标题', '', '0', '0', '100', 'text', '0', '', '', '', '1', '0', '1', '1', '0', 'LIKE', '1', '4', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('195', '17', 'content', '日志内容', '', '0', '0', '0', 'textarea', '0', '', '', '', '1', '0', '0', '0', '0', '=', '1', '5', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '');
+INSERT INTO `tp_field` VALUES ('196', '17', 'ip', '操作IP', '', '0', '0', '20', 'text', '0', '', '', '', '1', '0', '1', '0', '0', '=', '1', '6', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('197', '17', 'user_agent', 'User-Agent', '', '0', '0', '0', 'textarea', '0', '', '', '', '1', '0', '1', '0', '0', '=', '1', '7', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('198', '3', 'is_single', '单页模式', '选择是后列表页会自动跳转到添加或修改页面', '0', '0', '0', 'radio', '1', '', '', '2', '1', '1', '1', '1', '0', '=', '1', '14', '选择是后列表页会自动跳转到添加或修改页面', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('199', '3', 'show_all', '查看全部', '添加/修改页面头部是否显示`查看全部`按钮', '0', '0', '0', 'radio', '1', '', '', '2', '1', '1', '0', '0', '0', '=', '1', '15', '添加/修改页面头部是否显示`查看全部`按钮', 'array (\n  \'default\' => \'1\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('200', '19', 'id', '编号', '', '0', '0', '0', 'hidden', '0', '', '', '', '0', '0', '1', '0', '0', '', '1', '1', '自增ID', 'array (\'default\' => \'0\',\'extra_attr\' => \'\',\'extra_class\' => \'\',\'step\' => \'1\',\'fieldtype\' => \'int\',\'group\' => \'\')', '0');
+INSERT INTO `tp_field` VALUES ('201', '19', 'create_time', '添加时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\'default\' => \'0\', \'format\' => \'yyyy-mm-dd hh:ii:ss\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'placeholder\' => \'\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('202', '19', 'update_time', '更新时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\n  \'default\' => \'0\',\n  \'format\' => \'yyyy-mm-dd hh:ii:ss\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'int\',\n)', '');
+INSERT INTO `tp_field` VALUES ('203', '19', 'sort', '排序', '', '1', '0', '8', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '49', '', 'array (\'default\' => \'50\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'step\' => \'1\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('204', '19', 'status', '状态', '', '1', '0', '1', 'radio', '1', '', '', '1', '1', '1', '1', '1', '0', '=', '1', '48', '', 'array (\'default\' => \'1\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'fieldtype\' => \'tinyint\',)', '0');
+INSERT INTO `tp_field` VALUES ('205', '18', 'status', '状态', '', '1', '0', '1', 'radio', '1', '', '', '1', '1', '1', '1', '1', '0', '=', '1', '48', '', 'array (\'default\' => \'1\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'fieldtype\' => \'tinyint\',)', '0');
+INSERT INTO `tp_field` VALUES ('206', '18', 'sort', '排序', '', '1', '0', '8', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '49', '', 'array (\'default\' => \'50\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'step\' => \'1\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('207', '18', 'update_time', '更新时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\n  \'default\' => \'0\',\n  \'format\' => \'yyyy-mm-dd hh:ii:ss\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'int\',\n)', '');
+INSERT INTO `tp_field` VALUES ('208', '18', 'create_time', '添加时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\'default\' => \'0\', \'format\' => \'yyyy-mm-dd hh:ii:ss\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'placeholder\' => \'\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('209', '18', 'id', '编号', '', '0', '0', '0', 'hidden', '0', '', '', '', '0', '0', '1', '0', '0', '', '1', '1', '自增ID', 'array (\'default\' => \'0\',\'extra_attr\' => \'\',\'extra_class\' => \'\',\'step\' => \'1\',\'fieldtype\' => \'int\',\'group\' => \'\')', '0');
+INSERT INTO `tp_field` VALUES ('210', '20', 'id', '编号', '', '0', '0', '0', 'hidden', '0', '', '', '', '0', '0', '1', '0', '0', '', '1', '0', '自增ID', 'array (\'default\' => \'0\',\'extra_attr\' => \'\',\'extra_class\' => \'\',\'step\' => \'1\',\'fieldtype\' => \'int\',\'group\' => \'\')', '6');
+INSERT INTO `tp_field` VALUES ('211', '20', 'create_time', '添加时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\'default\' => \'0\', \'format\' => \'yyyy-mm-dd hh:ii:ss\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'placeholder\' => \'\', \'fieldtype\' => \'int\',)', '6');
+INSERT INTO `tp_field` VALUES ('212', '20', 'update_time', '更新时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\n  \'default\' => \'0\',\n  \'format\' => \'yyyy-mm-dd hh:ii:ss\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'int\',\n)', '6');
+INSERT INTO `tp_field` VALUES ('213', '20', 'sort', '排序', '', '1', '0', '8', 'number', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '49', '', 'array (\n  \'default\' => \'50\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'step\' => \'1\',\n  \'fieldtype\' => \'int\',\n)', '6');
+INSERT INTO `tp_field` VALUES ('214', '20', 'status', '状态', '', '1', '0', '1', 'radio', '1', '', '', '1', '1', '1', '1', '0', '0', '=', '1', '48', '', 'array (\n  \'default\' => \'1\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '6');
+INSERT INTO `tp_field` VALUES ('215', '20', 'cate_name', '栏目名称', '', '1', '0', '255', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '3', '栏目名称', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '6');
+INSERT INTO `tp_field` VALUES ('216', '20', 'en_name', '英文名称', '', '0', '0', '255', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '4', '英文名称', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '6');
+INSERT INTO `tp_field` VALUES ('217', '20', 'cate_folder', '栏目目录', '请填写不含空格的英文和数字，用于URL美化，如：AboutUs', '0', '0', '255', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '5', '栏目目录', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '6');
+INSERT INTO `tp_field` VALUES ('218', '20', 'parent_id', '上级栏目', '', '0', '0', '0', 'select', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '2', '上级栏目', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'int\',\n)', '6');
+INSERT INTO `tp_field` VALUES ('219', '20', 'module_id', '所属模块', '', '1', '0', '0', 'select', '2', 'Module', 'module_name', '', '1', '1', '1', '0', '0', '=', '1', '1', '所属模块', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '6');
+INSERT INTO `tp_field` VALUES ('220', '20', 'url', '外部链接', '如需跳转，请填写完整的网站地址，为空则不跳转', '0', '0', '255', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '6', '外部链接', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '8');
+INSERT INTO `tp_field` VALUES ('221', '20', 'image', '栏目图片', '', '0', '0', '255', 'image', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '7', '栏目图片', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '6');
+INSERT INTO `tp_field` VALUES ('222', '20', 'ico_image', 'ICO图片', '', '0', '0', '255', 'image', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '8', 'ICO图片', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '6');
+INSERT INTO `tp_field` VALUES ('223', '20', 'title', 'SEO标题', '', '0', '0', '255', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '9', 'SEO标题', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '7');
+INSERT INTO `tp_field` VALUES ('224', '20', 'keywords', 'SEO关键字', '', '0', '0', '255', 'textarea', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '10', 'SEO关键字', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '7');
+INSERT INTO `tp_field` VALUES ('225', '20', 'description', 'SEO描述', '', '0', '0', '255', 'textarea', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '11', 'SEO描述', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '7');
+INSERT INTO `tp_field` VALUES ('226', '20', 'summary', '简介', '', '0', '0', '0', 'textarea', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '12', '栏目简介', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '6');
+INSERT INTO `tp_field` VALUES ('227', '20', 'template_list', '列表模板', '', '0', '0', '255', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '13', '列表模板', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '8');
+INSERT INTO `tp_field` VALUES ('228', '20', 'template_show', '详情模版', '', '0', '0', '255', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '14', '详情模版', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '8');
+INSERT INTO `tp_field` VALUES ('229', '20', 'page_size', '分页条数', '分页显示的数量，为空时默认值为系统设置中的值', '0', '0', '5', 'number', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '15', '分页条数', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'step\' => \'1\',\n  \'fieldtype\' => \'char\',\n)', '8');
+INSERT INTO `tp_field` VALUES ('230', '20', 'is_menu', '导航状态', '', '0', '0', '0', 'radio', '1', '', '', '1', '1', '1', '1', '0', '0', '=', '1', '16', '导航状态', 'array (\n  \'default\' => \'1\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '6');
+INSERT INTO `tp_field` VALUES ('231', '20', 'is_next', '跳转下级', '是否直接跳转到下级第一个栏目', '0', '0', '0', 'radio', '1', '', '', '2', '1', '1', '1', '0', '0', '=', '1', '17', '跳转下级', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '8');
+INSERT INTO `tp_field` VALUES ('232', '20', 'is_blank', '新窗口打开', '', '0', '0', '0', 'radio', '1', '', '', '2', '1', '1', '0', '0', '0', '=', '1', '18', '新窗口打开', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '8');
+INSERT INTO `tp_field` VALUES ('233', '18', 'cate_id', '栏目', '', '1', '0', '0', 'select', '2', 'Cate', 'cate_name', '', '1', '1', '1', '1', '0', '=', '1', '2', '栏目', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '');
+INSERT INTO `tp_field` VALUES ('234', '18', 'title', '标题', '', '0', '0', '255', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '3', '标题', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('235', '18', 'content', '内容', '', '0', '0', '0', 'editor', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '4', '内容', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'height\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('236', '19', 'cate_id', '栏目', '', '1', '0', '0', 'select', '2', 'Cate', 'cate_name', '', '1', '1', '1', '1', '0', '=', '1', '2', '栏目', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '');
+INSERT INTO `tp_field` VALUES ('237', '19', 'title', '标题', '', '1', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '1', '0', '=', '1', '3', '标题', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('238', '19', 'author', '作者', '', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '4', '作者', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('239', '19', 'source', '来源', '', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '5', '来源', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('240', '19', 'content', '内容', '', '0', '0', '0', 'editor', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '6', '内容', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'height\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('241', '19', 'summary', '摘要', '', '0', '0', '0', 'textarea', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '7', '摘要', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('242', '19', 'image', '图片', '', '0', '0', '0', 'image', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '8', '图片', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '');
+INSERT INTO `tp_field` VALUES ('243', '19', 'images', '图片集', '', '0', '0', '255', 'images', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '9', '图片集', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('244', '19', 'download', '文件下载', '', '0', '0', '0', 'file', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '10', '文件下载', 'array (\n  \'ext\' => \'rar|zip|avi|rmvb|3gp|flv|mp3|txt|doc|xls|ppt|pdf|xls|docx|xlsx|doc\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('245', '19', 'tags', 'TAG', '', '0', '0', '0', 'tag', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '11', 'TAG', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '');
+INSERT INTO `tp_field` VALUES ('246', '19', 'hits', '点击次数', '', '0', '0', '0', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '12', '点击次数', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'step\' => \'1\',\n  \'fieldtype\' => \'int\',\n)', '');
+INSERT INTO `tp_field` VALUES ('247', '19', 'keywords', '关键词', '', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '13', '关键词', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('248', '19', 'description', '描述', '', '0', '0', '0', 'textarea', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '14', '描述', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('250', '3', 'add_param', '添加参数', '列表页面顶部按钮组中添加按钮的参数，如 cate_id,多个用`,`分割', '0', '0', '100', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '17', '列表页面顶部按钮组中添加按钮的参数，如 cate_id,多个用`,`分割', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('249', '19', 'template', '模板', '单独设置此条记录的模板，如：article_show.html 或 article_show', '0', '0', '30', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '15', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('251', '21', 'id', '编号', '', '0', '0', '0', 'hidden', '0', '', '', '', '0', '0', '1', '0', '0', '', '1', '1', '自增ID', 'array (\'default\' => \'0\',\'extra_attr\' => \'\',\'extra_class\' => \'\',\'step\' => \'1\',\'fieldtype\' => \'int\',\'group\' => \'\')', '0');
+INSERT INTO `tp_field` VALUES ('252', '21', 'create_time', '添加时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\'default\' => \'0\', \'format\' => \'yyyy-mm-dd hh:ii:ss\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'placeholder\' => \'\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('253', '21', 'update_time', '更新时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\n  \'default\' => \'0\',\n  \'format\' => \'yyyy-mm-dd hh:ii:ss\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'int\',\n)', '');
+INSERT INTO `tp_field` VALUES ('254', '21', 'sort', '排序', '', '1', '0', '8', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '49', '', 'array (\'default\' => \'50\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'step\' => \'1\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('255', '21', 'status', '状态', '', '1', '0', '1', 'radio', '1', '', '', '1', '1', '1', '1', '1', '0', '=', '1', '48', '', 'array (\'default\' => \'1\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'fieldtype\' => \'tinyint\',)', '0');
+INSERT INTO `tp_field` VALUES ('256', '21', 'cate_id', '栏目', '', '1', '0', '0', 'select', '2', 'Cate', 'cate_name', '', '1', '1', '1', '1', '0', '=', '1', '2', '栏目', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '');
+INSERT INTO `tp_field` VALUES ('257', '21', 'title', '标题', '', '1', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '1', '0', '=', '1', '3', '标题', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('258', '21', 'author', '作者', '', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '4', '作者', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('259', '21', 'source', '来源', '', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '5', '来源', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('260', '21', 'content', '内容', '', '0', '0', '0', 'editor', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '6', '内容', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'height\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('261', '21', 'summary', '摘要', '', '0', '0', '0', 'textarea', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '7', '摘要', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('262', '21', 'image', '图片', '', '0', '0', '0', 'image', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '8', '图片', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '');
+INSERT INTO `tp_field` VALUES ('263', '21', 'images', '图片集', '', '0', '0', '255', 'images', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '9', '图片集', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('264', '21', 'download', '文件下载', '', '0', '0', '0', 'file', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '10', '文件下载', 'array (\n  \'ext\' => \'rar|zip|avi|rmvb|3gp|flv|mp3|txt|doc|xls|ppt|pdf|xls|docx|xlsx|doc\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('265', '21', 'tags', 'TAG', '', '0', '0', '0', 'tag', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '11', 'TAG', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('266', '21', 'hits', '点击次数', '', '0', '0', '0', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '12', '点击次数', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'step\' => \'1\',\n  \'fieldtype\' => \'int\',\n)', '');
+INSERT INTO `tp_field` VALUES ('267', '21', 'keywords', '关键词', '', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '13', '关键词', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('268', '21', 'description', '描述', '', '0', '0', '0', 'textarea', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '14', '描述', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('269', '21', 'template', '模板', '单独设置此条记录的模板，如：article_show.html 或 article_show', '0', '0', '30', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '15', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('270', '22', 'id', '编号', '', '0', '0', '0', 'hidden', '0', '', '', '', '0', '0', '1', '0', '0', '', '1', '1', '自增ID', 'array (\'default\' => \'0\',\'extra_attr\' => \'\',\'extra_class\' => \'\',\'step\' => \'1\',\'fieldtype\' => \'int\',\'group\' => \'\')', '0');
+INSERT INTO `tp_field` VALUES ('271', '22', 'create_time', '添加时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\'default\' => \'0\', \'format\' => \'yyyy-mm-dd hh:ii:ss\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'placeholder\' => \'\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('272', '22', 'update_time', '更新时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\n  \'default\' => \'0\',\n  \'format\' => \'yyyy-mm-dd hh:ii:ss\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'int\',\n)', '');
+INSERT INTO `tp_field` VALUES ('273', '22', 'sort', '排序', '', '1', '0', '8', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '49', '', 'array (\'default\' => \'50\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'step\' => \'1\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('274', '22', 'status', '状态', '', '1', '0', '1', 'radio', '1', '', '', '1', '1', '1', '1', '1', '0', '=', '1', '48', '', 'array (\'default\' => \'1\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'fieldtype\' => \'tinyint\',)', '0');
+INSERT INTO `tp_field` VALUES ('275', '22', 'cate_id', '栏目', '', '1', '0', '0', 'select', '2', 'Cate', 'cate_name', '', '1', '1', '1', '1', '0', '=', '1', '2', '栏目', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '');
+INSERT INTO `tp_field` VALUES ('276', '22', 'title', '标题', '', '1', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '1', '0', '=', '1', '3', '标题', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('277', '22', 'author', '作者', '', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '4', '作者', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('278', '22', 'source', '来源', '', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '5', '来源', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('279', '22', 'content', '内容', '', '0', '0', '0', 'editor', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '6', '内容', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'height\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('280', '22', 'summary', '摘要', '', '0', '0', '0', 'textarea', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '7', '摘要', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('281', '22', 'image', '图片', '', '0', '0', '0', 'image', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '8', '图片', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '');
+INSERT INTO `tp_field` VALUES ('282', '22', 'images', '图片集', '', '0', '0', '255', 'images', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '9', '图片集', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('283', '22', 'download', '文件下载', '', '0', '0', '0', 'file', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '10', '文件下载', 'array (\n  \'ext\' => \'rar|zip|avi|rmvb|3gp|flv|mp3|txt|doc|xls|ppt|pdf|xls|docx|xlsx|doc\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('284', '22', 'tags', 'TAG', '', '0', '0', '0', 'tag', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '11', 'TAG', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('285', '22', 'hits', '点击次数', '', '0', '0', '0', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '12', '点击次数', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'step\' => \'1\',\n  \'fieldtype\' => \'int\',\n)', '');
+INSERT INTO `tp_field` VALUES ('286', '22', 'keywords', '关键词', '', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '13', '关键词', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('287', '22', 'description', '描述', '', '0', '0', '0', 'textarea', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '14', '描述', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('288', '22', 'template', '模板', '单独设置此条记录的模板，如：article_show.html 或 article_show', '0', '0', '30', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '15', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('289', '23', 'id', '编号', '', '0', '0', '0', 'hidden', '0', '', '', '', '0', '0', '1', '0', '0', '', '1', '1', '自增ID', 'array (\'default\' => \'0\',\'extra_attr\' => \'\',\'extra_class\' => \'\',\'step\' => \'1\',\'fieldtype\' => \'int\',\'group\' => \'\')', '0');
+INSERT INTO `tp_field` VALUES ('290', '23', 'create_time', '添加时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\'default\' => \'0\', \'format\' => \'yyyy-mm-dd hh:ii:ss\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'placeholder\' => \'\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('291', '23', 'update_time', '更新时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\n  \'default\' => \'0\',\n  \'format\' => \'yyyy-mm-dd hh:ii:ss\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'int\',\n)', '');
+INSERT INTO `tp_field` VALUES ('292', '23', 'sort', '排序', '', '1', '0', '8', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '49', '', 'array (\'default\' => \'50\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'step\' => \'1\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('293', '23', 'status', '状态', '', '1', '0', '1', 'radio', '1', '', '', '1', '1', '1', '1', '1', '0', '=', '1', '48', '', 'array (\'default\' => \'1\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'fieldtype\' => \'tinyint\',)', '0');
+INSERT INTO `tp_field` VALUES ('294', '23', 'cate_id', '栏目', '', '1', '0', '0', 'select', '2', 'Cate', 'cate_name', '', '1', '1', '1', '1', '0', '=', '1', '2', '栏目', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '');
+INSERT INTO `tp_field` VALUES ('295', '23', 'title', '标题', '', '1', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '1', '0', '=', '1', '3', '标题', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('296', '23', 'author', '作者', '', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '4', '作者', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('297', '23', 'source', '来源', '', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '5', '来源', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('298', '23', 'content', '内容', '', '0', '0', '0', 'editor', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '6', '内容', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'height\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('299', '23', 'summary', '摘要', '', '0', '0', '0', 'textarea', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '7', '摘要', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('300', '23', 'image', '图片', '', '0', '0', '0', 'image', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '8', '图片', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '');
+INSERT INTO `tp_field` VALUES ('301', '23', 'images', '图片集', '', '0', '0', '255', 'images', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '9', '图片集', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('302', '23', 'download', '文件下载', '', '0', '0', '0', 'file', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '10', '文件下载', 'array (\n  \'ext\' => \'rar|zip|avi|rmvb|3gp|flv|mp3|txt|doc|xls|ppt|pdf|xls|docx|xlsx|doc\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('303', '23', 'tags', 'TAG', '', '0', '0', '0', 'tag', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '11', 'TAG', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('304', '23', 'hits', '点击次数', '', '0', '0', '0', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '12', '点击次数', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'step\' => \'1\',\n  \'fieldtype\' => \'int\',\n)', '');
+INSERT INTO `tp_field` VALUES ('305', '23', 'keywords', '关键词', '', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '13', '关键词', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('306', '23', 'description', '描述', '', '0', '0', '0', 'textarea', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '14', '描述', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('307', '23', 'template', '模板', '单独设置此条记录的模板，如：article_show.html 或 article_show', '0', '0', '30', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '15', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('308', '24', 'id', '编号', '', '0', '0', '0', 'hidden', '0', '', '', '', '0', '0', '1', '0', '0', '', '1', '1', '自增ID', 'array (\'default\' => \'0\',\'extra_attr\' => \'\',\'extra_class\' => \'\',\'step\' => \'1\',\'fieldtype\' => \'int\',\'group\' => \'\')', '0');
+INSERT INTO `tp_field` VALUES ('309', '24', 'create_time', '添加时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\'default\' => \'0\', \'format\' => \'yyyy-mm-dd hh:ii:ss\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'placeholder\' => \'\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('310', '24', 'update_time', '更新时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\n  \'default\' => \'0\',\n  \'format\' => \'yyyy-mm-dd hh:ii:ss\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'int\',\n)', '');
+INSERT INTO `tp_field` VALUES ('311', '24', 'sort', '排序', '', '1', '0', '8', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '49', '', 'array (\'default\' => \'50\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'step\' => \'1\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('312', '24', 'status', '状态', '', '1', '0', '1', 'radio', '1', '', '', '1', '1', '1', '1', '1', '0', '=', '1', '48', '', 'array (\'default\' => \'1\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'fieldtype\' => \'tinyint\',)', '0');
+INSERT INTO `tp_field` VALUES ('313', '24', 'cate_id', '栏目', '', '1', '0', '0', 'select', '2', 'Cate', 'cate_name', '', '1', '1', '1', '1', '0', '=', '1', '2', '栏目', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '');
+INSERT INTO `tp_field` VALUES ('314', '24', 'title', '标题', '', '1', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '1', '0', '=', '1', '3', '标题', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('315', '24', 'author', '作者', '', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '4', '作者', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('316', '24', 'source', '来源', '', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '5', '来源', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('317', '24', 'content', '内容', '', '0', '0', '0', 'editor', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '6', '内容', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'height\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('318', '24', 'summary', '摘要', '', '0', '0', '0', 'textarea', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '7', '摘要', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('319', '24', 'image', '图片', '', '0', '0', '0', 'image', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '8', '图片', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '');
+INSERT INTO `tp_field` VALUES ('320', '24', 'images', '图片集', '', '0', '0', '255', 'images', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '9', '图片集', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('321', '24', 'download', '文件下载', '', '0', '0', '0', 'file', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '10', '文件下载', 'array (\n  \'ext\' => \'rar|zip|avi|rmvb|3gp|flv|mp3|txt|doc|xls|ppt|pdf|xls|docx|xlsx|doc\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('322', '24', 'tags', 'TAG', '', '0', '0', '0', 'tag', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '11', 'TAG', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('323', '24', 'hits', '点击次数', '', '0', '0', '0', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '12', '点击次数', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'step\' => \'1\',\n  \'fieldtype\' => \'int\',\n)', '');
+INSERT INTO `tp_field` VALUES ('324', '24', 'keywords', '关键词', '', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '13', '关键词', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('325', '24', 'description', '描述', '', '0', '0', '0', 'textarea', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '14', '描述', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('326', '24', 'template', '模板', '单独设置此条记录的模板，如：article_show.html 或 article_show', '0', '0', '30', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '15', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('327', '25', 'content', '内容', '', '0', '0', '0', 'editor', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '6', '内容', 'array (\r\n  \'default\' => \'\',\r\n  \'extra_attr\' => \'\',\r\n  \'extra_class\' => \'\',\r\n  \'height\' => \'\',\r\n  \'fieldtype\' => \'text\',\r\n)', '0');
+INSERT INTO `tp_field` VALUES ('328', '25', 'title', '标题', '', '1', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '1', '0', '=', '1', '3', '标题', 'array (\r\n  \'default\' => \'\',\r\n  \'extra_attr\' => \'\',\r\n  \'extra_class\' => \'\',\r\n  \'placeholder\' => \'\',\r\n  \'fieldtype\' => \'varchar\',\r\n  \'group\' => \'\',\r\n)', '0');
+INSERT INTO `tp_field` VALUES ('329', '25', 'cate_id', '栏目', '', '1', '0', '0', 'select', '2', 'Cate', 'cate_name', '', '1', '1', '1', '1', '0', '=', '1', '2', '栏目', 'array (\r\n  \'default\' => \'0\',\r\n  \'extra_attr\' => \'\',\r\n  \'extra_class\' => \'\',\r\n  \'fieldtype\' => \'tinyint\',\r\n)', '');
+INSERT INTO `tp_field` VALUES ('330', '25', 'status', '状态', '', '1', '0', '1', 'radio', '1', '', '', '1', '1', '1', '1', '1', '0', '=', '1', '48', '', 'array (\'default\' => \'1\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'fieldtype\' => \'tinyint\',)', '0');
+INSERT INTO `tp_field` VALUES ('331', '25', 'update_time', '更新时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\r\n  \'default\' => \'0\',\r\n  \'format\' => \'yyyy-mm-dd hh:ii:ss\',\r\n  \'extra_attr\' => \'\',\r\n  \'extra_class\' => \'\',\r\n  \'placeholder\' => \'\',\r\n  \'fieldtype\' => \'int\',\r\n)', '');
+INSERT INTO `tp_field` VALUES ('332', '25', 'create_time', '添加时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\'default\' => \'0\', \'format\' => \'yyyy-mm-dd hh:ii:ss\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'placeholder\' => \'\', \'fieldtype\' => \'int\',)', '0');
+INSERT INTO `tp_field` VALUES ('333', '25', 'id', '编号', '', '0', '0', '0', 'hidden', '0', '', '', '', '0', '0', '1', '0', '0', '', '1', '1', '自增ID', 'array (\'default\' => \'0\',\'extra_attr\' => \'\',\'extra_class\' => \'\',\'step\' => \'1\',\'fieldtype\' => \'int\',\'group\' => \'\')', '0');
+INSERT INTO `tp_field` VALUES ('334', '25', 'name', '姓名', '', '0', '0', '255', 'text', '0', '', '', '', '1', '1', '1', '1', '0', '=', '1', '4', '姓名', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('335', '25', 'phone', '电话', '', '0', '0', '255', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '5', '电话', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('336', '16', 'param', '参数', 'URL地址后的参数，如 type=button&name=my', '0', '0', '50', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '6', '参数', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '');
+
+-- ----------------------------
+-- Table structure for tp_field_group
+-- ----------------------------
+DROP TABLE IF EXISTS `tp_field_group`;
+CREATE TABLE `tp_field_group` (
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
+  `create_time` int(11) NOT NULL,
+  `update_time` int(11) NOT NULL,
+  `module_id` text NOT NULL COMMENT '所属模块',
+  `group_name` varchar(255) NOT NULL DEFAULT '' COMMENT '分组名称',
+  `status` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
+  `sort` int(5) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='字段分组';
+
+-- ----------------------------
+-- Records of tp_field_group
+-- ----------------------------
+INSERT INTO `tp_field_group` VALUES ('1', '1580561499', '1580561499', '13', '基础设置', '1', '1');
+INSERT INTO `tp_field_group` VALUES ('2', '1580561539', '1580561539', '13', 'SEO设置', '1', '2');
+INSERT INTO `tp_field_group` VALUES ('3', '1580561551', '1580561551', '13', '开关设置', '1', '3');
+INSERT INTO `tp_field_group` VALUES ('4', '1580561568', '1580561568', '13', '模板设置', '1', '4');
+INSERT INTO `tp_field_group` VALUES ('5', '1580561585', '1580561585', '13', '其他设置', '1', '5');
+INSERT INTO `tp_field_group` VALUES ('6', '1580896600', '1580896600', '20', '基础设置', '1', '1');
+INSERT INTO `tp_field_group` VALUES ('7', '1580896624', '1580896624', '20', 'SEO设置', '1', '2');
+INSERT INTO `tp_field_group` VALUES ('8', '1580896925', '1580896925', '20', '其他', '1', '3');
 
 -- ----------------------------
 -- Table structure for tp_link
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_link`;
 CREATE TABLE `tp_link` (
-  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL COMMENT '网站名称',
-  `url` varchar(255) NOT NULL COMMENT '网站地址',
-  `logo` varchar(255) DEFAULT NULL COMMENT '网站logo',
-  `description` varchar(255) DEFAULT NULL COMMENT '描述',
-  `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
-  `status` int(1) DEFAULT '0' COMMENT '状态（1 正常，0 锁定）',
-  `create_time` int(11) DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
+  `create_time` int(11) NOT NULL,
+  `update_time` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL DEFAULT '' COMMENT '网站名称',
+  `url` varchar(255) NOT NULL DEFAULT '' COMMENT '网站地址',
+  `logo` varchar(80) NOT NULL DEFAULT '' COMMENT '网站logo',
+  `description` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
+  `sort` int(10) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
+  `status` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='友情链接表';
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='友情链接';
 
 -- ----------------------------
 -- Records of tp_link
 -- ----------------------------
-INSERT INTO `tp_link` VALUES ('1', 'SIYUCMS', 'http://www.siyucms.com', '', '', '2', '1', '1548727536', '1551930738');
+INSERT INTO `tp_link` VALUES ('1', '1580360741', '1580360741', 'SIYUCMS', 'http://www.siyucms.com', '', '', '1', '1');
 
 -- ----------------------------
 -- Table structure for tp_message
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_message`;
 CREATE TABLE `tp_message` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `cate_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
-  `title` varchar(120) NOT NULL DEFAULT '' COMMENT '标题',
-  `title_style` varchar(225) NOT NULL DEFAULT '' COMMENT '标题样式',
-  `thumb` varchar(225) NOT NULL DEFAULT '' COMMENT '缩略图',
-  `content` text NOT NULL COMMENT '内容',
-  `template` varchar(40) NOT NULL DEFAULT '' COMMENT '模板',
-  `status` tinyint(3) NOT NULL DEFAULT '1' COMMENT '状态',
-  `sort` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
-  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
+  `create_time` int(11) NOT NULL,
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `status` tinyint(1) DEFAULT NULL COMMENT '状态',
+  `cate_id` tinyint(10) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
+  `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
+  `content` text NOT NULL COMMENT '内容',
   `name` varchar(255) NOT NULL DEFAULT '' COMMENT '姓名',
-  `hits` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
-  `contact` varchar(255) NOT NULL DEFAULT '' COMMENT '联系方式',
-  PRIMARY KEY (`id`),
-  KEY `status` (`id`,`status`,`sort`),
-  KEY `cate_id` (`id`,`cate_id`,`status`),
-  KEY `sort` (`id`,`cate_id`,`status`,`sort`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='留言表';
+  `phone` varchar(255) NOT NULL DEFAULT '' COMMENT '电话',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='留言模块';
 
 -- ----------------------------
 -- Records of tp_message
 -- ----------------------------
+INSERT INTO `tp_message` VALUES ('1', '1581080488', '1581080488', '1', '13', '测试留言标题', '<p>测试留言内容</p>\n', '赵先生', '15888888888');
 
 -- ----------------------------
 -- Table structure for tp_module
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_module`;
 CREATE TABLE `tp_module` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(100) NOT NULL DEFAULT '' COMMENT '模型名称',
-  `name` varchar(50) NOT NULL DEFAULT '' COMMENT '表名',
-  `description` varchar(200) NOT NULL DEFAULT '' COMMENT '描述',
-  `type` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `issystem` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `listfields` varchar(255) NOT NULL DEFAULT '' COMMENT '列表页字段',
+  `id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '编号',
+  `module_name` varchar(100) NOT NULL DEFAULT '' COMMENT '模块名称',
+  `table_name` varchar(50) NOT NULL DEFAULT '' COMMENT '表名称',
+  `model_name` varchar(50) NOT NULL DEFAULT '' COMMENT '模型名称',
+  `table_comment` varchar(200) NOT NULL DEFAULT '' COMMENT '表描述',
+  `table_type` varchar(10) NOT NULL DEFAULT '' COMMENT '表类型',
+  `pk` varchar(50) NOT NULL DEFAULT 'id' COMMENT '主键',
+  `list_fields` varchar(255) NOT NULL DEFAULT '' COMMENT '前台列表页可调用字段,默认为*,仅用作前台CMS调用时使用',
+  `remark` text NOT NULL COMMENT '备注',
   `sort` smallint(3) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
-  `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
+  `create_time` int(11) NOT NULL,
+  `update_time` int(11) NOT NULL,
+  `is_sort` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '排序字段',
+  `is_status` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '状态字段',
+  `top_button` varchar(255) NOT NULL DEFAULT 'add,edit,del,export' COMMENT '顶部按钮',
+  `right_button` varchar(255) NOT NULL DEFAULT 'edit,delete' COMMENT '右侧按钮',
+  `is_single` tinyint(10) unsigned NOT NULL DEFAULT '0' COMMENT '单页模式',
+  `show_all` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '查看全部',
+  `add_param` varchar(100) NOT NULL DEFAULT '' COMMENT '添加参数',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='模型表';
+) ENGINE=MyISAM AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COMMENT='模型表';
 
 -- ----------------------------
 -- Records of tp_module
 -- ----------------------------
-INSERT INTO `tp_module` VALUES ('1', '单页模型', 'page', '单页面', '1', '0', '*', '0', '1');
-INSERT INTO `tp_module` VALUES ('2', '文章模型', 'article', '新闻文章', '1', '0', '*', '0', '1');
-INSERT INTO `tp_module` VALUES ('3', '图片模型', 'picture', '图片展示', '1', '0', '*', '0', '1');
-INSERT INTO `tp_module` VALUES ('4', '产品模型', 'product', '产品展示', '1', '0', '*', '0', '1');
-INSERT INTO `tp_module` VALUES ('5', '下载模型', 'download', '文件下载', '1', '0', '*', '0', '1');
-INSERT INTO `tp_module` VALUES ('6', '团队模型', 'team', '员工展示', '1', '0', '*', '0', '1');
-INSERT INTO `tp_module` VALUES ('7', '在线留言', 'message', '在线留言', '1', '0', '*', '0', '1');
+INSERT INTO `tp_module` VALUES ('1', '会员管理', 'users', 'Users', '会员管理', '2', 'id', '*', '前台会员列表，需要关联会员类型表', '1', '1572852406', '1572852406', '0', '0', 'add,edit,del,export', 'edit,delete', '0', '1', '');
+INSERT INTO `tp_module` VALUES ('2', '字段管理', 'field', 'Field', '字段管理', '2', 'id', '*', '字段管理', '3', '1572852406', '1580359578', '1', '1', 'add,edit,del,export', 'edit,delete', '0', '1', '');
+INSERT INTO `tp_module` VALUES ('3', '模块管理', 'module', 'Module', '模块管理', '2', 'id', '*', '模块管理', '4', '1572852406', '1580359586', '1', '0', 'add,edit,del,export', 'edit,delete', '0', '1', '');
+INSERT INTO `tp_module` VALUES ('4', '字典类型', 'dictionary_type', 'DictionaryType', '字典类型', '2', 'id', '*', '字典类型', '5', '1572852406', '1580359592', '1', '1', 'add,edit,del,export', 'edit,delete', '0', '1', '');
+INSERT INTO `tp_module` VALUES ('5', '字典数据', 'dictionary', 'Dictionary', '字典数据', '2', 'id', '*', '字典数据', '6', '1572852406', '1580359596', '1', '1', 'add,edit,del,export', 'edit,delete', '0', '1', '');
+INSERT INTO `tp_module` VALUES ('6', '会员分组', 'users_type', 'UsersType', '会员分组', '2', 'id', '*', '会员分组', '2', '1579499169', '1580359573', '1', '1', 'add,edit,del,export', 'edit,delete', '0', '1', '');
+INSERT INTO `tp_module` VALUES ('7', '字段分组', 'field_group', 'FieldGroup', '字段分组', '2', 'id', '*', '字段分组', '7', '1580358477', '1580359113', '1', '1', 'add,edit,del,export', 'edit,delete', '0', '1', '');
+INSERT INTO `tp_module` VALUES ('8', '友情链接', 'link', 'Link', '友情链接', '2', 'id', '*', '友情链接', '8', '1580360170', '1580360176', '1', '1', 'add,edit,del,export', 'edit,delete', '0', '1', '');
+INSERT INTO `tp_module` VALUES ('9', '广告分组', 'ad_type', 'AdType', '广告分组', '2', 'id', '*', '广告分组', '9', '1580371813', '1580371820', '1', '1', 'add,edit,del,export', 'edit,delete', '0', '1', '');
+INSERT INTO `tp_module` VALUES ('10', '广告管理', 'ad', 'Ad', '广告管理', '2', 'id', '*', '广告管理', '10', '1580377198', '1580377198', '1', '1', 'add,edit,del,export', 'edit,delete', '0', '1', '');
+INSERT INTO `tp_module` VALUES ('11', '碎片管理', 'debris', 'Debris', '碎片管理', '2', 'id', '*', '碎片管理', '11', '1580387498', '1580387503', '1', '1', 'add,edit,del,export', 'edit,delete', '0', '1', '');
+INSERT INTO `tp_module` VALUES ('13', '系统设置', 'system', 'System', '系统设置', '2', 'id', '*', '系统设置', '13', '1580558207', '1580558207', '0', '0', 'add,edit,del,export', 'edit,delete', '1', '0', '');
+INSERT INTO `tp_module` VALUES ('14', '角色组管理', 'auth_group', 'AuthGroup', '角色组管理', '2', 'id', '*', '角色组管理', '14', '1580633766', '1580633772', '0', '1', 'add,edit,del,export', 'edit,delete', '0', '1', '');
+INSERT INTO `tp_module` VALUES ('15', '管理员管理', 'admin', 'Admin', '管理员列表', '2', 'id', '*', '管理员列表', '15', '1580692727', '1580702316', '0', '1', 'add,edit,del,export', 'edit,delete', '0', '1', '');
+INSERT INTO `tp_module` VALUES ('16', '菜单规则', 'auth_rule', 'AuthRule', '菜单规则', '2', 'id', '*', '', '16', '1580702184', '1580702320', '1', '1', 'add,edit,del,export', 'edit,delete', '0', '1', '');
+INSERT INTO `tp_module` VALUES ('17', '管理员日志', 'admin_log', 'AdminLog', '管理员日志', '2', 'id', '*', '管理员日志', '16', '1580722266', '1580722266', '0', '0', 'edit,del,export', 'edit,delete', '0', '1', '');
+INSERT INTO `tp_module` VALUES ('18', '单页模块', 'page', 'Page', '单页模块', '1', 'id', '*', '单页模块', '51', '1580892306', '1580892306', '1', '1', 'add,edit,del,export', 'edit,delete', '1', '1', '');
+INSERT INTO `tp_module` VALUES ('19', '文章模块', 'article', 'Article', '文章模块', '1', 'id', '*', '文章模块', '52', '1580892395', '1580892395', '1', '1', 'add,edit,del,export', 'edit,delete', '0', '1', 'cate_id');
+INSERT INTO `tp_module` VALUES ('20', '栏目管理', 'cate', 'Cate', '栏目管理', '2', 'id', '*', '栏目管理', '50', '1580892776', '1580892776', '1', '1', 'add,edit,del,export', 'edit,delete', '0', '1', '');
+INSERT INTO `tp_module` VALUES ('21', '图片模块', 'picture', 'Picture', '图片模块', '1', 'id', '*', '图片模块', '53', '1580899028', '1580899028', '1', '1', 'add,edit,del,export', 'edit,delete', '0', '1', 'cate_id');
+INSERT INTO `tp_module` VALUES ('22', '产品模块', 'product', 'Product', '产品模块', '1', 'id', '*', '产品模块', '54', '1580899060', '1580899060', '1', '1', 'add,edit,del,export', 'edit,delete', '0', '1', 'cate_id');
+INSERT INTO `tp_module` VALUES ('23', '下载模块', 'download', 'Download', '下载模块', '1', 'id', '*', '下载模块', '55', '1580899102', '1580899102', '1', '1', 'add,edit,del,export', 'edit,delete', '0', '1', 'cate_id');
+INSERT INTO `tp_module` VALUES ('24', '团队模块', 'team', 'Team', '团队模块', '1', 'id', '*', '团队模块', '56', '1580899132', '1580899132', '1', '1', 'add,edit,del,export', 'edit,delete', '0', '1', 'cate_id');
+INSERT INTO `tp_module` VALUES ('25', '留言模块', 'message', 'Message', '留言模块', '1', 'id', '*', '留言模块', '57', '1580899172', '1580899172', '0', '1', 'add,edit,del,export', 'edit,delete', '0', '1', 'cate_id');
 
 -- ----------------------------
 -- Table structure for tp_page
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_page`;
 CREATE TABLE `tp_page` (
-  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
-  `cate_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
+  `create_time` int(11) NOT NULL,
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
+  `status` tinyint(1) DEFAULT NULL COMMENT '状态',
+  `cate_id` tinyint(10) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
   `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
-  `keywords` varchar(255) DEFAULT '' COMMENT '关键词',
-  `description` text COMMENT 'SEO简介',
-  `content` text COMMENT '内容',
-  `hits` int(10) unsigned NOT NULL DEFAULT '100' COMMENT '点击次数',
+  `content` text NOT NULL COMMENT '内容',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='单页模型表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='文章模块';
 
 -- ----------------------------
 -- Records of tp_page
 -- ----------------------------
-INSERT INTO `tp_page` VALUES ('1', '7', '公司介绍', 'asdf ', '', '', '100');
-INSERT INTO `tp_page` VALUES ('2', '6', '关于我们', '', '', '<p>ThinkPHP是一个免费开源的，快速、简单的面向对象的轻量级PHP开发框架，是为了敏捷WEB应用开发和简化企业应用开发而诞生的。ThinkPHP从诞生以来一直秉承简洁实用的设计原则，在保持出色的性能和至简的代码的同时，也注重易用性。遵循Apache2开源许可协议发布，意味着你可以免费使用ThinkPHP，甚至允许把你基于ThinkPHP开发的应用开源或商业产品发布/销售。</p><p>ThinkPHP5.1在5.0的基础上对底层架构做了进一步的改进，引入新特性，并提升版本要求。另外一个事实是，5.1版本看起来对开发者更加友好，表现在目录结构更直观、调试输出更直观和代码提示更直观。</p><p>ThinkPHP5.1运行环境要求PHP5.6+，虽然不支持5.0的无缝升级，但升级过程并不复杂（请参考升级指导），5.1.*版本基本上可以支持无缝升级。</p><p><br/></p>', '100');
-INSERT INTO `tp_page` VALUES ('3', '10', '公司文化', '', '', '', '100');
+INSERT INTO `tp_page` VALUES ('1', '1580966383', '1580966383', '1', '1', '1', '关于我们', '<p>ThinkPHP是一个免费开源的，快速、简单的面向对象的轻量级PHP开发框架，是为了敏捷WEB应用开发和简化企业应用开发而诞生的。ThinkPHP从诞生以来一直秉承简洁实用的设计原则，在保持出色的性能和至简代码的同时，更注重易用性。遵循<code>Apache2</code>开源许可协议发布，意味着你可以免费使用ThinkPHP，甚至允许把你基于ThinkPHP开发的应用开源或商业产品发布/销售。</p>\n\n<p>ThinkPHP<code>6.0</code>基于精简核心和统一用法两大原则在<code>5.1</code>的基础上对底层架构做了进一步的优化改进，并更加规范化。由于引入了一些新特性，ThinkPHP<code>6.0</code>运行环境要求<code>PHP7.1+</code>，不支持<code>5.1</code>的无缝升级（官方给出了升级指导用于项目的升级参考）。</p>\n');
+INSERT INTO `tp_page` VALUES ('2', '1580966471', '1580966471', '11', '1', '2', '公司介绍', '<p><code>ThinkPHP6.0</code>遵循<code>PSR-2</code>命名规范和<code>PSR-4</code>自动加载规范，并且注意如下规范：</p>\n\n<h3><a id=\"_4\"></a>目录和文件</h3>\n\n<ul>\n	<li>目录使用小写+下划线；</li>\n	<li>类库、函数文件统一以<code>.php</code>为后缀；</li>\n	<li>类的文件名均以命名空间定义，并且命名空间的路径和类库文件所在路径一致；</li>\n	<li>类（包含接口和Trait）文件采用驼峰法命名（首字母大写），其它文件采用小写+下划线命名；</li>\n	<li>类名（包括接口和Trait）和文件名保持一致，统一采用驼峰法命名（首字母大写）；</li>\n</ul>\n\n<h3><a id=\"_12\"></a>函数和类、属性命名</h3>\n\n<ul>\n	<li>类的命名采用驼峰法（首字母大写），例如&nbsp;<code>User</code>、<code>UserType</code>；</li>\n	<li>函数的命名使用小写字母和下划线（小写字母开头）的方式，例如&nbsp;<code>get_client_ip</code>；</li>\n	<li>方法的命名使用驼峰法（首字母小写），例如&nbsp;<code>getUserName</code>；</li>\n	<li>属性的命名使用驼峰法（首字母小写），例如&nbsp;<code>tableName</code>、<code>instance</code>；</li>\n	<li>特例：以双下划线<code>__</code>打头的函数或方法作为魔术方法，例如&nbsp;<code>__call</code>&nbsp;和&nbsp;<code>__autoload</code>；</li>\n</ul>\n\n<h3><a id=\"_20\"></a>常量和配置</h3>\n\n<ul>\n	<li>常量以大写字母和下划线命名，例如&nbsp;<code>APP_PATH</code>；</li>\n	<li>配置参数以小写字母和下划线命名，例如&nbsp;<code>url_route_on</code>&nbsp;和<code>url_convert</code>；</li>\n	<li>环境变量定义使用大写字母和下划线命名，例如<code>APP_DEBUG</code>；</li>\n</ul>\n\n<h3><a id=\"_26\"></a>数据表和字段</h3>\n\n<ul>\n	<li>数据表和字段采用小写加下划线方式命名，并注意字段名不要以下划线开头，例如&nbsp;<code>think_user</code>&nbsp;表和&nbsp;<code>user_name</code>字段，不建议使用驼峰和中文作为数据表及字段命名。</li>\n</ul>\n\n<p><strong>请理解并尽量遵循以上命名规范，可以减少在开发过程中出现不必要的错误。</strong></p>\n');
+INSERT INTO `tp_page` VALUES ('3', '1580966524', '1580966524', '12', '1', '3', '公司文化', '<p>对于一个HTTP应用来说，从用户发起请求到响应输出结束，大致的标准请求流程如下：</p>\n\n<ul>\n	<li>载入<code>Composer</code>的自动加载<code>autoload</code>文件</li>\n	<li>实例化系统应用基础类<code>think\\App</code></li>\n	<li>获取应用目录等相关路径信息</li>\n	<li>加载全局的服务提供<code>provider.php</code>文件</li>\n	<li>设置容器实例及应用对象实例，确保当前容器对象唯一</li>\n	<li>从容器中获取<code>HTTP</code>应用类<code>think\\Http</code></li>\n	<li>执行<code>HTTP</code>应用类的<code>run</code>方法启动一个<code>HTTP</code>应用</li>\n	<li>获取当前请求对象实例（默认为&nbsp;<code>app\\Request</code>&nbsp;继承<code>think\\Request</code>）保存到容器</li>\n	<li>执行<code>think\\App</code>类的初始化方法<code>initialize</code></li>\n	<li>加载环境变量文件<code>.env</code>和全局初始化文件</li>\n	<li>加载全局公共文件、系统助手函数、全局配置文件、全局事件定义和全局服务定义</li>\n	<li>判断应用模式（调试或者部署模式）</li>\n	<li>监听<code>AppInit</code>事件</li>\n	<li>注册异常处理</li>\n	<li>服务注册</li>\n	<li>启动注册的服务</li>\n	<li>加载全局中间件定义</li>\n	<li>监听<code>HttpRun</code>事件</li>\n	<li>执行全局中间件</li>\n	<li>执行路由调度（<code>Route</code>类<code>dispatch</code>方法）</li>\n	<li>如果开启路由则检查路由缓存</li>\n	<li>加载路由定义</li>\n	<li>监听<code>RouteLoaded</code>事件</li>\n	<li>如果开启注解路由则检测注解路由</li>\n	<li>路由检测（中间流程很复杂 略）</li>\n	<li>路由调度对象<code>think\\route\\Dispatch</code>初始化</li>\n	<li>设置当前请求的控制器和操作名</li>\n	<li>注册路由中间件</li>\n	<li>绑定数据模型</li>\n	<li>设置路由额外参数</li>\n	<li>执行数据自动验证</li>\n	<li>执行路由调度子类的<code>exec</code>方法返回响应<code>think\\Response</code>对象</li>\n	<li>获取当前请求的控制器对象实例</li>\n	<li>利用反射机制注册控制器中间件</li>\n	<li>执行控制器方法以及前后置中间件</li>\n	<li>执行当前响应对象的<code>send</code>方法输出</li>\n	<li>执行HTTP应用对象的<code>end</code>方法善后</li>\n	<li>监听<code>HttpEnd</code>事件</li>\n	<li>执行中间件的<code>end</code>回调</li>\n	<li>写入当前请求的日志信息</li>\n</ul>\n\n<p>至此，当前请求流程结束。</p>\n');
 
 -- ----------------------------
 -- Table structure for tp_picture
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_picture`;
 CREATE TABLE `tp_picture` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `cate_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
-  `title` varchar(70) NOT NULL DEFAULT '' COMMENT '标题',
-  `title_style` varchar(225) NOT NULL DEFAULT '' COMMENT '标题样式',
-  `thumb` varchar(225) NOT NULL DEFAULT '' COMMENT '缩略图',
-  `keywords` varchar(80) NOT NULL DEFAULT '' COMMENT '关键词',
-  `description` mediumtext NOT NULL COMMENT 'SEO简介',
-  `content` text NOT NULL COMMENT '内容',
-  `template` varchar(80) NOT NULL DEFAULT '' COMMENT '模板',
-  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态',
-  `sort` int(10) unsigned NOT NULL DEFAULT '100' COMMENT '排序',
-  `hits` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
-  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
+  `create_time` int(11) NOT NULL,
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  `image` varchar(80) NOT NULL DEFAULT '' COMMENT '缩略图',
-  `images` mediumtext NOT NULL COMMENT '图片集',
-  `download` varchar(80) NOT NULL DEFAULT '' COMMENT '文件下载',
-  `author` varchar(50) NOT NULL DEFAULT 'Admin' COMMENT '作者',
+  `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
+  `status` tinyint(1) DEFAULT NULL COMMENT '状态',
+  `cate_id` tinyint(10) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
+  `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
+  `author` varchar(255) NOT NULL DEFAULT '' COMMENT '作者',
   `source` varchar(255) NOT NULL DEFAULT '' COMMENT '来源',
+  `content` text NOT NULL COMMENT '内容',
   `summary` text NOT NULL COMMENT '摘要',
-  `tags` varchar(100) NOT NULL DEFAULT '' COMMENT 'TAG',
-  PRIMARY KEY (`id`),
-  KEY `status` (`id`,`status`,`sort`),
-  KEY `cate_id` (`id`,`cate_id`,`status`),
-  KEY `sort` (`id`,`cate_id`,`status`,`sort`)
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COMMENT='图片模型表';
+  `image` varchar(80) NOT NULL DEFAULT '' COMMENT '图片',
+  `images` varchar(255) NOT NULL DEFAULT '' COMMENT '图片集',
+  `download` varchar(80) NOT NULL DEFAULT '' COMMENT '文件下载',
+  `tags` varchar(255) NOT NULL DEFAULT '' COMMENT 'TAG',
+  `hits` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
+  `keywords` varchar(255) NOT NULL DEFAULT '' COMMENT '关键词',
+  `description` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
+  `template` varchar(30) NOT NULL DEFAULT '' COMMENT '模板',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='图片模块';
 
 -- ----------------------------
 -- Records of tp_picture
 -- ----------------------------
-INSERT INTO `tp_picture` VALUES ('10', '11', '资质荣誉一', '', '', '', '', '<p style=\"text-indent: 2em;\">2017年7月12日，国资委正式发布2016年度中央企业负责人经营业绩考核结果。51家央企位列2016年度考核Ａ级，占全部中央企业的50%。集团公司2016年度经营业绩考核综合得分为135.26分，考核结果为A级，在51家A级企业中排名第25位，排名较上年提高8个位次，这是XX集团公司第六次被评为年度经营业绩考核A级企业。</p>', '', '1', '100', '2', '1545628800', '0', '/uploads/20181224/df4a0aaf70da70634efb8c682c50a8df.jpg', '', '', '管理员', '本站', '2017年7月12日，国资委正式发布2016年度中央企业负责人经营业绩考核结果。51家央企位列2016年度考核Ａ级，占全部中央企业的50%。集团公司2016年度经营业绩考核综合得分为135.26分，考核结果为A级，在51家A级企业中排名第25位，排名较上年提高8个位次，这是XX集团公司第六次被评为年度经营业绩考核A级企业。', '');
-INSERT INTO `tp_picture` VALUES ('11', '11', '资质荣誉二', '', '', '', '', '<p style=\"text-indent: 2em;\">2017年7月12日，国资委正式发布2016年度中央企业负责人经营业绩考核结果。51家央企位列2016年度考核Ａ级，占全部中央企业的50%。集团公司2016年度经营业绩考核综合得分为135.26分，考核结果为A级，在51家A级企业中排名第25位，排名较上年提高8个位次，这是XX集团公司第六次被评为年度经营业绩考核A级企业。</p>', '', '1', '100', '0', '1545629302', '0', '/uploads/20181224/acb269b78bf5a08dda27ae155768e688.jpg', '', '', '管理员', '本站', '2017年7月12日，国资委正式发布2016年度中央企业负责人经营业绩考核结果。51家央企位列2016年度考核Ａ级，占全部中央企业的50%。集团公司2016年度经营业绩考核综合得分为135.26分，考核结果为A级，在51家A级企业中排名第25位，排名较上年提高8个位次，这是XX集团公司第六次被评为年度经营业绩考核A级企业。', '');
-INSERT INTO `tp_picture` VALUES ('12', '11', '资质荣誉三', '', '', '', '', '<p style=\"text-indent: 2em;\">2017年7月12日，国资委正式发布2016年度中央企业负责人经营业绩考核结果。51家央企位列2016年度考核Ａ级，占全部中央企业的50%。集团公司2016年度经营业绩考核综合得分为135.26分，考核结果为A级，在51家A级企业中排名第25位，排名较上年提高8个位次，这是XX集团公司第六次被评为年度经营业绩考核A级企业。</p>', '', '1', '100', '1', '1545629346', '0', '/uploads/20181224/dd30ed06a39d73f8bbc8012741a3010a.jpg', '', '', '管理员', '本站', '2017年7月12日，国资委正式发布2016年度中央企业负责人经营业绩考核结果。51家央企位列2016年度考核Ａ级，占全部中央企业的50%。集团公司2016年度经营业绩考核综合得分为135.26分，考核结果为A级，在51家A级企业中排名第25位，排名较上年提高8个位次，这是XX集团公司第六次被评为年度经营业绩考核A级企业。', '');
-INSERT INTO `tp_picture` VALUES ('13', '11', '资质荣誉四', '', '', '', '', '<p><span style=\"text-indent: 32px;\">2017年7月12日，国资委正式发布2016年度中央企业负责人经营业绩考核结果。51家央企位列2016年度考核Ａ级，占全部中央企业的50%。集团公司2016年度经营业绩考核综合得分为135.26分，考核结果为A级，在51家A级企业中排名第25位，排名较上年提高8个位次，这是XX集团公司第六次被评为年度经营业绩考核A级企业。</span></p>', '', '1', '100', '4', '1545629373', '0', '/uploads/20181224/10ba9f34431727269dbeadae6dc786f8.jpg', '', '', '管理员', '本站', '2017年7月12日，国资委正式发布2016年度中央企业负责人经营业绩考核结果。51家央企位列2016年度考核Ａ级，占全部中央企业的50%。集团公司2016年度经营业绩考核综合得分为135.26分，考核结果为A级，在51家A级企业中排名第25位，排名较上年提高8个位次，这是XX集团公司第六次被评为年度经营业绩考核A级企业。', '');
-INSERT INTO `tp_picture` VALUES ('14', '11', '资质荣誉五', '', '', '', '', '2017年7月12日，国资委正式发布2016年度中央企业负责人经营业绩考核结果。51家央企位列2016年度考核Ａ级，占全部中央企业的50%。集团公司2016年度经营业绩考核综合得分为135.26分，考核结果为A级，在51家A级企业中排名第25位，排名较上年提高8个位次，这是XX集团公司第六次被评为年度经营业绩考核A级企业。', '', '1', '100', '3', '1545629405', '0', '/uploads/20181224/1806bd7cc4c2beaf6be64833a891671b.jpg', '', '', '管理员', '本站', '2017年7月12日，国资委正式发布2016年度中央企业负责人经营业绩考核结果。51家央企位列2016年度考核Ａ级，占全部中央企业的50%。集团公司2016年度经营业绩考核综合得分为135.26分，考核结果为A级，在51家A级企业中排名第25位，排名较上年提高8个位次，这是XX集团公司第六次被评为年度经营业绩考核A级企业。', '');
-INSERT INTO `tp_picture` VALUES ('15', '11', '资质荣誉六', '', '', '', '', '<p><span style=\"text-indent: 32px;\">2017年7月12日，国资委正式发布2016年度中央企业负责人经营业绩考核结果。51家央企位列2016年度考核Ａ级，占全部中央企业的50%。集团公司2016年度经营业绩考核综合得分为135.26分，考核结果为A级，在51家A级企业中排名第25位，排名较上年提高8个位次，这是XX集团公司第六次被评为年度经营业绩考核A级企业。</span></p>', '', '1', '100', '3', '1545629485', '0', '/uploads/20181224/97e072ae3a03895617e6b8ef6dc73529.jpg', '', '', '管理员', '本站', '2017年7月12日，国资委正式发布2016年度中央企业负责人经营业绩考核结果。51家央企位列2016年度考核Ａ级，占全部中央企业的50%。集团公司2016年度经营业绩考核综合得分为135.26分，考核结果为A级，在51家A级企业中排名第25位，排名较上年提高8个位次，这是XX集团公司第六次被评为年度经营业绩考核A级企业。', '');
+INSERT INTO `tp_picture` VALUES ('1', '1581076265', '1581076265', '50', '1', '7', '资质荣誉一', '管理员', '本站', '<p style=\"text-indent: 2em;\">2017年7月12日，国资委正式发布2016年度中央企业负责人经营业绩考核结果。51家央企位列2016年度考核Ａ级，占全部中央企业的50%。集团公司2016年度经营业绩考核综合得分为135.26分，考核结果为A级，在51家A级企业中排名第25位，排名较上年提高8个位次，这是XX集团公司第六次被评为年度经营业绩考核A级企业。</p>\n', '2017年7月12日，国资委正式发布2016年度中央企业负责人经营业绩考核结果。51家央企位列2016年度考核Ａ级，占全部中央企业的50%。集团公司2016年度经营业绩考核综合得分为135.26分，考核结果为A级，在51家A级企业中排名第25位，排名较上年提高8个位次，这是XX集团公司第六次被评为年度经营业绩考核A级企业。', '/uploads/20181224/df4a0aaf70da70634efb8c682c50a8df.jpg', '', '', '', '0', '', '', '');
+INSERT INTO `tp_picture` VALUES ('2', '1581076308', '1581076308', '50', '1', '7', '资质荣誉二', '管理员', '本站', '<p style=\"text-indent: 2em;\">2017年7月12日，国资委正式发布2016年度中央企业负责人经营业绩考核结果。51家央企位列2016年度考核Ａ级，占全部中央企业的50%。集团公司2016年度经营业绩考核综合得分为135.26分，考核结果为A级，在51家A级企业中排名第25位，排名较上年提高8个位次，这是XX集团公司第六次被评为年度经营业绩考核A级企业。</p>\n', '2017年7月12日，国资委正式发布2016年度中央企业负责人经营业绩考核结果。51家央企位列2016年度考核Ａ级，占全部中央企业的50%。集团公司2016年度经营业绩考核综合得分为135.26分，考核结果为A级，在51家A级企业中排名第25位，排名较上年提高8个位次，这是XX集团公司第六次被评为年度经营业绩考核A级企业。', '/uploads/20181224/acb269b78bf5a08dda27ae155768e688.jpg', '', '', '', '0', '', '', '');
+INSERT INTO `tp_picture` VALUES ('3', '1581076347', '1581076347', '50', '1', '7', '资质荣誉三', '管理员', '本站', '<p style=\"text-indent: 2em;\">2017年7月12日，国资委正式发布2016年度中央企业负责人经营业绩考核结果。51家央企位列2016年度考核Ａ级，占全部中央企业的50%。集团公司2016年度经营业绩考核综合得分为135.26分，考核结果为A级，在51家A级企业中排名第25位，排名较上年提高8个位次，这是XX集团公司第六次被评为年度经营业绩考核A级企业。</p>\n', '2017年7月12日，国资委正式发布2016年度中央企业负责人经营业绩考核结果。51家央企位列2016年度考核Ａ级，占全部中央企业的50%。集团公司2016年度经营业绩考核综合得分为135.26分，考核结果为A级，在51家A级企业中排名第25位，排名较上年提高8个位次，这是XX集团公司第六次被评为年度经营业绩考核A级企业。', '/uploads/20181224/dd30ed06a39d73f8bbc8012741a3010a.jpg', '', '', '', '0', '', '', '');
+INSERT INTO `tp_picture` VALUES ('4', '1581076385', '1581076385', '50', '1', '7', '资质荣誉四', '管理员', '本站', '<p><span style=\"text-indent: 32px;\">2017年7月12日，国资委正式发布2016年度中央企业负责人经营业绩考核结果。51家央企位列2016年度考核Ａ级，占全部中央企业的50%。集团公司2016年度经营业绩考核综合得分为135.26分，考核结果为A级，在51家A级企业中排名第25位，排名较上年提高8个位次，这是XX集团公司第六次被评为年度经营业绩考核A级企业。</span></p>\n', '2017年7月12日，国资委正式发布2016年度中央企业负责人经营业绩考核结果。51家央企位列2016年度考核Ａ级，占全部中央企业的50%。集团公司2016年度经营业绩考核综合得分为135.26分，考核结果为A级，在51家A级企业中排名第25位，排名较上年提高8个位次，这是XX集团公司第六次被评为年度经营业绩考核A级企业。', '/uploads/20181224/10ba9f34431727269dbeadae6dc786f8.jpg', '', '', '', '0', '', '', '');
+INSERT INTO `tp_picture` VALUES ('5', '1581076418', '1581076418', '50', '1', '7', '资质荣誉五', '管理员', '本站', '<p>2017年7月12日，国资委正式发布2016年度中央企业负责人经营业绩考核结果。51家央企位列2016年度考核Ａ级，占全部中央企业的50%。集团公司2016年度经营业绩考核综合得分为135.26分，考核结果为A级，在51家A级企业中排名第25位，排名较上年提高8个位次，这是XX集团公司第六次被评为年度经营业绩考核A级企业。</p>\n', '2017年7月12日，国资委正式发布2016年度中央企业负责人经营业绩考核结果。51家央企位列2016年度考核Ａ级，占全部中央企业的50%。集团公司2016年度经营业绩考核综合得分为135.26分，考核结果为A级，在51家A级企业中排名第25位，排名较上年提高8个位次，这是XX集团公司第六次被评为年度经营业绩考核A级企业。', '/uploads/20181224/1806bd7cc4c2beaf6be64833a891671b.jpg', '', '', '', '1', '', '', '');
+INSERT INTO `tp_picture` VALUES ('6', '1581076451', '1581076451', '50', '1', '7', '资质荣誉六', '管理员', '本站', '<p>2017年7月12日，国资委正式发布2016年度中央企业负责人经营业绩考核结果。51家央企位列2016年度考核Ａ级，占全部中央企业的50%。集团公司2016年度经营业绩考核综合得分为135.26分，考核结果为A级，在51家A级企业中排名第25位，排名较上年提高8个位次，这是XX集团公司第六次被评为年度经营业绩考核A级企业。</p>\n', '2017年7月12日，国资委正式发布2016年度中央企业负责人经营业绩考核结果。51家央企位列2016年度考核Ａ级，占全部中央企业的50%。集团公司2016年度经营业绩考核综合得分为135.26分，考核结果为A级，在51家A级企业中排名第25位，排名较上年提高8个位次，这是XX集团公司第六次被评为年度经营业绩考核A级企业。', '/uploads/20181224/97e072ae3a03895617e6b8ef6dc73529.jpg', '', '', '', '0', '', '', '');
 
 -- ----------------------------
 -- Table structure for tp_product
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_product`;
 CREATE TABLE `tp_product` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `cate_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
-  `title` varchar(70) NOT NULL DEFAULT '' COMMENT '标题',
-  `title_style` varchar(225) NOT NULL DEFAULT '' COMMENT '标题样式',
-  `thumb` varchar(225) NOT NULL DEFAULT '' COMMENT '缩略图',
-  `keywords` varchar(80) NOT NULL DEFAULT '' COMMENT '关键词',
-  `description` mediumtext NOT NULL COMMENT 'SEO简介',
-  `content` text NOT NULL COMMENT '内容',
-  `template` varchar(80) NOT NULL DEFAULT '' COMMENT '模板',
-  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态',
-  `sort` int(10) unsigned NOT NULL DEFAULT '100' COMMENT '排序',
-  `hits` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
-  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
+  `create_time` int(11) NOT NULL,
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  `image` varchar(80) NOT NULL DEFAULT '' COMMENT '缩略图',
-  `images` mediumtext NOT NULL COMMENT '图片集',
-  `download` varchar(80) NOT NULL DEFAULT '' COMMENT '文件下载',
-  `author` varchar(50) NOT NULL DEFAULT 'Admin' COMMENT '作者',
+  `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
+  `status` tinyint(1) DEFAULT NULL COMMENT '状态',
+  `cate_id` tinyint(10) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
+  `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
+  `author` varchar(255) NOT NULL DEFAULT '' COMMENT '作者',
   `source` varchar(255) NOT NULL DEFAULT '' COMMENT '来源',
+  `content` text NOT NULL COMMENT '内容',
   `summary` text NOT NULL COMMENT '摘要',
-  `tags` varchar(100) NOT NULL DEFAULT '' COMMENT 'TAG',
-  PRIMARY KEY (`id`),
-  KEY `status` (`id`,`status`,`sort`),
-  KEY `cate_id` (`id`,`cate_id`,`status`),
-  KEY `sort` (`id`,`cate_id`,`status`,`sort`)
-) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='产品模型表';
+  `image` varchar(80) NOT NULL DEFAULT '' COMMENT '图片',
+  `images` varchar(255) NOT NULL DEFAULT '' COMMENT '图片集',
+  `download` varchar(80) NOT NULL DEFAULT '' COMMENT '文件下载',
+  `tags` varchar(255) NOT NULL DEFAULT '' COMMENT 'TAG',
+  `hits` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
+  `keywords` varchar(255) NOT NULL DEFAULT '' COMMENT '关键词',
+  `description` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
+  `template` varchar(30) NOT NULL DEFAULT '' COMMENT '模板',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='产品模块';
 
 -- ----------------------------
 -- Records of tp_product
 -- ----------------------------
-INSERT INTO `tp_product` VALUES ('10', '15', '一本书', '', '', '', '', '', '', '1', '100', '0', '1545631080', '0', '/uploads/20181224/065928f94ebe13ab1fbdc09cdd28a18b.jpg', '', '', '管理员', '本站', '', '13');
-INSERT INTO `tp_product` VALUES ('11', '15', '一支笔', '', '', '', '', '', '', '1', '100', '0', '1545631526', '0', '/uploads/20181224/f05f564a79e650d566251152fa4fa75e.jpg', '', '', '管理员', '本站', '', '');
-INSERT INTO `tp_product` VALUES ('12', '15', '一支铅笔', '', '', '', '', '', '', '1', '100', '0', '1545631500', '0', '/uploads/20181224/d5e07bd3fdd9f3cbb0bdc798ccdba178.jpg', '', '', '管理员', '本站', '', '12');
-INSERT INTO `tp_product` VALUES ('13', '15', '背包', '', '', '', '', '', '', '1', '100', '0', '1545631583', '0', '/uploads/20181224/8852280b4dc3365af4855c779e4239c6.jpg', '', '', '管理员', '本站', '', '');
-INSERT INTO `tp_product` VALUES ('14', '15', '笔记本', '', '', '', '', '', '', '1', '100', '2', '1545631621', '0', '/uploads/20181224/d42552c77b14805f6d48e00b7a38f2e8.jpg', '', '', '管理员', '本站', '', '');
-INSERT INTO `tp_product` VALUES ('15', '15', '一支笔', '', '', '', '', '', '', '1', '100', '8', '1545631620', '0', '/uploads/20181224/47f793345aa44161161aeaa4409a52f8.jpg', '', '', '管理员', '本站', '', '12');
-INSERT INTO `tp_product` VALUES ('16', '15', '铅笔盒', '', '', '', '', '', '', '1', '100', '2', '1545631695', '0', '/uploads/20181224/c89c7634f5bcd3b60884da427bc0b384.jpg', '', '', '管理员', '本站', '', '');
-INSERT INTO `tp_product` VALUES ('17', '15', '钢笔', '', '', '', '', '<p>钢笔</p>\n', '', '1', '100', '7', '1545631680', '0', '/uploads/20181224/0e9e92ee9cab513ff99f0189fea24a2e.jpg', '', '', '管理员', '本站', '', '12,14');
+INSERT INTO `tp_product` VALUES ('1', '1581076523', '1581076523', '50', '1', '9', '一本书', '管理员', '本站', '', '', '/uploads/20181224/065928f94ebe13ab1fbdc09cdd28a18b.jpg', '', '', '书本', '0', '', '', '');
+INSERT INTO `tp_product` VALUES ('2', '1581076563', '1581076563', '50', '1', '9', '一支笔', '管理员', '本站', '', '', '/uploads/20181224/f05f564a79e650d566251152fa4fa75e.jpg', '', '', '笔', '0', '', '', '');
+INSERT INTO `tp_product` VALUES ('3', '1581076594', '1581076594', '50', '1', '9', '一支铅笔', '管理员', '本站', '', '', '/uploads/20181224/d5e07bd3fdd9f3cbb0bdc798ccdba178.jpg', '', '', '笔', '2', '', '', '');
+INSERT INTO `tp_product` VALUES ('4', '1581076620', '1581076620', '50', '1', '9', '背包', '管理员', '本站', '', '', '/uploads/20181224/8852280b4dc3365af4855c779e4239c6.jpg', '', '', '', '0', '', '', '');
+INSERT INTO `tp_product` VALUES ('5', '1581076652', '1581076652', '50', '1', '9', '笔记本', '管理员', '本站', '', '', '/uploads/20181224/d42552c77b14805f6d48e00b7a38f2e8.jpg', '', '', '', '0', '', '', '');
+INSERT INTO `tp_product` VALUES ('6', '1581076690', '1581076690', '50', '1', '9', '一支笔', '管理员', '本站', '', '', '/uploads/20181224/47f793345aa44161161aeaa4409a52f8.jpg', '', '', '笔', '0', '', '', '');
+INSERT INTO `tp_product` VALUES ('7', '1581076718', '1581076718', '50', '1', '9', '铅笔盒', '管理员', '本站', '', '', '/uploads/20181224/c89c7634f5bcd3b60884da427bc0b384.jpg', '', '', '', '0', '', '', '');
+INSERT INTO `tp_product` VALUES ('8', '1581076758', '1581076758', '50', '1', '9', '钢笔', '管理员', '本站', '', '', '/uploads/20181224/0e9e92ee9cab513ff99f0189fea24a2e.jpg', '', '', '笔,钢笔', '9', '', '', '');
 
 -- ----------------------------
 -- Table structure for tp_system
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_system`;
 CREATE TABLE `tp_system` (
-  `id` int(8) NOT NULL AUTO_INCREMENT,
-  `group_id` int(8) NOT NULL COMMENT '系统设置分组id',
-  `field` varchar(255) NOT NULL COMMENT '字段名',
-  `name` varchar(255) NOT NULL DEFAULT '' COMMENT '别名',
-  `required` tinyint(1) DEFAULT '0' COMMENT '是否必填',
-  `tips` varchar(255) DEFAULT NULL COMMENT '提示信息',
-  `type` varchar(20) DEFAULT NULL COMMENT '字段类型',
-  `setup` text COMMENT '配置信息',
-  `sort` int(10) DEFAULT NULL COMMENT '排序',
-  `status` tinyint(1) DEFAULT '0' COMMENT '状态',
-  `value` text COMMENT '字段值',
-  `create_time` int(11) DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
+  `create_time` int(11) NOT NULL,
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `name` varchar(255) NOT NULL DEFAULT '' COMMENT '网站名称',
+  `logo` varchar(80) NOT NULL DEFAULT '' COMMENT '网站LOGO',
+  `icp` varchar(255) NOT NULL DEFAULT '' COMMENT '备案号',
+  `copyright` varchar(255) NOT NULL DEFAULT '' COMMENT '版权信息',
+  `url` varchar(255) NOT NULL DEFAULT '' COMMENT '网站地址',
+  `address` varchar(255) NOT NULL DEFAULT '' COMMENT '公司地址',
+  `contacts` varchar(255) NOT NULL DEFAULT '' COMMENT '联系人',
+  `tel` varchar(255) NOT NULL DEFAULT '' COMMENT '联系电话',
+  `mobile_phone` varchar(255) NOT NULL DEFAULT '' COMMENT '手机号码',
+  `fax` varchar(255) NOT NULL DEFAULT '' COMMENT '传真号码',
+  `email` varchar(255) NOT NULL DEFAULT '' COMMENT '邮箱账号',
+  `qq` varchar(255) NOT NULL DEFAULT '' COMMENT 'QQ',
+  `qrcode` varchar(80) NOT NULL DEFAULT '' COMMENT '二维码',
+  `title` varchar(255) NOT NULL DEFAULT '' COMMENT 'SEO标题',
+  `key` varchar(255) NOT NULL DEFAULT '' COMMENT 'SEO关键字',
+  `des` varchar(255) NOT NULL DEFAULT '' COMMENT 'SEO描述',
+  `mobile` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '手机端',
+  `code` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '后台验证码',
+  `message_code` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '前台验证码',
+  `message_send_mail` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '留言邮件提醒',
+  `template_opening` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '模板修改备份',
+  `template` varchar(255) NOT NULL DEFAULT '' COMMENT '模板目录',
+  `html` varchar(255) NOT NULL DEFAULT '' COMMENT 'Html目录',
+  `other` varchar(255) NOT NULL DEFAULT '' COMMENT '其他',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COMMENT='系统设置表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='系统设置';
 
 -- ----------------------------
 -- Records of tp_system
 -- ----------------------------
-INSERT INTO `tp_system` VALUES ('1', '1', 'name', '网站名称', '0', '', 'text', 'array (\n  \'edittype\' => \'ckeditor\',\n)', '1', '1', 'SIYUCMS', '1557964941', '1557986040');
-INSERT INTO `tp_system` VALUES ('2', '1', 'logo', ' 网站LOGO', '0', '', 'image', 'array (\n  \'upload_allowext\' => \'jpg|jpeg|gif|png\',\n)', '2', '1', '/uploads/20181226/a3a4245ec095da4903c6c81123fd480d.png', '1557968436', '1557986040');
-INSERT INTO `tp_system` VALUES ('3', '1', 'icp', '备案号', '0', '', 'text', null, '3', '1', '辽ICP备12345678号-1', '1557968883', '1557986040');
-INSERT INTO `tp_system` VALUES ('4', '1', 'copyright', '版权信息', '0', '', 'textarea', null, '4', '1', 'Copyright © SIYUCMS 2019.All right reserved.Powered by SIYUCMS', '1557968923', '1557986040');
-INSERT INTO `tp_system` VALUES ('5', '1', 'address', '公司地址', '0', '', 'text', null, '6', '1', '辽宁省沈阳市铁西区重工街XX路XX号1-1-1', '1557968979', '1557986095');
-INSERT INTO `tp_system` VALUES ('6', '1', 'contacts', '联系人', '0', '', 'text', null, '7', '1', 'X先生', '1557969011', '1557986096');
-INSERT INTO `tp_system` VALUES ('7', '1', 'tel', '联系电话', '0', '', 'text', null, '8', '1', '010-8888 7777', '1557969048', '1557986097');
-INSERT INTO `tp_system` VALUES ('8', '1', 'mobile_phone', '手机号码', '0', '', 'text', null, '9', '1', '158 4018 8888', '1557969066', '1557986098');
-INSERT INTO `tp_system` VALUES ('9', '1', 'fax', '传真号码', '0', '', 'text', null, '10', '1', '010-8888 9999', '1557969093', '1557986099');
-INSERT INTO `tp_system` VALUES ('10', '1', 'email', '邮箱账号', '0', '', 'text', null, '11', '1', '407593529@qq.com', '1557969113', '1557986109');
-INSERT INTO `tp_system` VALUES ('11', '1', 'qq', 'QQ', '0', '', 'text', null, '12', '1', '407593529', '1557969147', '1557986110');
-INSERT INTO `tp_system` VALUES ('12', '1', 'qrcode', '二维码', '0', '', 'image', 'array (\n  \'upload_allowext\' => \'jpg|jpeg|gif|png\',\n)', '13', '1', '/uploads/20181226/cb7a4c21d6443bc5e7a8d16ac2cbe242.png', '1557969170', '1557986111');
-INSERT INTO `tp_system` VALUES ('13', '2', 'title', 'SEO标题', '0', '', 'text', null, '21', '1', 'SIYUCMS 官网', '1557969266', '1557986147');
-INSERT INTO `tp_system` VALUES ('14', '2', 'key', 'SEO关键字', '0', '', 'textarea', null, '22', '1', 'SIYUCMS，SIYUCMS内容管理系统，php，ThinkPHP CMS，ThinkPHP建站系统', '1557969297', '1557986147');
-INSERT INTO `tp_system` VALUES ('15', '2', 'des', 'SEO描述', '0', '', 'textarea', null, '23', '1', 'SIYUCMS 是一款基于 ThinkPHP + AdminLTE 的内容管理系统。后台界面采用响应式布局，清爽、极简、简单、易用，是做开发的最佳选择。', '1557969320', '1557986147');
-INSERT INTO `tp_system` VALUES ('16', '3', 'mobile', '手机端', '0', '开启后自动跳转到mobile，自适应网站或无手机端网站请关闭', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', '31', '1', '0', '1557969425', '1557986182');
-INSERT INTO `tp_system` VALUES ('17', '3', 'code', '后台验证码', '0', '后台登录时是否需要验证码', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', '32', '1', '0', '1557969468', '1557986161');
-INSERT INTO `tp_system` VALUES ('18', '3', 'message_code', '前台验证码', '0', '前台留言等是否需要验证码', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', '33', '1', '0', '1557969501', '1557986161');
-INSERT INTO `tp_system` VALUES ('19', '3', 'message_send_mail', '留言邮件提醒', '0', '前台留言时是否需要邮件提醒，如开启请先进行邮箱配置', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', '34', '1', '0', '1557969526', '1557986161');
-INSERT INTO `tp_system` VALUES ('20', '4', 'template', '选择模板', '0', 'PC , MOBILE 等都会在该模板中', 'template', null, '41', '1', 'default', '1557969864', '1557985790');
-INSERT INTO `tp_system` VALUES ('21', '4', 'html', 'Html目录', '0', '用于模板文件防盗', 'text', null, '42', '1', 'html', '1557969903', '1557986194');
-INSERT INTO `tp_system` VALUES ('22', '1', 'url', '网站地址', '0', '', 'text', null, '5', '1', 'www.xxx.com', '1557986088', '1557986120');
-INSERT INTO `tp_system` VALUES ('24', '3', 'template_opening', '模板修改备份', '0', '开启后后台模板管理中修改文件时会进行自动备份', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', '36', '1', '1', '1558756191', '1558756247');
+INSERT INTO `tp_system` VALUES ('1', '1580560560', '1580560560', 'SIYUCMS', '/uploads/20181226/a3a4245ec095da4903c6c81123fd480d.png', '辽ICP备12345678号-1', 'Copyright © SIYUCMS 2019.All right reserved.Powered by SIYUCMS', 'www.xxx.com', '辽宁省沈阳市铁西区重工街XX路XX号1-1-1', 'X先生', '010-8888 7777', '158 4018 8888', '010-8888 9999', '407593529@qq.com', '407593529', '/uploads/20181226/cb7a4c21d6443bc5e7a8d16ac2cbe242.png', 'SIYUCMS 官网', 'SIYUCMS，SIYUCMS内容管理系统，php，ThinkPHP CMS，ThinkPHP建站系统', 'SIYUCMS 是一款基于 ThinkPHP + AdminLTE 的内容管理系统。后台界面采用响应式布局，清爽、极简、简单、易用，是做开发的最佳选择。', '0', '1', '0', '0', '1', 'default', 'html', '');
 
 -- ----------------------------
 -- Table structure for tp_system_group
@@ -986,74 +1349,39 @@ INSERT INTO `tp_system_group` VALUES ('4', '模板设置', '模板设置', '4', 
 INSERT INTO `tp_system_group` VALUES ('5', '自定义', '自定义系统设置信息', '5', '1', '1557905966', '1557906261');
 
 -- ----------------------------
--- Table structure for tp_tags
--- ----------------------------
-DROP TABLE IF EXISTS `tp_tags`;
-CREATE TABLE `tp_tags` (
-  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) DEFAULT NULL COMMENT '标签名称',
-  `num` mediumint(8) DEFAULT '1' COMMENT '标签数量',
-  `module_id` smallint(3) DEFAULT NULL COMMENT '所属模型',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COMMENT='标签表';
-
--- ----------------------------
--- Records of tp_tags
--- ----------------------------
-INSERT INTO `tp_tags` VALUES ('1', 'PHP', '8', '2');
-INSERT INTO `tp_tags` VALUES ('2', 'php整型', '1', '2');
-INSERT INTO `tp_tags` VALUES ('3', 'php注释', '1', '2');
-INSERT INTO `tp_tags` VALUES ('4', 'echo', '1', '2');
-INSERT INTO `tp_tags` VALUES ('5', 'echo命令', '1', '2');
-INSERT INTO `tp_tags` VALUES ('6', 'PHP变量', '1', '2');
-INSERT INTO `tp_tags` VALUES ('7', '代码工具', '1', '2');
-INSERT INTO `tp_tags` VALUES ('8', '开发环境', '2', '2');
-INSERT INTO `tp_tags` VALUES ('9', 'Linux', '1', '2');
-INSERT INTO `tp_tags` VALUES ('10', 'windows', '1', '2');
-INSERT INTO `tp_tags` VALUES ('11', 'PHP流程', '4', '2');
-INSERT INTO `tp_tags` VALUES ('12', '笔', '3', '4');
-INSERT INTO `tp_tags` VALUES ('13', '书本', '1', '4');
-INSERT INTO `tp_tags` VALUES ('14', '钢笔', '1', '4');
-
--- ----------------------------
 -- Table structure for tp_team
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_team`;
 CREATE TABLE `tp_team` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `cate_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
-  `title` varchar(70) NOT NULL DEFAULT '' COMMENT '标题',
-  `title_style` varchar(225) NOT NULL DEFAULT '' COMMENT '标题样式',
-  `thumb` varchar(225) NOT NULL DEFAULT '' COMMENT '缩略图',
-  `keywords` varchar(80) NOT NULL DEFAULT '' COMMENT '关键词',
-  `description` mediumtext NOT NULL COMMENT 'SEO简介',
-  `content` text NOT NULL COMMENT '内容',
-  `template` varchar(80) NOT NULL DEFAULT '' COMMENT '模板',
-  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态',
-  `sort` int(10) unsigned NOT NULL DEFAULT '100' COMMENT '排序',
-  `hits` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
-  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
+  `create_time` int(11) NOT NULL,
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  `image` varchar(80) NOT NULL DEFAULT '' COMMENT '缩略图',
-  `images` mediumtext NOT NULL COMMENT '图片集',
-  `download` varchar(80) NOT NULL DEFAULT '' COMMENT '文件下载',
-  `author` varchar(50) NOT NULL DEFAULT 'Admin' COMMENT '作者',
+  `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
+  `status` tinyint(1) DEFAULT NULL COMMENT '状态',
+  `cate_id` tinyint(10) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
+  `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
+  `author` varchar(255) NOT NULL DEFAULT '' COMMENT '作者',
   `source` varchar(255) NOT NULL DEFAULT '' COMMENT '来源',
+  `content` text NOT NULL COMMENT '内容',
   `summary` text NOT NULL COMMENT '摘要',
-  `tags` varchar(100) NOT NULL DEFAULT '' COMMENT 'TAG',
-  PRIMARY KEY (`id`),
-  KEY `status` (`id`,`status`,`sort`),
-  KEY `cate_id` (`id`,`cate_id`,`status`),
-  KEY `sort` (`id`,`cate_id`,`status`,`sort`)
-) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='团队模型表';
+  `image` varchar(80) NOT NULL DEFAULT '' COMMENT '图片',
+  `images` varchar(255) NOT NULL DEFAULT '' COMMENT '图片集',
+  `download` varchar(80) NOT NULL DEFAULT '' COMMENT '文件下载',
+  `tags` varchar(255) NOT NULL DEFAULT '' COMMENT 'TAG',
+  `hits` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
+  `keywords` varchar(255) NOT NULL DEFAULT '' COMMENT '关键词',
+  `description` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
+  `template` varchar(30) NOT NULL DEFAULT '' COMMENT '模板',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='团队模块';
 
 -- ----------------------------
 -- Records of tp_team
 -- ----------------------------
-INSERT INTO `tp_team` VALUES ('10', '18', '总设计师', '', '', '', '', '', '', '1', '100', '4', '1545635580', '0', '/uploads/20181224/6d003cbc391614dda73fbb2ab2bb109c.jpg', '', '', '管理员', '本站', '多年从业经验，精益求精，客户至上，您的满意是我们不懈的追求！', '');
-INSERT INTO `tp_team` VALUES ('11', '18', '销售总监', '', '', '', '', '', '', '1', '100', '2', '1545636240', '0', '/uploads/20181224/02e41d74e1ec2531fede0b3196ae953b.jpg', '', '', '管理员', '本站', '多年从业经验，精益求精，客户至上，您的满意是我们不懈的追求！', '');
-INSERT INTO `tp_team` VALUES ('12', '18', '技术总监', '', '', '', '', '', '', '1', '100', '1', '1545636300', '0', '/uploads/20181224/7ea6c84dc1454ab28a4d54c90655e6e0.jpg', '', '', '管理员', '本站', '多年从业经验，精益求精，客户至上，您的满意是我们不懈的追求！', '');
-INSERT INTO `tp_team` VALUES ('13', '18', '网络总监', '', '', '', '', '', '', '1', '100', '2', '1545636300', '0', '/uploads/20181224/afd088573e24003aadddb5744649dda9.jpg', '', '', '管理员', '本站', '多年从业经验，精益求精，客户至上，您的满意是我们不懈的追求！', '');
+INSERT INTO `tp_team` VALUES ('1', '1581079608', '1581079608', '50', '1', '12', '总设计师', '管理员', '本站', '', '多年从业经验，精益求精，客户至上，您的满意是我们不懈的追求！', '/uploads/20181224/6d003cbc391614dda73fbb2ab2bb109c.jpg', '', '', '', '0', '', '', '');
+INSERT INTO `tp_team` VALUES ('2', '1581079640', '1581079640', '50', '1', '12', '销售总监', '管理员', '本站', '', '多年从业经验，精益求精，客户至上，您的满意是我们不懈的追求！', '/uploads/20181224/02e41d74e1ec2531fede0b3196ae953b.jpg', '', '', '', '1', '', '', '');
+INSERT INTO `tp_team` VALUES ('3', '1581079668', '1581079668', '50', '1', '12', '技术总监', '管理员', '本站', '', '多年从业经验，精益求精，客户至上，您的满意是我们不懈的追求！', '/uploads/20181224/7ea6c84dc1454ab28a4d54c90655e6e0.jpg', '', '', '', '0', '', '', '');
+INSERT INTO `tp_team` VALUES ('4', '1581079697', '1581079697', '50', '1', '12', '网络总监', '管理员', '本站', '', '多年从业经验，精益求精，客户至上，您的满意是我们不懈的追求！', '/uploads/20181224/afd088573e24003aadddb5744649dda9.jpg', '', '', '', '0', '', '', '');
 
 -- ----------------------------
 -- Table structure for tp_users
@@ -1061,11 +1389,11 @@ INSERT INTO `tp_team` VALUES ('13', '18', '网络总监', '', '', '', '', '', ''
 DROP TABLE IF EXISTS `tp_users`;
 CREATE TABLE `tp_users` (
   `id` mediumint(8) NOT NULL AUTO_INCREMENT,
-  `email` varchar(100) NOT NULL COMMENT '邮箱帐号',
+  `email` varchar(100) NOT NULL DEFAULT '' COMMENT '邮箱',
   `password` varchar(100) NOT NULL COMMENT '密码',
-  `sex` tinyint(1) NOT NULL COMMENT '1男 0女',
-  `last_login_time` int(10) DEFAULT NULL COMMENT '最后登录时间',
-  `last_login_ip` varchar(15) DEFAULT NULL COMMENT '最后登录IP',
+  `sex` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0 保密, 1 男, 2 女',
+  `last_login_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最后登录时间',
+  `last_login_ip` varchar(15) NOT NULL DEFAULT '' COMMENT '最后登录IP',
   `qq` varchar(20) DEFAULT NULL,
   `mobile` varchar(20) DEFAULT NULL COMMENT '手机',
   `mobile_validated` tinyint(3) DEFAULT '0' COMMENT '是否验证手机 1 验证 0 未验证',
@@ -1076,36 +1404,37 @@ CREATE TABLE `tp_users` (
   `update_time` int(10) DEFAULT '0' COMMENT '修改时间',
   `create_time` int(10) DEFAULT '0' COMMENT '注册时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='会员表';
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='会员表';
 
 -- ----------------------------
 -- Records of tp_users
 -- ----------------------------
-INSERT INTO `tp_users` VALUES ('1', 'test001@qq.com', 'e10adc3949ba59abbe56e057f20f883e', '1', '1553138106', '127.0.0.1', '407593529', '15840189268', '0', '0', '1', '1', '127.0.0.1', '1541405155', '1541405155');
+INSERT INTO `tp_users` VALUES ('1', 'test001@qq.com', 'e10adc3949ba59abbe56e057f20f883e', '2', '1583746801', '127.0.0.1', '222222', '111111', '0', '0', '1', '1', '127.0.0.1', '1583747367', '1541405155');
 INSERT INTO `tp_users` VALUES ('2', 'test002@qq.com', 'e10adc3949ba59abbe56e057f20f883e', '0', '1541405185', '127.0.0.1', '407593529', '15840189627', '0', '0', '2', '1', '127.0.0.1', '1541405155', '1541405185');
 INSERT INTO `tp_users` VALUES ('3', 'test003@qq.com', 'e10adc3949ba59abbe56e057f20f883e', '1', '1546060654', '127.0.0.1', '', '', '0', '0', '1', '1', '127.0.0.1', '1541405155', '1546060654');
 INSERT INTO `tp_users` VALUES ('4', 'test004@qq.com', 'e10adc3949ba59abbe56e057f20f883e', '1', '1546060666', '127.0.0.1', '', '', '0', '0', '1', '1', '127.0.0.1', '1541405155', '1546060666');
-INSERT INTO `tp_users` VALUES ('5', 'test005@qq.com', 'e10adc3949ba59abbe56e057f20f883e', '1', '1546060680', '127.0.0.1', '', '15840189625', '0', '0', '1', '1', '127.0.0.1', '1541405155', '1546060680');
+INSERT INTO `tp_users` VALUES ('5', 'test005@qq.com', 'e10adc3949ba59abbe56e057f20f883e', '1', '1546060680', '127.0.0.1', '', '15840189625', '0', '0', '1', '1', '127.0.0.1', '1579591129', '1546060680');
 INSERT INTO `tp_users` VALUES ('6', 'test007@qq.com', 'e10adc3949ba59abbe56e057f20f883e', '0', '1546061841', '127.0.0.1', null, null, '0', '0', '1', '1', '127.0.0.1', '1541405155', '1546061841');
-INSERT INTO `tp_users` VALUES ('7', 'test008@qq.com', 'e10adc3949ba59abbe56e057f20f883e', '0', '1546062123', '127.0.0.1', '123', '', '0', '0', '1', '1', '127.0.0.1', '1551844614', '1546061953');
+INSERT INTO `tp_users` VALUES ('7', 'test008@qq.com', 'e10adc3949ba59abbe56e057f20f883e', '0', '1546062123', '127.0.0.1', '123', '', '1', '0', '1', '1', '127.0.0.1', '1551844614', '1546061953');
+INSERT INTO `tp_users` VALUES ('13', 'test009@qq.com', '96e79218965eb72c92a549dd5a330112', '0', '1583747029', '127.0.0.1', null, null, '0', '0', '1', '1', '127.0.0.1', '0', '1583747029');
 
 -- ----------------------------
 -- Table structure for tp_users_type
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_users_type`;
 CREATE TABLE `tp_users_type` (
-  `id` smallint(4) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL COMMENT '会员组名称',
-  `description` varchar(255) DEFAULT NULL COMMENT '描述',
-  `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
-  `status` tinyint(1) DEFAULT '1' COMMENT '状态',
-  `create_time` int(10) DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(10) DEFAULT '0' COMMENT '修改时间',
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
+  `create_time` int(11) NOT NULL,
+  `update_time` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL DEFAULT '' COMMENT '分组名称',
+  `remark` text NOT NULL COMMENT '描述',
+  `sort` int(5) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
+  `status` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='会员类型表';
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='用户组';
 
 -- ----------------------------
 -- Records of tp_users_type
 -- ----------------------------
-INSERT INTO `tp_users_type` VALUES ('1', '注册会员', '注册会员', '1', '1', '1541405155', '1541405155');
-INSERT INTO `tp_users_type` VALUES ('2', 'VIP会员', 'VIP会员', '2', '1', '1541405155', '1541405155');
+INSERT INTO `tp_users_type` VALUES ('1', '1541405155', '1541405155', '普通会员', '普通会员', '1', '1');
+INSERT INTO `tp_users_type` VALUES ('2', '1541405155', '1541405155', 'VIP会员', 'VIP会员', '2', '1');

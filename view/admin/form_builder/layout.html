@@ -2,17 +2,20 @@
 <section class="content">
     {// 额外HTML代码 }
     {$extra_html_content_top|raw|default=''}
-    <!--顶部提示-->
+    <!--顶部提示开始-->
     {notempty name="page_tips_top"}
     <div class="alert alert-{$tips_type} alert-dismissable">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
         <p>{$page_tips_top|raw}</p>
     </div>
     {/notempty}
-    <!--搜索区域-->
+    <!--顶部提示结束-->
     <div class="search">
         <form class="form-inline" action="">
             {notempty name="page_tips_search"}{$page_tips_search|raw}{/notempty}
+            {if $show_all}
+            <a class="btn btn-flat btn-primary m_10" href="{:url('index')}"><i class="fa fa-list-ul m-r-10"></i>查看全部</a>
+            {/if}
             <a class="btn btn-flat btn-success m_10 f_r m_t_5" onclick="javascript :history.back(-1)"><i class="fa fa-undo m-r-10"></i>返 回</a>
         </form>
     </div>

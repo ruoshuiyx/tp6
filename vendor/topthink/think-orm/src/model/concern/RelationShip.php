@@ -28,6 +28,7 @@ use think\model\relation\HasOneThrough;
 use think\model\relation\MorphMany;
 use think\model\relation\MorphOne;
 use think\model\relation\MorphTo;
+use think\model\relation\MorphToMany;
 use think\model\relation\OneToOne;
 
 /**
@@ -120,7 +121,7 @@ trait RelationShip
             $value = $this->$method($value, array_merge($this->data, $data));
         }
 
-        $this->relation[$name] = $value;
+        $this->relation[$this->getRealFieldName($name)] = $value;
 
         return $this;
     }
@@ -148,7 +149,7 @@ trait RelationShip
                 $subRelation = $relation;
                 $relation    = $key;
             } elseif (strpos($relation, '.')) {
-                list($relation, $subRelation) = explode('.', $relation, 2);
+                [$relation, $subRelation] = explode('.', $relation, 2);
             }
 
             $method       = Str::camel($relation);
@@ -263,13 +264,13 @@ trait RelationShip
                 $subRelation = $relation;
                 $relation    = $key;
             } elseif (strpos($relation, '.')) {
-                list($relation, $subRelation) = explode('.', $relation, 2);
+                [$relation, $subRelation] = explode('.', $relation, 2);
 
                 $subRelation = [$subRelation];
             }
 
+            $relationName = $relation;
             $relation     = Str::camel($relation);
-            $relationName = Str::snake($relation);
 
             $relationResult = $this->$relation();
 
@@ -283,7 +284,7 @@ trait RelationShip
                 $relationCache = $cache[$relationName] ?? $cache;
             }
 
-            $relationResult->eagerlyResultSet($resultSet, $relation, $subRelation, $closure, $relationCache, $join);
+            $relationResult->eagerlyResultSet($resultSet, $relationName, $subRelation, $closure, $relationCache, $join);
         }
     }
 
@@ -312,13 +313,13 @@ trait RelationShip
                 $subRelation = $relation;
                 $relation    = $key;
             } elseif (strpos($relation, '.')) {
-                list($relation, $subRelation) = explode('.', $relation, 2);
+                [$relation, $subRelation] = explode('.', $relation, 2);
 
                 $subRelation = [$subRelation];
             }
 
+            $relationName = $relation;
             $relation     = Str::camel($relation);
-            $relationName = Str::snake($relation);
 
             $relationResult = $this->$relation();
 
@@ -332,7 +333,7 @@ trait RelationShip
                 $relationCache = $cache[$relationName] ?? [];
             }
 
-            $relationResult->eagerlyResult($result, $relation, $subRelation, $closure, $relationCache, $join);
+            $relationResult->eagerlyResult($result, $relationName, $subRelation, $closure, $relationCache, $join);
         }
     }
 
@@ -365,10 +366,11 @@ trait RelationShip
     /**
      * 关联统计
      * @access public
-     * @param  Query    $query      查询对象
-     * @param  array    $relations  关联名
-     * @param  string   $aggregate  聚合查询方法
-     * @param  string   $field      字段
+     * @param  Query  $query       查询对象
+     * @param  array  $relations   关联名
+     * @param  string $aggregate   聚合查询方法
+     * @param  string $field       字段
+     * @param  bool   $useSubQuery 子查询
      * @return void
      */
     public function relationCount(Query $query, array $relations, string $aggregate = 'sum', string $field = '*', bool $useSubQuery = true): void
@@ -548,7 +550,7 @@ trait RelationShip
         }
 
         if (is_array($morph)) {
-            list($morphType, $foreignKey) = $morph;
+            [$morphType, $foreignKey] = $morph;
         } else {
             $morphType  = $morph . '_type';
             $foreignKey = $morph . '_id';
@@ -580,7 +582,7 @@ trait RelationShip
         $type = $type ?: get_class($this);
 
         if (is_array($morph)) {
-            list($morphType, $foreignKey) = $morph;
+            [$morphType, $foreignKey] = $morph;
         } else {
             $morphType  = $morph . '_type';
             $foreignKey = $morph . '_id';
@@ -607,13 +609,72 @@ trait RelationShip
 
         // 记录当前关联信息
         if (is_array($morph)) {
-            list($morphType, $foreignKey) = $morph;
+            [$morphType, $foreignKey] = $morph;
         } else {
             $morphType  = $morph . '_type';
             $foreignKey = $morph . '_id';
         }
 
         return new MorphTo($this, $morphType, $foreignKey, $alias, $relation);
+    }
+
+    /**
+     * MORPH TO MANY关联定义
+     * @access public
+     * @param  string       $model 模型名
+     * @param  string       $middle 中间表名/模型名
+     * @param  string|array $morph 多态字段信息
+     * @param  string       $localKey   当前模型关联键
+     * @return MorphToMany
+     */
+    public function morphToMany(string $model, string $middle, $morph = null, string $localKey = null): MorphToMany
+    {
+        if (is_null($morph)) {
+            $morph = $middle;
+        }
+
+        // 记录当前关联信息
+        if (is_array($morph)) {
+            [$morphType, $morphKey] = $morph;
+        } else {
+            $morphType = $morph . '_type';
+            $morphKey  = $morph . '_id';
+        }
+
+        $model    = $this->parseModel($model);
+        $name     = Str::snake(class_basename($model));
+        $localKey = $localKey ?: $this->getForeignKey($name);
+
+        return new MorphToMany($this, $model, $middle, $morphType, $morphKey, $localKey);
+    }
+
+    /**
+     * MORPH BY MANY关联定义
+     * @access public
+     * @param  string       $model 模型名
+     * @param  string       $middle 中间表名/模型名
+     * @param  string|array $morph 多态字段信息
+     * @param  string       $foreignKey 关联外键
+     * @return MorphToMany
+     */
+    public function morphByMany(string $model, string $middle, $morph = null, string $foreignKey = null): MorphToMany
+    {
+        if (is_null($morph)) {
+            $morph = $middle;
+        }
+
+        // 记录当前关联信息
+        if (is_array($morph)) {
+            [$morphType, $morphKey] = $morph;
+        } else {
+            $morphType = $morph . '_type';
+            $morphKey  = $morph . '_id';
+        }
+
+        $model      = $this->parseModel($model);
+        $foreignKey = $foreignKey ?: $this->getForeignKey($this->name);
+
+        return new MorphToMany($this, $model, $middle, $morphType, $morphKey, $foreignKey, true);
     }
 
     /**

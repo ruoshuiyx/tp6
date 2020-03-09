@@ -6,9 +6,9 @@
  *                      .::::.
  *                    .::::::::.            | AUTHOR: siyu
  *                    :::::::::::           | EMAIL: 407593529@qq.com
- *                 ..:::::::::::'           | QQ: 407593529
- *             '::::::::::::'               | WECHAT: zhaoyingjie4125
- *                .::::::::::               | DATETIME: 2019/04/03
+ *                 ..:::::::::::'           | DATETIME: 2020/03/08
+ *             '::::::::::::'
+ *                .::::::::::
  *           '::::::::::::::..
  *                ..::::::::::::.
  *              ``::::::::::::::::
@@ -27,7 +27,6 @@ declare (strict_types = 1);
 
 namespace app\admin\controller;
 
-use app\common\model\Cate;
 use think\App;
 use think\exception\HttpResponseException;
 use think\exception\ValidateException;
@@ -90,7 +89,7 @@ abstract class Base
     protected function initialize()
     {
         //每页显示数据量
-        $this->pageSize = Request::param('page_size', Config::get('app.page_size'));
+        $this->pageSize = Request::param('pageSize', Config::get('app.page_size'));
 
         //左侧菜单
         $menus = \app\admin\model\Base::getMenus();
@@ -107,13 +106,11 @@ abstract class Base
         $auth = new \Auth();
         $breadCrumb = $auth->getBreadCrumb();
         $breadCrumb = format_bread_crumb($breadCrumb);
-        //halt($breadCrumb);
         View::assign(['breadCrumb' => $breadCrumb]);
 
         //内容管理,获取栏目列表
-        $cates = Cate::getList()->toArray();
-        $cates = unlimitedForLayer($cates);
-        View::assign(['cates' => $cates]);
+        $cates = \app\common\model\Cate::getList();
+        View::assign(['cates' => unlimitedForLayer($cates['data'])]);
     }
 
     /**

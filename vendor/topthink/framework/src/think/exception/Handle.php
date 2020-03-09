@@ -19,7 +19,6 @@ use think\db\exception\DataNotFoundException;
 use think\db\exception\ModelNotFoundException;
 use think\Request;
 use think\Response;
-use think\response\Json;
 use Throwable;
 
 /**
@@ -63,20 +62,22 @@ class Handle
                     'message' => $this->getMessage($exception),
                     'code'    => $this->getCode($exception),
                 ];
-                $log  = "[{$data['code']}]{$data['message']}[{$data['file']}:{$data['line']}]";
+                $log = "[{$data['code']}]{$data['message']}[{$data['file']}:{$data['line']}]";
             } else {
                 $data = [
                     'code'    => $this->getCode($exception),
                     'message' => $this->getMessage($exception),
                 ];
-                $log  = "[{$data['code']}]{$data['message']}";
+                $log = "[{$data['code']}]{$data['message']}";
             }
 
             if ($this->app->config->get('log.record_trace')) {
                 $log .= PHP_EOL . $exception->getTraceAsString();
             }
 
-            $this->app->log->record($log, 'error');
+            try {
+                $this->app->log->record($log, 'error');
+            } catch (Exception $e){}
         }
     }
 
@@ -151,23 +152,32 @@ class Handle
     {
         if ($this->app->isDebug()) {
             // 调试模式，获取详细的错误信息
+            $traces = [];
+            $nextException = $exception;
+            do {
+                $traces[] = [
+                    'name'    => get_class($nextException),
+                    'file'    => $nextException->getFile(),
+                    'line'    => $nextException->getLine(),
+                    'code'    => $this->getCode($nextException),
+                    'message' => $this->getMessage($nextException),
+                    'trace'   => $nextException->getTrace(),
+                    'source'  => $this->getSourceCode($nextException),
+                ];
+            } while ($nextException = $nextException->getPrevious());
             $data = [
-                'name'    => get_class($exception),
-                'file'    => $exception->getFile(),
-                'line'    => $exception->getLine(),
-                'message' => $this->getMessage($exception),
-                'trace'   => $exception->getTrace(),
                 'code'    => $this->getCode($exception),
-                'source'  => $this->getSourceCode($exception),
+                'message' => $this->getMessage($exception),
+                'traces'  => $traces,
                 'datas'   => $this->getExtendData($exception),
                 'tables'  => [
-                    'GET Data'              => $_GET,
-                    'POST Data'             => $_POST,
-                    'Files'                 => $_FILES,
-                    'Cookies'               => $_COOKIE,
-                    'Session'               => $_SESSION ?? [],
-                    'Server/Request Data'   => $_SERVER,
-                    'Environment Variables' => $_ENV,
+                    'GET Data'              => $this->app->request->get(),
+                    'POST Data'             => $this->app->request->post(),
+                    'Files'                 => $this->app->request->file(),
+                    'Cookies'               => $this->app->request->cookie(),
+                    'Session'               => $this->app->session->all(),
+                    'Server/Request Data'   => $this->app->request->server(),
+                    'Environment Variables' => $this->app->request->env(),
                     'ThinkPHP Constants'    => $this->getConst(),
                 ],
             ];
@@ -194,25 +204,10 @@ class Handle
      */
     protected function convertExceptionToResponse(Throwable $exception): Response
     {
-        $data = $this->convertExceptionToArray($exception);
-
         if (!$this->isJson) {
-            //保留一层
-            while (ob_get_level() > 1) {
-                ob_end_clean();
-            }
-
-            $data['echo'] = ob_get_clean();
-
-            ob_start();
-            extract($data);
-            include $this->app->config->get('app.exception_tmpl') ?: __DIR__ . '/../../tpl/think_exception.tpl';
-
-            // 获取并清空缓存
-            $data     = ob_get_clean();
-            $response = new Response($data);
+            $response = Response::create($this->renderExceptionContent($exception));
         } else {
-            $response = new Json($data);
+            $response = Response::create($this->convertExceptionToArray($exception), 'json');
         }
 
         if ($exception instanceof HttpException) {
@@ -221,6 +216,16 @@ class Handle
         }
 
         return $response->code($statusCode ?? 500);
+    }
+
+    protected function renderExceptionContent(Throwable $exception): string
+    {
+        ob_start();
+        $data = $this->convertExceptionToArray($exception);
+        extract($data);
+        include $this->app->config->get('app.exception_tmpl') ?: __DIR__ . '/../../tpl/think_exception.tpl';
+
+        return ob_get_clean();
     }
 
     /**
@@ -317,10 +322,10 @@ class Handle
 
     /**
      * 获取常量列表
-     * @access private
+     * @access protected
      * @return array 常量列表
      */
-    private static function getConst(): array
+    protected function getConst(): array
     {
         $const = get_defined_constants(true);
 

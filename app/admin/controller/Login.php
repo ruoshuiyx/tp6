@@ -1,7 +1,7 @@
 <?php
 /**
  * +----------------------------------------------------------------------
- * | 登录制器
+ * | 后台登录控制制器
  * +----------------------------------------------------------------------
  *                      .::::.
  *                    .::::::::.            | AUTHOR: siyu
@@ -25,9 +25,6 @@
  */
 namespace app\admin\controller;
 
-use app\admin\model\Admin;
-use app\common\model\System;
-
 use think\captcha\facade\Captcha;
 use think\facade\Request;
 use think\facade\Session;
@@ -38,15 +35,8 @@ class Login
     // 登录页面
     public function index()
     {
-        //查找所有系统设置表数据
-        $system = System::getListField()->toArray();
-        //格式化设置字段
-        $system = sysgem_setup($system);
-        $systemArr = [];
-        foreach ($system as $k => $v) {
-            $systemArr[$v['field']] = $v['value'];
-        }
-        $system = $systemArr;
+        // 查找系统设置
+        $system = \app\common\model\System::find(1);
 
         $view['mobile'] = Request::isMobile();
         $view['system'] = $system;
@@ -56,7 +46,7 @@ class Login
 
     // 校验登录
     public function checkLogin(){
-        return Admin::checkLogin();
+        return \app\common\model\Admin::checkLogin();
     }
 
     // 验证码
@@ -67,6 +57,6 @@ class Login
     // 退出登录
     public function logout(){
         Session::delete('admin');
-        return redirect('login/index');
+        return redirect('index');
     }
 }

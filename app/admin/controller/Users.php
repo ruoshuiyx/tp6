@@ -1,14 +1,14 @@
 <?php
 /**
  * +----------------------------------------------------------------------
- * | 会员列表控制器
+ * | 会员管理控制器
  * +----------------------------------------------------------------------
  *                      .::::.
  *                    .::::::::.            | AUTHOR: siyu
  *                    :::::::::::           | EMAIL: 407593529@qq.com
- *                 ..:::::::::::'           | QQ: 407593529
- *             '::::::::::::'               | WECHAT: zhaoyingjie4125
- *                .::::::::::               | DATETIME: 2019/03/06
+ *                 ..:::::::::::'           | DATETIME: 2020/03/08
+ *             '::::::::::::'
+ *                .::::::::::
  *           '::::::::::::::..
  *                ..::::::::::::.
  *              ``::::::::::::::::
@@ -25,226 +25,174 @@
  */
 namespace app\admin\controller;
 
-use app\common\model\UsersType;
-use app\common\model\Users as M;
-
+// 引入框架内置类
 use think\facade\Request;
-use think\facade\View;
 
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+// 引入表格和表单构建器
+use app\common\facade\MakeBuilder;
+use app\common\builder\FormBuilder;
+use app\common\builder\TableBuilder;
 
 class Users extends Base
 {
+    // 验证器
     protected $validate = 'Users';
+
+    // 当前主表
+    protected $tableName = 'users';
+
+    // 当前主模型
+    protected $modelName = 'Users';
 
     // 列表
     public function index(){
-        //全局查询条件
-        $where = [];
-        $keyword = Request::param('keyword');
-        if (!empty($keyword)) {
-            $where[] = ['email|mobile', 'like', '%'.$keyword.'%'];
+        // 获取主键
+        $pk = MakeBuilder::getPrimarykey($this->tableName);
+        // 获取列表数据
+        $coloumns = MakeBuilder::getListColumns($this->tableName);
+        // 获取搜索数据
+        $search = MakeBuilder::getListSearch($this->tableName);
+        // 获取当前模块信息
+        $model = '\app\common\model\\' . $this->modelName;
+        $module = \app\common\model\Module::where('table_name', $this->tableName)->find();
+        // 搜索
+        if (Request::param('getList') == 1) {
+            $where = MakeBuilder::getListWhere($this->tableName);
+            $orderByColumn = Request::param('orderByColumn') ?? $pk;
+            $isAsc = Request::param('isAsc') ?? 'desc';
+            return $model::getList($where, $this->pageSize, [$orderByColumn => $isAsc]);
         }
-        $typeId  = Request::param('type_id');
-        if (!empty($typeId)) {
-            $where[] = ['type_id', '=', $typeId];
+        // 检测单页模式
+        $isSingle = MakeBuilder::checkSingle($this->modelName);
+        if ($isSingle) {
+            return redirect($isSingle);
         }
-        $dateran = Request::param('dateran');
-        if (!empty($dateran)) {
-            $getDateran = get_dateran($dateran);
-            $where[] = ['create_time', 'between', $getDateran];
-        }
-
-        //获取列表
-        $list = M::getList($where,$this->pageSize,['id'=>'desc']);
-        //获取用户组列表
-        $UsersType = UsersType::select();
-
-        $view = [
-            'keyword'  => $keyword,
-            'typeId'   => $typeId,
-            'dateran'  => $dateran,
-            'usersType'=> $UsersType,
-            'pageSize' => page_size($this->pageSize, $list->total()),
-            'page'     => $list->render(),
-            'list'     => $list,
-            'empty'    => empty_list(11),
-        ];
-        View::assign($view);
-        return View::fetch();
+        // 构建页面
+        return TableBuilder::getInstance()
+            ->setUniqueId($pk)                              // 设置主键
+            ->addColumns($coloumns)                         // 添加列表字段数据
+            ->setSearch($search)                            // 添加头部搜索
+            ->addColumn('right_button', '操作', 'btn')      // 启用右侧操作列
+            ->addRightButtons($module->right_button)        // 设置右侧操作列
+            ->addTopButtons($module->top_button)            // 设置顶部按钮组
+            ->fetch();
     }
 
     // 添加
-    public function add(){
-        $usersType = UsersType::where('status','=',1)
-            ->select();
-        if (!count($usersType)) {
-            $this->error('请先添加会员组');
-        }
-        $view = [
-            'usersType' => $usersType,
-            'info'   => null
-        ];
-        View::assign($view);
-        return View::fetch();
+    public function add()
+    {
+        // 获取字段信息
+        $coloumns = MakeBuilder::getAddColumns($this->tableName);
+        // 获取分组后的字段信息
+        $groups = MakeBuilder::getgetAddGroups($this->modelName, $this->tableName, $coloumns);
+        // 构建页面
+        $builder = FormBuilder::getInstance();
+        
+        $groups ? $builder->addGroup($groups) : $builder->addFormItems($coloumns);
+        return $builder->fetch();
     }
 
     // 添加保存
-    public function addPost(){
+    public function addPost()
+    {
         if (Request::isPost()) {
-            $data = Request::except(['file'], 'post');
-            $result = $this->validate($data,$this->validate);
+            $data = MakeBuilder::changeFormData(Request::except(['file'], 'post'), $this->tableName);
+            $result = $this->validate($data, $this->validate);
             if (true !== $result) {
                 // 验证失败 输出错误信息
                 $this->error($result);
             } else {
-                if (empty($data['password'])) {
-                    $this->error('请填写密码');
-                }
-                $data['last_login_time'] = time();
-                $data['create_ip']       = $data['last_login_ip'] = Request::ip();
-                $data['password']        = md5($data['password']);
-                $result =  M::addPost($data);
+                $model = '\app\common\model\\' . $this->modelName;
+                $result = $model::addPost($data);
                 if ($result['error']) {
                     $this->error($result['msg']);
                 } else {
-                    $this->success($result['msg'],'index');
+                    $this->success($result['msg'], 'index');
                 }
             }
         }
     }
 
     // 修改
-    public function edit(){
-        $id = Request::param('id');
-        $info = M::edit($id);
-        $usersType = UsersType::where('status',1)
-            ->select();
-        $view = [
-            'info'   => $info,
-            'usersType' => $usersType,
-        ];
-        View::assign($view);
-        return View::fetch('add');
+    public function edit(string $id)
+    {
+        $model = '\app\common\model\\' . $this->modelName;
+        $info = $model::edit($id)->toArray();
+        // 获取字段信息
+        $coloumns = MakeBuilder::getAddColumns($this->tableName, $info);
+        // 获取分组后的字段信息
+        $groups = MakeBuilder::getgetAddGroups($this->modelName, $this->tableName, $coloumns);
 
+        // 构建页面
+        $builder = FormBuilder::getInstance();
+        $groups ? $builder->addGroup($groups) : $builder->addFormItems($coloumns);
+        return $builder->fetch();
     }
 
     // 修改保存
-    public function editPost(){
+    public function editPost()
+    {
         if (Request::isPost()) {
-            $data = Request::except(['file'], 'post');
-            $result = $this->validate($data,$this->validate);
+            $data = MakeBuilder::changeFormData(Request::except(['file'], 'post'), $this->tableName);
+            $result = $this->validate($data, $this->validate);
             if (true !== $result) {
                 // 验证失败 输出错误信息
                 $this->error($result);
             } else {
-                if ($data['password']) {
-                    $data['password'] = md5($data['password']);
-                } else {
-                    unset($data['password']);
-                }
-                $result = M::editPost($data);
+                $model = '\app\common\model\\' . $this->modelName;
+                $result = $model::editPost($data);
                 if ($result['error']) {
                     $this->error($result['msg']);
                 } else {
-                    $this->success($result['msg'],'index');
+                    $this->success($result['msg'], 'index');
                 }
             }
         }
     }
 
     // 删除
-    public function del(){
+    public function del(string $id)
+    {
         if (Request::isPost()) {
-            $id = Request::param('id');
-            return M::del($id);
+            if (strpos($id, ',') !== false) {
+                return $this->selectDel($id);
+            }
+            $model = '\app\common\model\\' . $this->modelName;
+            return $model::del($id);
         }
     }
 
     // 批量删除
-    public function selectDel(){
+    public function selectDel(string $id){
         if (Request::isPost()) {
-            $id = Request::param('id');
-            return M::selectDel($id);
+            $model = '\app\common\model\\' . $this->modelName;
+            return $model::selectDel($id);
         }
     }
 
-    // 状态
-    public function state(){
+    // 排序
+    public function sort()
+    {
         if (Request::isPost()) {
-            $id = Request::param('id');
-            return M::state($id);
+            $data = Request::post();
+            $model = '\app\common\model\\' . $this->modelName;
+            return $model::sort($data);
         }
     }
 
-    // 下载
-    public function download(){
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-        $sheet
-            ->setCellValue('A1','ID')
-            ->setCellValue('B1','邮箱账号')
-            ->setCellValue('C1','性别')
-            ->setCellValue('D1','注册时间')
-            ->setCellValue('E1','注册IP')
-            ->setCellValue('F1','最后登录时间')
-            ->setCellValue('G1','最后登录IP')
-            ->setCellValue('H1','QQ')
-            ->setCellValue('I1','手机号')
-            ->setCellValue('J1','是否认证手机号')
-            ->setCellValue('K1','是否认证邮箱')
-            ->setCellValue('L1','用户组')
-            ->setCellValue('M1','状态')
-        ;
-        /*--------------开始从数据库提取信息插入Excel表中------------------*/
-        //调取列表
-        //全局查询条件
-        $where = [];
-        $keyword = Request::param('keyword');
-        if (!empty($keyword)) {
-            $where[] = ['email|mobile', 'like', '%'.$keyword.'%'];
+    // 状态变更
+    public function state(string $id)
+    {
+        if (Request::isPost()) {
+            $model = '\app\common\model\\' . $this->modelName;
+            return $model::state($id);
         }
-        $typeId  = Request::param('type_id');
-        if (!empty($typeId)) {
-            $where[] = ['type_id', '=', $typeId];
-        }
-        $dateran = Request::param('dateran');
-        if (!empty($dateran)) {
-            $getDateran = get_dateran($dateran);
-            $where[]=['create_time', 'between', $getDateran];
-        }
+    }
 
-        //获取列表
-        $list = M::getDownList($where, ['id' => 'desc']);
-        foreach ($list as $k => $v) {
-            $v['sex']              = $v['sex']=='1'              ? '男'    : '女';
-            $v['mobile_validated'] = $v['mobile_validated']=='1' ? '已认证' : '未认证';
-            $v['email_validated']  = $v['email_validated']=='1'  ? '已认证' : '未认证';
-            $v['status']           = $v['status']=='1'           ? '正常'   : '禁用';
-            $v['last_login_time']  = date("Y-m-d H:i",$v['last_login_time']);
-            $sheet
-                ->setCellValue('A'.($k+2),$v['id'])
-                ->setCellValue('B'.($k+2),$v['email'])
-                ->setCellValue('C'.($k+2),$v['sex'])
-                ->setCellValue('D'.($k+2),$v['create_time'])
-                ->setCellValue('E'.($k+2),$v['create_ip'])
-                ->setCellValue('F'.($k+2),$v['last_login_time'])
-                ->setCellValue('G'.($k+2),$v['last_login_ip'])
-                ->setCellValue('H'.($k+2),$v['qq'])
-                ->setCellValue('I'.($k+2),$v['mobile'])
-                ->setCellValue('J'.($k+2),$v['mobile_validated'])
-                ->setCellValue('K'.($k+2),$v['email_validated'])
-                ->setCellValue('L'.($k+2),$v['type_name'])
-                ->setCellValue('M'.($k+2),$v['status'])
-            ;
-        }
-
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="'.'用户列表'.'.xlsx"');
-        header('Cache-Control: max-age=0');
-        $writer = new Xlsx($spreadsheet);
-        $writer->save('php://output');
+    // 导出
+    public function export()
+    {
+        \app\common\model\Base::export($this->tableName, $this->modelName);
     }
 
 }

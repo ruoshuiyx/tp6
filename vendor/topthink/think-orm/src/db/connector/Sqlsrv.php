@@ -55,7 +55,7 @@ class Sqlsrv extends PDOConnection
      */
     public function getFields(string $tableName): array
     {
-        list($tableName) = explode(' ', $tableName);
+        [$tableName] = explode(' ', $tableName);
 
         $sql = "SELECT   column_name,   data_type,   column_default,   is_nullable
         FROM    information_schema.tables AS t
@@ -84,14 +84,8 @@ class Sqlsrv extends PDOConnection
             }
         }
 
-        $sql = "SELECT column_name FROM information_schema.key_column_usage WHERE table_name='$tableName'";
-
-        $this->queryStartTime = microtime(true);
-
-        $pdo = $this->linkID->query($sql);
-
-        $this->trigger($sql);
-
+        $sql    = "SELECT column_name FROM information_schema.key_column_usage WHERE table_name='$tableName'";
+        $pdo    = $this->linkID->query($sql);
         $result = $pdo->fetch(PDO::FETCH_ASSOC);
 
         if ($result) {

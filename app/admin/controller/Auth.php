@@ -26,7 +26,7 @@
 namespace app\admin\controller;
 
 use app\admin\model\Admin;
-use app\admin\model\AuthGroup;
+use app\common\model\AuthGroup;
 use app\admin\model\AuthGroupAccess;
 use app\admin\model\AuthRule;
 
@@ -38,7 +38,7 @@ use think\facade\View;
 class Auth extends Base
 {
     /*-----------------------管理员管理----------------------*/
-    // 管理员列表
+        // 管理员列表
     public function adminList()
     {
         //全局查询条件
@@ -72,7 +72,7 @@ class Auth extends Base
         return View::fetch('admin_list');
     }
 
-    // 管理员添加
+        // 管理员添加
     public function adminAdd(){
         if(Request::isPost()){
             $data = Request::post();
@@ -93,9 +93,9 @@ class Auth extends Base
                 $this->error($result);
             }
 
-            $data['password']  = md5(trim($data['password']));
-            $data['logintime'] = time();
-            $data['loginip']   = Request::ip();
+            $data['password']   = md5(trim($data['password']));
+            $data['login_time'] = time();
+            $data['login_ip']   = Request::ip();
             //添加
             $result = Admin::create($data);
             if ($result) {
@@ -119,7 +119,7 @@ class Auth extends Base
         }
     }
 
-    // 管理员删除
+       // 管理员删除
     public function adminDel(){
         $id = Request::post('id');
         if ($id >1) {
@@ -130,7 +130,7 @@ class Auth extends Base
         }
     }
 
-    // 管理员批量删除
+       // 管理员批量删除
     public function adminSelectDel(){
         $id = Request::post('id');
         if ($id) {
@@ -162,7 +162,7 @@ class Auth extends Base
         }
     }
 
-    // 管理员修改
+        // 管理员修改
     public function adminEdit(){
         if (Request::isPost()) {
             $data = Request::post();
@@ -209,7 +209,7 @@ class Auth extends Base
 
     /*-----------------------用户组管理----------------------*/
 
-    // 用户组管理
+        // 用户组管理
     public function adminGroup(){
 
         //条件筛选
@@ -238,7 +238,7 @@ class Auth extends Base
 
     }
 
-    // 用户组删除
+        // 用户组删除
     public function groupDel(){
         $id = Request::post('id');
         if ($id>1) {
@@ -250,7 +250,7 @@ class Auth extends Base
 
     }
 
-    // 用户组添加
+        // 用户组添加
     public function groupAdd(){
         if (Request::isPost()) {
             $data = Request::post();
@@ -275,7 +275,7 @@ class Auth extends Base
         }
     }
 
-    // 用户组修改
+        // 用户组修改
     public function groupEdit(){
         if (Request::isPost()) {
             $data = Request::post();
@@ -299,7 +299,7 @@ class Auth extends Base
         }
     }
 
-    // 用户组状态修改
+        // 用户组状态修改
     public function groupState(){
         if (Request::isPost()) {
             $id = Request::param('id');
@@ -310,7 +310,7 @@ class Auth extends Base
         }
     }
 
-    // 用户组批量删除
+        // 用户组批量删除
     public function groupSelectDel(){
         $id = Request::post('id');
         if ($id>1) {
@@ -321,46 +321,11 @@ class Auth extends Base
         }
     }
 
-    // 用户组显示权限
-    public function groupAccess(){
-        $admin_rule = Db::name('auth_rule')
-            ->field('id, pid, title')
-            ->order('sort asc')
-            ->select();
-        $rules = Db::name('auth_group')
-            ->where('id', Request::param('id'))
-            ->value('rules');
-        $list = auth($admin_rule, $pid = 0, $rules);
-        $list[] = array(
-            "id"    => 0,
-            "pid"   => 0,
-            "title" => "全部",
-            "open"  => true
-        );
-        $view = [
-            'list' => $list
-        ];
-        View::assign($view);
-        return View::fetch('group_access');
-    }
 
-    // 用户组保存权限
-    public function groupSetaccess(){
-        $rules = Request::post('rules');
-        if (empty($rules)) {
-            return json(['msg'=>'请选择权限!', 'error'=>1]);
-        }
-        $data = Request::post();
-        $where['id'] = $data['id'];
-        if (AuthGroup::update($data,$where)) {
-            return json(['msg'=>'权限配置成功!', 'url'=>url('adminGroup')->__toString(), 'error'=>0]);
-        }else{
-            return json(['msg'=>'保存错误', 'error'=>1]);
-        }
-    }
+
 
     /********************************权限管理*******************************/
-    // 权限列表
+        // 权限列表
     public function adminRule(){
         $list = Db::name('auth_rule')
             ->order('sort asc')

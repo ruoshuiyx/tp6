@@ -1,14 +1,14 @@
 <?php
 /**
  * +----------------------------------------------------------------------
- * | 公共系统设置模型
+ * | 系统设置模型
  * +----------------------------------------------------------------------
  *                      .::::.
  *                    .::::::::.            | AUTHOR: siyu
  *                    :::::::::::           | EMAIL: 407593529@qq.com
- *                 ..:::::::::::'           | QQ: 407593529
- *             '::::::::::::'               | WECHAT: zhaoyingjie4125
- *                .::::::::::               | DATETIME: 2019/03/04
+ *                 ..:::::::::::'           | DATETIME: 2020/03/08
+ *             '::::::::::::'
+ *                .::::::::::
  *           '::::::::::::::..
  *                ..::::::::::::.
  *              ``::::::::::::::::
@@ -25,7 +25,11 @@
  */
 namespace app\common\model;
 
+// 引入框架内置类
 use think\facade\Request;
+
+// 引入构建器
+use app\common\facade\MakeBuilder;
 
 class System extends Base
 {
@@ -33,57 +37,33 @@ class System extends Base
     protected $createTime = 'create_time';
     protected $updateTime = 'update_time';
 
-    // 一对一获取所属分组
-    public function systemGroup()
+    
+
+    // 获取列表
+    public static function getList($where = array(), $pageSize, $order = ['sort', 'id' => 'desc'])
     {
-        return $this->belongsTo('SystemGroup', 'group_id');
-    }
-
-    // 格式化获取所有字段(后台列表)
-    public static function getListField($order = ['sort', 'id'=>'desc']){
-        $list = self::order($order)
-            ->select();
-        foreach ($list as $k => $v){
-            $v['type_name']  = self::getType($v['type']);
-            $v['group_name'] = $v->systemGroup->getData('name');
-        }
-        return $list;
-    }
-
-    // 获取字段列表
-    public static function getList($where = array(), $pageSize, $order = ['sort', 'id'=>'desc']){
         $list = self::where($where)
             ->order($order)
             ->paginate([
                 'query'     => Request::get(),
                 'list_rows' => $pageSize,
             ]);
-        foreach ($list as $k=>$v){
-            $v['type_name']  = self::getType($v['type']);
-            $v['group_name'] = $v->systemGroup->getData('name');
+        foreach ($list as $k => $v) {
+            
         }
-        return $list;
+        return MakeBuilder::changeTableData($list, 'System');
     }
 
-    // 字段类型
-    public static function getType($type=''){
-        $arr=[
-            'text'      => '单行文本',
-            'textarea'  => '多行文本',
-            'editor'    => '编辑器',
-            'select'    => '下拉列表',
-            'radio'     => '单选按钮',
-            'checkbox'  => '复选框',
-            'image'     => '单张图片',
-            'file'      => '文件上传',
-            'datetime'  => '日期和时间',
-            'template'  => '选择模板',
-        ];
-        if ($type) {
-            return $arr[$type];
-        } else {
-            return $arr;
+    // 导出列表
+    public static function getExport($where = array(), $order = ['sort', 'id' => 'desc'])
+    {
+        $list = self::where($where)
+            ->order($order)
+            ->select();
+        foreach ($list as $k => $v) {
+            
         }
+        return MakeBuilder::changeTableData($list, 'System');
     }
 
 }

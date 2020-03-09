@@ -51,6 +51,29 @@ function tree($cate , $lefthtml = '|— ' , $pid = 0 , $lvl = 0 ){
 }
 
 /**
+ * 无限分类-权限
+ * @param $cate            栏目
+ * @param string $lefthtml 分隔符
+ * @param int $pid         父ID
+ * @param int $lvl         层级
+ * @return array
+ */
+function tree_three($cate , $lefthtml = '|— ' , $pid = 0 , $lvl = 0 ){
+    $arr = array();
+    foreach ($cate as $v){
+        $keys = array_keys($v);
+        if (end($v) == $pid) {
+            $v['lvl']      = $lvl + 1;
+            $v['lefthtml'] = str_repeat($lefthtml,$lvl);
+            $v[$keys[1]] = $v['lefthtml'] . $v[$keys[1]];
+            $arr[] = $v;
+            $arr = array_merge($arr, tree_three($cate, $lefthtml, $v[$keys[0]], $lvl+1));
+        }
+    }
+    return $arr;
+}
+
+/**
  * 权限设置选中状态
  * @param $cate  栏目
  * @param int $pid 父ID
@@ -236,9 +259,12 @@ function format_bread_crumb($data)
         }
     }
 
-    //内容管理重构数组
-    if (\think\facade\Request::has('cate')) {
-        //判断当前方法是添加、修改、列表
+    // 内容管理重构数组
+    $controller = \think\facade\Request::controller();
+    $module = \app\common\model\Module::where('model_name', $controller)->find();
+
+    if ($module && $module->table_type == 1) {
+        // 判断当前方法是添加、修改、列表
         $action = \think\facade\Request::action();
         if ($action == 'add') {
             $action = '添加';
@@ -247,17 +273,31 @@ function format_bread_crumb($data)
         } else {
             $action = '列表';
         }
-        //内容管理
-        $cate = \think\facade\Request::param('cate');
-        //调用当前栏目名称
-        $catname = \app\common\model\Cate::where('id', $cate)->value('catname');
-        $result['right'] = [
-            'url' => '',
-            'title' => $catname,
-            'icon' => '',
-        ];
-        $result['left'][0] = $catname;
-        $result['left'][1] = $action;
+
+        // 内容管理
+        $cateId = \think\facade\Request::param('cate_id');
+        if (empty($cateId)) {
+            $model = '\app\common\model\\' . $module->model_name;
+            $cateId = $model::where($module['pk'], \think\facade\Request::param('id'))->value('cate_id');
+        }
+
+        // 调用当前栏目名称
+        if ($cateId) {
+            $cateName = \app\common\model\Cate::where('id', $cateId)->value('cate_name');
+            if ($module->is_single) {
+                $url = 'edit?id=' . \think\facade\Request::param('id');
+            } else {
+                $url = 'index?cate_id=' . $cateId;
+            }
+            $result['right'] = [
+                'url'   => $url,
+                'title' => $cateName,
+                'icon'  => '',
+            ];
+            $result['left'][0] = $cateName;
+            $result['left'][1] = $action;
+        }
+
     }
 
     return $result;

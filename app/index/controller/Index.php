@@ -35,7 +35,7 @@ class Index extends Base
     // 首页
     public function index()
     {
-        //后台开启手机端的时候PC自动跳转到mobile
+        // 后台开启手机端的时候PC自动跳转到mobile
         if ($this->system['mobile'] == '1' && $this->appName == 'index') {
             if (Request::isMobile()) {
                 return redirect('mobile/index/index');
@@ -44,14 +44,14 @@ class Index extends Base
 
         $view = [
             'cate'        => null,
-            'system'      => $this->system, //系统信息
-            'public'      => $this->public, //公共目录
-            'title'       => $this->system['title'] ? $this->system['title'] : $this->system['name'], //seo信息
-            'keywords'    => $this->system['key'],   //seo信息
-            'description' => $this->system['des'],   //seo信息
+            'system'      => $this->system,          // 系统信息
+            'public'      => $this->public,          // 公共目录
+            'title'       => $this->system['title'] ? $this->system['title'] : $this->system['name'], // seo信息
+            'keywords'    => $this->system['key'],   // seo信息
+            'description' => $this->system['des'],   // seo信息
         ];
 
-        $template = $this->template.'index.html';
+        $template = $this->template . 'index.html';
         View::assign($view);
         return View::fetch($template);
     }

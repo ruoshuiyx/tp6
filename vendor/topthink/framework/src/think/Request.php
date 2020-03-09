@@ -148,12 +148,6 @@ class Request
     protected $realIP;
 
     /**
-     * 当前应用名
-     * @var string
-     */
-    protected $app;
-
-    /**
      * 当前控制器名
      * @var string
      */
@@ -288,18 +282,6 @@ class Request
     protected $input;
 
     /**
-     * 请求缓存
-     * @var array
-     */
-    protected $cache;
-
-    /**
-     * 缓存是否检查
-     * @var bool
-     */
-    protected $isCheckCache;
-
-    /**
      * 请求安全Key
      * @var string
      */
@@ -325,15 +307,6 @@ class Request
     {
         $request = new static();
 
-        $request->server  = $_SERVER;
-        $request->env     = $app->env;
-        $request->get     = $_GET;
-        $request->post    = $_POST ?: $request->getInputData($request->input);
-        $request->put     = $request->getInputData($request->input);
-        $request->request = $_REQUEST;
-        $request->cookie  = $_COOKIE;
-        $request->file    = $_FILES ?? [];
-
         if (function_exists('apache_request_headers') && $result = apache_request_headers()) {
             $header = $result;
         } else {
@@ -354,6 +327,17 @@ class Request
         }
 
         $request->header = array_change_key_case($header);
+        $request->server = $_SERVER;
+        $request->env    = $app->env;
+
+        $inputData = $request->getInputData($request->input);
+
+        $request->get     = $_GET;
+        $request->post    = $_POST ?: $inputData;
+        $request->put     = $inputData;
+        $request->request = $_REQUEST;
+        $request->cookie  = $_COOKIE;
+        $request->file    = $_FILES ?? [];
 
         return $request;
     }
@@ -921,7 +905,7 @@ class Request
     /**
      * 获取路由参数
      * @access public
-     * @param  mixed        $name 变量名
+     * @param  string|array $name 变量名
      * @param  mixed        $default 默认值
      * @param  string|array $filter 过滤方法
      * @return mixed
@@ -938,7 +922,7 @@ class Request
     /**
      * 获取GET参数
      * @access public
-     * @param  mixed        $name 变量名
+     * @param  string|array $name 变量名
      * @param  mixed        $default 默认值
      * @param  string|array $filter 过滤方法
      * @return mixed
@@ -967,7 +951,7 @@ class Request
     /**
      * 获取POST参数
      * @access public
-     * @param  mixed        $name 变量名
+     * @param  string|array $name 变量名
      * @param  mixed        $default 默认值
      * @param  string|array $filter 过滤方法
      * @return mixed
@@ -984,7 +968,7 @@ class Request
     /**
      * 获取PUT参数
      * @access public
-     * @param  mixed        $name 变量名
+     * @param  string|array $name 变量名
      * @param  mixed        $default 默认值
      * @param  string|array $filter 过滤方法
      * @return mixed
@@ -1000,11 +984,12 @@ class Request
 
     protected function getInputData($content): array
     {
-        if (false !== strpos($this->contentType(), 'json')) {
-            return (array) json_decode($content, true);
-        } elseif (strpos($content, '=')) {
+        $contentType = $this->contentType();
+        if ($contentType == 'application/x-www-form-urlencoded') {
             parse_str($content, $data);
             return $data;
+        } elseif (false !== strpos($contentType, 'json')) {
+            return (array) json_decode($content, true);
         }
 
         return [];
@@ -1039,7 +1024,7 @@ class Request
     /**
      * 获取request变量
      * @access public
-     * @param  mixed        $name 数据名称
+     * @param  string|array $name 数据名称
      * @param  mixed        $default 默认值
      * @param  string|array $filter 过滤方法
      * @return mixed
@@ -1107,7 +1092,6 @@ class Request
 
         if (is_array($data)) {
             array_walk_recursive($data, [$this, 'filterValue'], $filter);
-            reset($data);
         } else {
             $this->filterValue($data, $name, $filter);
         }
@@ -1145,7 +1129,7 @@ class Request
         if (!empty($files)) {
 
             if (strpos($name, '.')) {
-                list($name, $sub) = explode('.', $name);
+                [$name, $sub] = explode('.', $name);
             }
 
             // 处理上传文件
@@ -1263,7 +1247,7 @@ class Request
         if ('' != $name) {
             // 解析name
             if (strpos($name, '/')) {
-                list($name, $type) = explode('/', $name);
+                [$name, $type] = explode('/', $name);
             }
 
             $data = $this->getData($data, $name);
@@ -1294,7 +1278,6 @@ class Request
 
         if (is_array($data)) {
             array_walk_recursive($data, [$this, 'filterValue'], $filter);
-            reset($data);
         } else {
             $this->filterValue($data, $name, $filter);
         }
@@ -1780,11 +1763,11 @@ class Request
     /**
      * 当前请求URL地址中的port参数
      * @access public
-     * @return string
+     * @return int
      */
-    public function port(): string
+    public function port(): int
     {
-        return $this->server('SERVER_PORT', '');
+        return (int) $this->server('SERVER_PORT', '');
     }
 
     /**
@@ -1800,11 +1783,11 @@ class Request
     /**
      * 当前请求 REMOTE_PORT
      * @access public
-     * @return string
+     * @return int
      */
-    public function remotePort(): string
+    public function remotePort(): int
     {
-        return $this->server('REMOTE_PORT', '');
+        return (int) $this->server('REMOTE_PORT', '');
     }
 
     /**
@@ -1814,11 +1797,11 @@ class Request
      */
     public function contentType(): string
     {
-        $contentType = $this->server('CONTENT_TYPE');
+        $contentType = $this->header('Content-Type');
 
         if ($contentType) {
             if (strpos($contentType, ';')) {
-                list($type) = explode(';', $contentType);
+                [$type] = explode(';', $contentType);
             } else {
                 $type = $contentType;
             }
@@ -1843,18 +1826,6 @@ class Request
     }
 
     /**
-     * 设置当前的应用名
-     * @access public
-     * @param  string $app 应用名
-     * @return $this
-     */
-    public function setApp(string $app)
-    {
-        $this->app = $app;
-        return $this;
-    }
-
-    /**
      * 设置当前的控制器名
      * @access public
      * @param  string $controller 控制器名
@@ -1876,16 +1847,6 @@ class Request
     {
         $this->action = $action;
         return $this;
-    }
-
-    /**
-     * 获取当前的应用名
-     * @access public
-     * @return string
-     */
-    public function app(): string
-    {
-        return $this->app ?: '';
     }
 
     /**
@@ -2093,12 +2054,19 @@ class Request
     /**
      * 设置php://input数据
      * @access public
-     * @param  string $input RAW数据
+     * @param string $input RAW数据
      * @return $this
      */
     public function withInput(string $input)
     {
         $this->input = $input;
+        if (!empty($input)) {
+            $inputData = $this->getInputData($input);
+            if (!empty($inputData)) {
+                $this->post = $inputData;
+                $this->put  = $inputData;
+            }
+        }
         return $this;
     }
 
@@ -2149,13 +2117,13 @@ class Request
     }
 
     /**
-     * 检测请求数据的值
+     * 检测中间传递数据的值
      * @access public
      * @param  string $name 名称
      * @return boolean
      */
     public function __isset(string $name): bool
     {
-        return isset($this->param[$name]);
+        return isset($this->middleware[$name]);
     }
 }

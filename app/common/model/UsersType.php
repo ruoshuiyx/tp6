@@ -1,14 +1,14 @@
 <?php
 /**
  * +----------------------------------------------------------------------
- * | 公共会员组模型
+ * | 会员分组模型
  * +----------------------------------------------------------------------
  *                      .::::.
  *                    .::::::::.            | AUTHOR: siyu
  *                    :::::::::::           | EMAIL: 407593529@qq.com
- *                 ..:::::::::::'           | QQ: 407593529
- *             '::::::::::::'               | WECHAT: zhaoyingjie4125
- *                .::::::::::               | DATETIME: 2019/03/06
+ *                 ..:::::::::::'           | DATETIME: 2020/03/08
+ *             '::::::::::::'
+ *                .::::::::::
  *           '::::::::::::::..
  *                ..::::::::::::.
  *              ``::::::::::::::::
@@ -25,7 +25,11 @@
  */
 namespace app\common\model;
 
+// 引入框架内置类
 use think\facade\Request;
+
+// 引入构建器
+use app\common\facade\MakeBuilder;
 
 class UsersType extends Base
 {
@@ -33,21 +37,33 @@ class UsersType extends Base
     protected $createTime = 'create_time';
     protected $updateTime = 'update_time';
 
-    // 一对多获取用户
-    public function users()
-    {
-        return $this->hasMany('Users', 'type_id');
-    }
+    
 
     // 获取列表
-    public static function getList($where = array(), $pageSize, $order = ['sort', 'id'=>'desc']){
+    public static function getList($where = array(), $pageSize, $order = ['sort', 'id' => 'desc'])
+    {
         $list = self::where($where)
             ->order($order)
             ->paginate([
                 'query'     => Request::get(),
                 'list_rows' => $pageSize,
             ]);
-        return $list;
+        foreach ($list as $k => $v) {
+            
+        }
+        return MakeBuilder::changeTableData($list, 'UsersType');
+    }
+
+    // 导出列表
+    public static function getExport($where = array(), $order = ['sort', 'id' => 'desc'])
+    {
+        $list = self::where($where)
+            ->order($order)
+            ->select();
+        foreach ($list as $k => $v) {
+            
+        }
+        return MakeBuilder::changeTableData($list, 'UsersType');
     }
 
 }

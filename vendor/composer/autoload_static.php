@@ -79,6 +79,7 @@ class ComposerStaticInit634a937ba1eabb0ab3e4c5f805e985ac
             'tp5er\\' => 6,
             'think\\view\\driver\\' => 18,
             'think\\captcha\\' => 14,
+            'think\\app\\' => 10,
             'think\\' => 6,
         ),
         'a' => 
@@ -132,6 +133,10 @@ class ComposerStaticInit634a937ba1eabb0ab3e4c5f805e985ac
         'think\\captcha\\' => 
         array (
             0 => __DIR__ . '/..' . '/topthink/think-captcha/src',
+        ),
+        'think\\app\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/topthink/think-multi-app/src',
         ),
         'think\\' => 
         array (

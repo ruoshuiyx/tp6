@@ -129,6 +129,7 @@ class Auth
         }
         return false;
     }
+
     /**
      * 根据用户ID获取用户组，返回值为数组
      * @param  integer $uid 用户ID
@@ -150,6 +151,7 @@ class Auth
         $groups[$uid] = $user_groups ?: [];
         return $groups[$uid];
     }
+
     /**
      * 获得权限列表
      * @param  integer $uid  用户ID
@@ -180,7 +182,7 @@ class Auth
         $map = [
             ['id', 'in', $ids],
             ['type', '=', $type],
-            ['status', '=', 1]
+            ['auth_open', '=', 1]
         ];
         // 读取用户组所有权限规则
         $rules = Db::name($this->_config['auth_rule'])->where($map)->field('condition,name')->select();
@@ -206,6 +208,7 @@ class Auth
         }
         return array_unique($authList);
     }
+
     /**
      * 获得用户资料,根据自己的情况读取数据库
      */

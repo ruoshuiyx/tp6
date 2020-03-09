@@ -1,0 +1,310 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <!--渲染器-->
+    <meta name="renderer" content="webkit">
+    <!--优先使用最新版本的IE 和 Chrome 内核-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>SIYUCMS 后台管理面板</title>
+    <!-- 告诉浏览器该页面是自适应布局 -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="/static/plugins/AdminLTE/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/static/plugins/AdminLTE/bower_components/font-awesome/css/font-awesome.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/static/plugins/AdminLTE/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="/static/plugins/AdminLTE/dist/css/skins/_all-skins.min.css">
+
+    <!-- Bootstrap Table 表格插件样式 -->
+    <link rel="stylesheet" href="/static/plugins/bootstrap-table/bootstrap-table.min.css" />
+
+    <!-- Date Picker -->
+    <link rel="stylesheet" href="/static/plugins/AdminLTE/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+    <!-- Time Picker -->
+    <link rel="stylesheet" href="/static/plugins/AdminLTE/plugins/timepicker/bootstrap-timepicker.min.css">
+    <!-- Datetime Picker -->
+    <link rel="stylesheet" href="/static/plugins/AdminLTE/bower_components/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="/static/plugins/AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+    <!-- Color Picker -->
+    <link rel="stylesheet" href="/static/plugins/AdminLTE/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">
+    <!-- Pace style -->
+    <link rel="stylesheet" href="/static/plugins/AdminLTE/plugins/pace/pace.css">
+    <!-- jQuery 3 -->
+    <script src="/static/plugins/AdminLTE/bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- webuploader -->
+    <link rel="stylesheet" type="text/css" href="/static/plugins/webuploader-0.1.5/webuploader.css">
+    <script src="/static/plugins/webuploader-0.1.5/webuploader.js"></script>
+    <script type="text/javascript">
+        //封装下上传组件
+        function webupload(list, filePicker_image, image_preview, image, more, upload_allowext, size) {
+            if (upload_allowext) {
+                upload_allowext = upload_allowext.replace('|', ',');
+            }
+            if (size) {
+                size = size * 1024;
+            } else {
+                size = 200 * 1024 * 1024;
+            }
+            var $list = $("#" + list + "");   //这几个初始化全局的百度文档上没说明，好蛋疼
+            var uploader = WebUploader.create({
+                auto: true,// 选完文件后，是否自动上传。
+                swf: '/static/plugins/webuploader-0.1.5/uploader.swf', //加载swf文件，路径一定要对
+                server: '/admin/index/upload.html',// 文件接收服务端
+                pick: '#' + filePicker_image,// 选择文件的按钮。可选。
+                resize: false,//不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+                compress: false,
+                fileSingleSizeLimit: size,//限制大小200M，单文件
+                //fileSizeLimit: allMaxSize*1024*1024,//限制大小10M，所有被选文件，超出选择不上
+                accept: {
+                    title: '上传图片/文件',
+                    extensions: upload_allowext,//'gif,jpg,jpeg,bmp,png', //格式由字段控制
+                    mimeTypes: '*',//默认全部文件，为兼容上传文件功能，如只上传图片可写成img/*
+                }
+            });
+
+            // 文件上传过程中创建进度条实时显示。
+            uploader.on('uploadProgress', function (file, percentage) {
+                var $li = $list,
+                        $percent = $li.find('.progress .progress-bar');
+                // 避免重复创建
+                if (!$percent.length) {
+                    $percent = $('<div class="progress progress-striped active">' +
+                            '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                            '</div>' +
+                            '</div>').appendTo($li).find('.progress-bar');
+                }
+                //$li.find('p.state').text('上传中');
+                $percent.css('width', percentage * 100 + '%');
+            });
+            uploader.on('uploadSuccess', function (file, response) {
+                var url = response._raw;
+                if (more == true) {
+                    var images = '<div class="row"><div class="col-xs-6"><input type="text" name="' + image + '[]" value="' + url + '" class="form-control"/></div> <div class="col-xs-3"><input class="form-control input-sm" type="text" name="' + image + '_title[]" value="' + file.name + '" ></div> <div class="col-xs-3"><button type="button" class="btn btn-block btn-warning remove_images">移除</button></div></div>';
+                    var images_list = $('#more_images_' + image).html();
+
+                    $('#more_images_' + image).html(images + images_list);
+
+                } else {
+                    $("input[name='" + image + "']").val(url);
+                    $("#" + image_preview).attr('src', url);
+                }
+            });
+            uploader.on('uploadComplete', function (file) {
+                $list.find('.progress').fadeOut();
+            });
+            //错误提示
+            uploader.on("error", function (type) {
+                if (type == "Q_TYPE_DENIED") {
+                    sweetAlert(
+                            '',
+                            '请上传' + upload_allowext + '格式文件！',
+                            'error'
+                    )
+                } else if (type == "F_EXCEED_SIZE") {
+                    sweetAlert(
+                            '',
+                            '单个文件大小不能超过' + size / 1024 + 'kb！',
+                            'error'
+                    )
+                } else if (type == "F_DUPLICATE") {
+                    sweetAlert(
+                            '',
+                            '请不要重复选择文件！',
+                            'error'
+                    )
+                } else {
+                    sweetAlert(
+                            '',
+                            '上传出错！请检查后重新上传！错误代码' + type,
+                            'error'
+                    )
+                }
+            });
+        }
+    </script>
+    <!-- ckeditor4 -->
+    <script src="/static/plugins/ckeditor/ckeditor.js"></script>
+
+    <!-- sweetalert -->
+    <link rel="stylesheet" href="/static/plugins/sweetalert/dist/sweetalert2.min.css">
+    <script src="/static/plugins/sweetalert/dist/sweetalert2.min.js"></script>
+    <script src="/static/plugins/sweetalert/lib/es6-promise.min.js"></script>
+    <!-- Include a polyfill for ES6 Promises (optional) for IE11 -->
+    <script src="/static/plugins/sweetalert/polyfill.js"></script>
+
+    <!-- layer 弹层组件 -->
+    <script src="/static/plugins/layer/layer.js"></script>
+
+    <!-- zTree 树节点组件 -->
+    <script type="text/javascript" src="/static/plugins/zTree_v3/js/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="/static/plugins/zTree_v3/js/jquery.ztree.excheck.js"></script>
+
+    <!-- jQueryTagsInput -->
+    <script src="/static/plugins/AdminLTE/plugins/jQueryTagsInput/jquery.tagsinput.js"></script>
+    <link rel="stylesheet" href="/static/plugins/AdminLTE/plugins/jQueryTagsInput/jquery.tagsinput.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="/static/plugins/AdminLTE/bower_components/select2/dist/css/select2.min.css">
+    <!-- SIYUCMS -->
+    <link rel="stylesheet" href="/static/plugins/AdminLTE/dist/css/siyucms.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- 警告：Respond.js 不支持 file:// 方式查看（即本地方式查看）-->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Google Font -->
+    <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">-->
+
+</head>
+<!--
+BODY TAG OPTIONS:
+=================
+应用以下一个或多个类以达到你想要的效果
+|---------------------------------------------------------|
+| SKINS         | skin-blue                               |
+|               | skin-black                              |
+|               | skin-purple                             |
+|               | skin-yellow                             |
+|               | skin-red                                |
+|               | skin-green                              |
+|---------------------------------------------------------|
+|LAYOUT OPTIONS | fixed                                   |
+|               | layout-boxed                            |
+|               | layout-top-nav                          |
+|               | sidebar-collapse                        |
+|               | sidebar-mini                            |
+|---------------------------------------------------------|
+-->
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <!-- Main Header -->
+
+
+
+
+    <div class="content-wrapper">
+
+        <!--内容开始-->
+        <section class="content">
+
+            <!--顶部提示开始-->
+            <!--顶部提示结束-->
+
+            <!--bootstrap table begin-->
+            <div class="container-div">
+                <div class="row">
+
+                    <div class="col-sm-12 select-table table-striped">
+                        <div class="btn-group-sm" id="toolbar" role="group">
+                            <a class="btn btn-success" href="data.html">
+                                <i class="fa fa-plus"></i> 新增 </a>
+                            <a class="btn btn-primary single disabled" onclick="$.operate.edit()">
+                                <i class="fa fa-edit"></i> 修改 </a>
+                            <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()">
+                                <i class="fa fa-remove"></i> 删除 </a>
+                            <a class="btn btn-warning" onclick="$.table.export()">
+                                <i class="fa fa-download"></i> 导出 </a>
+                        </div>
+                        <table id="bootstrap-table" data-mobile-responsive="true"></table>
+                    </div>
+                </div>
+            </div>
+            <script>
+                $(function() {
+
+                    var options = {
+                        uniqueId      : "id",         // 表格主键名称，（默认为id，如表主键不为id必须设置主键）
+                        url           : "/admin/Users/index.html?getList=1",      // 请求后台的URL
+                        addUrl        : "/admin/Users/add.html",       // 新增的地址
+                        editUrl       : "/admin/Users/edit.html?id=__id__",      // 修改的地址
+                        delUrl        : "/admin/Users/del.html",       // 删除的地址
+                        exportUrl     : "/admin/Users/export.html",    // 导出的地址
+                        sortUrl       : "/admin/Users/sort.html",      // 排序的地址
+                        sortName      : "id",         // 排序列名称
+                        sortOrder     : "desc",                 // 排序方式  asc 或者 desc
+                        pagination    : true,			// 是否进行分页
+                        clickToSelect : true,				// 默认false不响应，设为true则当点击此行的某处时，会自动选中此行的checkbox（复选框）或radiobox（单选按钮）
+
+                    };
+                    $.table.init(options);
+                });
+
+                // 搜索
+                function searchPre() {
+                    var data = {};
+                    $.table.search('', data);
+                }
+
+                // 重置搜索
+                function resetPre() {
+                    $.form.reset();
+                }
+                //HTML反转义
+                function HTMLDecode(text) {
+                    var temp = document.createElement("div");
+                    temp.innerHTML = text;
+                    var output = temp.innerText || temp.textContent;
+                    temp = null;
+                    return output;
+                }
+            </script>
+
+            <!--bootstrap table end-->
+
+            <!--底部提示-->
+
+        </section>
+        <!--内容结束-->
+
+    </div>
+
+</div>
+<!-- ./wrapper -->
+
+
+<!-- Bootstrap 3.3.7 -->
+<script src="/static/plugins/AdminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<!-- Bootstrap Table 表格插件样式 -->
+<script src="/static/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="/static/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="/static/plugins/bootstrap-table/extensions/mobile/bootstrap-table-mobile.js"></script>
+<script src="/static/plugins/bootstrap-table/extensions/toolbar/bootstrap-table-toolbar.min.js"></script>
+<link rel="stylesheet" href="/static/plugins/bootstrap-table/extensions/fixed-columns/bootstrap-table-fixed-columns.min.css"/>
+<script src="/static/plugins/bootstrap-table/extensions/fixed-columns/bootstrap-table-fixed-columns.min.js"></script>
+<!-- SIYUCMS 常用封装 -->
+<script src="/static/plugins/siyu-ui.js"></script>
+
+
+<!-- pjax -->
+<script src="/static/plugins/AdminLTE/plugins/pjax/jquery.pjax.js"></script>
+<script type="text/javascript">
+    $(function () {
+        //a 链接
+        $(document).pjax('a[target!=_blank]', '.content-wrapper');
+        //form 表单
+        $(document).on('submit', 'form[data-pjax]', function(event) {
+            $.pjax.submit(event, '.content-wrapper');
+        });
+        //重新加载
+        //$.pjax.reload('.content-wrapper');
+        window.addEventListener("popstate", function(e) {
+            $.pjax.reload('.content-wrapper');
+        }, false);
+    })
+</script>
+
+
+</body>
+</html>
+
+
+

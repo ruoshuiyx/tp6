@@ -3,13 +3,13 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="breadcrumb-text">
-                    <h1 class="text-center">{tp:cate id="$cate['topid']" type='enname' /}</h1>
+                    <h1 class="text-center">{tp:cate id="$cate['topid']" type='en_name' /}</h1>
                     <div class="breadcrumb-bar">
                         <ul class="breadcrumb text-center">
                             <li><a href="/">首页</a></li>
-                            <!--<li>{tp:cate type='catname' /}</li>-->
+                            <!--<li>{tp:cate type='cate_name' /}</li>-->
                             {tp:position name='v'}
-                            <li><a href="{$v.url}">{$v.catname}</a></li>
+                            <li><a href="{$v.url}">{$v.cate_name}</a></li>
                             {/tp:position}
                         </ul>
                     </div>

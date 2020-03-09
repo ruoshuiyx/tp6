@@ -35,25 +35,25 @@ use think\facade\View;
 
 class Error extends Base
 {
-    protected $moduleId;  //当前模型ID
-    protected $tableName; //当前模型对应的数据表
+    protected $moduleId;  // 当前模型ID
+    protected $tableName; // 当前模型对应的数据表
 
     public function initialize()
     {
         parent::initialize();
 
         if (Request::param('cate')){
-            //当前模型ID
+            // 当前模型ID
             $this->moduleId = Cate::where('id', '=', Request::param('cate'))
-                ->value('moduleid');
+                ->value('module_id');
         }else{
-            //当前模型ID
-            $this->moduleId = Cate::where('catdir', '=', Request::controller())
-                ->value('moduleid');
+            // 当前模型ID
+            $this->moduleId = Cate::where('cate_folder', '=', Request::controller())
+                ->value('module_id');
         }
-        //当前表名称
+        // 当前表名称
         $this->tableName = Module::where('id', '=', $this->moduleId)
-            ->value('name');
+            ->value('table_name');
         //当前模型字段列表
         $this->fields = Field::getFieldList($this->moduleId);
     }
@@ -61,7 +61,7 @@ class Error extends Base
     // 列表
     public function index()
     {
-        //栏目ID
+        // 栏目ID
         $catId = getCateId();
         if (!empty($catId)) {
             $cate = Cate::where('id', '=', $catId)
@@ -70,15 +70,15 @@ class Error extends Base
             $this->error('未找到对应栏目');
         }
 
-        //设置顶级栏目，当顶级栏目不存在的时候顶级栏目为本身
-        $cate['topid'] = $cate['parentid'] ? $cate['parentid'] : $cate['id'];
+        // 设置顶级栏目，当顶级栏目不存在的时候顶级栏目为本身
+        $cate->topid = $cate['parent_id'] ? $cate['parent_id'] : $cate['id'];
 
-        //tdk
-        $title       = $cate['title']       ? $cate['title']       : $cate['catname'];     //标题
-        $keywords    = $cate['keywords']    ? $cate['keywords']    : $this->system['key']; //关键词
-        $description = $cate['description'] ? $cate['description'] : $this->system['des']; //描述
+        // tdk
+        $title       = $cate['cate_name']   ?: $cate['catname'];     // 标题
+        $keywords    = $cate['keywords']    ?: $this->system['key']; // 关键词
+        $description = $cate['description'] ?: $this->system['des']; // 描述
 
-        //单页模型
+        // 单页模型
         if ($this->tableName == 'page') {
             $info = Db::name($this->tableName)
                 ->where('cate_id', '=', $cate['id'])
@@ -87,10 +87,10 @@ class Error extends Base
         }
 
         $view = [
-            'cate'        => $cate,         //栏目信息
-            'fields'      => $this->fields, //字段列表
-            'system'      => $this->system, //系统信息
-            'public'      => $this->public, //公共目录
+            'cate'        => $cate,         // 栏目信息
+            'fields'      => $this->fields, // 字段列表
+            'system'      => $this->system, // 系统信息
+            'public'      => $this->public, // 公共目录
             'title'       => $title,
             'keywords'    => $keywords,
             'description' => $description,
@@ -102,9 +102,8 @@ class Error extends Base
     }
 
     // 详情
-    public function info(){
-        $id = Request::param('id');
-        //栏目ID
+    public function info(string $id){
+        // 栏目ID
         $catId = getCateId();
         if (!empty($catId)) {
             $cate = Cate::where('id', '=', $catId)
@@ -113,10 +112,10 @@ class Error extends Base
             $this->error('未找到对应栏目');
         }
 
-        //设置顶级栏目，当顶级栏目不存在的时候顶级栏目为本身
-        $cate['topid'] = $cate['parentid'] ? $cate['parentid'] : $cate['id'];
+        // 设置顶级栏目，当顶级栏目不存在的时候顶级栏目为本身
+        $cate->topid = $cate['parent_id'] ? $cate['parent_id'] : $cate['id'];
 
-        //更新点击数
+        // 更新点击数
         if ($id) {
             Db::name($this->tableName)
                 ->where('id', $id)
@@ -124,32 +123,32 @@ class Error extends Base
                 ->update();
         }
 
-        //查找详情信息
+        // 查找详情信息
         $info = Db::name($this->tableName)
             ->where('id', $id)
             ->find();
         $info = changefield($info, $this->moduleId);
         $info['url'] = getShowUrl($info);
 
-        //tdk
-        $title       = $cate['title']       ? $cate['title']       : $cate['catname']; //标题
-        $keywords    = $info['keywords']    ? $info['keywords']    :
-            ($cate['keywords']    ? $cate['keywords']    : $this->system['key']);      //关键词
+        // tdk
+        $title       = $cate['cate_name']   ?: $cate['catname'];                       // 标题
+        $keywords    = $info['keywords']    ?:
+            ($cate['keywords']    ?: $this->system['key']);                            // 关键词
         $description = $info['description'] ? $info['description'] :
-            ($cate['description'] ? $cate['description'] : $this->system['des']);      //描述
+            ($cate['description'] ?: $this->system['des']);                            // 描述
 
         $view = [
-            'cate'        => $cate,         //栏目信息
-            'fields'      => $this->fields, //字段列表
-            'info'        => $info,         //详情信息
-            'system'      => $this->system, //系统信息
-            'public'      => $this->public, //公共目录
+            'cate'        => $cate,         // 栏目信息
+            'fields'      => $this->fields, // 字段列表
+            'info'        => $info,         // 详情信息
+            'system'      => $this->system, // 系统信息
+            'public'      => $this->public, // 公共目录
             'title'       => $title,
             'keywords'    => $keywords,
             'description' => $description,
         ];
 
-        $template = $info['template'] ? $info['template'] :
+        $template = $info['template'] ? str_replace('.html', '', $info['template']) :
             ($cate['template_show'] ? str_replace('.html', '', $cate['template_show']) : $this->tableName . '_show');
         View::assign($view);
         return View::fetch($template);

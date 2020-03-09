@@ -1,38 +1,26 @@
 <?php
-// +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2006-2016 http://thinkphp.cn All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
-// +----------------------------------------------------------------------
-// | Author: 流年 <liu21st@gmail.com>
-// +----------------------------------------------------------------------
-
 // 应用公共文件
 
 // 获取列表链接地址
 function getUrl($v)
 {
-    //判断是否直接跳转
+    // 判断是否外部链接
     if (trim($v['url']) == '') {
-        //判断是否跳转到下级栏目
+        // 判断是否跳转到下级栏目
         if ($v['is_next'] == 1) {
-            $is_next = \think\facade\Db::name('cate')
-                ->where('parentid', $v['id'])
+            $is_next = \app\common\model\Cate::where('parent_id', $v['id'])
                 ->order('sort asc,id desc')
                 ->find();
             if ($is_next) {
                 $v['url'] = getUrl($is_next);
             }
         } else {
-            $moduleurl = \think\facade\Db::name('module')
-                ->where('id', $v['moduleid'])
-                ->value('name');
-            if ($v['catdir']) {
-                $v['url'] = url($v['catdir'] . '/index')->__toString();
+            if ($v['cate_folder']) {
+                $v['url'] = (string)url($v['cate_folder'] . '/index');
             } else {
-                $v['url'] = url($moduleurl . '/index', ['cate' => $v['id']])->__toString();
+                $moduleName = \app\common\model\Module::where('id', $v['module_id'])
+                    ->value('model_name');
+                $v['url'] = (string)url($moduleName . '/index', ['cate' => $v['id']]);
             }
         }
     }
@@ -43,18 +31,15 @@ function getUrl($v)
 function getShowUrl($v)
 {
     if ($v) {
-        //$home_rote[''.$v['catdir'].'-:cat/:id'] = 'home/'.$v['catdir'].'/index';
-        $cate = \think\facade\Db::name('cate')
-            ->field('id,catdir,moduleid')
+        $cate = \app\common\model\Cate::field('id,cate_folder,module_id')
             ->where('id', $v['cate_id'])
             ->find();
-        $moduleurl = \think\facade\Db::name('module')
-            ->where('id', $cate['moduleid'])
-            ->value('name');
-        if ($cate['catdir']) {
-            $url = url($cate['catdir'] . '/info', ['id' => $v['id']]);
+        if ($cate['cate_folder']) {
+            $url = url($cate['cate_folder'] . '/info', ['id' => $v['id']]);
         } else {
-            $url = url($moduleurl . '/info', ['cate' => $cate['id'], 'id' => $v['id']]);
+            $moduleName = \app\common\model\Module::where('id', $cate['module_id'])
+                ->value('model_name');
+            $url = url($moduleName . '/info', ['cate' => $cate['id'], 'id' => $v['id']]);
         }
     }
     return $url;
@@ -84,10 +69,9 @@ function changeFields($list, $moduleid)
  * @param $moduleid  模型ID
  * @return array
  */
-function changefield($info, $moduleid)
+function changefield($info, $moduleId)
 {
-    $fields = \think\facade\Db::name('field')
-        ->where('moduleid', '=', $moduleid)
+    $fields = \app\common\model\Field::where('module_id', '=', $moduleId)
         ->select();
     foreach ($fields as $k => $v) {
         $field = $v['field'];
@@ -110,11 +94,12 @@ function changefield($info, $moduleid)
                     break;
                 case 'tag'://TAG标签
                     if (!empty($info[$field])) {
-                        $tags = \think\facade\Db::name('tags')
-                            ->where('id', 'IN', $info[$field])
-                            ->select()->toArray();
-                        foreach ($tags as $tagKey => $tag) {
-                            $tags[$tagKey]['url'] = \think\facade\Route::buildUrl('index/tag', ['module' => $tag['module_id'], 't' => $tag['name']])->__toString();
+                        $tags = explode(',',$info[$field]);
+                        foreach ($tags as $k => $tag) {
+                            $tags[$k] = [
+                                'name' => $tag,
+                                'url'  => \think\facade\Route::buildUrl('index/tag', ['module' => $moduleId, 't' => $tag])->__toString(),
+                            ];
                         }
                         $info[$field] = $tags;
                     }
@@ -288,16 +273,16 @@ function textareaBr($info)
  * @param int $lvl
  * @return array
  */
-function tree_cate($cate, $lefthtml = '|— ', $pid = 0, $lvl = 0)
+function tree_cate($cate, $leftHtml = '|— ', $pid = 0, $lvl = 0)
 {
     $arr = array();
     foreach ($cate as $v) {
-        if ($v['parentid'] == $pid) {
+        if ($v['parent_id'] == $pid) {
             $v['lvl'] = $lvl + 1;
-            $v['lefthtml'] = str_repeat($lefthtml, $lvl);
-            $v['lcatname'] = $v['lefthtml'] . $v['catname'];
+            $v['left_html'] = str_repeat($leftHtml, $lvl);
+            $v['l_cate_name'] = $v['left_html'] . $v['cate_name'];
             $arr[] = $v;
-            $arr = array_merge($arr, tree_cate($cate, $lefthtml, $v['id'], $lvl + 1));
+            $arr = array_merge($arr, tree_cate($cate, $leftHtml, $v['id'], $lvl + 1));
         }
     }
     return $arr;
@@ -314,7 +299,7 @@ function unlimitedForLayer($cate, $name = 'sub', $pid = 0)
 {
     $arr = array();
     foreach ($cate as $v) {
-        if ($v['parentid'] == $pid) {
+        if ($v['parent_id'] == $pid) {
             $v[$name] = unlimitedForLayer($cate, $name, $v['id']);
             $v['url'] = getUrl($v);
             $arr[] = $v;
@@ -333,7 +318,7 @@ function getChildsOn($cate, $pid)
 {
     $arr = array();
     foreach ($cate as $v) {
-        if ($v['parentid'] == $pid) {
+        if ($v['parent_id'] == $pid) {
             $v['sub'] = getChilds($cate, $v['id']);
             $v['url'] = getUrl($v);
             $arr[] = $v;
@@ -371,7 +356,7 @@ function getChildsId($cate, $pid)
 {
     $arr = [];
     foreach ($cate as $v) {
-        if ($v['parentid'] == $pid) {
+        if ($v['parent_id'] == $pid) {
             $arr[] = $v;
             $arr = array_merge($arr, getChildsId($cate, $v['id']));
         }
@@ -399,7 +384,7 @@ function getChildsIdStr($ids, $pid = '')
 }
 
 /**
- * 传递一个子分类ID返回所有的父级分类
+ * 传递一个子分类ID返回所有的父级分类[前台栏目]
  * @param $cate
  * @param $id
  * @return array
@@ -410,7 +395,7 @@ function getParents($cate, $id)
     foreach ($cate as $v) {
         if ($v['id'] == $id) {
             $arr[] = $v;
-            $arr = array_merge(getParents($cate, $v['parentid']), $arr);
+            $arr = array_merge(getParents($cate, $v['parent_id']), $arr);
         }
     }
     return $arr;
@@ -460,14 +445,10 @@ function get_file_folder_List($pathname, $fileFlag = 0, $pattern = '*')
  */
 function getTemplate()
 {
-    //查找系统设置
-    $system = \think\facade\Db::name('system')->select();
-    $systemArr = [];
-    foreach ($system as $k => $v) {
-        $systemArr[$v['field']] = $v['value'];
-    }
+    // 查找所有系统设置表数据
+    $system = \app\common\model\System::find(1);
 
-    $path = './template/' . $systemArr['template'] . '/index/' . $systemArr['html'] . '/';
+    $path = './template/' . $system['template'] . '/index/' . $system['html'] . '/';
     $tpl['list'] = get_file_folder_List($path, 2, '*_list*');
     $tpl['show'] = get_file_folder_List($path, 2, '*_show*');
     return $tpl;
@@ -540,8 +521,9 @@ function getCateId()
     if (\think\facade\Request::has('cate')) {
         $result = \think\facade\Request::param('cate');
     } else {
-        $result = \app\common\model\Cate::where('catdir', '=', \think\facade\Request::controller())
+        $result = \app\common\model\Cate::where('cate_folder', '=', \think\facade\Request::controller())
             ->value('id');
     }
     return $result;
 }
+

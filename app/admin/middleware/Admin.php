@@ -6,9 +6,9 @@
  *                      .::::.
  *                    .::::::::.            | AUTHOR: siyu
  *                    :::::::::::           | EMAIL: 407593529@qq.com
- *                 ..:::::::::::'           | QQ: 407593529
- *             '::::::::::::'               | WECHAT: zhaoyingjie4125
- *                .::::::::::               | DATETIME: 2019/04/17
+ *                 ..:::::::::::'           | DATETIME: 2020/03/08
+ *             '::::::::::::'
+ *                .::::::::::
  *           '::::::::::::::..
  *                ..::::::::::::.
  *              ``::::::::::::::::
@@ -25,7 +25,6 @@
  */
 namespace app\admin\middleware;
 
-use app\admin\model\AuthRule;
 use think\facade\Session;
 use think\facade\Request;
 use think\Response;
@@ -35,57 +34,56 @@ class Admin
 {
     public function handle($request, \Closure $next)
     {
-        //获取当前用户
+        // 获取当前用户
         $admin_id = Session::get('admin.id');
         if (empty($admin_id)) {
-            return redirect('Login/index');
+            return redirect('/admin/login/index');
         }
 
-        //定义方法白名单
+        // 定义方法白名单
         $allow = [
-            'Index/index',      //首页
-            'Index/upload',     //上传文件
-            'Index/clear',      //清除缓存
-
-            'Login/index',      //登录页面
-            'Login/checkLogin', //校验登录
-            'Login/captcha',    //登录验证码
-            'Login/logout',     //退出登录
+            'Index/index',      // 首页
+            'Index/upload',     // 上传文件
+            'Index/clear',      // 清除缓存
+            'Login/index',      // 登录页面
+            'Login/checkLogin', // 校验登录
+            'Login/captcha',    // 登录验证码
+            'Login/logout',     // 退出登录
         ];
 
-        //查询所有不验证的方法并放入白名单
-        $authOpen = AuthRule::where('auth_open', '=', '0')
+        // 查询所有不验证的方法并放入白名单
+        $authOpen = \app\common\model\AuthRule::where('auth_open', '=', '0')
             ->select();
-        $authRole = AuthRule::select();
+        $authRole = \app\common\model\AuthRule::select();
         $authOpens = [];
         foreach ($authOpen as $k => $v) {
-            //转换方法为小写
+            // 转换方法名为小写
             $ruleName = explode('/', $v['name']);
             if ($ruleName[1]) {
                 $ruleName[1] = strtolower($ruleName[1]);
             }
-            //转换控制器首字母大写
+            // 转换控制器首字母大写
             $ruleName = trim(implode('/', $ruleName));
             $authOpens[] = ucfirst($ruleName);
-            //查询所有下级权限
+            // 查询所有下级权限
             $ids = getChildsRule($authRole, $v['id']);
             foreach ($ids as $kk => $vv) {
-                //转换方法为小写
+                // 转换方法名为小写
                 $ruleName = explode('/', $vv['name']);
                 if ($ruleName[1]) {
                     $ruleName[1] = strtolower($ruleName[1]);
                 }
-                //转换控制器首字母大写
+                // 转换控制器首字母大写
                 $ruleName = trim(implode('/', $ruleName));
                 $authOpens[] = ucfirst($ruleName);
             }
         }
         $allow = array_merge($allow, $authOpens);
 
-        //查找当前控制器和方法，控制器首字母大写，方法首字母小写 如：Index/index
+        // 查找当前控制器和方法，控制器首字母大写，方法名首字母小写 如：Index/index
         $route = Request::controller() . '/' . lcfirst(Request::action());
 
-        //权限认证
+        // 权限认证
         if (!in_array($route, $allow)) {
             if ($admin_id != 1) {
                 //开始认证
@@ -98,22 +96,22 @@ class Admin
             }
         }
 
-        //进行操作日志的记录
-        \app\admin\model\AdminLog::record();
+        // 进行操作日志的记录
+        \app\common\model\AdminLog::record();
 
-        //当url中有ref=tab时表示刷新当前页(用于后台tab模式刷新)
+        // 当url中有ref=tab时表示刷新当前页(用于后台tab模式刷新)
         if (Request::get("ref") == 'tab') {
 
-            //去除url中ref参数
+            // 去除url中ref参数
             $url = preg_replace_callback("/([\?|&]+)ref=tab(&?)/i", function ($matches) {
                 return $matches[2] == '&' ? $matches[1] : '';
             }, Request::url());
 
-            //重定向隐式传值使用的是Session闪存数据隐式传值，并且仅在下一次请求有效，再次访问重定向地址的时候无效
+            // 重定向隐式传值使用的是Session闪存数据隐式传值，并且仅在下一次请求有效，再次访问重定向地址的时候无效
             return redirect('Index/index')->with('referer', $url);
         }
 
-        //中间件handle方法的返回值必须是一个Response对象。
+        // 中间件handle方法的返回值必须是一个Response对象。
         return $next($request);
     }
 
@@ -144,7 +142,7 @@ class Admin
 
         $type = (request()->isJson() || request()->isAjax()) ? 'json' : 'html';
 
-        //所有form返回的都必须是json，所有A链接返回的都必须是Html
+        // 所有form返回的都必须是json，所有A链接返回的都必须是Html
         $type = request()->isGet() ? 'html' : $type;
 
         if ($type == 'html') {

@@ -2,99 +2,291 @@
 <section class="content">
     {// 额外HTML代码 }
     {$extra_html_content_top|raw|default=''}
-    <!--顶部提示-->
+    <!--顶部提示开始-->
     {notempty name="page_tips_top"}
     <div class="alert alert-{$tips_type} alert-dismissable">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
         <p>{$page_tips_top|raw}</p>
     </div>
     {/notempty}
-    <!--搜索区域-->
-    <div class="search">
-        <form class="form-inline" action="/index.php/admin/Ad/index.html" data-pjax="">
-            {notempty name="page_tips_search"}{$page_tips_search|raw}{/notempty}
-            <input type="text" class="form-control" name="keyword" placeholder="广告名称 | 描述" value="">
-            <select name="type_id" class="form-control">
-                <option value="0">请选择</option>
-                <option value="1">【首页】顶部通栏</option>
-                <option value="2">【内页】顶部通栏</option>
-            </select>
-            <input type="text" class="form-control" name="dateran" autocomplete="off" placeholder="选择日期" value="">
-
-            <input class="btn btn-flat btn-primary" type="submit" value="搜索">
-            <a class="btn btn-flat btn-primary m_10" href="/index.php/admin/Ad/index.html">显示全部</a>
-            <input class="btn btn-flat btn-warning m_10 select_del" type="button" value="批量删除">
-            <a class="btn btn-flat btn-success m_10 f_r" href="/index.php/admin/Ad/add.html"><i
-                    class="fa fa-plus m-r-10"></i>添 加</a>
-        </form>
-    </div>
-    <!--数据表开始-->
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="box">
-                <div class="box-header">
-                    <!-- /.box-header -->
-                    <div class="box-body table-responsive no-padding">
-                        <table class="table table-bordered table-hover">
-                            <tr>
-                                {if (!$hide_checkbox)}
-                                <th class="text-center">
-                                    <input type="checkbox" id="check">
-                                </th>
+    <!--顶部提示结束-->
+	
+    <!--bootstrap table begin-->
+    <div class="container-div">
+        <div class="row">
+        	{if $search OR $page_tips_search }
+            <div class="col-sm-12 search-collapse">
+                <form id="search_form">
+                    <div class="select-list">
+                        {notempty name="page_tips_search"}{$page_tips_search|raw}{/notempty}
+                        {notempty name="search"}
+                        <ul>
+                            {volist name="search" id="search"}
+                            <li>
+                            	<label>{$search.title|default=''}： </label>
+                            	{if $search.param }
+                                	{// 存在数组 }
+                                	<select id="search_{$search.name|default=''}" name="{$search.name|default=''}">
+                                        <option value="">所有</option>
+                                        {notempty name="search.param"}
+                                            {volist name="search.param" id="v"}
+                                                <option value="{$key}" {if ((string)$search.default == (string)$key)}selected{/if}>{$v}</option>
+                                            {/volist}
+                                        {/notempty}
+                                	</select>
+                                {else}
+                                	{if $search.type == 'date' OR $search.type == 'time' OR $search.type == 'datetime' }
+                                    	{// 日期类型的数据 }
+                                        <input type="text" id="search_{$search.name|default=''}" name="{$search.name|default=''}" value="{$search.default|default=''}" daterange="true" autocomplete="off"/>
+                                    {else}
+                                        {// 其他类型的数据 }
+                                        <input type="text" id="search_{$search.name|default=''}" name="{$search.name|default=''}" value="{$search.default|default=''}"/>
+                                    {/if}
                                 {/if}
-                                {volist name="columns" id="column"}
-                                <th class="column-{$column['name']} {$column.class|default=''}">
-                                    {// 字段标题}
-                                    {$column.title|default=''}
-                                </th>
-                                {/volist}
-                            </tr>
-                            {volist name="row_list" id="row"}
-                            <tr>
-                                {if (!$hide_checkbox)}
-                                <td class="text-center">
-                                    <input type="checkbox" name="key[]">
-                                </td>
-                                {/if}
-                                {volist name="columns" id="column"}
-                                <td class="{$column['class']|default=''}">
-                                    {php}if($column['type'] == '' || $column['type'] == 'btn' || $column['type'] == 'text'):{/php}
-                                        {$row[$column['name']]|raw|default=''}
-                                    {php}else:{/php}
-                                        {$row[$column['name'].'__'.$column['type']]|raw|default=''}
-                                    {php}endif;{/php}
-                                </td>
-                                {/volist}
-                            </tr>
+                            </li>
                             {/volist}
-                            {empty name="row_list"}
-                            {notempty name="empty_tips"}
-                            <tr class="table-empty">
-                                {php}$colspan = count($columns)+2{/php}
-                                <td class="text-center empty-info" colspan="{$colspan}">
-                                    {$empty_tips}<br>
-                                </td>
-                            </tr>
-                            {/notempty}
-                            {/empty}
-                        </table>
-                    </div>
-                    <!-- /.box-body -->
-                    <div class="box-footer clearfix page">
-                        {notempty name="row_list"}
-                            <!---->
-                            {$page|raw|default=''}
-                            <!---->
-                            {$page_size|raw|default=''}
-                            <!---->
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="resetPre()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
                         {/notempty}
                     </div>
-                </div>
-                <!-- /.box -->
+                </form>
+            </div>
+            {/if}
+            <div class="col-sm-12 select-table table-striped"><div class="btn-group-sm" id="toolbar" role="group">
+                {volist name="top_buttons" id="top_button"}
+                <a class="{$top_button.class|default=''}" {notempty name="top_button.href"}href="{$top_button.href|default=''}"{/notempty}{notempty name="top_button.target"} target="{$top_button.target|default=''}"{/notempty}{notempty name="top_button.onclick"} onclick="{$top_button.onclick|default=''}"{/notempty}>
+                    <i class="{$top_button.icon|default=''}"></i> {$top_button.title|default=''}
+                </a>
+                {/volist}
+            </div>
+                <table id="bootstrap-table" data-mobile-responsive="true"></table>
             </div>
         </div>
     </div>
-    <!--数据表结束-->
+    <script>
+        $(function() {
+
+            var options = {
+                uniqueId      : "{$unique_id}",         // 表格主键名称，（默认为id，如表主键不为id必须设置主键）
+                url           : "{$data_url|raw}",      // 请求后台的URL
+                addUrl        : "{$add_url|raw}",       // 新增的地址
+                editUrl       : "{$edit_url|raw}",      // 修改的地址
+                delUrl        : "{$del_url|raw}",       // 删除的地址
+                exportUrl     : "{$export_url|raw}",    // 导出的地址
+                sortUrl       : "{$sort_url|raw}",      // 排序的地址
+                sortName      : "{$unique_id}",         // 排序列名称
+                sortOrder     : "desc",                 // 排序方式  asc 或者 desc
+				pagination    : {$pagination},			// 是否进行分页
+				clickToSelect : true,				// 默认false不响应，设为true则当点击此行的某处时，会自动选中此行的checkbox（复选框）或radiobox（单选按钮）
+                columns: [
+                    {
+                        field: 'state',
+                        checkbox: true,
+						// 当某行包含checkbox_disabled时禁止选择
+						formatter: function(value, row, index) {
+							if(row.checkbox_disabled =='1'){
+								 return {
+									 disabled : true
+								}
+							 }
+						}
+                    },
+                    {volist name="columns" id="column"}
+                        {
+                            field: '{$column.name|default=''}',  {// 字段}
+                            title: '{$column.title|default=''}', {// 字段标题}
+							
+                            {if $column.name==$unique_id}
+                                sortable: true,                  {// 主键必须可以排序}
+                            {else}
+                            sortable: {$column.sortable},        {// 是否可排序}
+                            {/if}
+                            {notempty name="column.class"}
+                            class: '{$column.class|default=''}', {// 使用class定义/覆盖列的CSS类}
+                            {/notempty}
+							
+							{if $column.param }
+								{if $column.name == 'status' }
+									formatter: function(value, row, index) {
+										if (value == 0) {
+											return '<i class="fa fa-toggle-off text-info fa-2x" onclick="$.operate.state(\'' + row.{$unique_id} + '\',\'{:url('state')}\')"></i>';
+										} else {
+											return '<i class="fa fa-toggle-on text-info fa-2x" onclick="$.operate.state(\'' + row.{$unique_id} + '\',\'{:url('state')}\')"></i>';
+										}
+									}
+								{else}
+								formatter: function(value, row, index) {
+                                    if (value == 0) {
+                                        return '<span class="badge badge-{$column.param.0.class|default='danger'}">{$column.param.0|default='禁用'}</span>';
+                                    } else if (value == 1) {
+                                        return '<span class="badge badge-{$column.param.1.class|default='primary'}">{$column.param.1|default='启用'}</span>';
+                                    }else if (value == 2) {
+                                        return '<span class="badge badge-{$column.param.1.class|default='default'}">{$column.param.2|default='状态2'}</span>';
+                                    }else if (value == 3) {
+                                        return '<span class="badge badge-{$column.param.1.class|default='success'}">{$column.param.3.title|default='状态3'}</span>';
+                                    }else {
+                                        return '<span class="badge badge-{$column.param.1.class|default='info'}">{$column.param.4|default='其他'}</span>';
+                                    }
+                                }
+								{/if}
+							{else}
+								{if $column.name == 'sort' }
+									formatter: function(value, row, index) {
+										return '<input class="form-control input-sm w_40 changeSort" type="text" value="' + value + '" data-id="' + row.{$unique_id} + '" onblur="$.table.sort(this)">';
+									}
+								{else}
+									{// 根据格式决定如何处理数据}
+									{switch column.type }
+									{case text }
+										formatter: function(value, row, index) {
+											return HTMLDecode(value);
+										}
+									{/case}
+                                    {case datetime }
+                                    formatter: function(value, row, index) {
+                                        return changeDateFormat(value);
+                                    }
+                                    {/case}
+									{case status }
+										formatter: function(value, row, index) {
+											if (value == 0) {
+												return '<span class="badge badge-{$column.param.0.class|default='danger'}">{$column.param.0.title|default='禁用'}</span>';
+											} else if (value == 1) {
+												return '<span class="badge badge-{$column.param.1.class|default='primary'}">{$column.param.1.title|default='启用'}</span>';
+											}else if (value == 2) {
+												return '<span class="badge badge-{$column.param.1.class|default='default'}">{$column.param.1.title|default='状态2'}</span>';
+											}else if (value == 3) {
+												return '<span class="badge badge-{$column.param.1.class|default='success'}">{$column.param.1.title|default='状态3'}</span>';
+											}else {
+												return '<span class="badge badge-{$column.param.1.class|default='info'}">{$column.param.1.title|default='其他'}</span>';
+											}
+										}
+									{/case}
+									{case yesno }
+										formatter: function(value, row, index) {
+											if (value == 0) {
+												return '<i class="fa fa-ban text-{$column.param.0.class|default='danger'}"></i>';
+											} else if (value == 1) {
+												return '<i class="fa fa-check text-{$column.param.1.class|default='primary'}"></i>';
+											}
+										}
+									{/case}
+									{case link }
+									formatter: function(value, row, index) {
+										var link = '{$column.default|default=''}';
+										var reg = /__(.*?)__/g;
+										// 匹配ID和email，可能为任何的其他参数，但都是 __字段__ 格式
+										while (result = reg.exec(link)) {
+											link = link.replace(result[0], row[result[1]]);
+										}
+										// 拼接
+										link = '<a href="'+link+'" target="{$column.param}">' + value + '</a>';
+										return link;
+									}
+									{/case}
+									{case image }
+									formatter: function(value, row, index) {
+										if ($.common.isNotEmpty(value)) {
+											return '<a href="' + value + '" target="_blank"><img class="image_preview" src="' + value + '"></a>';
+										}
+									}
+									{/case}
+                                    {case color }
+                                    formatter: function(value, row, index) {
+                                        if ($.common.isNotEmpty(value)) {
+                                            return '<i class="table_colorpicker" style="background: ' + value + '""></i>';
+                                        }
+                                    }
+                                    {/case}
+									{case select }
+									formatter: function(value, row, index) {
+										return row.{$column.name|default=''};
+									}
+									{/case}
+									{case select2 }
+									formatter: function(value, row, index) {
+										return row.{$column.name|default=''};
+									}
+									{/case}
+									{case btn }
+									formatter: function(value, row, index) {
+										var actions = [];
+										{volist name="right_buttons" id="right_button"}
+										if('{$right_button.type|default=''}' == 'edit'){
+                                            if('{$right_button.href|default=''}'){
+                                                var url = '{$right_button.href|default=''}';
+                                                var reg = /__(.*?)__/g;
+                                                // 匹配ID和email，可能为任何的其他参数，但都是 __字段__ 格式
+                                                while (result = reg.exec(url)) {
+                                                    url = url.replace(result[0], row[result[1]]);
+                                                }
+                                                actions.push('<a class="{$right_button.class|default=''}" target="{$right_button.target|default=''}" href="'+url+'"><i class="{$right_button.icon|default=''}"></i> {$right_button.title|default=''}</a> ');
+                                            }else{
+                                                actions.push('<a class="{$right_button.class|default=''}" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.{$unique_id} + '\')"><i class="{$right_button.icon|default=''}"></i> {$right_button.title|default=''}</a> ');
+                                            }
+										} else if ('{$right_button.type|default=''}' == 'delete'){
+                                            if('{$right_button.href|default=''}'){
+                                                var url = '{$right_button.href|default=''}';
+                                                var reg = /__(.*?)__/g;
+                                                // 匹配ID和email，可能为任何的其他参数，但都是 __字段__ 格式
+                                                while (result = reg.exec(url)) {
+                                                    url = url.replace(result[0], row[result[1]]);
+                                                }
+                                                actions.push('<a class="{$right_button.class|default=''}" target="{$right_button.target|default=''}" href="'+url+'"><i class="{$right_button.icon|default=''}"></i> {$right_button.title|default=''}</a> ');
+                                            }else{
+                                                actions.push('<a class="{$right_button.class|default=''}" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.{$unique_id} + '\')"><i class="{$right_button.icon|default=''}"></i> {$right_button.title|default=''}</a> ');
+                                            }
+										} else {
+											var url = '{$right_button.href|default=''}';
+											var reg = /__(.*?)__/g;
+											// 匹配ID和email，可能为任何的其他参数，但都是 __字段__ 格式
+											while (result = reg.exec(url)) {
+												url = url.replace(result[0], row[result[1]]);
+											}
+											actions.push('<a class="{$right_button.class|default=''}" target="{$right_button.target|default=''}" href="'+url+'"><i class="{$right_button.icon|default=''}"></i> {$right_button.title|default=''}</a> ');
+										}
+		
+										{/volist}
+										return actions.join('');
+									}
+									{/case}
+									{default /}
+									{/switch}
+								{/if}
+							{/if}
+                            
+                        },
+                    {/volist}
+                ]
+            };
+            $.table.init(options);
+        });
+
+        // 搜索
+        function searchPre() {
+            var data = {};
+            $.table.search('', data);
+        }
+
+        // 重置搜索
+        function resetPre() {
+            $.form.reset();
+        }
+		//HTML反转义
+		function HTMLDecode(text) { 
+			var temp = document.createElement("div"); 
+			temp.innerHTML = text; 
+			var output = temp.innerText || temp.textContent; 
+			temp = null; 
+			return output; 
+		} 
+    </script>
+
+    <!--bootstrap table end-->
+
     <!--底部提示-->
     {notempty name="page_tips_bottom"}
     <div class="alert alert-{$tips_type} alert-dismissable">
@@ -106,65 +298,3 @@
     {$extra_html_content_bottom|raw|default=''}
 </section>
 <!--内容结束-->
-
-<script>
-    //排序
-    $(".changeSort").blur(function () {
-        var url = "/index.php/admin/Ad/sort.html";
-        var id = $(this).data("id");
-        var sort = $(this).val();
-        changeSort(url, id, sort);
-    })
-
-    //设置状态
-    $(".state").click(function () {
-        var url = "/index.php/admin/Ad/state.html";
-        var id = $(this).data("id");
-        changeState(url, id);
-    })
-
-    //批量删除
-    $(".select_del").click(function () {
-        var url = "/index.php/admin/Ad/selectDel.html";
-        delSelect(url);
-    })
-
-    //显示数量[待完善]
-    $(".page_size").change(function () {
-        var page_size = $(this).val();
-        var url = "{:url('index',['page_size'=>'pagesize'])}";
-        url = url.replace("pagesize", page_size);
-        pjaxReplace(url);
-    });
-
-
-    $(document).ready(function () {
-
-    })
-    // 表格自定义按钮
-    $(".confirm").click(function () {
-        var url         = $(this).attr('href');
-        var id          = $(this).data("id");
-        var text        = $(this).data('tips');
-        var title       = $(this).data('title') || '确定要执行该操作吗？';
-        var confirm_btn = $(this).data('confirm') || '确定';
-        var cancel_btn  = $(this).data('cancel') || '取消';
-        confirmOne(url, id, text, title, confirm_btn, cancel_btn);
-        return false;
-    });
-
-</script>
-
-<input type="checkbox" name="test">
-# 给选择框应用样式
-<script type="text/javascript">
-    $("[name='test']").bootstrapSwitch({
-        state:false,
-        onText: "上线",      // 设置ON文本  
-        offText: "下线",    // 设置OFF文本  
-        onColor: "success",// 设置ON文本颜色     (info/success/warning/danger/primary)  
-        offColor: "danger",  // 设置OFF文本颜色        (info/success/warning/danger/primary)  
-        size: "mini",    // 设置控件大小,从小到大  (mini/small/normal/large)  
-        handleWidth: "35",//设置控件宽度
-    });
-</script>

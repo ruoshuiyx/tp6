@@ -6,9 +6,9 @@
  *                      .::::.
  *                    .::::::::.            | AUTHOR: siyu
  *                    :::::::::::           | EMAIL: 407593529@qq.com
- *                 ..:::::::::::'           | QQ: 407593529
- *             '::::::::::::'               | WECHAT: zhaoyingjie4125
- *                .::::::::::               | DATETIME: 2019/03/06
+ *                 ..:::::::::::'           | DATETIME: 2020/03/08
+ *             '::::::::::::'
+ *                .::::::::::
  *           '::::::::::::::..
  *                ..::::::::::::.
  *              ``::::::::::::::::
@@ -32,15 +32,16 @@ class Link extends Validate
     protected $rule = [
         'name|网站名称' => [
             'require' => 'require',
-            'max'     => '255',
         ],
         'url|网站地址' => [
             'require' => 'require',
-            'max'     => '255',
         ],
         'sort|排序' => [
             'require' => 'require',
-            'number'  => 'number'
+            'number' => 'number',
         ],
+        'status|状态' => [
+            'require' => 'require',
+        ]
     ];
 }

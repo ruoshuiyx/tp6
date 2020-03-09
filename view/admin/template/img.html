@@ -78,26 +78,11 @@
 <script>
 //删除
 function confirm_delete(folder,filename) {
-	var url = '{:url('imgDel')}';
-	swal({
-	  title: '确定删除?',
-	  text: "删除后将无法恢复!",
-	  type: 'warning',
-	  showCancelButton: true,
-	  confirmButtonColor: '#3c8dbc',
-	  cancelButtonColor: '#d33',
-	  confirmButtonText: '确定',
-	  cancelButtonText: '取消'
-	}).then(function(isConfirm) {
-	  if (isConfirm) {
-		$.post(url,{folder:folder,filename,filename},function(result){
-			if(result.error == 0){
-				swal(result.msg,'','success').then(function(){window.location.reload()});
-			}else{
-				swal(result.msg,'','error');
-			}
-		  });
-	  }
-	})
+    $.modal.confirm("确定删除？删除后将无法恢复!", function () {
+        var url = '{:url('imgDel')}';
+        var data = {folder: folder, filename, filename};
+        $.operate.submit(url, "post", "json", data);
+        $.pjax.reload('.content-wrapper'); // pjax 重载
+    });
 }
 </script>

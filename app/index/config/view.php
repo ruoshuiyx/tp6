@@ -3,18 +3,14 @@
 // | 模板设置
 // +----------------------------------------------------------------------
 
-//查找设置的模版
-$system = \think\facade\Db::name('system')->select();
-$systemArr = [];
-foreach ($system as $k => $v) {
-    $systemArr[$v['field']] = $v['value'];
-}
+// 查找所有系统设置表数据
+$system = \app\common\model\System::find(1);
 
 return [
     // 模板路径
-    'view_path'    => './template/'.$systemArr['template'].'/'.\think\facade\Request::app().'/'.$systemArr['html'].'/',
+    'view_path'       => './template/' . $system['template'] . '/' . app('http')->getName() . '/' . $system['html'] . '/',
     // 模板文件名分隔符
-    'view_depr'    => '_',
+    'view_depr'       => '_',
     // 自定义标签库
-    'taglib_pre_load'    => 'app\common\taglib\Tp',
+    'taglib_pre_load' => 'app\common\taglib\Tp',
 ];

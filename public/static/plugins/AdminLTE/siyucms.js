@@ -1,4 +1,4 @@
-//全选+取消
+// [已废弃]全选+取消
 $(document).on("click", '#check', function () {
     var is_checked = $(this).prop("checked");
     if(is_checked==true){
@@ -8,7 +8,7 @@ $(document).on("click", '#check', function () {
     }
 })
 
-//设置Checkbox状态
+// [已废弃]设置Checkbox状态
 function setCheckbox(flag){
     flag = flag? true : false;
     var checkbox = document.getElementsByName("key[]");
@@ -19,7 +19,7 @@ function setCheckbox(flag){
     }
 }
 
-//通用更改状态
+// [已废弃]通用更改状态
 function changeState(url,id){
   	$.post(url,{id:id},function(result){
 		if(result.error == 0){
@@ -33,7 +33,7 @@ function changeState(url,id){
 	},'json')
 }
 
-//通用删除单个
+// [已废弃]通用删除单个
 function delOne(url, id) {
     swal({
         title: '确定删除?',
@@ -59,7 +59,7 @@ function delOne(url, id) {
     })
 }
 
-//通用执行确认
+// [已废弃]通用执行确认
 function confirmOne(url, id, text, title, confirm_btn, cancel_btn) {
     swal({
         title: title,
@@ -85,7 +85,7 @@ function confirmOne(url, id, text, title, confirm_btn, cancel_btn) {
     })
 }
 
-//批量删除
+// [已废弃]批量删除
 function delSelect(url) {
     if (!getCheckboxNum()) {
         swal(
@@ -126,7 +126,7 @@ function delSelect(url) {
     }
 }
 
-//获取Checkbox被选择个数
+// [已废弃]获取Checkbox被选择个数
 function getCheckboxNum(){
    var checkbox = document.getElementsByName("key[]");
    var j = 0; // 用户选中的选项个数
@@ -138,7 +138,7 @@ function getCheckboxNum(){
    return j;
 }
 
-//通用更改排序
+// [已废弃]通用更改排序
 function changeSort(url,id,sort){
   	$.post(url,{id:id,sort:sort},function(result){
 		if(result.error == 0){
@@ -151,7 +151,7 @@ function changeSort(url,id,sort){
 	},'json')
 }
 
-//数据库备份
+// [已废弃]数据库备份
 function dbBackup(url) {
     if (!getCheckboxNum()) {
         swal(
@@ -176,7 +176,7 @@ function dbBackup(url) {
     }
 }
 
-//数据恢复
+// [已废弃]数据恢复
 function dataImport(url, time) {
     swal({
         title: '确定要导入数据?',
@@ -202,7 +202,7 @@ function dataImport(url, time) {
     })
 }
 
-//数据删除
+// [已废弃]数据删除
 function dataDelSql(url, time) {
     swal({
         title: '确定要删除?',
@@ -228,18 +228,7 @@ function dataDelSql(url, time) {
     })
 }
 
-//测试邮件发送
-function trySend(url,email){
-	$.post(url,{email:email},function(result){
-		if(result.error == 0){
-			swal(result.msg,'','success');
-		}else{
-			swal(result.msg,'','error');
-		}
-	  },'json');
-}
-
-//测试短信发送
+// [已废弃]测试短信发送
 function trySendSms(url,mobile){
 	$.post(url,{mobile:mobile},function(result){
 		if(result.error == 0){
@@ -250,20 +239,20 @@ function trySendSms(url,mobile){
 	},'json');
 }
 
-//栏目管理页面新增或修改时选择模型的同时更改模版
-$(document).on('change', "select[name='moduleid']", function(e){
-    $("select[name='moduleid'] option").each(function (i, o) {
-        //升级jq后原attr失效
-        //http://blog.csdn.net/ruoshuiyx/article/details/49150119
+// [已废弃]栏目管理页面新增或修改时选择模型的同时更改模版
+/*$(document).on('change', "select[name='module_id']", function(e){
+    $("select[name='module_id'] option").each(function (i, o) {
+        // 升级jq后原attr失效
+        // http://blog.csdn.net/ruoshuiyx/article/details/49150119
         var is_checked = $(this).prop("selected");
         if (is_checked == true) {
             var data_name = $(this).attr('data-name');
             setStyleSelect(data_name);
-
         }
     });
-});
+});*/
 
+// [已废弃]更改CMS模块时修改模板默认选中或值
 function setStyleSelect(data_name) {
     var template_list = $("select[name='template_list']");
     var template_show = $("select[name='template_show']");
@@ -275,7 +264,7 @@ function setStyleSelect(data_name) {
     }
 }
 
-//判断select是否存在某个选项
+// [已废弃]判断select是否存在某个选项
 function isExistOption(id, value) {
     var isExist = false;
     var count = id.find('option').length;
@@ -289,36 +278,10 @@ function isExistOption(id, value) {
     return isExist;
 }
 
-//全屏按钮点击效果
-$(".fullscreen").click(function () {
-    if ($(this).hasClass('full')) {
-        $(this).removeClass('full');
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        } else if (document.msExitFullscreen) {
-            document.msExitFullscreen();
-        } else if (document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
-        } else if (document.webkitCancelFullScreen) {
-            document.webkitCancelFullScreen();
-        }
-    } else {
-        $(this).addClass('full');
-        var docElm = document.documentElement;
-        if (docElm.requestFullscreen) {
-            docElm.requestFullscreen();
-        } else if (docElm.msRequestFullscreen) {
-            docElm.msRequestFullscreen();
-        } else if (docElm.mozRequestFullScreen) {
-            docElm.mozRequestFullScreen();
-        } else if (docElm.webkitRequestFullScreen) {
-            docElm.webkitRequestFullScreen();
-        }
-    }
-})
+// =========↑↑↑↑↑↑↑↑↑已废弃↑↑↑↑↑↑↑↑↑=========
 
-//daterangepicker 动态元素追加后重新绑定
-$(document).on('mouseover', "input[name='dateran']", function(){
+// [待确定]daterangepicker 动态元素追加后重新绑定
+$(document).on('mouseover', "input[daterange='true']", function(){
     $(this).daterangepicker(
         {
             // autoApply: true,
@@ -350,82 +313,98 @@ $(document).on('mouseover', "input[name='dateran']", function(){
     });
 })
 
-//列表图片鼠标移上跟随效果（兼容ajax分页）
-$(document).on('mouseover', '.js_show_img', function(e){
-    var image=$(this).data("image");
-    if(image!=""){
-        var zoomView=$('<img src="'+image+'" id="zoomView" />'); //建立图片查看框
-        $(this).append(zoomView);
+// 顶部导航区域全屏功能
+$(".fullscreen").click(function () {
+    if ($(this).hasClass('full')) {
+        $(this).removeClass('full');
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if (document.webkitCancelFullScreen) {
+            document.webkitCancelFullScreen();
+        }
+    } else {
+        $(this).addClass('full');
+        var docElm = document.documentElement;
+        if (docElm.requestFullscreen) {
+            docElm.requestFullscreen();
+        } else if (docElm.msRequestFullscreen) {
+            docElm.msRequestFullscreen();
+        } else if (docElm.mozRequestFullScreen) {
+            docElm.mozRequestFullScreen();
+        } else if (docElm.webkitRequestFullScreen) {
+            docElm.webkitRequestFullScreen();
+        }
+    }
+})
+
+// 列表图片鼠标移上跟随效果（兼容ajax分页）
+$(document).on('mouseover', '.image_preview', function (e) {
+    var image = $(this).attr("src");
+    if (image != "") {
+        var zoomView = $('<img src="' + image + '" id="zoomView" />'); // 建立图片查看框
+        $(this).after(zoomView);
         $("#zoomView").fadeIn(100);
-        $("#zoomView").css({"top":(e.pageY-180)+"px","left":(e.pageX-210)+"px"});  //注意得在CSS文件中将其设置为绝对定位
+        $("#zoomView").css({"top": (e.pageY - 250) + "px", "left": (e.pageX - 210) + "px"});  //注意得在CSS文件中将其设置为绝对定位
     }
 })
 
-$(document).on('mousemove', '.js_show_img', function(e){
-    var image=$(this).data("image");
-    if(image!=""){
-        $("#zoomView").css({"top":(e.pageY-180)+"px","left":(e.pageX-210)+"px"}); //鼠标移动时及时更新图片查看框的坐标
+$(document).on('mousemove', '.image_preview', function (e) {
+    var image = $(this).attr("image");
+    if (image != "") {
+        $("#zoomView").css({"top": (e.pageY - 250) + "px", "left": (e.pageX - 210) + "px"}); //鼠标移动时及时更新图片查看框的坐标
     }
 })
 
-$(document).on('mouseout', '.js_show_img', function(e){
-    var image=$(this).data("image");
+$(document).on('mouseout', '.image_preview', function(e){
+    var image=$(this).attr("image");
     if(image!=""){
         $("#zoomView").remove();    //鼠标移出时删除之前建立的图片查看框
     }
 })
 
-//常规表单提交转变成ajax
+// 常规表单提交转变成ajax
 $(document).on("submit", 'form:not([data-pjax])', function () {
 	var _this = $(this);
-	//判断是否开启了提交确认
+	// 判断是否开启了提交确认
 	if(typeof($(this).attr("submit_confirm"))=="undefined")
 	{
-		//不需要提交确认,直接提交表单
+		// 不需要提交确认,直接提交表单
 		formSubmit(_this);
 	}else{
-		swal({
-                title: '确定要提交吗?',
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonText: '确定',
-                cancelButtonText: '取消'
-            }).then(function (isConfirm) {
-                if (isConfirm) {
-					//提交表单	
-                   formSubmit(_this); 
-                }
-            })
+        // 需要确认提示
+        $.modal.confirm('确定要提交吗？', function () {
+            formSubmit(_this);
+        })
 	}
-    return false; //阻止表单默认提交
+    return false; // 阻止表单默认提交
 })
 
 // 表单提交 
-function formSubmit($this){
-	$this.ajaxSubmit(function(result) {
-        //判断是否提交成功
-        if(result.code == 1){
-            swal(result.msg, '', 'success').then(function () {
-                var url = result.url;
-                $.pjax({url: url, container: '.content-wrapper'})
+function formSubmit($this) {
+    $this.ajaxSubmit(function (result) {
+        if (result.code == 1) {
+            // 提交成功
+            $.modal.alertSuccess(result.msg, function (index) {
+                layer.close(index);
+                $.common.jump(result.url);
             });
-        }else{
-            //提交失败
-            swal(result.msg,'','error');
+        } else {
+            // 提交失败
+            $.modal.alertError(result.msg);
         }
     });
 }
 
-//捐赠
+// 捐赠
 $(document).on("click", '.juanzeng', function () {
-    swal({
-        imageUrl: '/static/admin/images/shoukuan.png',
-        showCloseButton: true,
-        showConfirmButton: false,
-    })
+    $.modal.open('捐赠', "/static/admin/images/shoukuan.png", 450, 533);
 })
 
-//返回顶部显示
+// 返回顶部显示
 $(window).scroll(function() {
     if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
         $('#totop').fadeIn(500)
@@ -434,46 +413,72 @@ $(window).scroll(function() {
     }
 });
 
-//返回顶部点击
+// 返回顶部点击
 $('#totop').on('click', function(e) {
-    //防止打开URL
+    // 防止打开URL
     e.preventDefault();
     $('html,body').animate({
         scrollTop: 0
     }, 300)
 });
 
-//pjax 刷新当前页
+// pjax 刷新当前页
 function pjaxReplace(url){
     $.pjax({url: url, container: '.content-wrapper'})
 }
 
-//pjax 执行完成后执行的方法
+// pjax 执行完成后执行的方法
 $(document).on('pjax:complete', function () {
 	
-    //重新请求远程ad
+    // 首页重新请求远程ad
     if ($(".main_ad").length > 0) {
         $.getScript("http://www.siyucms.com/ad.js");
     }
-	
-	//tag 标签
-	if ($(".tags").length > 0) {
-		$('.tags').tagsInput({
-			'width':'auto',
-			'height':'auto',
-			'placeholderColor' : '#666666',
-			'defaultText':'添加标签',
-		});
-	}
-    
-})                
 
-//tag 标签
-if ($(".tags").length > 0) {
-	$('.tags').tagsInput({
+    // tag 标签
+    if ($("#tags").length > 0) {
+        $('#tags').tagsInput({
+            'width':'auto',
+            'height':'auto',
+            'placeholderColor' : '#666666',
+            'defaultText':'添加标签',
+        });
+    }
+
+})
+
+// 返回上一页时重新触发pjax，防止加载重复的bootstrap-table
+$(function () {
+    window.addEventListener("popstate", function (e) {
+        $.pjax.reload('.content-wrapper');
+    }, false);
+})
+
+// tag 标签
+if ($("#tags").length > 0) {
+	$('#tags').tagsInput({
 		'width':'auto',
 		'height':'auto',
 		'placeholderColor' : '#666666',
 		'defaultText':'添加标签',
 	});
+}
+
+// 转换日期格式(时间戳转换为datetime格式)
+function changeDateFormat(cellval) {
+    if (cellval.toString().indexOf("-") >= 0) {
+        return cellval;
+    }
+    var dateVal = cellval * 1000;
+    if (cellval != null) {
+        var date = new Date(dateVal);
+        var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+        var currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+
+        var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+        var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+        var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+
+        return date.getFullYear() + "-" + month + "-" + currentDate + " " + hours + ":" + minutes + ":" + seconds;
+    }
 }

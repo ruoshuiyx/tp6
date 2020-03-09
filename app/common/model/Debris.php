@@ -1,14 +1,14 @@
 <?php
 /**
  * +----------------------------------------------------------------------
- * | 公共碎片管理模型
+ * | 碎片管理模型
  * +----------------------------------------------------------------------
  *                      .::::.
  *                    .::::::::.            | AUTHOR: siyu
  *                    :::::::::::           | EMAIL: 407593529@qq.com
- *                 ..:::::::::::'           | QQ: 407593529
- *             '::::::::::::'               | WECHAT: zhaoyingjie4125
- *                .::::::::::               | DATETIME: 2019/03/07
+ *                 ..:::::::::::'           | DATETIME: 2020/03/08
+ *             '::::::::::::'
+ *                .::::::::::
  *           '::::::::::::::..
  *                ..::::::::::::.
  *              ``::::::::::::::::
@@ -25,7 +25,11 @@
  */
 namespace app\common\model;
 
+// 引入框架内置类
 use think\facade\Request;
+
+// 引入构建器
+use app\common\facade\MakeBuilder;
 
 class Debris extends Base
 {
@@ -33,14 +37,33 @@ class Debris extends Base
     protected $createTime = 'create_time';
     protected $updateTime = 'update_time';
 
+    
+
     // 获取列表
-    public static function getList($where = array(), $pageSize, $order = ['sort', 'id'=>'desc']){
+    public static function getList($where = array(), $pageSize, $order = ['sort', 'id' => 'desc'])
+    {
         $list = self::where($where)
             ->order($order)
             ->paginate([
                 'query'     => Request::get(),
                 'list_rows' => $pageSize,
             ]);
-        return $list;
+        foreach ($list as $k => $v) {
+            
+        }
+        return MakeBuilder::changeTableData($list, 'Debris');
     }
+
+    // 导出列表
+    public static function getExport($where = array(), $order = ['sort', 'id' => 'desc'])
+    {
+        $list = self::where($where)
+            ->order($order)
+            ->select();
+        foreach ($list as $k => $v) {
+            
+        }
+        return MakeBuilder::changeTableData($list, 'Debris');
+    }
+
 }

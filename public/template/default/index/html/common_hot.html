@@ -2,7 +2,7 @@
                                     <div class="single-sidebar-widget">
                                         <h4 class="title">最新文章</h4>
                                         <div class="recent-content">
-                                        	{tp:list id="8" where="image <> '' " name="list" limit="5" order="id desc"}
+                                        	{tp:list id="4" where="image <> '' " name="list" limit="5" order="id desc"}
                                             <div class="recent-content-item">
                                             	{if $list.image}
                                                 <a href="{$list.url}"><img src="{$list.image}" style="height:67px; width:70px"></a>
@@ -22,7 +22,7 @@
                                     <div class="single-sidebar-widget comment">
                                         <h4 class="title">热门产品</h4>
                                         <div class="recent-content">
-                                        	{tp:list id="14" name="list" limit="3" order="hits desc"}
+                                        	{tp:list id="8" name="list" limit="3" order="hits desc"}
                                             <div class="recent-content-item">
                                                 <a href="{$list.url}"><img src="{$list.image}" alt="{$list.title}"></a>
                                                 <div class="recent-text">

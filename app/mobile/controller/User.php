@@ -84,7 +84,7 @@ class User extends Base
             }
             //校验用户名密码
             $user = Users::
-            where('email|mobile',$username)
+                where('email|mobile',$username)
                 ->where('password',md5($password))
                 ->find();
             if (empty($user)) {
@@ -212,7 +212,7 @@ class User extends Base
                 //查看原密码是否正确
                 if (Request::post("nowpassword")) {
                     $id = Users::
-                    where('id',session('user.id'))
+                        where('id',session('user.id'))
                         ->where('password',md5(trim(Request::post("nowpassword"))))
                         ->find();
                     if (!$id) {
@@ -227,8 +227,7 @@ class User extends Base
                     $this->error('两次输入的密码不一致');
                 }
                 //更新信息
-                db('users')
-                    ->where('id', session('user.id'))
+                \app\common\model\Users::where('id', session('user.id'))
                     ->data($data)
                     ->update();
                 $this->success('密码修改成功');
@@ -240,7 +239,7 @@ class User extends Base
             if ($data['mobile']) {
                 //不可和其他用户的一致
                 $id = Users::
-                where('mobile', $data['mobile'])
+                    where('mobile', $data['mobile'])
                     ->where('id','<>',session('user.id'))
                     ->find();
                 if ($id) {

@@ -128,7 +128,7 @@ class Think
             if (is_dir($this->app->getAppPath() . $view)) {
                 $path = $this->app->getAppPath() . $view . DIRECTORY_SEPARATOR;
             } else {
-                $appName = $this->app['request']->app();
+                $appName = $this->app->http->getName();
                 $path    = $this->app->getRootPath() . $view . DIRECTORY_SEPARATOR . ($appName ? $appName . DIRECTORY_SEPARATOR : '');
             }
 
@@ -145,10 +145,6 @@ class Think
         if (!is_file($template)) {
             throw new TemplateNotFoundException('template not exists:' . $template, $template);
         }
-
-        // 记录视图信息
-        $this->app['log']
-            ->record('[ VIEW ] ' . $template . ' [ ' . var_export(array_keys($data), true) . ' ]');
 
         $this->template->fetch($template, $data);
     }

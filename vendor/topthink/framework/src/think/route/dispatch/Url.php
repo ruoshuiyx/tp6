@@ -46,7 +46,7 @@ class Url extends Controller
 
         if ($bind && preg_match('/^[a-z]/is', $bind)) {
             $bind = str_replace('/', $depr, $bind);
-            // 如果有模块/控制器绑定
+            // 如果有域名绑定
             $url = $bind . ('.' != substr($bind, -1) ? $depr : '') . ltrim($url, $depr);
         }
 
@@ -58,7 +58,7 @@ class Url extends Controller
         // 解析控制器
         $controller = !empty($path) ? array_shift($path) : null;
 
-        if ($controller && !preg_match('/^[A-Za-z][\w|\.]*$/', $controller)) {
+        if ($controller && !preg_match('/^[A-Za-z0-9][\w|\.]*$/', $controller)) {
             throw new HttpException(404, 'controller not exists:' . $controller);
         }
 
@@ -100,7 +100,7 @@ class Url extends Controller
      */
     protected function hasDefinedRoute(array $route): bool
     {
-        list($controller, $action) = $route;
+        [$controller, $action] = $route;
 
         // 检查地址是否被定义过路由
         $name = strtolower(Str::studly($controller) . '/' . $action);

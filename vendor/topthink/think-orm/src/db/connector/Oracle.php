@@ -10,6 +10,7 @@
 namespace think\db\connector;
 
 use PDO;
+use think\db\BaseQuery;
 use think\db\PDOConnection;
 
 /**
@@ -49,8 +50,8 @@ class Oracle extends PDOConnection
      */
     public function getFields(string $tableName): array
     {
-        list($tableName) = explode(' ', $tableName);
-        $sql             = "select a.column_name,data_type,DECODE (nullable, 'Y', 0, 1) notnull,data_default, DECODE (A .column_name,b.column_name,1,0) pk from all_tab_columns a,(select column_name from all_constraints c, all_cons_columns col where c.constraint_name = col.constraint_name and c.constraint_type = 'P' and c.table_name = '" . strtoupper($tableName) . "' ) b where table_name = '" . strtoupper($tableName) . "' and a.column_name = b.column_name (+)";
+        [$tableName] = explode(' ', $tableName);
+        $sql         = "select a.column_name,data_type,DECODE (nullable, 'Y', 0, 1) notnull,data_default, DECODE (A .column_name,b.column_name,1,0) pk from all_tab_columns a,(select column_name from all_constraints c, all_cons_columns col where c.constraint_name = col.constraint_name and c.constraint_type = 'P' and c.table_name = '" . strtoupper($tableName) . "' ) b where table_name = '" . strtoupper($tableName) . "' and a.column_name = b.column_name (+)";
 
         $pdo    = $this->getPDOStatement($sql);
         $result = $pdo->fetchAll(PDO::FETCH_ASSOC);
@@ -97,10 +98,11 @@ class Oracle extends PDOConnection
     /**
      * 获取最近插入的ID
      * @access public
-     * @param string $sequence 自增序列名
-     * @return string
+     * @param BaseQuery $query    查询对象
+     * @param string    $sequence 自增序列名
+     * @return mixed
      */
-    public function getLastInsID(string $sequence = null): string
+    public function getLastInsID(BaseQuery $query, string $sequence = null)
     {
         $pdo    = $this->linkID->query("select {$sequence}.currval as id from dual");
         $result = $pdo->fetchColumn();

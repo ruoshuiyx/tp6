@@ -1,4 +1,35 @@
 @charset "UTF-8";
+body,.treeview-menu>li>a{font-size:13px}
+ul,li{list-style: none; padding:0;margin: 0;}
+
+/*定义label和徽章的常用格式*/
+label {font-weight: normal;}
+.label{background-color:#d1dade;color:#5e5e5e;font-size:10px;font-weight:600;padding:3px 8px;text-shadow:none}
+.badge{background-color:#d1dade;color:#5e5e5e;font-size:11px;font-weight:600;padding-bottom:4px;padding-left:6px;padding-right:6px;text-shadow:none}
+.badge-primary,.label-primary{background-color:#1ab394;color:#fff}
+.badge-success,.label-success{background-color:#1c84c6;color:#fff}
+.badge-warning,.label-warning{background-color:#f8ac59;color:#fff}
+.badge-warning-light,.label-warning-light{background-color:#f8ac59;color:#fff}
+.badge-danger,.label-danger{background-color:#ed5565;color:#fff}
+.badge-info,.label-info{background-color:#23c6c8;color:#fff}
+.badge-inverse,.label-inverse{background-color:#262626;color:#fff}
+.badge-white,.label-white{background-color:#fff;color:#5e5e5e}
+.badge-disable,.label-white{background-color:#2a2e36;color:#8b91a0}
+
+/** 表格查询数据 **/
+.table-striped{min-height:75%}
+.table-striped .bootstrap-table{border:0!important}
+.table-striped .table,.table>tbody>tr>td,.table>tbody>tr>th,.table>tfoot>tr>td,.table>tfoot>tr>th,.table>thead>tr>td,.table>thead>tr>th{border-bottom:1px solid #e7eaec!important;border:0}
+.fixed-table-footer{border-top:0 solid #ddd}
+.fixed-table-container{border:0 solid #ddd}
+.table-striped .table>tbody>tr>th,.table-striped .table>thead>tr>th{border-bottom:1px solid #ccc!important;border-top:0!important}
+.table-striped .table>thead:first-child>tr:first-child>th{font-weight:400;font-size:13px}
+.table-striped table thead{background-color:#eff3f8}
+.table-bordered td,.table-bordered th{border:1px solid #ddd!important}
+.fixed-table-container thead th>.both{display:inline-block}
+
+/** 表格选中样式 **/
+.fixed-table-container .selected {background-color: #E8F7FD;color: #1890ff;}
 
 /*右侧搜索区域*/
 .search{padding:5px 15px;background-color:#FFF;border-left: 3px solid #337ab7;}
@@ -10,6 +41,25 @@
 .search .m_10{margin-left:10px;margin-bottom: 5px;margin-top: 5px;}
 .search .m_10_l_0{margin-left:0;margin-bottom: 5px;margin-top: 5px;}
 .search .f_r{float:right}
+
+/*右侧搜索区域 Bootstrap Table*/
+.container-div{padding:0 15px;height:100%}
+.container-div .row{height:100%}
+.search-collapse,.select-table{width:100%;background:#fff;border-radius:3px;margin-bottom:15px;padding-top:5px;padding-bottom:5px;box-shadow:1px 1px 3px rgba(0,0,0,.2)}
+.search-collapse{position:relative}
+.search-collapse .col-sm-6 .control-label{color:#333}
+@media (max-width :768px){
+	.search-collapse{display:none}
+}
+@media (min-width :768px){
+	.select-list li{float:left}
+}
+.select-list li{color:#333;margin:5px 15px 5px 0}
+.select-list li p{float:left;width:80px;margin:5px 15px 5px 0;text-align:right}
+.select-list li input{border:1px solid #ddd;border-radius:4px;background:0 0;outline:0;height:30px;width:180px;padding-left:5px}
+.select-list li .submit-btn{border:0;border-radius:4px;background:0 0;outline:0;width:40px;height:23px}
+.select-list li select{border:1px solid #ddd;border-radius:4px;background:0 0;outline:0;height:30px;width:200px}
+.btn-rounded {border-radius: 50px;}
 
 /*每页显示记录数*/
 .page_size{ width: 105px;float: right;margin: 0 0 0 10px;}
@@ -186,3 +236,10 @@ ul.ztree>li>a>span{font-size:15px;font-weight:700}
     -moz-border-radius: 0;
     border-radius: 0;
 }
+/*解决select only属性失效的问题*/
+select[readonly] {cursor: no-drop;}
+select[readonly] option {display: none;}
+
+.text-info {color: #3c8dbc; }
+.ztree{padding:0}
+.table_colorpicker{ width: 16px; height: 16px; display: block}

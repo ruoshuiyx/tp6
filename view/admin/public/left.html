@@ -43,12 +43,34 @@
                 </a>
                 <ul class="treeview-menu">
                     {volist name="vo.children" id="voo"}
+                    {if count($voo.children)}
+                    <li class="treeview">
+                        <a href="{$voo.href}">
+                            <i class="{$voo.icon ? $voo.icon :'fa fa-circle-o'}"></i>
+                            <span>{$voo.title}</span>
+                            <span class="pull-right-container">
+                              <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            {volist name="voo.children" id="vooo"}
+                            <li>
+                                <a href="{$vooo.href}">
+                                    <i class="fa fa-circle-o"></i>
+                                    <span>{$vooo.title}</span>
+                                </a>
+                            </li>
+                            {/volist}
+                        </ul>
+                    </li>
+                    {else /}
                     <li>
                         <a href="{$voo.href}">
                             <i class="{$voo.icon ? $voo.icon :'fa fa-circle-o'}"></i>
                             <span>{$voo.title}</span>
                         </a>
                     </li>
+                    {/if}
                     {/volist}
                 </ul>
             </li>
@@ -63,9 +85,9 @@
             {volist name="$cates" id="vo"}
             {if count($vo.sub)}
             <li class="treeview">
-                <a href="{:url($vo.moduleurl.'/index',['cate'=>$vo.id])}">
+                <a href="{:url($vo.module.model_name.'/index',['cate_id'=>$vo.id])}">
                     <i class="fa fa-bars"></i>
-                    <span>{$vo.catname}</span>
+                    <span>{$vo.cate_name}</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
@@ -74,9 +96,9 @@
                     {volist name="vo.sub" id="voo"}
                     {if count($voo.sub)}
                     <li class="treeview">
-                        <a href="{:url($voo.moduleurl.'/index',['cate'=>$voo.id])}">
+                        <a href="{:url($voo.module.model_name.'/index',['cate_id'=>$voo.id])}">
                             <i class="fa fa-circle-o"></i>
-                            <span>{$voo.catname}</span>
+                            <span>{$voo.cate_name}</span>
                             <span class="pull-right-container">
                               <i class="fa fa-angle-left pull-right"></i>
                             </span>
@@ -84,9 +106,9 @@
                         <ul class="treeview-menu">
                             {volist name="voo.sub" id="vooo"}
                             <li>
-                                <a href="{:url($vooo.moduleurl.'/index',['cate'=>$vooo.id])}">
+                                <a href="{:url($vooo.module.model_name.'/index',['cate_id'=>$vooo.id])}">
                                     <i class="fa fa-circle-o"></i>
-                                    <span>{$vooo.catname}</span>
+                                    <span>{$vooo.cate_name}</span>
                                 </a>
                             </li>
                             {/volist}
@@ -94,9 +116,9 @@
                     </li>
                     {else /}
                     <li>
-                        <a href="{:url($voo.moduleurl.'/index',['cate'=>$voo.id])}">
+                        <a href="{:url($voo.module.model_name.'/index',['cate_id'=>$voo.id])}">
                             <i class="fa fa-circle-o"></i>
-                            <span>{$voo.catname}</span>
+                            <span>{$voo.cate_name}</span>
                         </a>
                     </li>
                     {/if}
@@ -105,9 +127,9 @@
             </li>
             {else /}
             <li>
-                <a href="{:url($vo.moduleurl.'/index',['cate'=>$vo.id])}">
+                <a href="{:url($vo.module.model_name.'/index',['cate_id'=>$vo.id])}">
                     <i class="fa fa-bars"></i>
-                    <span>{$vo.catname}</span>
+                    <span>{$vo.cate_name}</span>
                 </a>
             </li>
             {/if}
@@ -121,43 +143,41 @@
 
 
 <script>
-    //左侧菜单 高亮+记忆
+    // 左侧菜单 高亮+记忆
     $(function(){
-        //高亮
-        $('.sidebar-menu li:not(.treeview) > a').on('click', function(){
+        // 高亮
+        $('.sidebar-menu li:not(.treeview) > a').on('click', function () {
             var $parent = $(this).parent().addClass('active');
             $parent.siblings('.treeview.active').find('> a').trigger('click');
             $parent.siblings().removeClass('active').find('li').removeClass('active');
 
-            //小屏幕上点击左边菜单栏按钮，模拟点击 xs: 480,sm: 768,md: 992,lg: 1200
-            if ($(window).width() < 992){
-                //触发左边菜单栏按钮点击事件,关闭菜单栏
+            // 小屏幕上点击左边菜单栏按钮，模拟点击 xs: 480,sm: 768,md: 992,lg: 1200
+            if ($(window).width() < 992) {
+                // 触发左边菜单栏按钮点击事件,关闭菜单栏
                 $("[data-toggle='push-menu']").trigger('click');
             }
-
-
         });
 
-        //刷新后匹配当前URL（刷新的情况并不完美，比如添加、修改、分页之类无法匹配到,后续已进行改进，变为通过标题来匹配）
+        // 刷新后匹配当前URL（刷新的情况并不完美，比如添加、修改、分页之类无法匹配到,后续已进行改进，变为通过标题来匹配）
         $(window).on('load', function(){
-            //获取当前页面面包导航标题
+            // 获取当前页面面包导航标题
             var _title = $(".content-header").children("h1").clone();
             _title.find(':nth-child(n)').remove();
             if (_title.length>0){
                 _title = _title.html().trim();
             }
-            //循环匹配
+            // 循环匹配
             $('.sidebar-menu a').each(function(){
                 //if(this.href === window.location.href){
                 if(this.href !== '#' && $(this).children('span').html() == _title){
-                    //打开对应菜单
+                    // 打开对应菜单
                     $(this).parent().addClass('active')
-                            .closest('.treeview-menu').addClass('menu-open')  //打开二级ul
-                            .closest('.treeview').addClass('active menu-open'); //打开一级li
+                            .closest('.treeview-menu').show()                   // 打开二级ul
+                            .closest('.treeview').addClass('menu-open');       // 打开一级li
                     //打开对应 .sidebar-menu
-                    //判断当前所属的是第几个
+                    // 判断当前所属的是第几个
                     var index = $(".js_left_menu_show").index($(this).closest('.sidebar-menu'));
-                    //执行点击动作
+                    // 执行点击动作
                     $(".js_left_menu li").eq(index).click();
                 }
             });
@@ -165,36 +185,36 @@
 
     });
 
+    // 菜单搜索
     $(function() {
-        //菜单搜索
-        //设置默认宽度
+        // 设置默认宽度
         $(".menuresult").width($("form.sidebar-form > .input-group").width()-1);
-        //搜索展示框
+        // 搜索展示框
         var searchResult = $(".menuresult");
         $("form.sidebar-form").on("blur", "input[name=q]", function() {
-            //表单失去焦点后隐藏展示框
+            // 表单失去焦点后隐藏展示框
             setTimeout(function() {
                 searchResult.addClass("hide");
             }, 300);
 
         }).on("focus", "input[name=q]", function() {
-            //获取焦点时,当有元素则取消隐藏
+            // 获取焦点时,当有元素则取消隐藏
             if (searchResult.children('a').length > 0) {
                 searchResult.removeClass("hide");
             }
         }).on("keyup", "input[name=q]", function() {
-            //按下按键时触发以下内容
-            searchResult.html(''); //设置内容为空
+            // 按下按键时触发以下内容
+            searchResult.html(''); // 设置内容为空
             var val = $(this).val();
             var html = [];
             if (val != '') {
-                //循环菜单进行遍历(:visible 匹配所有可见元素，:hidden选择器用于匹配所有不可见的元素，防止匹配到另一个菜单)
+                // 循环菜单进行遍历(:visible 匹配所有可见元素，:hidden选择器用于匹配所有不可见的元素，防止匹配到另一个菜单)
                 $("ul.sidebar-menu:visible li a:not([href^='#'])").each(function() {
-                    //进行汉字比较
+                    // 进行汉字比较
                     if ($("span:first", this).text().indexOf(val) > -1) {
-                        //写入搜搜展示框
+                        // 写入搜搜展示框
                         html.push('<a href="' + $(this).attr("href") + '" >' + $("span:first", this).text() + '</a>');
-                        //超出最大值则退出,防止页面崩溃
+                        // 超出最大值则退出,防止页面崩溃
                         if (html.length >= 100) {
                             return false;
                         }
@@ -208,15 +228,11 @@
                 searchResult.addClass("hide");
             }
         });
-        //快捷搜索点击事件
+        // 快捷搜索点击事件
         //$("form.sidebar-form").on('mousedown click', '.menuresult a[data-url]', function() {});
-
-
     })
 
-    /**
-     * 本地搜索菜单
-     */
+    // 本地搜索菜单
     function search_menu() {
         //要搜索的值
         var text = $('input[name=q]').val();
@@ -242,5 +258,4 @@
             }
         });
     }
-
 </script>

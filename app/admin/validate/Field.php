@@ -1,7 +1,7 @@
 <?php
 /**
  * +----------------------------------------------------------------------
- * | 模型字段管理验证器
+ * | 字段管理验证器
  * +----------------------------------------------------------------------
  *                      .::::.
  *                    .::::::::.            | AUTHOR: siyu
@@ -30,17 +30,17 @@ use think\Validate;
 class Field extends Validate
 {
     protected $rule = [
-        'moduleid|模型名称' => [
+        'module_id|所属模块' => [
             'require' => 'require',
             'max'     => '3',
         ],
         'type|字段类型' => [
             'require' => 'require',
-            'max'     => '20',
+            'max'     => '40',
         ],
         'field|字段名' => [
             'require' => 'require',
-            'max'     => '20',
+            'max'     => '40',
         ],
         'name|别名' => [
             'require' => 'require',

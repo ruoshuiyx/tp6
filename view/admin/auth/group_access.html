@@ -1,8 +1,25 @@
 <link rel="stylesheet" href="/static/plugins/zTree_v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
 <!--内容开始-->
 <section class="content">
+	{// 额外HTML代码 }
+    {$extra_html_content_top|raw|default=''}
+    <!--顶部提示开始-->
+    {notempty name="page_tips_top"}
+    <div class="alert alert-{$tips_type} alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <p>{$page_tips_top|raw}</p>
+    </div>
+    {/notempty}
+    <!--顶部提示结束-->
+    <div class="search">
+        <form class="form-inline" action="">
+            {notempty name="page_tips_search"}{$page_tips_search|raw}{/notempty}
+            <a class="btn btn-flat btn-success m_10 f_r m_t_5" onclick="javascript :history.back(-1)"><i class="fa fa-undo m-r-10"></i>返 回</a>
+        </form>
+    </div>
+    <!--数据表开始-->
     <form method="post" name="myForm" id="myForm" action="">
-        <ul id="treeDemo" class="ztree"></ul>
+        <ul id="treeDemo" class="box box-body ztree"></ul>
         <div class="row dd_input_group">
             <div class="form-group">
                 <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
@@ -14,9 +31,6 @@
     </form>
 </section>
 <!--内容结束-->
-
-<script type="text/javascript" src="/static/plugins/zTree_v3/js/jquery.ztree.core.js"></script>
-<script type="text/javascript" src="/static/plugins/zTree_v3/js/jquery.ztree.excheck.js"></script>
 <SCRIPT type="text/javascript">
 		<!--
 		var setting = {
@@ -66,16 +80,15 @@
             v+=nodes[i].id + ",";
         }
         var id = "{:input('id')}";
-        var url = "{:url('groupSetaccess')}";
+        var url = "{:url('accessPost')}";
         $.post(url,{id:id,rules:v},function(result){
             if(result.error == 0){
-                swal(result.msg,'','success').then(function(){
-                    //跳转
-                    //window.location.href = result.url;
-                    pjaxReplace(result.url)
+                $.modal.alertSuccess(result.msg, function (index) {
+                    layer.close(index);
+                    $.common.jump(result.url);
                 });
             }else{
-                swal(result.msg,'','error');
+                $.modal.alertError(result.msg);
             }
         })
         return false;

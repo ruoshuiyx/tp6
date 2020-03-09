@@ -22,9 +22,9 @@ foreach ($system as $k => $v) {
 
 return [
     // 模板路径
-    'view_path'    => './template/'.$systemArr['template'].'/'.\think\facade\Request::app().'/'.$systemArr['html'].'/',
+    'view_path'       => './template/' . $systemArr['template'] . '/' . app('http')->getName() . '/' . $systemArr['html'] . '/',
     // 模板文件名分隔符
-    'view_depr'    => '_',
+    'view_depr'       => '_',
     // 自定义标签库
-    'taglib_pre_load'    => 'app\common\taglib\Tp',
+    'taglib_pre_load' => 'app\common\taglib\Tp',
 ];

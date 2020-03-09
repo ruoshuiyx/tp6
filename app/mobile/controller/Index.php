@@ -37,19 +37,19 @@ class Index extends Base
     {
         $view = [
             'cate'        => null,
-            'system'      => $this->system, //系统信息
-            'public'      => $this->public, //公共目录
-            'title'       => $this->system['title'] ? $this->system['title'] : $this->system['name'], //seo信息
-            'keywords'    => $this->system['key'],   //seo信息
-            'description' => $this->system['des'],   //seo信息
+            'system'      => $this->system,          // 系统信息
+            'public'      => $this->public,          // 公共目录
+            'title'       => $this->system['title'] ? $this->system['title'] : $this->system['name'], // seo信息
+            'keywords'    => $this->system['key'],   // seo信息
+            'description' => $this->system['des'],   // seo信息
         ];
 
-        $template = $this->template.'index.html';
+        $template = $this->template . 'index.html';
         View::assign($view);
         return View::fetch($template);
     }
 
-    //搜索
+    // 搜索
     public function search(){
         $search = Request::param('search');//关键字
         if(empty($search)){
@@ -71,7 +71,7 @@ class Index extends Base
         return View::fetch($template);
     }
 
-    //标签
+    // 标签
     public function tag(){
         $tag = Request::param('t');
         if(empty($tag)){

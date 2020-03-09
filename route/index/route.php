@@ -25,25 +25,19 @@
  */
 use think\facade\Route;
 
-// 默认栏目路由
-$cate = \think\facade\Db::name('cate')
-    ->alias('a')
-    ->leftJoin('module m', 'a.moduleid = m.id')
-    ->field('a.id, a.catname, a.catdir, m.title as modulename, m.name as moduleurl')
-    ->order('a.sort ASC, a.id ASC')
-    ->select();
+$cate = \app\common\model\Cate::field('id,cate_name,cate_folder,module_id')->order('sort ASC,id ASC')->select();
 foreach ($cate as $k => $v) {
     // 当栏目设置了[栏目目录]字段时注册路由
-    if ($v['catdir']) {
-        if ($v['moduleurl'] == 'page') {
-            // 单页模型
-            Route::any('' . $v['catdir'] . '', '' . $v['catdir'] . '/index');
+    if ($v['cate_folder']) {
+        if ($v->module->getData('module_name') == 'Page') {
+            Route::any('' . $v['cate_folder'] . '', '' . $v['cate_folder'] . '/index');
         } else {
             // 列表+详情模型
-            Route::any('' . $v['catdir'] . '/<id>', $v['catdir'] . '/info');
-            Route::any('' . $v['catdir'] . '', $v['catdir'] . '/index');
+            Route::any('' . $v['cate_folder'] . '/<id>', $v['cate_folder'] . '/info');
+            Route::any('' . $v['cate_folder'] . '', $v['cate_folder'] . '/index');
         }
     }
 }
+
 // tag路由
 Route::any('tag_<module>/<t>', 'Index/tag');

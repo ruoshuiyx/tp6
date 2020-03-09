@@ -1,6 +1,5 @@
 {__NOLAYOUT__}<!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8">
     <!--渲染器-->
@@ -24,7 +23,6 @@
             })
     </script>
 </head>
-
 <body>
 {if $mobile==false }
 <div id="video_wrapper">
@@ -37,7 +35,6 @@
         margin: 0px;
         padding: 0px;
     }
-
     #video_wrapper video {
         position: fixed;
         top: 50%;
@@ -104,7 +101,7 @@
                 </p>
                 <p>
                     <span>
-                        <a href="http://siyucms.com/" target="_blank">
+                        <a href="http://siyucms.com/authorize-21.html" target="_blank">
                             获取授权
                         </a>
                     </span>
@@ -119,22 +116,41 @@
     </div>
 </div>
 <script>
+    // 回车触发登录
     $(document).keyup(function (event) {
         if (event.keyCode == 13) {
             $(".login").trigger("click");
         }
     });
     $(function () {
-        //刷新验证码操作
+        // 刷新验证码操作
         $(".layadmin-user-login-codeimg").click(function () {
             $(this).attr("src", $(this).attr("src") + '?' + Math.random());
         })
-        //后台登录
+        // 后台登录
         $(".login").click(function () {
             var username = $("input[name='username']").val();
             var password = $("input[name='password']").val();
             var __token__ = $("input[name='__token__']").val();
             var vercode = $("input[name='vercode']").val();
+            if (!username) {
+                layer.alert('请输入用户名', {
+                    icon: 2
+                }, function (index) {
+                    layer.close(index);
+                    $("input[name='username']").focus();
+                });
+                return false;
+            }
+            if (!password) {
+                layer.alert('请输入密码', {
+                    icon: 2
+                }, function (index) {
+                    layer.close(index);
+                    $("input[name='password']").focus();
+                });
+                return false;
+            }
             $.ajax({
                 type: "post",
                 url: "{:url('checkLogin')}",
@@ -149,6 +165,16 @@
                     if (data.error == 1) {
                         layer.alert(data.msg, {
                             icon: 2
+                        }, function (index) {
+                            layer.close(index);
+                            $(".layadmin-user-login-codeimg").attr("src", $(".layadmin-user-login-codeimg").attr("src") + '?' + Math.random());
+                        });
+                    } else if (data.error == 2) {
+                        layer.alert(data.msg, {
+                            icon: 2
+                        }, function (index) {
+                            layer.close(index);
+                            window.location.reload();
                         });
                     } else {
                         layer.load();

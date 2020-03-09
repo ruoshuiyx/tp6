@@ -90,18 +90,10 @@ abstract class Dispatch
                 $allow[] = strtoupper($item->getMethod());
             }
 
-            return Response::create('', '', 204)->header(['Allow' => implode(', ', $allow)]);
-        }
-
-        $option = $this->rule->getOption();
-
-        // 数据自动验证
-        if (isset($option['validate'])) {
-            $this->autoValidate($option['validate']);
+            return Response::create('', 'html', 204)->header(['Allow' => implode(', ', $allow)]);
         }
 
         $data = $this->exec();
-
         return $this->autoResponse($data);
     }
 
@@ -118,7 +110,7 @@ abstract class Dispatch
 
             $content  = false === $data ? '' : $data;
             $status   = '' === $content && $this->request->isJson() ? 204 : 200;
-            $response = Response::create($content, '', $status);
+            $response = Response::create($content, 'html', $status);
         }
 
         return $response;
@@ -135,7 +127,7 @@ abstract class Dispatch
 
         // 添加中间件
         if (!empty($option['middleware'])) {
-            $this->app->middleware->import($option['middleware']);
+            $this->app->middleware->import($option['middleware'], 'route');
         }
 
         if (!empty($option['append'])) {
@@ -152,6 +144,11 @@ abstract class Dispatch
 
         // 记录路由变量
         $this->request->setRoute($this->param);
+
+        // 数据自动验证
+        if (isset($option['validate'])) {
+            $this->autoValidate($option['validate']);
+        }
     }
 
     /**
@@ -170,7 +167,7 @@ abstract class Dispatch
                 $fields = explode('&', $key);
 
                 if (is_array($val)) {
-                    list($model, $exception) = $val;
+                    [$model, $exception] = $val;
                 } else {
                     $model     = $val;
                     $exception = true;
@@ -209,7 +206,7 @@ abstract class Dispatch
      */
     protected function autoValidate(array $option): void
     {
-        list($validate, $scene, $message, $batch) = $option;
+        [$validate, $scene, $message, $batch] = $option;
 
         if (is_array($validate)) {
             // 指定验证规则

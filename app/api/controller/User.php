@@ -57,14 +57,9 @@ class User extends Base
      * @apiErrorExample {json} 失败示例
      * {"code":0,"msg":"帐号或密码错误","time":1563525638,"data":[]}
      */
-    public function login()
+    public function login(string $username, string $password)
     {
-        $username = trim(Request::param('username'));
-        $password = trim(Request::param('password'));
-        if (!$username || !$password) {
-            $this->result([], 0, '帐号或密码不能为空');
-        }
-        //校验用户名密码
+        // 校验用户名密码
         $user = Users::where('email|mobile', $username)
             ->where('password', md5($password))
             ->find();
@@ -99,37 +94,29 @@ class User extends Base
      * @apiErrorExample {json} 失败示例
      * {"code":0,"msg":"邮箱已被注册","time":1563526693,"data":[]}
      */
-    public function register(){
-        $email     = trim(Request::param("email"));
-        $password  = trim(Request::param("password"));
-
-        //非空判断
-        if (empty($email) || empty($password)) {
-            $this->result([], 0, '请输入邮箱、密码和确认密码');
-        }
-
-        //密码长度不能低于6位
+    public function register(string $email, string $password){
+        // 密码长度不能低于6位
         if (strlen($password) < 6) {
             $this->result([], 0, '密码长度不能低于6位');
         }
 
-        //邮箱合法性判断
+        // 邮箱合法性判断
         if (!is_email($email)) {
             $this->result([], 0, '邮箱格式错误');
         }
 
-        //防止重复
-        $id = Db::name('users')->where('email|mobile','=',$email)->find();
+        // 防止重复
+        $id = Db::name('users')->where('email|mobile', '=', $email)->find();
         if ($id) {
             $this->result([], 0, '邮箱已被注册');
         }
 
-        //注册入库
+        // 注册入库
         $data = [];
         $data['email']           = $email;
         $data['password']        = md5($password);
         $data['last_login_time'] = $data['create_time'] = time();
-        $data['create_ip']       = $data['last_login_ip']=Request::ip();
+        $data['create_ip']       = $data['last_login_ip'] = Request::ip();
         $data['status']          = 1;
         $data['type_id']         = 1;
         $data['sex']             = Request::post('sex') ? Request::post('sex') : 0;
@@ -156,11 +143,11 @@ class User extends Base
     {
         $user = Db::name('users')
             ->alias('u')
-            ->leftJoin('users_type ut','u.type_id = ut.id')
+            ->leftJoin('users_type ut', 'u.type_id = ut.id')
             ->field('u.*,ut.name as type_name')
-            ->where('u.id',$this->getUid())
+            ->where('u.id', $this->getUid())
             ->find();
-        return $this->result($user,1,'');
+        return $this->result($user, 1, '');
     }
 
     /**
@@ -178,21 +165,13 @@ class User extends Base
      * @apiErrorExample {json} 失败示例
      * {"code":0,"msg":"token已过期","time":1563527082,"data":[]}
      */
-    public function editPwd(){
-        $oldPassword = trim(Request::param("oldPassword"));
-        $newPassword = trim(Request::param("newPassword"));
-
-        //为空判断
-        if (!$oldPassword || !$newPassword) {
-            $this->result([], 0, '请输入原密码和新密码');
-        }
-
-        //密码长度不能低于6位
+    public function editPwd(string $oldPassword, string $newPassword){
+        // 密码长度不能低于6位
         if (strlen($newPassword) < 6) {
             $this->result([], 0, '密码长度不能低于6位');
         }
 
-        //查看原密码是否正确
+        // 查看原密码是否正确
         $user = Users::where('id', $this->getUid())
             ->where('password', md5($oldPassword))
             ->find();
@@ -228,7 +207,7 @@ class User extends Base
         $data['qq']     = trim(Request::param("qq"));
         $data['mobile'] = trim(Request::param("mobile"));
         if ($data['mobile']) {
-            //不可和其他用户的一致
+            // 不可和其他用户的一致
             $id = Users::
                 where('mobile', $data['mobile'])
                 ->where('id', '<>', $this->getUid())
@@ -237,7 +216,7 @@ class User extends Base
                 $this->result([], 0, '手机号已存在');
             }
         }
-        //更新信息
+        // 更新信息
         Users::where('id', $this->getUid())
             ->update($data);
         $this->result([], 0, '修改成功');

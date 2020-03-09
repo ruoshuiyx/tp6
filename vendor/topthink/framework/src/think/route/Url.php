@@ -213,7 +213,7 @@ class Url
         if ($suffix) {
             $suffix = true === $suffix ? $this->route->config('url_html_suffix') : $suffix;
 
-            if ($pos = strpos($suffix, '|')) {
+            if (is_string($suffix) && $pos = strpos($suffix, '|')) {
                 $suffix = substr($suffix, 0, $pos);
             }
         }
@@ -241,36 +241,16 @@ class Url
         } elseif (0 === strpos($url, '@')) {
             // 解析到控制器
             $url = substr($url, 1);
+        } elseif ('' === $url) {
+            $url = $request->controller() . '/' . $request->action();
         } else {
-            // 解析到 应用/控制器/操作
-            $app        = $request->app();
             $controller = $request->controller();
 
-            if ('' == $url) {
-                $action = $request->action();
-            } else {
-                $path       = explode('/', $url);
-                $action     = array_pop($path);
-                $controller = empty($path) ? $controller : array_pop($path);
-                $app        = empty($path) ? $app : array_pop($path);
-            }
+            $path       = explode('/', $url);
+            $action     = array_pop($path);
+            $controller = empty($path) ? $controller : array_pop($path);
 
             $url = $controller . '/' . $action;
-
-            if ($app && $this->app->config->get('app.auto_multi_app')) {
-                $bind = $this->app->config->get('app.domain_bind', []);
-                if ($key = array_search($app, $bind)) {
-                    $domain = true === $domain ? $key : $domain;
-                } else {
-                    $map = $this->app->config->get('app.app_map', []);
-
-                    if ($key = array_search($app, $map)) {
-                        $url = $key . '/' . $url;
-                    } else {
-                        $url = $app . '/' . $url;
-                    }
-                }
-            }
         }
 
         return $url;
@@ -316,6 +296,10 @@ class Url
     protected function getRuleUrl(array $rule, array &$vars = [], $allowDomain = ''): array
     {
         $request = $this->app->request;
+        if (is_string($allowDomain) && false === strpos($allowDomain, '.')) {
+            $allowDomain .= '.' . $request->rootDomain();
+        }
+        $port = $request->port();
 
         foreach ($rule as $item) {
             $url     = $item->getRule();
@@ -324,15 +308,15 @@ class Url
             $suffix  = $item->getSuffix();
 
             if ('-' == $domain) {
-                $domain = $request->host(true);
+                $domain = is_string($allowDomain) ? $allowDomain : $request->host(true);
             }
 
             if (is_string($allowDomain) && $domain != $allowDomain) {
                 continue;
             }
 
-            if (!in_array($request->port(), [80, 443])) {
-                $domain .= ':' . $request->port();
+            if ($port && !in_array($port, [80, 443])) {
+                $domain .= ':' . $port;
             }
 
             if (empty($pattern)) {
@@ -340,11 +324,12 @@ class Url
             }
 
             $type = $this->route->config('url_common_param');
+            $keys = [];
 
             foreach ($pattern as $key => $val) {
                 if (isset($vars[$key])) {
-                    $url = str_replace(['[:' . $key . ']', '<' . $key . '?>', ':' . $key, '<' . $key . '>'], $type ? $vars[$key] : urlencode((string) $vars[$key]), $url);
-                    unset($vars[$key]);
+                    $url    = str_replace(['[:' . $key . ']', '<' . $key . '?>', ':' . $key, '<' . $key . '>'], $type ? $vars[$key] : urlencode((string) $vars[$key]), $url);
+                    $keys[] = $key;
                     $url    = str_replace(['/?', '-?'], ['/', '-'], $url);
                     $result = [rtrim($url, '?/-'), $domain, $suffix];
                 } elseif (2 == $val) {
@@ -352,9 +337,13 @@ class Url
                     $url    = str_replace(['/?', '-?'], ['/', '-'], $url);
                     $result = [rtrim($url, '?/-'), $domain, $suffix];
                 } else {
+                    $result = null;
+                    $keys   = [];
                     break;
                 }
             }
+
+            $vars = array_diff_key($vars, array_flip($keys));
 
             if (isset($result)) {
                 return $result;
@@ -389,16 +378,16 @@ class Url
 
                 if (false !== strpos($anchor, '?')) {
                     // 解析参数
-                    list($anchor, $info['query']) = explode('?', $anchor, 2);
+                    [$anchor, $info['query']] = explode('?', $anchor, 2);
                 }
 
                 if (false !== strpos($anchor, '@')) {
                     // 解析域名
-                    list($anchor, $domain) = explode('@', $anchor, 2);
+                    [$anchor, $domain] = explode('@', $anchor, 2);
                 }
             } elseif (strpos($url, '@') && false === strpos($url, '\\')) {
                 // 解析域名
-                list($url, $domain) = explode('@', $url, 2);
+                [$url, $domain] = explode('@', $url, 2);
             }
         }
 
@@ -427,10 +416,6 @@ class Url
 
             if (!is_null($match[2])) {
                 $suffix = $match[2];
-            }
-
-            if ($request->app() && $this->app->config->get('app.auto_multi_app') && !$this->app->http->isBindDomain()) {
-                $url = $request->app() . '/' . $url;
             }
         } elseif (!empty($rule) && isset($name)) {
             throw new \InvalidArgumentException('route name not exists:' . $name);
@@ -491,8 +476,9 @@ class Url
                 $url .= $suffix . '?' . $vars . $anchor;
             } else {
                 foreach ($vars as $var => $val) {
+                    $val = (string) $val;
                     if ('' !== $val) {
-                        $url .= $depr . $var . $depr . urlencode((string) $val);
+                        $url .= $depr . $var . $depr . urlencode($val);
                     }
                 }
 

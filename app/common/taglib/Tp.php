@@ -34,7 +34,7 @@ class Tp extends TagLib {
         'close'     => ['attr' => 'time,format', 'close' => 0],                           //闭合标签，默认为不闭合
         'open'      => ['attr' => 'name,type', 'close' => 1],
         'nav'       => ['attr' => 'id,limit', 'close' => 1],                              //通用导航信息
-        'cate'      => ['attr' => 'id,type','close' => 0],                                //通用栏目信息
+        'cate'      => ['attr' => 'id,type,anchor','close' => 0],                         //通用栏目信息
         'position'  => ['attr' => 'name','close' => 1],                                   //通用位置信息
         'link'      => ['attr' => 'name','close' => 1],                                   //获取友情链接
         'ad'        => ['attr' => 'name,type,id','close' => 1],                           //获取广告信息
@@ -61,7 +61,7 @@ class Tp extends TagLib {
     public function tagOpen($tag, $content)
     {
         $type   = empty($tag['type']) ? 0 : 1; // 这个type目的是为了区分类型，一般来源是数据库
-        $name   = $tag['name']; // name是必填项，这里不做判断了
+        $name   = $tag['name'];                // name是必填项，这里不做判断了
         $parse  = '<?php ';
         $parse .= '$test_arr=[[1,3,5,7,9],[2,4,6,8,10]];'; // 这里是模拟数据
         $parse .= '$__LIST__ = $test_arr[' . $type . '];';
@@ -78,20 +78,19 @@ class Tp extends TagLib {
         $tag['limit'] = isset($tag['limit']) ? $tag['limit'] : '0';
         $tag['id']    = isset($tag['id'])    ? $tag['id']    : '';
         $name         = isset($tag['name'])  ? $tag['name']  : 'nav';
-
         if (!empty($tag['id'])) {
-            $catestr  = '$__CATE__ = \think\facade\Db::name(\'cate\')->where(\'is_menu\',1)->order(\'sort ASC,id DESC\')->select();';
-            $catestr .= '$__LIST__ = getChildsOn($__CATE__,' . $tag['id'] . ');';
+            $cateStr = '$__CATE__ = \app\common\model\Cate::where(\'is_menu\',1)->order(\'sort ASC,id DESC\')->select();';
+            $cateStr .= '$__LIST__ = getChildsOn($__CATE__,' . $tag['id'] . ');';
         } else {
-            $catestr  = '$__CATE__ = \think\facade\Db::name(\'cate\')->where(\'is_menu\',1)->order(\'sort ASC,id DESC\')->select();';
-            $catestr .= '$__LIST__ = unlimitedForLayer($__CATE__);';
+            $cateStr  = '$__CATE__ = \app\common\model\Cate::where(\'is_menu\',1)->order(\'sort ASC,id DESC\')->select();';
+            $cateStr .= '$__LIST__ = unlimitedForLayer($__CATE__);';
         }
-        //提取前N条数据,因为sql的LIMIT避免不了子栏目的问题
+        // 提取前N条数据,因为sql的LIMIT避免不了子栏目的问题
         if (!empty($tag['limit'])) {
-            $catestr .= '$__LIST__ = array_slice($__LIST__, 0,' . $tag['limit'] . ');';
+            $cateStr .= '$__LIST__ = array_slice($__LIST__, 0,' . $tag['limit'] . ');';
         }
         $parse  = '<?php ';
-        $parse .= $catestr;
+        $parse .= $cateStr;
         $parse .= ' ?>';
         $parse .= '{volist name="__LIST__" id="' . $name . '"}';
         $parse .= $content;
@@ -102,13 +101,18 @@ class Tp extends TagLib {
     // 通用栏目信息
     Public function tagCate($tag)
     {
-        $id   = isset($tag['id']) ? $tag['id']   : getCateId();
-        $type = $tag['type']      ? $tag['type'] : 'catname';
+        $id     = $tag['id']     ?? getCateId();
+        $type   = $tag['type']   ?? 'cate_name';
+        $anchor = $tag['anchor'] ?? '';
 
         $str  = '<?php ';
-        $str .= '$__CATE__ = \think\facade\Db::name("cate")->where("id",' . $id . ')->find();';
-        $str .= 'if (is_array($__CATE__)) { ';
-        $str .= '$__CATE__[\'url\'] = getUrl($__CATE__);';
+        $str .= '$__CATE__ = \app\common\model\Cate::where("id",' . $id . ')->find();';
+        $str .= 'if ($__CATE__) { ';
+        $str .= '$__CATE__->url = getUrl($__CATE__->toArray());';
+        $str .= '
+            if (!empty(\'' . $anchor . '\')) {
+              $__CATE__->url = $__CATE__->url . \'' . $anchor . '\';
+            }';
         $str .= 'echo $__CATE__[\'' . $type . '\'];';
         $str .= '}';
         $str .= '?>';
@@ -120,7 +124,7 @@ class Tp extends TagLib {
     {
         $name = $tag['name'] ? $tag['name'] : 'position';
         $parse  = '<?php ';
-        $parse .= '$__CATE__   = \think\facade\Db::name(\'cate\')->select();';
+        $parse .= '$__CATE__   = \app\common\model\Cate::select();';
         $parse .= '$__CATEID__ = getCateId();';
         $parse .= '$__LIST__   = getParents($__CATE__,$__CATEID__);';
         $parse .= ' ?>';
@@ -136,7 +140,7 @@ class Tp extends TagLib {
     {
         $name = $tag['name'] ? $tag['name'] : 'link';
         $parse = '<?php ';
-        $parse .= '$__LIST__ = \think\facade\Db::name(\'link\')->where(\'status\',1)->order(\'sort ASC,id desc\')->select();';
+        $parse .= '$__LIST__ = \app\common\model\Link::where(\'status\',1)->order(\'sort ASC,id desc\')->select();';
         $parse .= ' ?>';
         $parse .= '{volist name="__LIST__" id="' . $name . '"}';
         $parse .= $content;
@@ -147,9 +151,9 @@ class Tp extends TagLib {
     // 获取广告信息
     Public function tagAd($tag, $content)
     {
-        $name = isset($tag['name']) ? $tag['name'] : 'ad';
-        $type = isset($tag['type']) ? $tag['type'] : '';
-        $id   = isset($tag['id'])   ? $tag['id']   : '';
+        $name = $tag['name'] ?? 'ad';
+        $type = $tag['type'] ?? '';
+        $id   = $tag['id']   ?? '';
         $parse = '<?php ';
         $parse .= '
             $__WHERE__ = array();
@@ -177,10 +181,10 @@ class Tp extends TagLib {
     // 通用碎片信息
     Public function tagDebris($tag)
     {
-        $name = $tag['name'] ? $tag['name'] : '';
-        $type = $tag['type'] ? $tag['type'] : '';
+        $name = $tag['name'] ?? '';
+        $type = $tag['type'] ?? '';
         $str  = '<?php ';
-        $str .= 'echo \think\facade\Db::name("debris")->where("name",\'' . $name . '\')->value("' . $type . '");';
+        $str .= 'echo \app\common\model\Debris::where("name",\'' . $name . '\')->value("' . $type . '");';
         $str .= '?>';
         return $str;
     }
@@ -188,61 +192,45 @@ class Tp extends TagLib {
     // 通用列表
     Public function tagList($tag, $content)
     {
-        $id       = isset($tag['id'])       ? $tag['id']                         : '0';                     //可以为空
-        $name     = isset($tag['name'])     ? $tag['name']                       : "list";                  //不可为空
-        $order    = isset($tag['order'])    ? $tag['order']                      : 'sort ASC,id DESC';      //排序
-        $limit    = isset($tag['limit'])    ? $tag['limit']                      : '0';                     //多少条数据,传递时不再进行分页
-        $where    = isset($tag['where'])    ? $tag['where'] . ' AND status = 1 ' : 'status = 1';            //查询条件
-        $pagesize = isset($tag['pagesize']) ? $tag['pagesize']                   : config('app.page_size'); //每页数量
+        $id       = $tag['id']       ?? '0';                     // 可以为空
+        $name     = $tag['name']     ?? "list";                  // 不可为空
+        $order    = $tag['order']    ?? 'sort ASC,id DESC';      // 排序
+        $limit    = $tag['limit']    ?? '0';                     // 多少条数据,传递时不再进行分页
+        $where    = isset($tag['where']) ? $tag['where'] . ' AND status = 1 ' : 'status = 1'; //查询条件
+        $pageSize = $tag['pagesize'] ?? config('app.page_size'); // 每页数量
         $parse  = '<?php ';
         $parse .= '
             $__CATEID__ = '.$id.' ? '.$id.' : getCateId();
-            //查找栏目对应的表信息
-            $__TABLE_=\think\facade\Db::name(\'cate\')
-                ->alias(\'a\')
-                ->leftJoin(\'module m\', \'a.moduleid = m.id\')
-                ->field(\'a.id, a.moduleid, a.pagesize, a.catname, m.name as modulename, m.listfields\')
-                ->where(\'a.id\', \'=\', $__CATEID__)
-                ->find();
-            //获取表名称
-            $__TABLENAME_ = $__TABLE_[\'modulename\'];
-            //获取模型ID
-            $__MODULEID__ = $__TABLE_[\'moduleid\'];
-            //获取模型列表页字段
-            $__LISTFIELDS__ = $__TABLE_[\'listfields\'];
-            //查询子分类,列表要包含子分类内容
-            $__ALLCATE__ = \think\facade\Db::name(\'cate\')
-                ->field(\'id,parentid\')
-                ->select();
+            $__CATE__ = \app\common\model\Cate::find($__CATEID__);
+            // 查询子分类,列表要包含子分类内容
+            $__ALLCATE__ = \app\common\model\Cate::field(\'id,parent_id\')->select()->toArray();
             $__IDS__ = getChildsIdStr(getChildsId($__ALLCATE__,$__CATEID__),$__CATEID__);
-
-            //表名称为空时（id不存在）直接返回空数组
-            if (!empty($__TABLENAME_)) {
-                //当传递limit时，不再进行分页
-                if(' . $limit . '!=0){
-                    $__LIST__ = \think\facade\Db::name($__TABLENAME_)
-                        ->where("' . $where . '")
+            // 表名称为空时（id不存在）直接返回空数组
+            if ($__CATE__ && !empty($__CATE__->module->getData(\'table_name\'))) {
+                $__MODEL__ = \'\app\common\model\\\\\' . $__CATE__->module->getData(\'model_name\');
+                // 当传递limit时，不再进行分页
+                if(' . $limit . ' != 0){
+                    $__LIST__ = $__MODEL__::where("' . $where . '")
                         ->where(\'cate_id\', \'in\', $__IDS__)
-                        ->field($__LISTFIELDS__)
+                        ->field($__CATE__->module->getData(\'list_fields\'))
                         ->order(\'' . $order . '\')
                         ->limit(\'' . $limit . '\')
                         ->select();
                     $page = \'\';
                 }else{
-                    $__TABLE_[\'pagesize\'] = empty($__TABLE_[\'pagesize\'])?' . $pagesize . ':$__TABLE_[\'pagesize\'];
-                    $__LIST__ = \think\facade\Db::name($__TABLENAME_)
-                        ->where("' . $where . '")
+                    $__PAGESIZE__ = empty($__CATE__[\'page_size\'])?' . $pageSize . ':$__CATE__->page_size;
+                    $__LIST__ =  $__MODEL__::where("' . $where . '")
                         ->where(\'cate_id\', \'in\', $__IDS__)
-                        ->field($__LISTFIELDS__)
+                        ->field($__CATE__->module->getData(\'list_fields\'))
                         ->order(\'' . $order . '\')
                         ->paginate([
                             \'query\'     => request()->param(),
-                            \'list_rows\' => $__TABLE_[\'pagesize\'],
+                            \'list_rows\' => $__PAGESIZE__,
                         ]);
                     $page = $__LIST__->render();
                 }
-                //处理数据（把列表中需要处理的字段转换成数组和对应的值）
-                $__LIST__ = changeFields($__LIST__, $__MODULEID__);
+                // 处理数据（把列表中需要处理的字段转换成数组和对应的值）
+                $__LIST__ = changeFields($__LIST__, $__CATE__->module_id);
             }else{
                 $__LIST__ = [];
             }
@@ -257,20 +245,21 @@ class Tp extends TagLib {
     // 通用搜索
     Public function tagSearch($tag, $content)
     {
-        $search   = isset($tag['search'])   ? $tag['search']                     : "";                      //关键字
-        $table    = isset($tag['table'])    ? $tag['table']                      : "article";               //表名称
-        $name     = isset($tag['name'])     ? $tag['name']                       : "list";                  //不可为空
-        $order    = isset($tag['order'])    ? $tag['order']                      : 'sort ASC,id DESC';      //排序
-        $where    = isset($tag['where'])    ? $tag['where'] . ' AND status = 1 ' : 'status = 1';            //查询条件
-        $pagesize = isset($tag['pagesize']) ? $tag['pagesize']                   : config('app.page_size'); //分页条数
+        $search   = $tag['search']   ?? "";                      // 关键字
+        $table    = $tag['table']    ?? "article";               // 表名称
+        $name     = $tag['name']     ?? "list";                  // 不可为空
+        $order    = $tag['order']    ?? 'sort ASC,id DESC';      // 排序
+        $where    = isset($tag['where'])    ? $tag['where'] . ' AND status = 1 ' : 'status = 1'; // 查询条件
+        $pagesize = $tag['pagesize'] ?? config('app.page_size'); // 分页条数
 
         $parse  = '<?php ';
         $parse .= '
-                $__MODULEID__ = \think\facade\Db::name("module")->where("name","' . $table . '")->value("id");
-                $__LIST__ = \think\facade\Db::name("' . $table . '")
-                    ->order("' . $order . '")
-                    ->where("' . $where . '")
+                $__MODULE__ = \app\common\model\Module::where("table_name","' . strtolower($table) . '")->find("id");
+                $__MODEL__ = \'\app\common\model\\\\\' . $__MODULE__->model_name;
+
+                $__LIST__ = $__MODEL__::where("' . $where . '")
                     ->where("title", "like", "%' . $search . '%")
+                    ->order("' . $order . '")
                     ->paginate([
                         \'query\'     => request()->param(),
                         \'list_rows\' => "' . $pagesize . '",
@@ -278,7 +267,7 @@ class Tp extends TagLib {
                 $page = $__LIST__->render();
 
                 //处理数据（把列表中需要处理的字段转换成数组和对应的值）
-                $__LIST__ = changeFields($__LIST__,$__MODULEID__);
+                $__LIST__ = changeFields($__LIST__,$__MODULE__->id);
             ';
         $parse .= ' ?>';
         $parse .= '{volist name="__LIST__" id="' . $name . '"}';
@@ -290,38 +279,30 @@ class Tp extends TagLib {
     // 通用TAG标签
     Public function tagTag($tag, $content)
     {
-        $name     = isset($tag['name'])     ? $tag['name']     : "list";                  //不可为空
-        $order    = isset($tag['order'])    ? $tag['order']    : 'sort ASC,id DESC';      //排序
-        $pagesize = isset($tag['pagesize']) ? $tag['pagesize'] : config('app.page_size'); //分页条数
+        $name     = $tag['name']     ?? "list";                  //不可为空
+        $order    = $tag['order']    ?? 'sort ASC,id DESC';      //排序
+        $pagesize = $tag['pagesize'] ?? config('app.page_size'); //分页条数
 
         $parse = '<?php ';
         $parse .= '
-                //获取模型ID
+                // 获取模型ID
                 $__MODULEID__ = request()->param(\'module\');
-                //获取搜索词
+                // 获取搜索词
                 $__T__ = request()->param(\'t\');
-                //查询模型的表名称
-                $__MODULENAME__ = \think\facade\Db::name(\'module\')
-                    ->where(\'id\', $__MODULEID__)
-                    ->value(\'name\');
-                //查询搜索词对应的ID
-                $__TAGID__ = \think\facade\Db::name(\'tags\')
-                    ->where(\'module_id\', $__MODULEID__)
-                    ->where(\'name\', $__T__)
-                    ->value(\'id\');
-                //查询tag字段名称
-                $__TAGFIELD__ = \think\facade\Db::name(\'field\')
-                    ->where(\'moduleid\', $__MODULEID__)
+                // 查询模型
+                $__MODULE__ = \app\common\model\Module::find($__MODULEID__);
+                // 查询tag字段名称
+                $__TAGFIELD__ = \app\common\model\Field::where(\'module_id\', $__MODULEID__)
                     ->where(\'type\', \'tag\')
                     ->value(\'field\');
-
-                $__LIST__ = \think\facade\Db::name($__MODULENAME__)
+                // 当前模型
+                $__MODEL__ = \'\app\common\model\\\\\' . $__MODULE__->model_name;
+                $__LIST__ = $__MODEL__::where($__TAGFIELD__, "find in set", $__T__)
                 ->order("' . $order . '")
-                ->where($__TAGFIELD__, "find in set", $__TAGID__)
                 ->paginate("' . $pagesize . '");
                 $page = $__LIST__->render();
 
-                //处理数据（把列表中需要处理的字段转换成数组和对应的值）
+                // 处理数据（把列表中需要处理的字段转换成数组和对应的值）
                 $__LIST__ = changeFields($__LIST__,$__MODULEID__);
             ';
         $parse .= ' ?>';
@@ -334,20 +315,13 @@ class Tp extends TagLib {
     // 详情上一篇
     Public function tagPrev($tag)
     {
-        $len = $tag['len'] ? $tag['len'] : '500';
+        $len = $tag['len'] ?? '500';
         $str = '<?php ';
         $str .= '
                 $__CATEID__ = getCateId();
-                //查找表名称
-                $__TABLENAME__ = \think\facade\Db::name(\'cate\')
-                    ->alias(\'c\')
-                    ->leftJoin(\'module m\',\'c.moduleid = m.id\')
-                    ->field(\'m.name as table_name\')
-                    ->where(\'c.id\',$__CATEID__)
-                    ->find();
-                //根据ID查找上一篇的信息
-                $__PREV__ = \think\facade\Db::name($__TABLENAME__[\'table_name\'])
-                    ->where(\'cate_id\',$__CATEID__)
+                $__CATE__   = \app\common\model\Cate::find($__CATEID__);
+                $__MODEL__  = \'\app\common\model\\\\\' . $__CATE__->module->getData(\'model_name\');
+                $__PREV__   = $__MODEL__::where(\'cate_id\',$__CATEID__)
                     ->where(\'id\',\'<\',input(\'id\'))
                     ->where(\'status\',\'=\',1)
                     ->field(\'id,cate_id,title\')
@@ -373,21 +347,13 @@ class Tp extends TagLib {
     // 详情下一篇
     Public function tagNext($tag)
     {
-        $len = $tag['len'] ? $tag['len'] : '500';
-
+        $len = $tag['len'] ?? '500';
         $str = '<?php ';
         $str .= '
                 $__CATEID__ = getCateId();
-                //查找表名称
-                $__TABLENAME__ = \think\facade\Db::name(\'cate\')
-                    ->alias(\'c\')
-                    ->leftJoin(\'module m\',\'c.moduleid = m.id\')
-                    ->field(\'m.name as table_name\')
-                    ->where(\'c.id\',$__CATEID__)
-                    ->find();
-                //根据ID查找下一篇的信息
-                $__PREV__ = \think\facade\Db::name($__TABLENAME__[\'table_name\'])
-                    ->where(\'cate_id\',$__CATEID__)
+                $__CATE__   = \app\common\model\Cate::find($__CATEID__);
+                $__MODEL__  = \'\app\common\model\\\\\' . $__CATE__->module->getData(\'model_name\');
+                $__PREV__   = $__MODEL__::where(\'cate_id\',$__CATEID__)
                     ->where(\'id\',\'>\',input(\'id\'))
                     ->where(\'status\',\'=\',1)
                     ->field(\'id,cate_id,title\')
@@ -398,11 +364,11 @@ class Tp extends TagLib {
                     if(' . $len . '<>500){
                        $__PREV__[\'title\'] = mb_substr($__PREV__[\'title\'],0,' . $len . ');
                     }
-                    //处理下一篇中的URL
+                    //处理上一篇中的URL
                     $__PREV__[\'url\'] = getShowUrl($__PREV__);
-                    $__PREV__ = "<a class=\"next\" title=\" ".$__PREV__[\'title\']." \" href=\" ".$__PREV__[\'url\']." \">".$__PREV__[\'title\']."</a>";
+                    $__PREV__ = "<a class=\"prev\" title=\" ".$__PREV__[\'title\']." \" href=\" ".$__PREV__[\'url\']." \">".$__PREV__[\'title\']."</a>";
                 }else{
-                    $__PREV__ = "<a class=\"next_no\" href=\"javascript:;\">暂无数据</a>";
+                    $__PREV__ = "<a class=\"prev_no\" href=\"javascript:;\">暂无数据</a>";
                 }
                 echo $__PREV__;
                 ';

@@ -77,7 +77,7 @@ class File implements SessionHandlerInterface
         $now      = time();
 
         $files = $this->findFiles($this->config['path'], function (SplFileInfo $item) use ($lifetime, $now) {
-            return $now > $item->getMTime() + $lifetime;
+            return $now - $lifetime > $item->getMTime();
         });
 
         foreach ($files as $file) {
@@ -152,7 +152,7 @@ class File implements SessionHandlerInterface
 
             if ($this->config['data_compress'] && function_exists('gzcompress')) {
                 //启用数据压缩
-                $content = gzuncompress($content);
+                $content = (string) gzuncompress($content);
             }
 
             return $content;

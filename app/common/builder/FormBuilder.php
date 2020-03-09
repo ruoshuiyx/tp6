@@ -40,21 +40,22 @@ class FormBuilder
      * @var array 模板变量
      */
     private $_vars = [
-        'page_title'      => '',    // 页面标题
-        'page_tips'       => '',    // 页面提示
-        'tips_type'       => '',    // 提示类型
-        'form_url'        => '',    // 表单提交地址
-        'form_method'     => 'post',// 表单提交方式
-        'empty_tips'      => '暂无数据',// 没有表单项时的提示信息
-        'btn_hide'        => [],    // 要隐藏的按钮
-        'btn_title'       => [],    // 按钮标题
-        'btn_extra'       => [],    // 额外按钮
-        'extra_html'      => '',    // 额外HTML代码
-        'extra_js'        => '',    // 额外JS代码
-        'extra_css'       => '',    // 额外CSS代码
-        'submit_confirm'  => false, // 提交确认
-        'form_items'      => [],    // 表单项目
-        'form_data'       => [],    // 表单数据
+        'page_title'      => '',        // 页面标题
+        'page_tips'       => '',        // 页面提示
+        'tips_type'       => '',        // 提示类型
+        'form_url'        => '',        // 表单提交地址
+        'form_method'     => 'post',    // 表单提交方式
+        'empty_tips'      => '暂无数据', // 没有表单项时的提示信息
+        'btn_hide'        => [],        // 要隐藏的按钮
+        'btn_title'       => [],        // 按钮标题
+        'btn_extra'       => [],        // 额外按钮
+        'extra_html'      => '',        // 额外HTML代码
+        'extra_js'        => '',        // 额外JS代码
+        'extra_css'       => '',        // 额外CSS代码
+        'submit_confirm'  => false,     // 提交确认
+        'form_items'      => [],        // 表单项目
+        'form_data'       => [],        // 表单数据
+        'show_all'        => true,      // 显示`查看全部`按钮
     ];
 
     /**
@@ -133,6 +134,17 @@ class FormBuilder
             $this->_vars['page_tips_' . $pos] = $tips;
             $this->_vars['tips_type'] = trim($type) ?? 'info';
         }
+        return $this;
+    }
+
+    /**
+     * 隐藏显示全部按钮
+     * @param string $url 链接地址
+     * @return $this
+     */
+    public function hideShowAll()
+    {
+        $this->_vars['show_all'] = false;
         return $this;
     }
 
@@ -452,7 +464,7 @@ class FormBuilder
             'name'        => $name,
             'title'       => $title,
             'tips'        => $tips,
-            'value'       => $default,
+            'value'       => !empty($default) ? $default : '',
             'format'      => $format == '' ? 'yyyy-mm-dd' : $format,
             'extra_class' => $extra_class,
             'extra_attr'  => $extra_attr,
@@ -609,7 +621,7 @@ class FormBuilder
      * @param bool   $required    是否必填
      * @return $this|array
      */
-    public function addTags($name = '', $title = '', $tips = '', $default = '', $extra_attr = '', $extra_class = '', $required = false)
+    public function addTag($name = '', $title = '', $tips = '', $default = '', $extra_attr = '', $extra_class = '', $required = false)
     {
         $item = [
             'type'        => 'tags',
@@ -1177,6 +1189,7 @@ class FormBuilder
                 foreach ($group as $key => $item) {
                     // 删除数组中的第一个元素（type）
                     $type = array_shift($item);
+                    // 转换首字母大写，找到对应方法并调用
                     $group[$key] = call_user_func_array([$this, 'add'.ucfirst($type)], $item);
                 }
             }

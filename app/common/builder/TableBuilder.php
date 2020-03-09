@@ -26,7 +26,6 @@
 namespace app\common\builder;
 
 use think\facade\Request;
-use think\facade\Route;
 use think\facade\View;
 
 class TableBuilder
@@ -45,48 +44,30 @@ class TableBuilder
      * @var array 模板变量
      */
     private $_vars = [
-        'page_title'         => '',       // 页面标题
-        'page_tips'          => '',       // 页面提示
-        'tips_type'          => '',       // 提示类型
-        'extra_js'           => '',       // 额外JS代码
-        'extra_css'          => '',       // 额外CSS代码
-        'columns'            => [],       // 表格列集合
-        'row_list'           => [],       // 表格数据列表
-        'page'               => '',       // 分页数据
-        'page_size'          => '',       // 分页信息
-        'empty_tips'         => '暂无数据',// 空数据提示信息
-        'hide_checkbox'      => false,    // 是否隐藏第一列多选
-        'extra_html'         => '',       // 额外HTML代码
-        'right_buttons'      => [],       // 表格右侧按钮
-        'primary_key'        => 'id',     // 表格主键名称
+        'page_title'         => '',        // 页面标题
+        'page_tips'          => '',        // 页面提示
+        'page_tips_top'      => '',        // 页面提示[top]
+        'page_tips_search'   => '',        // 页面提示[search]
+        'page_tips_bottom'   => '',        // 页面提示[bottom]
+        'tips_type'          => '',        // 页面提示类型
+        'extra_js'           => '',        // 额外JS代码
+        'extra_css'          => '',        // 额外CSS代码
+        'extra_html'         => '',        // 额外HTML代码
+        'columns'            => [],        // 表格列集合
+        'right_buttons'      => [],        // 表格右侧按钮
+        'top_buttons'        => [],        // 顶部栏按钮组[toolbar]
+        'unique_id'          => 'id',      // 表格主键名称，（默认为id，如表主键不为id必须设置主键）
+        'data_url'           => '',        // 表格数据源
+        'add_url'            => '',        // 默认的新增地址
+        'edit_url'           => '',        // 默认的修改地址
+        'del_url'            => '',        // 默认的删除地址
+        'export_url'         => '',        // 默认的导出地址
+        'sort_url'           => '',        // 默认的排序地址
+        'search'             => [],        // 搜索参数
+        'pagination'         => 'true',    // 是否进行分页
+        'empty_tips'         => '暂无数据', // 空数据提示信息[待完善]
+        'hide_checkbox'      => false,     // 是否隐藏第一列多选[待完善]
 
-
-
-
-        'order_columns'      => [],       // 需要排序的列表头
-        'filter_columns'     => [],       // 需要筛选功能的列表头
-        'filter_map'         => [],       // 字段筛选的排序条件
-        '_field_display'     => [],       // 字段筛选的默认选项
-        '_filter_content'    => [],       // 字段筛选的默认选中值
-        '_filter'            => [],       // 字段筛选的默认字段名
-        'top_buttons'        => [],       // 顶部栏按钮
-
-        'search'             => [],       // 搜索参数
-        'search_button'      => false,    // 搜索按钮
-
-
-        '_table'             => '',       // 表名
-        'js_list'            => [],       // js文件名
-        'css_list'           => [],       // css文件名
-        'validate'           => '',       // 快速编辑的验证器名
-        '_js_files'          => [],       // js文件
-        '_css_files'         => [],       // css文件
-        '_select_list'       => [],       // 顶部下拉菜单列表
-        '_filter_time'       => [],       // 时间段筛选
-
-        '_search_area'       => [],       // 搜索区域
-        '_search_area_url'   => '',       // 搜索区域url
-        '_search_area_op'    => '',       // 搜索区域匹配方式
     ];
 
     /**
@@ -122,6 +103,14 @@ class TableBuilder
     {
         // 设置默认模版
         $this->_template = 'table_builder/layout';
+
+        // 设置默认URL
+        $this->_vars['data_url']   = Request::baseUrl() . '?getList=1';
+        $this->_vars['add_url']    = url('add');
+        $this->_vars['edit_url']   = url('edit', ['id' => '__id__']);
+        $this->_vars['del_url']    = url('del');
+        $this->_vars['export_url'] = url('export');
+        $this->_vars['sort_url']   = url('sort');
     }
 
     /**
@@ -141,17 +130,25 @@ class TableBuilder
      */
     public function fetch(string $template = '')
     {
-
-        // 编译表格数据row_list的值
-        $this->compileRows();
-
         // 单独设置模板
         if ($template != '') {
             $this->_template = $template;
         }
         View::assign($this->_vars);
-
         return View::fetch($this->_template);
+    }
+
+    /**
+     * 设置表格主键
+     * @param string $key 主键名称
+     * @return $this
+     */
+    public function setUniqueId($key = '')
+    {
+        if ($key != '') {
+            $this->_vars['unique_id'] = $key;
+        }
+        return $this;
     }
 
     /**
@@ -218,23 +215,24 @@ class TableBuilder
     public function setExtraHtml($extra_html = '', $pos = '')
     {
         if ($extra_html != '') {
-            $pos != '' && $pos = '_'.$pos;
-            $this->_vars['extra_html'.$pos] = $extra_html;
+            $pos != '' && $pos = '_' . $pos;
+            $this->_vars['extra_html' . $pos] = $extra_html;
         }
         return $this;
     }
 
     /**
      * 添加一列
-     * @param string $name    字段名称
-     * @param string $title   字段别名
-     * @param string $type    单元格类型
-     * @param string $default 默认值
-     * @param string $param   额外参数
-     * @param string $class   css类名
+     * @param string $name     字段名称
+     * @param string $title    字段别名
+     * @param string $type     单元格类型
+     * @param string $default  默认值
+     * @param string $param    额外参数
+     * @param string $class    css类名
+     * @param string $sortable 是否排序
      * @return $this
      */
-    public function addColumn($name = '', $title = '', $type = '', $default = '', $param = '', $class = 't_c')
+    public function addColumn($name = '', $title = '', $type = '', $default = '', $param = '', $class = '', $sortable = 'false')
     {
         $column = [
             'name'    => $name,
@@ -243,6 +241,7 @@ class TableBuilder
             'default' => $default,
             'param'   => $param,
             'class'   => $class,
+            'sortable'=> $sortable,
         ];
 
         $this->_vars['columns'][] = $column;
@@ -266,35 +265,14 @@ class TableBuilder
     }
 
     /**
-     * 设置表格数据列表
-     * @param array|object $row_list 表格数据
+     * 设置是否显示分页
+     * @param string $value 是否显示分页 true|false
      * @return $this
      */
-    public function setRowList($row_list = null)
+    public function setPagination($value = '')
     {
-        if ($row_list !== null) {
-            // 转为数组后的表格数据
-            $this->_vars['row_list'] = $row_list;
-
-            if (is_object($row_list)) {
-                // 设置分页左侧信息
-                $this->setPages($row_list->render());
-                // 设置分页右侧信息
-                $this->_vars['page_size'] = page_size(10, $row_list->total());
-            }
-        }
-        return $this;
-    }
-
-    /**
-     * 设置分页
-     * @param string $pages 分页数据
-     * @return $this
-     */
-    public function setPages($pages = '')
-    {
-        if ($pages != '') {
-            $this->_vars['page'] = $pages;
+        if ($value != '') {
+            $this->_vars['pagination'] = $value;
         }
         return $this;
     }
@@ -323,11 +301,10 @@ class TableBuilder
             case 'edit':
                 // 默认属性
                 $btn_attribute = [
-                    'title' => '编辑',
-                    'icon'  => 'fa fa-edit',
-                    'class' => 'btn btn-flat btn-info btn-xs',
-                    'href'  => url('edit', ['id' => '__id__']),
-                    'target' => '_self'
+                    'type'   => 'edit',
+                    'title'  => '编辑',
+                    'icon'   => 'fa fa-edit',
+                    'class'  => 'btn btn-primary btn-xs',
                 ];
                 break;
 
@@ -335,10 +312,10 @@ class TableBuilder
             case 'delete':
                 // 默认属性
                 $btn_attribute = [
+                    'type'  => 'delete',
                     'title' => '删除',
                     'icon'  => 'fa fa-trash-o',
-                    'class' => 'btn btn-flat btn-warning btn-xs confirm',
-                    'href'  => url('del', ['id' => '__id__']),
+                    'class' => 'btn btn-danger btn-xs confirm',
                 ];
                 break;
 
@@ -353,7 +330,6 @@ class TableBuilder
                 ];
                 break;
         }
-
         // 合并自定义属性
         if ($attribute && is_array($attribute)) {
             $btn_attribute = array_merge($btn_attribute, $attribute);
@@ -381,7 +357,7 @@ class TableBuilder
                 if (is_numeric($key)) {
                     $this->addRightButton($value);
                 } else {
-                    $this->addRightButton($key, $value);
+                    $this->addRightButton(trim($key), $value);
                 }
             }
         }
@@ -389,7 +365,7 @@ class TableBuilder
     }
 
     /**
-     * 编译表格数据row_list的值(根据type类型设置不同显示样式)
+     * 编译表格数据row_list的值(根据type类型设置不同显示样式),已废弃
      */
     private function compileRows()
     {
@@ -531,5 +507,227 @@ class TableBuilder
         return implode(' ', $result);
     }
 
+    /**
+     * 设置表格URL
+     * @param string $url url地址
+     * @return $this
+     */
+    public function setDataUrl($url = '')
+    {
+        if ($url != '') {
+            $this->_vars['data_url'] = $url;
+        }
+        return $this;
+    }
+
+    /**
+     * 设置表格默认的新增地址
+     * @param string $url url地址
+     * @return $this
+     */
+    public function setAddUrl($url = '')
+    {
+        if ($url != '') {
+            $this->_vars['add_url'] = $url;
+        }
+        return $this;
+    }
+
+    /**
+     * 设置表格默认的修改地址
+     * @param string $url url地址
+     * @return $this
+     */
+    public function setEditUrl($url = '')
+    {
+        if ($url != '') {
+            $this->_vars['edit_url'] = $url;
+        }
+        return $this;
+    }
+
+    /**
+     * 设置表格默认的删除地址
+     * @param string $url url地址
+     * @return $this
+     */
+    public function setDelUrl($url = '')
+    {
+        if ($url != '') {
+            $this->_vars['del_url'] = $url;
+        }
+        return $this;
+    }
+
+    /**
+     * 设置表格默认的导出地址
+     * @param string $url url地址
+     * @return $this
+     */
+    public function setExportUrl($url = '')
+    {
+        if ($url != '') {
+            $this->_vars['export_url'] = $url;
+        }
+        return $this;
+    }
+
+    /**
+     * 设置表格默认的更改排序地址
+     * @param string $url url地址
+     * @return $this
+     */
+    public function setSortUrl($url = '')
+    {
+        if ($url != '') {
+            $this->_vars['sort_url'] = $url;
+        }
+        return $this;
+    }
+
+    /**
+     * 设置搜索参数
+     * @param array $items
+     * @return $this
+     * 第一个参数：类型
+     * 第二个参数：字段名称
+     * 第三个参数：字段别名
+     * 第四个参数：匹配方式（默认为“=”，也可以是“<>，>，>=，<，<=，LIKE”等等）
+     * 第五个参数：默认值
+     * 第六个参数：额外参数（不同类型，用途不同）
+     */
+    public function setSearch($items = [])
+    {
+        if (!empty($items)) {
+            foreach ($items as &$item) {
+                $item['type']    = $item[0]; // 字段类型
+                $item['name']    = $item[1]; // 字段名称
+                $item['title']   = $item[2]; // 字段别名
+                $item['option']  = isset($item[3]) ? $item[3] : '='; // 匹配方式
+                $item['default'] = isset($item[4]) ? $item[4] : '';  // 默认值
+                $item['param']   = isset($item[5]) ? $item[5] : [];  // 额外参数
+            }
+            $this->_vars['search'] = $items;
+        }
+        return $this;
+    }
+
+    /**
+     * 添加一个顶部按钮[目前只能新窗口打开，暂时不考虑弹出层]
+     * @param string $type      按钮类型：add/edit/del/export/build/default
+     * @param array  $attribute 按钮属性
+     * @return $this
+     */
+    public function addTopButton($type = '', $attribute = [])
+    {
+        switch ($type) {
+
+            // 新增按钮
+            case 'add':
+                // 默认属性
+                $btn_attribute = [
+                    'title'   => '新增',
+                    'icon'    => 'fa fa-plus',
+                    'class'   => 'btn btn-success',
+                    'href'    => '',
+                    'onclick' => '$.operate.add()',
+                ];
+                break;
+
+            // 修改按钮
+            case 'edit':
+                // 默认属性
+                $btn_attribute = [
+                    'title'       => '修改',
+                    'icon'        => 'fa fa-edit',
+                    'class'       => 'btn btn-primary single disabled',
+                    'href'        => '',
+                    'onclick'     => '$.operate.edit()',
+                ];
+                break;
+
+            // 删除按钮
+            case 'del':
+                // 默认属性
+                $btn_attribute = [
+                    'title'       => '删除',
+                    'icon'        => 'fa fa-remove',
+                    'class'       => 'btn btn-danger multiple disabled',
+                    'href'        => '',
+                    'onclick'     => '$.operate.removeAll()'
+                ];
+                break;
+
+            // 导出按钮
+            case 'export':
+                // 默认属性
+                $btn_attribute = [
+                    'title'       => '导出',
+                    'icon'        => 'fa fa-download',
+                    'class'       => 'btn btn-warning',
+                    'href'        => '',
+                    'onclick'     => '$.table.export()'
+                ];
+                break;
+
+            // 生成按钮
+            case 'build':
+                // 默认属性
+                $btn_attribute = [
+                    'title'       => '代码生成',
+                    'icon'        => 'fa fa-file-code-o',
+                    'class'       => 'btn btn-info single disabled',
+                    'href'        => '',
+                    'onclick'     => '$.operate.build(\'\', \''.url('module/build').'\')'
+                ];
+                break;
+
+            // 自定义按钮
+            default:
+                // 默认属性
+                $btn_attribute = [
+                    'title'       => '自定义',
+                    'icon'        => 'fa fa-lightbulb-o',
+                    'class'       => 'btn btn-default',
+                    'href'        => '',
+                    'onclick'     => ''
+                ];
+                break;
+        }
+
+        // 合并自定义属性
+        if ($attribute && is_array($attribute)) {
+            $btn_attribute = array_merge($btn_attribute, $attribute);
+        }
+        $this->_vars['top_buttons'][] = $btn_attribute;
+        return $this;
+    }
+
+    /**
+     * 一次性添加多个顶部按钮
+     * @param array|string $buttons 按钮组
+     * 例如：
+     * addTopButtons('add')
+     * addTopButtons('add, edit, del')
+     * addTopButtons(['add', 'del'])
+     * addTopButtons(['add' => ['title' => '增加'], 'del'])
+     * @return $this
+     */
+    public function addTopButtons($buttons = [])
+    {
+        if (!empty($buttons)) {
+            $buttons = is_array($buttons) ? $buttons : explode(',', $buttons);
+            foreach ($buttons as $key => $value) {
+                if (is_numeric($key)) {
+                    // key为数字则直接添加一个按钮
+                    $this->addTopButton($value);
+                } else {
+                    // key不为数字则需设置属性，去除前后空格
+                    $this->addTopButton(trim($key), $value);
+                }
+            }
+        }
+        return $this;
+    }
 
 }

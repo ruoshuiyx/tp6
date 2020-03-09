@@ -9,14 +9,15 @@ class Base extends Model
     // 获取左侧主菜单
     public static function getMenus()
     {
-        $authRule = AuthRule::where('status', 1)
+        $authRule = \app\common\model\AuthRule::where('status', 1)
             ->order('sort asc')
             ->select()
             ->toArray();
 
-        $menus = array();
+        $menus = [];
+        // 查找一级
         foreach ($authRule as $key => $val) {
-            $authRule[$key]['href'] = url($val['name']);
+            $authRule[$key]['href'] = (string)url($val['name']);
             if ($val['pid'] == 0) {
                 if (Session::get('admin.id') != 1) {
                     if (in_array($val['id'], Session::get('admin.rules', []))) {
@@ -27,6 +28,7 @@ class Base extends Model
                 }
             }
         }
+        // 查找二级
         foreach ($menus as $k => $v) {
             $menus[$k]['children'] = [];
             foreach ($authRule as $kk => $vv) {
@@ -37,6 +39,26 @@ class Base extends Model
                         }
                     } else {
                         $menus[$k]['children'][] = $vv;
+                    }
+                }
+            }
+        }
+        // 查找三级
+        foreach ($menus as $k => $v) {
+            if ($v['children']) {
+                // 循环二级
+                foreach ($v['children'] as $kk => $vv) {
+                    $menus[$k]['children'][$kk]['children'] = [];
+                    foreach ($authRule as $kkk => $vvv) {
+                        if ($vv['id'] == $vvv['pid']) {
+                            if (Session::get('admin.id') != 1) {
+                                if (in_array($vvv['id'], Session::get('admin.rules'))) {
+                                    $menus[$k]['children'][$kk]['children'][] = $vvv;
+                                }
+                            } else {
+                                $menus[$k]['children'][$kk]['children'][] = $vvv;
+                            }
+                        }
                     }
                 }
             }

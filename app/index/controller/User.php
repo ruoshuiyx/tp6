@@ -227,8 +227,7 @@ class User extends Base
                     $this->error('两次输入的密码不一致');
                 }
                 //更新信息
-                db('users')
-                    ->where('id', session('user.id'))
+                \app\common\model\Users::where('id', session('user.id'))
                     ->data($data)
                     ->update();
                 $this->success('密码修改成功');

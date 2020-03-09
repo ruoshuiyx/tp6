@@ -23,12 +23,12 @@
  *                      '.:::::'                    ':'````..
  * +----------------------------------------------------------------------
  */
+declare (strict_types = 1);
 namespace app\index\controller;
 
 use think\App;
 use think\exception\HttpResponseException;
 use think\exception\ValidateException;
-use think\facade\Config;
 use think\facade\Request;
 use think\Response;
 use think\Validate;
@@ -88,17 +88,10 @@ abstract class Base
     // 初始化
     protected function initialize()
     {
-        //查找所有系统设置表数据
-        $system = System::getListField()->toArray();
-        //格式化设置字段
-        $system = sysgem_setup($system);
-        $systemArr = [];
-        foreach ($system as $k => $v) {
-            $systemArr[$v['field']] = $v['value'];
-        }
-        $system = $systemArr;
+        // 查找所有系统设置表数据
+        $system = \app\common\model\System::find(1);
 
-        $this->appName        = strtolower(Request::app());
+        $this->appName        = app('http')->getName();
         $this->controllerName = strtolower(Request::controller());
         $this->system         = $system;
         $this->public         = '/template/'.

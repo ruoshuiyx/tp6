@@ -2,7 +2,7 @@
 
 namespace app\admin\listener;
 
-use app\admin\model\AdminLog;
+use app\common\model\AdminLog;
 
 class AdminLogin
 {
