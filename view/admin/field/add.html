@@ -42,7 +42,7 @@
                                     <select id="group_id" name="group_id" class="form-control">
                                         <option value=''>请选择</option>
                                         {volist name="groups" id="group"}
-                                        <option value="{$group.id}" {if $info}{$info.group_id == $group.id ? 'selected="selected"' : ''}{/if} >{$group.group_name}</option>
+                                        <option value="{$group.id}" {$info.group_id == $group.id ? 'selected="selected"' : ''} >{$group.group_name}</option>
                                         {/volist}
                                     </select>
                                 </div>
@@ -57,26 +57,26 @@
                                 <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
                                     <select id="type" name="type" class="form-control">
                                         <option value=''>请选择字段类型</option>
-                                        <option value="text" {$info.type == 'text' ? 'selected="selected"' : ''} >单行文本</option>
-                                        <option value="textarea" {$info.type == 'textarea' ? 'selected="selected"' : ''}>多行文本</option>
-                                        <option value="radio" {$info.type == 'radio' ? 'selected="selected"' : ''}>单选按钮</option>
-                                        <option value="checkbox" {$info.type == 'checkbox' ? 'selected="selected"' : ''}>多选按钮</option>
-                                        <option value="date" {$info.type == 'date' ? 'selected="selected"' : ''}>日期</option>
-                                        <option value="time" {$info.type == 'time' ? 'selected="selected"' : ''}>时间</option>
-                                        <option value="datetime" {$info.type == 'datetime' ? 'selected="selected"' : ''}>日期时间</option>
-                                        <option value="daterange" {$info.type == 'daterange' ? 'selected="selected"' : ''}>日期范围</option>
-                                        <option value="tag" {$info.type == 'tag' ? 'selected="selected"' : ''}>标签</option>
-                                        <option value="number" {$info.type == 'number' ? 'selected="selected"' : ''}>数字</option>
-                                        <option value="password" {$info.type == 'password' ? 'selected="selected"' : ''}>密码</option>
-                                        <option value="select" {$info.type == 'select' ? 'selected="selected"' : ''}>普通下拉菜单</option>
-                                        <option value="select2" {$info.type == 'select2' ? 'selected="selected"' : ''}>高级下拉菜单</option>
-                                        <option value="image" {$info.type == 'image' ? 'selected="selected"' : ''}>单张图片</option>
-                                        <option value="images" {$info.type == 'images' ? 'selected="selected"' : ''}>多张图片</option>
-                                        <option value="file" {$info.type == 'file' ? 'selected="selected"' : ''}>单文件上传</option>
-                                        <option value="files" {$info.type == 'files' ? 'selected="selected"' : ''}>多文件上传</option>
-                                        <option value="editor" {$info.type == 'editor' ? 'selected="selected"' : ''}>编辑器</option>
-                                        <option value="hidden" {$info.type == 'hidden' ? 'selected="selected"' : ''}>隐藏域</option>
-                                        <option value="color" {$info.type == 'color' ? 'selected="selected"' : ''}>取色器</option>
+                                        <option value="text" {if $info}{$info.type == 'text' ? 'selected="selected"' : ''}{/if}>单行文本</option>
+                                        <option value="textarea" {if $info}{$info.type == 'textarea' ? 'selected="selected"' : ''}{/if}>多行文本</option>
+                                        <option value="radio" {if $info}{$info.type == 'radio' ? 'selected="selected"' : ''}{/if}>单选按钮</option>
+                                        <option value="checkbox" {if $info}{$info.type == 'checkbox' ? 'selected="selected"' : ''}{/if}>多选按钮</option>
+                                        <option value="date" {if $info}{$info.type == 'date' ? 'selected="selected"' : ''}{/if}>日期</option>
+                                        <option value="time" {if $info}{$info.type == 'time' ? 'selected="selected"' : ''}{/if}>时间</option>
+                                        <option value="datetime" {if $info}{$info.type == 'datetime' ? 'selected="selected"' : ''}{/if}>日期时间</option>
+                                        <option value="daterange" {if $info}{$info.type == 'daterange' ? 'selected="selected"' : ''}{/if}>日期范围</option>
+                                        <option value="tag" {if $info}{$info.type == 'tag' ? 'selected="selected"' : ''}{/if}>标签</option>
+                                        <option value="number" {if $info}{$info.type == 'number' ? 'selected="selected"' : ''}{/if}>数字</option>
+                                        <option value="password" {if $info}{$info.type == 'password' ? 'selected="selected"' : ''}{/if}>密码</option>
+                                        <option value="select" {if $info}{$info.type == 'select' ? 'selected="selected"' : ''}{/if}>普通下拉菜单</option>
+                                        <option value="select2" {if $info}{$info.type == 'select2' ? 'selected="selected"' : ''}{/if}>高级下拉菜单</option>
+                                        <option value="image" {if $info}{$info.type == 'image' ? 'selected="selected"' : ''}{/if}>单张图片</option>
+                                        <option value="images" {if $info}{$info.type == 'images' ? 'selected="selected"' : ''}{/if}>多张图片</option>
+                                        <option value="file" {if $info}{$info.type == 'file' ? 'selected="selected"' : ''}{/if}>单文件上传</option>
+                                        <option value="files" {if $info}{$info.type == 'files' ? 'selected="selected"' : ''}{/if}>多文件上传</option>
+                                        <option value="editor" {if $info}{$info.type == 'editor' ? 'selected="selected"' : ''}{/if}>编辑器</option>
+                                        <option value="hidden" {if $info}{$info.type == 'hidden' ? 'selected="selected"' : ''}{/if}>隐藏域</option>
+                                        <option value="color" {if $info}{$info.type == 'color' ? 'selected="selected"' : ''}{/if}>取色器</option>
                                     </select>
 
                                 </div>
