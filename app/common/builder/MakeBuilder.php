@@ -527,7 +527,7 @@ class MakeBuilder
     {
         $result = [];
         // 当元素个数为3时执行tree操作
-        if (count(($array[0])) == 3) {
+        if ($array && count(($array[0])) == 3) {
             $array = tree_three($array);
         }
 
