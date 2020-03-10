@@ -18,7 +18,7 @@
 <table class="typeTable" cellpadding="2" cellspacing="1">
     <tr>
         <td>默认值</td>
-        <td><input type="text" class="form-control" name="setup[default]" value="{$fieldInfo.setup.default}"/></td>
+        <td><input type="text" class="form-control" name="setup[default]" value="{$fieldInfo.setup.default ? $fieldInfo.setup.default : ''}"/></td>
     </tr>
     <tr>
         <td>额外属性</td>
@@ -36,10 +36,10 @@
         <td>字段类型</td>
         <td>
             <select class="form-control" name="setup[fieldtype]">
-                <option value="varchar" {$fieldInfo.setup.fieldtype=='varchar'?'selected':''}>varchar</option>
-                <option value="char" {$fieldInfo.setup.fieldtype=='char'?'selected':''}>char</option>
-                <option value="text" {$fieldInfo.setup.fieldtype=='text'?'selected':''}>text</option>
-                <option value="mediumtext" {$fieldInfo.setup.fieldtype=='mediumtext'?'selected':''}>mediumtext</option>
+                <option value="varchar" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='varchar'?'selected':''}{/if}>varchar</option>
+                <option value="char" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='char'?'selected':''}{/if}>char</option>
+                <option value="text" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='text'?'selected':''}{/if}>text</option>
+                <option value="mediumtext" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='mediumtext'?'selected':''}{/if}>mediumtext</option>
             </select>
         </td>
     </tr>
@@ -53,8 +53,7 @@
 <table class="typeTable" cellpadding="2" cellspacing="1">
     <tr>
         <td>默认值</td>
-        <td><input type="text" class="form-control" name="setup[default]"
-                   value="{$fieldInfo.setup.default}"/></td>
+        <td><input type="text" class="form-control" name="setup[default]" value="{$fieldInfo.setup.default ? $fieldInfo.setup.default : ''}"/></td>
     </tr>
     <tr>
         <td>额外属性</td>
@@ -75,10 +74,10 @@
         <td>字段类型</td>
         <td>
             <select class="form-control" name="setup[fieldtype]">
-                <option value="text" {$fieldInfo.setup.fieldtype=='text'?'selected':''}>text</option>
-                <option value="mediumtext" {$fieldInfo.setup.fieldtype=='mediumtext'?'selected':''}>mediumtext</option>
-                <option value="varchar" {$fieldInfo.setup.fieldtype=='varchar'?'selected':''}>varchar</option>
-                <option value="char" {$fieldInfo.setup.fieldtype=='char'?'selected':''}>char</option>
+                <option value="text" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='text'?'selected':''}{/if}>text</option>
+                <option value="mediumtext" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='mediumtext'?'selected':''}{/if}>mediumtext</option>
+                <option value="varchar" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='varchar'?'selected':''}{/if}>varchar</option>
+                <option value="char" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='char'?'selected':''}{/if}>char</option>
             </select>
         </td>
     </tr>
@@ -89,7 +88,7 @@
     <tr>
         <td>默认值</td>
         <td><input type="text" class="form-control" name="setup[default]"
-                   value="{$fieldInfo.setup.default}"/></td>
+                   value="{$fieldInfo.setup.default ? $fieldInfo.setup.default : ''}"/></td>
     </tr>
     <tr>
         <td>额外属性</td>
@@ -105,11 +104,11 @@
         <td>字段类型</td>
         <td>
             <select name="setup[fieldtype]">
-                <option value="varchar" {$fieldInfo.setup.fieldtype=='varchar'?'selected':''}>字符 VARCHAR</option>
-                <option value="tinyint" {$fieldInfo.setup.fieldtype=='tinyint'?'selected':''}>整数 TINYINT</option>
-                <option value="smallint" {$fieldInfo.setup.fieldtype=='smallint'?'selected':''}>整数 SMALLINT</option>
-                <option value="mediumint" {$fieldInfo.setup.fieldtype=='mediumint'?'selected':''}>整数 MEDIUMINT</option>
-                <option value="int" {$fieldInfo.setup.fieldtype=='int'?'selected':''}>整数 INT</option>
+                <option value="varchar" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='varchar'?'selected':''}{/if}>字符 VARCHAR</option>
+                <option value="tinyint" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='tinyint'?'selected':''}{/if}>整数 TINYINT</option>
+                <option value="smallint" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='smallint'?'selected':''}{/if}>整数 SMALLINT</option>
+                <option value="mediumint" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='mediumint'?'selected':''}{/if}>整数 MEDIUMINT</option>
+                <option value="int" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='int'?'selected':''}{/if}>整数 INT</option>
             </select>
         </td>
     </tr>
@@ -120,7 +119,7 @@
     <tr>
         <td>默认值</td>
         <td><input type="text" class="form-control" name="setup[default]"
-                   value="{$fieldInfo.setup.default}"/></td>
+                   value="{$fieldInfo.setup.default ? $fieldInfo.setup.default : ''}"/></td>
     </tr>
     <tr>
         <td>额外属性</td>
@@ -136,11 +135,11 @@
         <td>字段类型</td>
         <td>
             <select name="setup[fieldtype]">
-                <option value="varchar" {$fieldInfo.setup.fieldtype=='varchar'?'selected':''}>字符 VARCHAR</option>
-                <option value="tinyint" {$fieldInfo.setup.fieldtype=='tinyint'?'selected':''}>整数 TINYINT</option>
-                <option value="smallint" {$fieldInfo.setup.fieldtype=='smallint'?'selected':''}>整数 SMALLINT</option>
-                <option value="mediumint" {$fieldInfo.setup.fieldtype=='mediumint'?'selected':''}>整数 MEDIUMINT</option>
-                <option value="int" {$fieldInfo.setup.fieldtype=='int'?'selected':''}>整数 INT</option>
+                <option value="varchar" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='varchar'?'selected':''}{/if}>字符 VARCHAR</option>
+                <option value="tinyint" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='tinyint'?'selected':''}{/if}>整数 TINYINT</option>
+                <option value="smallint" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='smallint'?'selected':''}{/if}>整数 SMALLINT</option>
+                <option value="mediumint" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='mediumint'?'selected':''}{/if}>整数 MEDIUMINT</option>
+                <option value="int" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='int'?'selected':''}{/if}>整数 INT</option>
             </select>
         </td>
     </tr>
@@ -177,9 +176,9 @@
         <td>字段类型</td>
         <td>
             <select class="form-control" name="setup[fieldtype]">
-                <option value="int" {$fieldInfo.setup.fieldtype=='int'?'selected':''}>int</option>
-                <option value="varchar" {$fieldInfo.setup.fieldtype=='varchar'?'selected':''}>varchar</option>
-                <option value="char" {$fieldInfo.setup.fieldtype=='char'?'selected':''}>char</option>
+                <option value="int" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='int'?'selected':''}{/if}>int</option>
+                <option value="varchar" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='varchar'?'selected':''}{/if}>varchar</option>
+                <option value="char" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='char'?'selected':''}{/if}>char</option>
             </select>
         </td>
     </tr>
@@ -216,9 +215,9 @@
         <td>字段类型</td>
         <td>
             <select class="form-control" name="setup[fieldtype]">
-                <option value="int" {$fieldInfo.setup.fieldtype=='int'?'selected':''}>int</option>
-                <option value="varchar" {$fieldInfo.setup.fieldtype=='varchar'?'selected':''}>varchar</option>
-                <option value="char" {$fieldInfo.setup.fieldtype=='char'?'selected':''}>char</option>
+                <option value="int" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='int'?'selected':''}{/if}>int</option>
+                <option value="varchar" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='varchar'?'selected':''}{/if}>varchar</option>
+                <option value="char" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='char'?'selected':''}{/if}>char</option>
             </select>
         </td>
     </tr>
@@ -255,9 +254,9 @@
         <td>字段类型</td>
         <td>
             <select class="form-control" name="setup[fieldtype]">
-                <option value="int" {$fieldInfo.setup.fieldtype=='int'?'selected':''}>int</option>
-                <option value="varchar" {$fieldInfo.setup.fieldtype=='varchar'?'selected':''}>varchar</option>
-                <option value="char" {$fieldInfo.setup.fieldtype=='char'?'selected':''}>char</option>
+                <option value="int" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='int'?'selected':''}{/if}>int</option>
+                <option value="varchar" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='varchar'?'selected':''}{/if}>varchar</option>
+                <option value="char" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='char'?'selected':''}{/if}>char</option>
             </select>
         </td>
     </tr>
@@ -289,8 +288,8 @@
         <td>字段类型</td>
         <td>
             <select class="form-control" name="setup[fieldtype]">
-                <option value="varchar" {$fieldInfo.setup.fieldtype=='varchar'?'selected':''}>varchar</option>
-                <option value="char" {$fieldInfo.setup.fieldtype=='char'?'selected':''}>char</option>
+                <option value="varchar" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='varchar'?'selected':''}{/if}>varchar</option>
+                <option value="char" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='char'?'selected':''}{/if}>char</option>
             </select>
         </td>
     </tr>
@@ -301,7 +300,7 @@
     <tr>
         <td>默认值</td>
         <td><input type="text" class="form-control" name="setup[default]"
-                   value="{$fieldInfo.setup.default}"/></td>
+                   value="{$fieldInfo.setup.default ? $fieldInfo.setup.default : ''}"/></td>
     </tr>
     <tr>
         <td>额外属性</td>
@@ -317,10 +316,10 @@
         <td>字段类型</td>
         <td>
             <select class="form-control" name="setup[fieldtype]">
-                <option value="varchar" {$fieldInfo.setup.fieldtype=='varchar'?'selected':''}>varchar</option>
-                <option value="char" {$fieldInfo.setup.fieldtype=='char'?'selected':''}>char</option>
-                <option value="text" {$fieldInfo.setup.fieldtype=='text'?'selected':''}>text</option>
-                <option value="mediumtext" {$fieldInfo.setup.fieldtype=='mediumtext'?'selected':''}>mediumtext</option>
+                <option value="varchar" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='varchar'?'selected':''}{/if}>varchar</option>
+                <option value="char" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='char'?'selected':''}{/if}>char</option>
+                <option value="text" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='text'?'selected':''}{/if}>text</option>
+                <option value="mediumtext" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='mediumtext'?'selected':''}{/if}>mediumtext</option>
             </select>
         </td>
     </tr>
@@ -352,10 +351,10 @@
         <td>字段类型</td>
         <td>
             <select class="form-control" name="setup[fieldtype]">
-                <option value="int" {$fieldInfo.setup.fieldtype=='int'?'selected':''}>int</option>
-                <option value="tinyint" {$fieldInfo.setup.fieldtype=='tinyint'?'selected':''}>tinyint</option>
-                <option value="char" {$fieldInfo.setup.fieldtype=='char'?'selected':''}>char</option>
-                <option value="varchar" {$fieldInfo.setup.fieldtype=='varchar'?'selected':''}>varchar</option>
+                <option value="int" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='int'?'selected':''}{/if}>int</option>
+                <option value="tinyint" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='tinyint'?'selected':''}{/if}>tinyint</option>
+                <option value="char" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='char'?'selected':''}{/if}>char</option>
+                <option value="varchar" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='varchar'?'selected':''}{/if}>varchar</option>
             </select>
         </td>
     </tr>
@@ -366,7 +365,7 @@
     <tr>
         <td>默认值</td>
         <td><input type="text" class="form-control" name="setup[default]"
-                   value="{$fieldInfo.setup.default}"/></td>
+                   value="{$fieldInfo.setup.default ? $fieldInfo.setup.default : ''}"/></td>
     </tr>
     <tr>
         <td>额外属性</td>
@@ -387,10 +386,10 @@
         <td>字段类型</td>
         <td>
             <select class="form-control" name="setup[fieldtype]">
-                <option value="varchar" {$fieldInfo.setup.fieldtype=='varchar'?'selected':''}>varchar</option>
-                <option value="char" {$fieldInfo.setup.fieldtype=='char'?'selected':''}>char</option>
-                <option value="text" {$fieldInfo.setup.fieldtype=='text'?'selected':''}>text</option>
-                <option value="mediumtext" {$fieldInfo.setup.fieldtype=='mediumtext'?'selected':''}>mediumtext</option>
+                <option value="varchar" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='varchar'?'selected':''}{/if}>varchar</option>
+                <option value="char" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='char'?'selected':''}{/if}>char</option>
+                <option value="text" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='text'?'selected':''}{/if}>text</option>
+                <option value="mediumtext" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='mediumtext'?'selected':''}{/if}>mediumtext</option>
             </select>
         </td>
     </tr>
@@ -417,12 +416,12 @@
         <td>字段类型</td>
         <td>
             <select class="form-control" name="setup[fieldtype]">
-            	<option value="int" {$fieldInfo.setup.fieldtype=='int'?'selected':''}>int</option>
-                <option value="tinyint" {$fieldInfo.setup.fieldtype=='tinyint'?'selected':''}>tinyint</option>
-                <option value="varchar" {$fieldInfo.setup.fieldtype=='varchar'?'selected':''}>varchar</option>
-                <option value="char" {$fieldInfo.setup.fieldtype=='char'?'selected':''}>char</option>
-                <option value="text" {$fieldInfo.setup.fieldtype=='text'?'selected':''}>text</option>
-                <option value="mediumtext" {$fieldInfo.setup.fieldtype=='mediumtext'?'selected':''}>mediumtext</option>
+            	<option value="int" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='int'?'selected':''}{/if}>int</option>
+                <option value="tinyint" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='tinyint'?'selected':''}{/if}>tinyint</option>
+                <option value="varchar" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='varchar'?'selected':''}{/if}>varchar</option>
+                <option value="char" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='char'?'selected':''}{/if}>char</option>
+                <option value="text" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='text'?'selected':''}{/if}>text</option>
+                <option value="mediumtext" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='mediumtext'?'selected':''}{/if}>mediumtext</option>
             </select>
         </td>
     </tr>
@@ -454,12 +453,12 @@
         <td>字段类型</td>
         <td>
             <select class="form-control" name="setup[fieldtype]">
-            	<option value="int" {$fieldInfo.setup.fieldtype=='int'?'selected':''}>int</option>
-                <option value="tinyint" {$fieldInfo.setup.fieldtype=='tinyint'?'selected':''}>tinyint</option>
-                <option value="varchar" {$fieldInfo.setup.fieldtype=='varchar'?'selected':''}>varchar</option>
-                <option value="char" {$fieldInfo.setup.fieldtype=='char'?'selected':''}>char</option>
-                <option value="text" {$fieldInfo.setup.fieldtype=='text'?'selected':''}>text</option>
-                <option value="mediumtext" {$fieldInfo.setup.fieldtype=='mediumtext'?'selected':''}>mediumtext</option>
+            	<option value="int" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='int'?'selected':''}{/if}>int</option>
+                <option value="tinyint" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='tinyint'?'selected':''}{/if}>tinyint</option>
+                <option value="varchar" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='varchar'?'selected':''}{/if}>varchar</option>
+                <option value="char" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='char'?'selected':''}{/if}>char</option>
+                <option value="text" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='text'?'selected':''}{/if}>text</option>
+                <option value="mediumtext" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='mediumtext'?'selected':''}{/if}>mediumtext</option>
             </select>
         </td>
     </tr>
@@ -503,10 +502,10 @@
         <td>字段类型</td>
         <td>
             <select class="form-control" name="setup[fieldtype]">
-                <option value="varchar" {$fieldInfo.setup.fieldtype=='varchar'?'selected':''}>varchar</option>
-                <option value="char" {$fieldInfo.setup.fieldtype=='char'?'selected':''}>char</option>
-                <option value="text" {$fieldInfo.setup.fieldtype=='text'?'selected':''}>text</option>
-                <option value="mediumtext" {$fieldInfo.setup.fieldtype=='mediumtext'?'selected':''}>mediumtext</option>
+                <option value="varchar" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='varchar'?'selected':''}{/if}>varchar</option>
+                <option value="char" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='char'?'selected':''}{/if}>char</option>
+                <option value="text" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='text'?'selected':''}{/if}>text</option>
+                <option value="mediumtext" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='mediumtext'?'selected':''}{/if}>mediumtext</option>
             </select>
         </td>
     </tr>
@@ -550,10 +549,10 @@
         <td>字段类型</td>
         <td>
             <select class="form-control" name="setup[fieldtype]">
-                <option value="varchar" {$fieldInfo.setup.fieldtype=='varchar'?'selected':''}>varchar</option>
-                <option value="char" {$fieldInfo.setup.fieldtype=='char'?'selected':''}>char</option>
-                <option value="text" {$fieldInfo.setup.fieldtype=='text'?'selected':''}>text</option>
-                <option value="mediumtext" {$fieldInfo.setup.fieldtype=='mediumtext'?'selected':''}>mediumtext</option>
+                <option value="varchar" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='varchar'?'selected':''}{/if}>varchar</option>
+                <option value="char" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='char'?'selected':''}{/if}>char</option>
+                <option value="text" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='text'?'selected':''}{/if}>text</option>
+                <option value="mediumtext" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='mediumtext'?'selected':''}{/if}>mediumtext</option>
             </select>
         </td>
     </tr>
@@ -597,10 +596,10 @@
         <td>字段类型</td>
         <td>
             <select class="form-control" name="setup[fieldtype]">
-                <option value="varchar" {$fieldInfo.setup.fieldtype=='varchar'?'selected':''}>varchar</option>
-                <option value="char" {$fieldInfo.setup.fieldtype=='char'?'selected':''}>char</option>
-                <option value="text" {$fieldInfo.setup.fieldtype=='text'?'selected':''}>text</option>
-                <option value="mediumtext" {$fieldInfo.setup.fieldtype=='mediumtext'?'selected':''}>mediumtext</option>
+                <option value="varchar" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='varchar'?'selected':''}{/if}>varchar</option>
+                <option value="char" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='char'?'selected':''}{/if}>char</option>
+                <option value="text" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='text'?'selected':''}{/if}>text</option>
+                <option value="mediumtext" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='mediumtext'?'selected':''}{/if}>mediumtext</option>
             </select>
         </td>
     </tr>
@@ -644,10 +643,10 @@
         <td>字段类型</td>
         <td>
             <select class="form-control" name="setup[fieldtype]">
-                <option value="varchar" {$fieldInfo.setup.fieldtype=='varchar'?'selected':''}>varchar</option>
-                <option value="char" {$fieldInfo.setup.fieldtype=='char'?'selected':''}>char</option>
-                <option value="text" {$fieldInfo.setup.fieldtype=='text'?'selected':''}>text</option>
-                <option value="mediumtext" {$fieldInfo.setup.fieldtype=='mediumtext'?'selected':''}>mediumtext</option>
+                <option value="varchar" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='varchar'?'selected':''}{/if}>varchar</option>
+                <option value="char" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='char'?'selected':''}{/if}>char</option>
+                <option value="text" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='text'?'selected':''}{/if}>text</option>
+                <option value="mediumtext" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='mediumtext'?'selected':''}{/if}>mediumtext</option>
             </select>
         </td>
     </tr>
@@ -658,7 +657,7 @@
     <tr>
         <td>默认值</td>
         <td><input type="text" class="form-control" name="setup[default]"
-                   value="{$fieldInfo.setup.default}"/></td>
+                   value="{$fieldInfo.setup.default ? $fieldInfo.setup.default : ''}"/></td>
     </tr>
     <tr>
         <td>额外属性</td>
@@ -679,10 +678,10 @@
         <td>字段类型</td>
         <td>
             <select class="form-control" name="setup[fieldtype]">
-                <option value="text" {$fieldInfo.setup.fieldtype=='text'?'selected':''}>text</option>
-                <option value="mediumtext" {$fieldInfo.setup.fieldtype=='mediumtext'?'selected':''}>mediumtext</option>
-                <option value="varchar" {$fieldInfo.setup.fieldtype=='varchar'?'selected':''}>varchar</option>
-                <option value="char" {$fieldInfo.setup.fieldtype=='char'?'selected':''}>char</option>
+                <option value="text" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='text'?'selected':''}{/if}>text</option>
+                <option value="mediumtext" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='mediumtext'?'selected':''}{/if}>mediumtext</option>
+                <option value="varchar" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='varchar'?'selected':''}{/if}>varchar</option>
+                <option value="char" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='char'?'selected':''}{/if}>char</option>
             </select>
         </td>
     </tr>
@@ -709,10 +708,10 @@
         <td>字段类型</td>
         <td>
             <select class="form-control" name="setup[fieldtype]">
-                <option value="int" {$fieldInfo.setup.fieldtype=='int'?'selected':''}>int</option>
-                <option value="tinyint" {$fieldInfo.setup.fieldtype=='tinyint'?'selected':''}>tinyint</option>
-                <option value="varchar" {$fieldInfo.setup.fieldtype=='varchar'?'selected':''}>varchar</option>
-                <option value="char" {$fieldInfo.setup.fieldtype=='char'?'selected':''}>char</option>
+                <option value="int" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='int'?'selected':''}{/if}>int</option>
+                <option value="tinyint" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='tinyint'?'selected':''}{/if}>tinyint</option>
+                <option value="varchar" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='varchar'?'selected':''}{/if}>varchar</option>
+                <option value="char" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='char'?'selected':''}{/if}>char</option>
             </select>
         </td>
     </tr>
@@ -723,7 +722,7 @@
     <tr>
         <td>默认值</td>
         <td><input type="text" class="form-control" name="setup[default]"
-                   value="{$fieldInfo.setup.default}"/></td>
+                   value="{$fieldInfo.setup.default ? $fieldInfo.setup.default : ''}"/></td>
     </tr>
     <tr>
         <td>额外属性</td>
@@ -744,10 +743,10 @@
         <td>字段类型</td>
         <td>
             <select class="form-control" name="setup[fieldtype]">
-                <option value="varchar" {$fieldInfo.setup.fieldtype=='varchar'?'selected':''}>varchar</option>
-                <option value="char" {$fieldInfo.setup.fieldtype=='char'?'selected':''}>char</option>
-                <option value="text" {$fieldInfo.setup.fieldtype=='text'?'selected':''}>text</option>
-                <option value="mediumtext" {$fieldInfo.setup.fieldtype=='mediumtext'?'selected':''}>mediumtext</option>
+                <option value="varchar" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='varchar'?'selected':''}{/if}>varchar</option>
+                <option value="char" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='char'?'selected':''}{/if}>char</option>
+                <option value="text" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='text'?'selected':''}{/if}>text</option>
+                <option value="mediumtext" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='mediumtext'?'selected':''}{/if}>mediumtext</option>
             </select>
         </td>
     </tr>

@@ -124,11 +124,11 @@
                                     <div class="dd_radio_lable_left">
                                         <label class="dd_radio_lable">
                                             <input type="radio" name="required" value="1" class="dd_radio"
-                                                   {$info.required==1?'checked':''}><span>是</span>
+                                                   {if $info}{$info.required==1?'checked':''}{/if}><span>是</span>
                                         </label>
                                         <label class="dd_radio_lable">
                                             <input type="radio" name="required" value="0" class="dd_radio"
-                                                   {$info.required==0?'checked':''}><span>否</span>
+                                                   {if $info}{$info.required==0?'checked':''}{else /}checked{/if}><span>否</span>
                                         </label>
                                     </div>
                                 </div>
@@ -141,15 +141,15 @@
                                 <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
                                     <div class="dd_radio_lable_left">
                                         <label class="dd_radio_lable">
-                                        	<input type="checkbox" name="is_list" value="1" class="dd_radio" {$info.is_list===0?'':'checked'}><span>列表</span></label>
+                                        	<input type="checkbox" name="is_list" value="1" class="dd_radio" {if $info}{$info.is_list===0?'':'checked'}{else /}checked{/if}><span>列表</span></label>
                                         <label class="dd_radio_lable">
-                                            <input type="checkbox" name="is_add" value="1" class="dd_radio" {$info.is_add===0?'':'checked'}><span>添加</span></label>
+                                            <input type="checkbox" name="is_add" value="1" class="dd_radio" {if $info}{$info.is_add===0?'':'checked'}{else /}checked{/if}><span>添加</span></label>
                                         <label class="dd_radio_lable">
-                                            <input type="checkbox" name="is_edit" value="1" class="dd_radio" {$info.is_edit===0?'':'checked'}><span>修改</span></label>
+                                            <input type="checkbox" name="is_edit" value="1" class="dd_radio" {if $info}{$info.is_edit===0?'':'checked'}{else /}checked{/if}><span>修改</span></label>
                                         <label class="dd_radio_lable">    
-                                            <input type="checkbox" name="is_search" value="1" class="dd_radio" {$info.is_search===0?'':'checked'}><span>搜索</span></label>
+                                            <input type="checkbox" name="is_search" value="1" class="dd_radio" {if $info}{$info.is_search===0?'':'checked'}{else /}checked{/if}><span>搜索</span></label>
                                         <label class="dd_radio_lable">    
-                                            <input type="checkbox" name="is_sort" value="1" class="dd_radio" {$info.is_sort===0?'':'checked'}><span>排序</span></label>
+                                            <input type="checkbox" name="is_sort" value="1" class="dd_radio" {if $info}{$info.is_sort===0?'':'checked'}{else /}checked{/if}><span>排序</span></label>
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">* 设置字段的使用场景</div>
@@ -191,8 +191,8 @@
                                 <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
                                     <select id="data_source" name="data_source" class="form-control">
                                     <option value='0'>字段本身</option>
-                                    <option value="1" {$info.data_source=='1'?'selected="selected"':''} >系统字典</option>
-                                    <option value="2" {$info.data_source=='2'?'selected="selected"':''} >模型数据</option>
+                                    <option value="1" {if $info}{$info.data_source=='1'?'selected="selected"':''}{/if}>系统字典</option>
+                                    <option value="2" {if $info}{$info.data_source=='2'?'selected="selected"':''}{/if}>模型数据</option>
                                     </select>
                                 </div>
                                 <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">* 通常 select|radio|checkbox 或关联了其他模型时需配置 </div>
@@ -228,7 +228,7 @@
                                 	<select id="dict_code" name="dict_code" class="form-control">
                                         <option value=''>请选择</option>
                                         {volist name="dictTypes" id="dictTypes"}
-                                        <option value="{$dictTypes.id}" {$info.dict_code == $dictTypes.id ? 'selected="selected"' : ''} >{$dictTypes.dict_name} - [ {$dictTypes.remark} ]</option>
+                                        <option value="{$dictTypes.id}" {if $info}{$info.dict_code == $dictTypes.id ? 'selected="selected"' : ''}{/if}>{$dictTypes.dict_name} - [ {$dictTypes.remark} ]</option>
                                         {/volist}
                                     </select>
                                 </div>
@@ -290,7 +290,7 @@
                             <div class="form-group">
                                 <div class="col-xs-11 col-sm-8 col-md-6 col-lg-5">
                                     <label class="text-lable">字段备注</label>
-                                    <textarea class="form-control" name="remark" rows="3" placeholder="请输入字段备注">{$info.remark}</textarea>
+                                    <textarea class="form-control" name="remark" rows="3" placeholder="请输入字段备注">{$info.remark|default=''}</textarea>
                                 </div>
                             </div>
                         </div>
