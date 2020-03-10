@@ -42,7 +42,7 @@
                                     <select id="group_id" name="group_id" class="form-control">
                                         <option value=''>请选择</option>
                                         {volist name="groups" id="group"}
-                                        <option value="{$group.id}" {$info.group_id == $group.id ? 'selected="selected"' : ''} >{$group.group_name}</option>
+                                        <option value="{$group.id}" {if $info}{$info.group_id == $group.id ? 'selected="selected"' : ''}{/if} >{$group.group_name}</option>
                                         {/volist}
                                     </select>
                                 </div>
