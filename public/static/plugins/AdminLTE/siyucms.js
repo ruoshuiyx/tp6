@@ -466,8 +466,10 @@ if ($("#tags").length > 0) {
 
 // 转换日期格式(时间戳转换为datetime格式)
 function changeDateFormat(cellval) {
-    if (cellval.toString().indexOf("-") >= 0) {
-        return cellval;
+    if(cellval != null && cellval != undefined){
+        if (cellval.toString().indexOf("-") >= 0) {
+            return cellval;
+        }
     }
     var dateVal = cellval * 1000;
     if (cellval != null) {
