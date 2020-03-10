@@ -18,7 +18,7 @@ CKEDITOR.editorConfig = function( config ) {
 	config.removeButtons = 'Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Undo,Redo,Find,Replace,SelectAll,Scayt,Form,Checkbox,TextField,Radio,Textarea,Select,Button,ImageButton,HiddenField,Subscript,Superscript,CreateDiv,Blockquote,Outdent,Indent,BidiLtr,BidiRtl,Language,Anchor,Flash,Smiley,SpecialChar,PageBreak,Iframe,About,ShowBlocks,CopyFormatting,Styles,Format';
 	
 	// 上传图片路径
-    config.filebrowserImageUploadUrl = "/index.php/admin/index/upload?from=ckeditor";
+    config.filebrowserImageUploadUrl = "../index/upload?from=ckeditor";
 	
 	//默认不带高度
 	config.disallowedContent = 'img{width,height};img[width,height]';

@@ -126,7 +126,7 @@ class Index extends Base
                 return json_encode($result, true);
             }
         } else {
-            //webupload [file是webloader固定写入的隐藏文本名称]
+            // webupload [file是webloader固定写入的隐藏文本名称]
             $file = request()->file('file');
             try {
                 validate($this->uploadValidate)
