@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2020-03-09 18:25:13
+Date: 2020-03-10 11:23:55
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1135,7 +1135,7 @@ INSERT INTO `tp_message` VALUES ('1', '1581080488', '1581080488', '1', '13', '�
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_module`;
 CREATE TABLE `tp_module` (
-  `id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '编号',
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
   `module_name` varchar(100) NOT NULL DEFAULT '' COMMENT '模块名称',
   `table_name` varchar(50) NOT NULL DEFAULT '' COMMENT '表名称',
   `model_name` varchar(50) NOT NULL DEFAULT '' COMMENT '模型名称',
