@@ -102,6 +102,8 @@ class Index extends Base
                     validate($this->uploadValidate)
                         ->check(['file' => $file]);
                     $savename = \think\facade\Filesystem::disk('public')->putFile('uploads', $file);
+                    // windows系统中路径反斜杠处理
+                    $savename = str_replace('\\', '/', $savename);
                     $path[] = '/' . $savename;
                 } catch (think\exception\ValidateException $e) {
                     $path = '';
@@ -132,6 +134,8 @@ class Index extends Base
                 validate($this->uploadValidate)
                     ->check(['file' => $file]);
                 $savename = \think\facade\Filesystem::disk('public')->putFile('uploads', $file);
+                // windows系统中路径反斜杠处理
+                $savename = str_replace('\\', '/', $savename);
                 return '/' . $savename;
             } catch (think\exception\ValidateException $e) {
                 return $e->getMessage();
