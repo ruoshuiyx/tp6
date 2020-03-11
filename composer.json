@@ -25,7 +25,8 @@
         "tp5er/tp5-databackup": "^1.0",
         "topthink/think-captcha": "^3.0",
         "lcobucci/jwt": "^3.3",
-        "topthink/think-multi-app": "^1.0"
+        "topthink/think-multi-app": "^1.0",
+        "zzstudio/think-addons": "^2.0"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.2"

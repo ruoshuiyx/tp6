@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c2a0e36648f908ee659e384a27661b94",
+    "content-hash": "2505fd925efef9175098db2393884d03",
     "packages": [
         {
             "name": "lcobucci/jwt",
@@ -1230,6 +1230,64 @@
             ],
             "description": "Implement the database backup restore",
             "time": "2017-12-29T05:36:58+00:00"
+        },
+        {
+            "name": "zzstudio/think-addons",
+            "version": "2.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zz-studio/think-addons.git",
+                "reference": "7eb740cb219a111d593a05ad88248a74f640fe5c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zz-studio/think-addons/zipball/7eb740cb219a111d593a05ad88248a74f640fe5c",
+                "reference": "7eb740cb219a111d593a05ad88248a74f640fe5c",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": ">=7.1.0",
+                "topthink/framework": "^6.0",
+                "topthink/think-helper": "^3.0.0",
+                "topthink/think-view": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "think": {
+                    "services": [
+                        "think\\addons\\Service"
+                    ],
+                    "config": {
+                        "addons": "src/config.php"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "think\\": "src/"
+                },
+                "files": [
+                    "src/helper.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "byron",
+                    "email": "xiaobo.sun@qq.com"
+                }
+            ],
+            "description": "The ThinkPHP6 Addons Package",
+            "time": "2020-01-06T06:42:39+00:00"
         }
     ],
     "packages-dev": [

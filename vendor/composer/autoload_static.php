@@ -71,6 +71,7 @@ class ComposerStaticInit634a937ba1eabb0ab3e4c5f805e985ac
         '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '1cfd2761b63b0a29ed23657ea394cb2d' => __DIR__ . '/..' . '/topthink/think-captcha/src/helper.php',
+        '39594db8502267d6df2fe2dca5f3914d' => __DIR__ . '/..' . '/zzstudio/think-addons/src/helper.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -144,6 +145,7 @@ class ComposerStaticInit634a937ba1eabb0ab3e4c5f805e985ac
             1 => __DIR__ . '/..' . '/topthink/think-helper/src',
             2 => __DIR__ . '/..' . '/topthink/think-orm/src',
             3 => __DIR__ . '/..' . '/topthink/think-template/src',
+            4 => __DIR__ . '/..' . '/zzstudio/think-addons/src',
         ),
         'app\\' => 
         array (
