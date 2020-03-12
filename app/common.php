@@ -262,6 +262,8 @@ function array2string($info)
 function textareaBr($info)
 {
     $info = str_replace("\r\n", "<br />", $info);
+    $info = str_replace("\n", "<br />", $info);
+    $info = str_replace("\r", "<br />", $info);
     return $info;
 }
 
