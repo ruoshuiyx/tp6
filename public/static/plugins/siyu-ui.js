@@ -538,8 +538,10 @@
 
             // 修改状态
             state: function(id, url) {
-                var data = {"id": id};
-                $.operate.submit(url, "post", "json", data);
+                $.modal.confirm("确认要更改状态吗?", function () {
+                    var data = {"id": id};
+                    $.operate.submit(url, "post", "json", data);
+                });
             },
 
             // 代码生成
@@ -634,7 +636,7 @@
 
             // 保存结果弹出msg刷新table表格
             ajaxSuccess: function (result) {
-                if (result.error == 0) {
+                if (result.error == 0 || result.code == 1) {
                     $.modal.msgSuccess(result.msg);
                     $.table.refresh();
                 } else {
