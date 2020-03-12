@@ -192,7 +192,7 @@ class Plugin extends Base
                 if ($result['code'] == 0) {
                     $this->success('安装成功!');
                 } else {
-                    $this->error($result['code']);
+                    $this->error($result['msg']);
                 }
             } else {
                 $this->error('插件安装失败');
