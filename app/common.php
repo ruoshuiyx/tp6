@@ -31,6 +31,9 @@ function getUrl($v)
 function getShowUrl($v)
 {
     if ($v) {
+        if (isset($v['url']) && !empty($v['url'])) {
+            return $v['url'];
+        }
         $cate = \app\common\model\Cate::field('id,cate_folder,module_id')
             ->where('id', $v['cate_id'])
             ->find();

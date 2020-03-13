@@ -128,6 +128,9 @@ class Error extends Base
             ->where('id', $id)
             ->find();
         $info = changefield($info, $this->moduleId);
+        if (isset($info['url']) && !empty($info['url'])) {
+            return redirect($info['url']);
+        }
         $info['url'] = getShowUrl($info);
 
         // tdk
