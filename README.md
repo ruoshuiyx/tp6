@@ -21,7 +21,7 @@ SIYUCMS V6.1 快速开发内容管理系统
 
 > 访问后台并登录查看是否正常，后台目录为http://www.yourwebsite.com/admin （如无法访问请尝试隐藏index.php https://www.kancloud.cn/ruoshuiyx/siyucms/1032705）
 
-> 默认后台用户名：admin 密码:admin
+> 默认后台用户名：admin 密码：admin
 
 ## 演示
 
