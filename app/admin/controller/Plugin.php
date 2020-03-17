@@ -53,23 +53,24 @@ class Plugin extends Base
             ];
             return $result;
         }
+
         return TableBuilder::getInstance()
             ->addColumns([ // 批量添加列
                 ['name', '编号'],
                 ['title', '插件名称'],
                 ['description', '插件介绍'],
-                ['status', '状态(安装/卸载)', 'status', '0',[
-                    ['0' => '未安装'],
-                    ['1' => '已安装']
+                ['status', '状态(启用/禁用)', 'status', '0',[
+                    ['0' => '禁用'],
+                    ['1' => '启用']
                 ]],
                 ['author', '作者'],
                 ['version', '版本'],
-                ['right_button', '操作', 'btn']
+                ['button', '操作', 'text']
             ])
             ->setUniqueId('name')
-            ->addRightButton('edit', ['title' => '配置'])
+            //->addRightButton('edit', ['title' => '配置'])
             ->setEditUrl(url('config', ['name' => '__id__']))
-            ->addTopButtons([])            // 设置顶部按钮组
+            ->setExtraJs($this->makeExtraJs())
             ->fetch();
     }
 
@@ -107,10 +108,22 @@ class Plugin extends Base
         }
     }
 
-    // 更改插件状态 [安装/卸载]
+    // 更改插件状态 [启用/禁用]
     public function state(string $id)
     {
         return ThinkAddons::state($id);
+    }
+
+    // 安装插件
+    public function install(string $id)
+    {
+        return ThinkAddons::install($id);
+    }
+
+    // 卸载插件
+    public function uninstall(string $id)
+    {
+        return ThinkAddons::uninstall($id);
     }
 
     // =========================================
@@ -314,4 +327,27 @@ class Plugin extends Base
         return $columns;
     }
 
+    // 生成列表页额外JS
+    private function makeExtraJs()
+    {
+        $js = '<script type="text/javascript">
+                // 安装
+                $.operate.pluginInstall = function(id) {
+                    var url = \''.url('install').'\';
+                    $.modal.confirm("确认要安装?", function () {
+                        var data = {"id": id};
+                        $.operate.submit(url, "post", "json", data);
+                    });
+                }
+                // 卸载
+                $.operate.pluginUninstall = function(id) {
+                    var url = \''.url('uninstall').'\';
+                    $.modal.confirm("确认要卸载?", function () {
+                        var data = {"id": id};
+                        $.operate.submit(url, "post", "json", data);
+                    });
+                }
+            </script>';
+        return $js;
+    }
 }

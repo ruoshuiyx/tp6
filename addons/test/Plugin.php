@@ -15,7 +15,8 @@ class Plugin extends Addons
         'name'        => 'test',            // 插件标识
         'title'       => '插件测试',         // 插件名称
         'description' => 'thinkph6插件测试', // 插件简介
-        'status'      => 0,                 // 状态[1 已安装，0未安装]
+        'status'      => 0,                 // 状态[1 启用，0 禁用]
+        'install'     => 0,                 // 是否已安装[1 已安装，0 未安装]
         'author'      => 'SIYUCMS',         // 作者
         'version'     => '1.0',             // 版本
     ];

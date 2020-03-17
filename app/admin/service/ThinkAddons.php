@@ -59,6 +59,20 @@ class ThinkAddons
             if ($object) {
                 // 获取插件基础信息
                 $info = $object->getInfo();
+
+                // 增加右侧按钮组
+                $str = '';
+                if ($info['install'] == 1) {
+                    // 已安装，增加配置按钮
+                    $str .= '<a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="$.operate.edit(\''.$name.'\')"><i class="fa fa-edit"></i> 配置</a> ';
+                    $str .= '<a class="btn btn-danger btn-xs confirm" href="javascript:void(0)" onclick="$.operate.pluginUninstall(\'' . $name . '\')"><i class="fa fa-edit"></i> 卸载</a> ';
+                } else {
+                    // 未安装，增加安装按钮
+                    $str = '<a class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="$.operate.pluginInstall(\'' . $name . '\')"><i class="fa fa-edit"></i> 安装</a>';
+                }
+
+                $info['button'] = $str;
+
                 $list[] = $info;
             }
         }
@@ -123,7 +137,7 @@ class ThinkAddons
         }
     }
 
-    // 执行安装或卸载
+    // 启用插件或禁用插件
     public function state(string $name)
     {
         $check = $this->check($name);
@@ -143,12 +157,14 @@ class ThinkAddons
                 'msg'  => '未找到该插件的信息'
             ];
         } else {
-            if ($info['status'] == 1) {
-                // 卸载
-                return $this->uninstall($name);
+            // 请先安装
+            if ($info['install'] != 1) {
+                return [
+                    'code' => 0,
+                    'msg'  => '请先安装该插件',
+                ];
             } else {
-                // 安装
-                return $this->install($name);
+                return $this->changeStatus($name);
             }
         }
     }
@@ -163,8 +179,9 @@ class ThinkAddons
 
         if (false !== $object->install()) {
             $info['status'] = 1;
+            $info['install'] = 1;
             try {
-// 更新或创建插件的ini文件
+                // 更新或创建插件的ini文件
                 $result = $this->setPluginIni($name, $info);
                 if ($result['code'] == 0) {
                     return [
@@ -204,6 +221,7 @@ class ThinkAddons
 
         if (false !== $object->install()) {
             $info['status'] = 0;
+            $info['install'] = 0;
             // 更新或创建插件的ini文件
             $result = $this->setPluginIni($name, $info);
             if ($result['code'] == 0) {
@@ -223,6 +241,43 @@ class ThinkAddons
                 'msg'  => '插件实例化失败',
             ];
         }
+    }
+
+    // 启用/禁用插件
+    public function changeStatus(string $name)
+    {
+        // 实例化插件
+        $object = $this->getInstance($name);
+        // 获取插件基础信息
+        $info = $object->getInfo();
+
+        if (false !== $object->install()) {
+            $info['status'] = $info['status'] == 1 ? 0 : 1;
+            try {
+                // 更新或创建插件的ini文件
+                $result = $this->setPluginIni($name, $info);
+                if ($result['code'] == 0) {
+                    return [
+                        'code' => 1,
+                        'msg'  => $result['msg'],
+                    ];
+                }
+            } catch (\Exception $e) {
+                return [
+                    'code' => 0,
+                    'msg'  => '状态变动失败：' . $e->getMessage(),
+                ];
+            }
+        } else {
+            return [
+                'code' => 0,
+                'msg'  => '插件实例化失败',
+            ];
+        }
+        return [
+            'code' => 1,
+            'msg'  => '状态变动成功',
+        ];
     }
 
     // ===========================================
