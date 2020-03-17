@@ -143,13 +143,23 @@ class Cate extends Base
         $info = $model::edit($id)->toArray();
         // 获取字段信息
         $coloumns = MakeBuilder::getAddColumns($this->tableName, $info);
-        // 重置`所属模块`的选项
-        foreach ($coloumns as &$coloumn) {
+
+        // 重置`所属模块`和`上级栏目`的选项
+        foreach ($coloumns as $k => $coloumn) {
             if ($coloumn[1] == 'module_id') {
-                $coloumn[4] = $this->getModuleIds();
-                break;
+                $coloumns[$k][4] = $this->getModuleIds();
+            }
+            if ($coloumn[1] == 'parent_id') {
+                $model = '\app\common\model\\' . $this->modelName;
+                $pidOptions = $model::getPidOptions();
+                $coloumns[$k][4] = $pidOptions;
+                // 设置父ID默认值
+                if ($info['parent_id']) {
+                    $coloumns[$k][5] = $info['parent_id'];
+                }
             }
         }
+
         // 获取分组后的字段信息
         $groups = MakeBuilder::getgetAddGroups($this->modelName, $this->tableName, $coloumns);
 
