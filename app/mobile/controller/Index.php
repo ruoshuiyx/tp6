@@ -51,16 +51,16 @@ class Index extends Base
 
     // 搜索
     public function search(){
-        $search = Request::param('search');//关键字
+        $search = Request::param('search'); // 关键字
         if(empty($search)){
             $this->error('请输入关键词');
         }
 
         $view = [
-            'cate'        => null,
-            'search'      => $search,       //关键字
-            'system'      => $this->system, //系统信息
-            'public'      => $this->public, //公共目录
+            'cate'       => ['topid' => 0], // 栏目信息
+            'search'      => $search,       // 关键字
+            'system'      => $this->system, // 系统信息
+            'public'      => $this->public, // 公共目录
             'title'       => $this->system['title'] ? $this->system['title'] : $this->system['name'], //seo信息
             'keywords'    => $this->system['key'],   //seo信息
             'description' => $this->system['des'],   //seo信息
