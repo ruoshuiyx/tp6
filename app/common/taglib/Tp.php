@@ -254,7 +254,7 @@ class Tp extends TagLib {
 
         $parse  = '<?php ';
         $parse .= '
-                $__MODULE__ = \app\common\model\Module::where("table_name","' . strtolower($table) . '")->find("id");
+                $__MODULE__ = \app\common\model\Module::where("table_name","' . strtolower($table) . '")->find();
                 $__MODEL__ = \'\app\common\model\\\\\' . $__MODULE__->model_name;
 
                 $__LIST__ = $__MODEL__::where("' . $where . '")
