@@ -260,7 +260,7 @@ class MakeBuilder
                     $format = str_replace("ss", "s", $format);
                     $format = $format ?? 'Y-m-d H:i:s';
                 }
-                $field['setup']['default'] = $field['setup']['default'] > 0 ? date($format, $field['setup']['default']) : '';
+                $field['setup']['default'] = (int)$field['setup']['default'] > 0 && is_int($field['setup']['default']) ? date($format, $field['setup']['default']) : $field['setup']['default'];
                 $columns[] = [
                     $field['type'],                // 类型
                     $field['field'],               // 字段名称
