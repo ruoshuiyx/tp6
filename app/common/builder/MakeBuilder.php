@@ -244,18 +244,21 @@ class MakeBuilder
             elseif ($field['type'] == 'date' || $field['type'] == 'time' || $field['type'] == 'datetime') {
                 // 使用每个字段设定的格式
                 if ($field['type'] == 'time') {
-                    $field['setup']['format'] = str_replace("HH", "h", $field['setup']['format']);
-                    $field['setup']['format'] = str_replace("mm", "i", $field['setup']['format']);
-                    $field['setup']['format'] = str_replace("ss", "s", $field['setup']['format']);
-                    $format = $field['setup']['format'] ?? 'H:i:s';
+                    $format = $field['setup']['format'];
+                    $format = str_replace("HH", "h", $format);
+                    $format = str_replace("mm", "i", $format);
+                    $format = str_replace("ss", "s", $format);
+                    $format = $format ?? 'H:i:s';
                 } else {
-                    $field['setup']['format'] = str_replace("yyyy", "Y", $field['setup']['format']);
-                    $field['setup']['format'] = str_replace("mm", "m", $field['setup']['format']);
-                    $field['setup']['format'] = str_replace("dd", "d", $field['setup']['format']);
-                    $field['setup']['format'] = str_replace("hh", "h", $field['setup']['format']);
-                    $field['setup']['format'] = str_replace("ii", "i", $field['setup']['format']);
-                    $field['setup']['format'] = str_replace("ss", "s", $field['setup']['format']);
-                    $format = $field['setup']['format'] ?? 'Y-m-d H:i:s';
+                    $format = $field['setup']['format'];
+
+                    $format = str_replace("yyyy", "Y", $format);
+                    $format = str_replace("mm", "m", $format);
+                    $format = str_replace("dd", "d", $format);
+                    $format = str_replace("hh", "h", $format);
+                    $format = str_replace("ii", "i", $format);
+                    $format = str_replace("ss", "s", $format);
+                    $format = $format ?? 'Y-m-d H:i:s';
                 }
                 $field['setup']['default'] = $field['setup']['default'] > 0 ? date($format, $field['setup']['default']) : '';
                 $columns[] = [
