@@ -37,7 +37,7 @@ class Admin
         // 获取当前用户
         $admin_id = Session::get('admin.id');
         if (empty($admin_id)) {
-            return redirect('/admin/login/index');
+            return redirect((string)url('Login/index'));
         }
 
         // 定义方法白名单

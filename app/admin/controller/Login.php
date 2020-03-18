@@ -35,6 +35,10 @@ class Login
     // 登录页面
     public function index()
     {
+        // 已登录自动跳转
+        if (Session::has('admin')) {
+            return redirect((string)url('Index/index'));
+        }
         // 查找系统设置
         $system = \app\common\model\System::find(1);
 
