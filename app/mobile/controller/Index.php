@@ -97,7 +97,7 @@ class Index extends Base
     public function add(){
         $result = ['error'=>'','msg'=>''];
         if (Request::isPost()) {
-            $data = Request::post();
+            $data = Request::post('', '', 'htmlspecialchars');
             $data['create_time'] = time();
             $data['status'] = 0;
 

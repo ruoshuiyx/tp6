@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2020-03-13 08:16:38
+Date: 2020-03-18 15:00:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -542,7 +542,7 @@ INSERT INTO `tp_cate` VALUES ('8', '1580907289', '1580907289', '4', '1', '产品
 INSERT INTO `tp_cate` VALUES ('9', '1580907315', '1580907315', '41', '1', '精选产品', '', '', '8', '22', '', '', '', '', '', '', '', '', '', '0', '1', '0', '0');
 INSERT INTO `tp_cate` VALUES ('10', '1580907339', '1580907339', '42', '1', '热销产品', '', '', '8', '22', '', '', '', '', '', '', '', '', '', '0', '1', '0', '0');
 INSERT INTO `tp_cate` VALUES ('11', '1580907374', '1580907374', '5', '1', '资料下载', 'Download', 'download', '', '23', '', '/uploads/20181224/f4ef6f5df6abac86e8c685b2f2549079.jpg', '', '', '', '', '', '', '', '0', '1', '0', '0');
-INSERT INTO `tp_cate` VALUES ('12', '1580907407', '1580907407', '6', '1', '优秀团队', 'Team', 'team', '', '24', '', '/uploads/20181224/bf3d6e8ff8f21760572ac25dd216daf9.jpg', '', '', '', '', '', '', '', '0', '1', '0', '0');
+INSERT INTO `tp_cate` VALUES ('12', '1580907407', '1580907407', '6', '1', '优秀团队', 'Team', 'team', '0', '24', '', '/uploads/20181224/bf3d6e8ff8f21760572ac25dd216daf9.jpg', '', '', '', '', '', '', '', '4', '1', '0', '0');
 INSERT INTO `tp_cate` VALUES ('13', '1580907441', '1580907441', '7', '1', '联系我们', 'Contact Us', 'contact', '', '25', '', '/uploads/20181224/65ea8dcb1cbd16c8dc46144069afeaf5.jpg', '', '', '', '', '', '', '', '0', '1', '0', '0');
 
 -- ----------------------------
@@ -614,7 +614,7 @@ CREATE TABLE `tp_dictionary` (
   `sort` int(5) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
   `status` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tp_dictionary
@@ -641,6 +641,8 @@ INSERT INTO `tp_dictionary` VALUES ('19', '关闭', '0', '8', '关闭', '1580559
 INSERT INTO `tp_dictionary` VALUES ('20', '字段本身', '0', '9', '字段本身', '1580793928', '1580793928', '1', '1');
 INSERT INTO `tp_dictionary` VALUES ('21', '系统字典', '1', '9', '系统字典', '1580793956', '1580793956', '2', '1');
 INSERT INTO `tp_dictionary` VALUES ('22', '模型数据', '2', '9', '模型数据', '1580793975', '1580793975', '3', '1');
+INSERT INTO `tp_dictionary` VALUES ('23', '国内', '1', '10', '', '1584510855', '1584510855', '1', '1');
+INSERT INTO `tp_dictionary` VALUES ('24', '国外', '2', '10', '', '1584510871', '1584510871', '2', '1');
 
 -- ----------------------------
 -- Table structure for tp_dictionary_type
@@ -655,7 +657,7 @@ CREATE TABLE `tp_dictionary_type` (
   `remark` varchar(200) NOT NULL DEFAULT '' COMMENT '备注',
   `sort` int(5) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tp_dictionary_type
@@ -669,6 +671,7 @@ INSERT INTO `tp_dictionary_type` VALUES ('6', '顶部按钮', '1', '1580442606',
 INSERT INTO `tp_dictionary_type` VALUES ('7', '右侧按钮', '1', '1580444354', '1581165102', '列表页右侧按钮组', '6');
 INSERT INTO `tp_dictionary_type` VALUES ('8', '开关状态', '1', '1580559205', '1581165084', '1 开启， 0 关闭	', '3');
 INSERT INTO `tp_dictionary_type` VALUES ('9', '数据源', '1', '1580793811', '1581165226', '0 字段本身，1 系统字典， 2  模型数据', '8');
+INSERT INTO `tp_dictionary_type` VALUES ('10', '所属地区', '1', '1584510809', '1584510822', '', '10');
 
 -- ----------------------------
 -- Table structure for tp_download
@@ -735,7 +738,7 @@ CREATE TABLE `tp_field` (
   `setup` text COMMENT '其他设置',
   `group_id` char(8) NOT NULL DEFAULT '0' COMMENT '字段分组',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=342 DEFAULT CHARSET=utf8 COMMENT='模型字段表';
+) ENGINE=MyISAM AUTO_INCREMENT=344 DEFAULT CHARSET=utf8 COMMENT='模型字段表';
 
 -- ----------------------------
 -- Records of tp_field
@@ -1069,6 +1072,8 @@ INSERT INTO `tp_field` VALUES ('338', '21', 'url', '跳转地址', '如需直接
 INSERT INTO `tp_field` VALUES ('339', '22', 'url', '跳转地址', '如需直接跳转，请填写完整的网站地址或相对地址', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '16', '跳转地址', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('340', '23', 'url', '跳转地址', '如需直接跳转，请填写完整的网站地址或相对地址', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '16', '跳转地址', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('341', '24', 'url', '跳转地址', '如需直接跳转，请填写完整的网站地址或相对地址', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '16', '跳转地址', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('342', '24', 'area', '区域', '', '0', '0', '4', 'radio', '1', '', '', '10', '1', '1', '1', '0', '0', '=', '1', '17', '区域', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('343', '24', 'sex', '性别', '', '0', '0', '4', 'select', '1', '', '', '4', '1', '1', '1', '0', '0', '=', '1', '18', '', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '0');
 
 -- ----------------------------
 -- Table structure for tp_field_group
@@ -1386,16 +1391,30 @@ CREATE TABLE `tp_team` (
   `description` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
   `template` varchar(30) NOT NULL DEFAULT '' COMMENT '模板',
   `url` varchar(255) NOT NULL DEFAULT '' COMMENT '跳转地址',
+  `area` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '区域',
+  `sex` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '性别',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='团队模块';
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COMMENT='团队模块';
 
 -- ----------------------------
 -- Records of tp_team
 -- ----------------------------
-INSERT INTO `tp_team` VALUES ('1', '1581079608', '1581079608', '50', '1', '12', '总设计师', '管理员', '本站', '', '多年从业经验，精益求精，客户至上，您的满意是我们不懈的追求！', '/uploads/20181224/6d003cbc391614dda73fbb2ab2bb109c.jpg', '', '', '', '0', '', '', '', '');
-INSERT INTO `tp_team` VALUES ('2', '1581079640', '1581079640', '50', '1', '12', '销售总监', '管理员', '本站', '', '多年从业经验，精益求精，客户至上，您的满意是我们不懈的追求！', '/uploads/20181224/02e41d74e1ec2531fede0b3196ae953b.jpg', '', '', '', '1', '', '', '', '');
-INSERT INTO `tp_team` VALUES ('3', '1581079668', '1581079668', '50', '1', '12', '技术总监', '管理员', '本站', '', '多年从业经验，精益求精，客户至上，您的满意是我们不懈的追求！', '/uploads/20181224/7ea6c84dc1454ab28a4d54c90655e6e0.jpg', '', '', '', '0', '', '', '', '');
-INSERT INTO `tp_team` VALUES ('4', '1581079697', '1581079697', '50', '1', '12', '网络总监', '管理员', '本站', '', '多年从业经验，精益求精，客户至上，您的满意是我们不懈的追求！', '/uploads/20181224/afd088573e24003aadddb5744649dda9.jpg', '', '', '', '0', '', '', '', '');
+INSERT INTO `tp_team` VALUES ('1', '1581079608', '1581079608', '50', '1', '12', '国内总设计师', '管理员', '本站', '', '多年从业经验，精益求精，客户至上，您的满意是我们不懈的追求！', '/uploads/20181224/6d003cbc391614dda73fbb2ab2bb109c.jpg', '', '', '', '0', '', '', '', '', '1', '0');
+INSERT INTO `tp_team` VALUES ('2', '1581079640', '1581079640', '50', '1', '12', '国外销售总监', '管理员', '本站', '', '多年从业经验，精益求精，客户至上，您的满意是我们不懈的追求！', '/uploads/20181224/02e41d74e1ec2531fede0b3196ae953b.jpg', '', '', '', '1', '', '', '', '', '2', '2');
+INSERT INTO `tp_team` VALUES ('3', '1581079668', '1581079668', '50', '1', '12', '国内技术总监', '管理员', '本站', '', '多年从业经验，精益求精，客户至上，您的满意是我们不懈的追求！', '/uploads/20181224/7ea6c84dc1454ab28a4d54c90655e6e0.jpg', '', '', '', '0', '', '', '', '', '1', '2');
+INSERT INTO `tp_team` VALUES ('4', '1581079697', '1581079697', '50', '1', '12', '国内网络总监', '管理员', '本站', '', '多年从业经验，精益求精，客户至上，您的满意是我们不懈的追求！', '/uploads/20181224/afd088573e24003aadddb5744649dda9.jpg', '', '', '', '0', '', '', '', '', '1', '1');
+INSERT INTO `tp_team` VALUES ('5', '1581079608', '1581079608', '50', '1', '12', '国内总设计师', '管理员', '本站', '', '多年从业经验，精益求精，客户至上，您的满意是我们不懈的追求！', '/uploads/20181224/6d003cbc391614dda73fbb2ab2bb109c.jpg', '', '', '', '0', '', '', '', '', '1', '0');
+INSERT INTO `tp_team` VALUES ('6', '1581079640', '1581079640', '50', '1', '12', '国外销售总监', '管理员', '本站', '', '多年从业经验，精益求精，客户至上，您的满意是我们不懈的追求！', '/uploads/20181224/02e41d74e1ec2531fede0b3196ae953b.jpg', '', '', '', '1', '', '', '', '', '2', '2');
+INSERT INTO `tp_team` VALUES ('7', '1581079668', '1581079668', '50', '1', '12', '国内技术总监', '管理员', '本站', '', '多年从业经验，精益求精，客户至上，您的满意是我们不懈的追求！', '/uploads/20181224/7ea6c84dc1454ab28a4d54c90655e6e0.jpg', '', '', '', '0', '', '', '', '', '1', '2');
+INSERT INTO `tp_team` VALUES ('8', '1581079697', '1581079697', '50', '1', '12', '国内网络总监', '管理员', '本站', '', '多年从业经验，精益求精，客户至上，您的满意是我们不懈的追求！', '/uploads/20181224/afd088573e24003aadddb5744649dda9.jpg', '', '', '', '0', '', '', '', '', '1', '1');
+INSERT INTO `tp_team` VALUES ('9', '1581079608', '1581079608', '50', '1', '12', '国内总设计师', '管理员', '本站', '', '多年从业经验，精益求精，客户至上，您的满意是我们不懈的追求！', '/uploads/20181224/6d003cbc391614dda73fbb2ab2bb109c.jpg', '', '', '', '0', '', '', '', '', '1', '0');
+INSERT INTO `tp_team` VALUES ('10', '1581079640', '1581079640', '50', '1', '12', '国外销售总监', '管理员', '本站', '', '多年从业经验，精益求精，客户至上，您的满意是我们不懈的追求！', '/uploads/20181224/02e41d74e1ec2531fede0b3196ae953b.jpg', '', '', '', '1', '', '', '', '', '2', '2');
+INSERT INTO `tp_team` VALUES ('11', '1581079668', '1581079668', '50', '1', '12', '国内技术总监', '管理员', '本站', '', '多年从业经验，精益求精，客户至上，您的满意是我们不懈的追求！', '/uploads/20181224/7ea6c84dc1454ab28a4d54c90655e6e0.jpg', '', '', '', '0', '', '', '', '', '1', '2');
+INSERT INTO `tp_team` VALUES ('12', '1581079697', '1581079697', '50', '1', '12', '国内网络总监', '管理员', '本站', '', '多年从业经验，精益求精，客户至上，您的满意是我们不懈的追求！', '/uploads/20181224/afd088573e24003aadddb5744649dda9.jpg', '', '', '', '0', '', '', '', '', '1', '1');
+INSERT INTO `tp_team` VALUES ('13', '1581079608', '1581079608', '50', '1', '12', '国内保密设计师', '管理员', '本站', '', '多年从业经验，精益求精，客户至上，您的满意是我们不懈的追求！', '/uploads/20181224/6d003cbc391614dda73fbb2ab2bb109c.jpg', '', '', '', '0', '', '', '', '', '1', '0');
+INSERT INTO `tp_team` VALUES ('14', '1581079640', '1581079640', '50', '1', '12', '国外销售总监', '管理员', '本站', '', '多年从业经验，精益求精，客户至上，您的满意是我们不懈的追求！', '/uploads/20181224/02e41d74e1ec2531fede0b3196ae953b.jpg', '', '', '', '1', '', '', '', '', '2', '2');
+INSERT INTO `tp_team` VALUES ('15', '1581079668', '1581079668', '50', '1', '12', '国内技术总监', '管理员', '本站', '', '多年从业经验，精益求精，客户至上，您的满意是我们不懈的追求！', '/uploads/20181224/7ea6c84dc1454ab28a4d54c90655e6e0.jpg', '', '', '', '0', '', '', '', '', '1', '2');
+INSERT INTO `tp_team` VALUES ('16', '1581079697', '1581079697', '50', '1', '12', '国内网络总监', '管理员', '本站', '', '多年从业经验，精益求精，客户至上，您的满意是我们不懈的追求！', '/uploads/20181224/afd088573e24003aadddb5744649dda9.jpg', '', '', '', '0', '', '', '', '', '1', '1');
 
 -- ----------------------------
 -- Table structure for tp_users

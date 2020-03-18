@@ -1738,10 +1738,9 @@ body {
 /*----------------------------------------*/
 .course-page {padding-top: 100px;}
 .form-container {
-    background: rgba(0, 0, 0, 0) url("img/banner/5.jpg") no-repeat scroll center top;
-    color: #555454;
+    color: #2d3e50;
     font-family: "montserratregular";
-    font-size: 12px;
+    font-size: 14px;
     margin: -60px 0 0;
     overflow: hidden;
     padding: 38px 64px;
@@ -1749,7 +1748,7 @@ body {
     z-index: 3;
 }
 .form-container:after {
-    background: rgba(134, 188, 66, 0.85) none repeat scroll 0 0;
+    background: rgba(134, 188, 66, 1.0) none repeat scroll 0 0;
     position: absolute;
     left: 0;
     top: 0;
@@ -1795,6 +1794,8 @@ body {
     margin-bottom: 83px;
 }
 .course-page .pagination-content .pagination {margin-bottom: 0;}
+.box-select a{ padding:0 10px}
+.box-select a:hover,.box-select a.hover{ color:#ffffff}
 /*----------------------------------------*/
 /*  17.1 Teachers Area
 /*----------------------------------------*/

@@ -27,12 +27,38 @@
     <!--Little Nav Start-->
     {include file="common/nav"/} 
     <!--End of Little Nav-->
-    <!--Teachers Area Start--> 
+    <!--Search Start-->
+       <div class="search-category">
+           <div class="container">
+               <div class="row">
+                   <div class="col-md-10 col-md-offset-1">
+                           <div class="form-container">
+                               <div class="box-select">
+                                   区域：
+                                   <a href="{$Request.baseUrl}" {if $Request.get.area == ''}class="hover"{/if}>全部</a>
+                                   {tp:dict name="list" dict_type="10" field="area"}
+                                   <a href="{$list.url}" {if $Request.get.area == $list.dict_value}class="hover"{/if}>{$list.dict_label}</a>
+                                   {/tp:dict}
+                               </div>
+                               <div class="box-select">
+                                   性别：
+                                   <a href="{$Request.baseUrl}" {if $Request.get.sex == ''}class="hover"{/if}>全部</a>
+                                   {tp:dict name="list" dict_type="4" field="sex"}
+                                   <a href="{$list.url}" {if $Request.get.sex == $list.dict_value}class="hover"{/if}>{$list.dict_label}</a>
+                                   {/tp:dict}
+                               </div>
+                           </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+    <!--Search End-->
+    <!--Teachers Area Start-->
     <div class="teachers-area">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                	{tp:list name="list"}
+                	{tp:list search="area,sex" name="list"}
                     <div class="col-lg-3 col-md-4 col-sm-6">
                         <div class="single-teacher-item">
                             {if $list.image}

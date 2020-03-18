@@ -532,3 +532,41 @@ function getCateId()
     return $result;
 }
 
+/**
+ * 改变前台字典数据标签取得的数据
+ * @param array $list
+ * @return array
+ */
+function changeDict(array $list, string $field)
+{
+    $get = \think\facade\Request::except(['page'], 'get');
+    foreach ($list as $k => $v) {
+        $url = $get;
+        $url[$field] = $v['dict_value'];
+        $list[$k]['url'] = (string)url(\think\facade\Request::controller().'/'.\think\facade\Request::action(), $url);
+    }
+    return $list;
+}
+
+/**
+ * 改变模版标签中分类字段传递
+ * @param string $field 需要分类查询的字段，通过,分割或|分割
+ * @return string
+ */
+function getSearchField(string $field)
+{
+    $sql = '';
+    if ($field) {
+        $field = str_replace('|', ',', $field);
+        $fieldArr = explode(',', $field);
+        foreach ($fieldArr as $k => $v) {
+            if (!empty($v)) {
+                // 查询浏览器参数是否包含此参数
+                if (\think\facade\Request::has($v, 'get')) {
+                    $sql .= ' AND ' . $v . ' = ' . \think\facade\Request::get($v, '', 'htmlspecialchars') . ' ';
+                }
+            }
+        }
+    }
+    return $sql;
+}
