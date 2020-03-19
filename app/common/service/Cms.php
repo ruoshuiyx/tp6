@@ -181,6 +181,21 @@ class Cms
     }
 
     /**
+     * 根据表名称查询模型ID
+     * @param string $tableName [表名称，不含前缀]
+     * @return mixed|string
+     */
+    private function getModelId(string $tableName)
+    {
+        $module = \app\common\model\Module::where('table_name', $tableName)->find();
+        if ($module) {
+            return $module->id;
+        } else {
+            return 0;
+        }
+    }
+
+    /**
      * 格式化详情页面的内容输出
      * @param string $tableName
      * @param array $info
@@ -213,8 +228,7 @@ class Cms
                     foreach ($tags as $k => $tag) {
                         $tags[$k] = [
                             'name' => $tag,
-                            'url'  => '',
-                            //'url' => \think\facade\Route::buildUrl('index/tag', ['module' => $moduleId, 't' => $tag])->__toString(),
+                            'url' => \think\facade\Route::buildUrl('index/tag', ['module' => $this->getModelId($tableName), 't' => $tag])->__toString(),
                         ];
                     }
                     $info[$field['field']] = $tags;
