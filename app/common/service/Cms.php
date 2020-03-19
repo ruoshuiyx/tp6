@@ -216,7 +216,9 @@ class Cms
             } elseif ($field['type'] == 'radio' || $field['type'] == 'checkbox') {
                 $info[$field['field']] = $this->changeOptionsValue($options, $info[$field['field']], false);
             } elseif ($field['type'] == 'select' || $field['type'] == 'select2') {
-                $info[$field['field']] = $this->changeOptionsValue($options, $info[$field['field']], false);
+                if ($field['field'] !== 'cate_id') {
+                    $info[$field['field']] = $this->changeOptionsValue($options, $info[$field['field']], false);
+                }
             } elseif ($field['type'] == 'number') {
             } elseif ($field['type'] == 'hidden') {
             } elseif ($field['type'] == 'date' || $field['type'] == 'time' || $field['type'] == 'datetime') {
