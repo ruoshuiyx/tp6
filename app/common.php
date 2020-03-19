@@ -563,7 +563,7 @@ function getSearchField(string $field)
             if (!empty($v)) {
                 // 查询浏览器参数是否包含此参数
                 if (\think\facade\Request::has($v, 'get')) {
-                    $sql .= ' AND ' . $v . ' = ' . \think\facade\Request::get($v, '', 'htmlspecialchars') . ' ';
+                    $sql .= ' AND FIND_IN_SET(\'' . \think\facade\Request::get($v, '', 'htmlspecialchars') . '\', ' . $v . ') ';
                 }
             }
         }
