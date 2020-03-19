@@ -80,22 +80,22 @@ class Index extends Base
 
     // 标签
     public function tag(){
-        $tag = Request::param('t');
-        if(empty($tag)){
+        $tag = Request::param('t', '', 'htmlspecialchars');
+        if (empty($tag)) {
             $this->error('请输入关键词');
         }
 
         $view = [
-            'cate'        => null,
-            'tag'         => $tag,          //关键字
-            'system'      => $this->system, //系统信息
-            'public'      => $this->public, //公共目录
-            'title'       => $this->system['title'] ? $this->system['title'] : $this->system['name'], //seo信息
-            'keywords'    => $this->system['key'],   //seo信息
-            'description' => $this->system['des'],   //seo信息
+            'cate'       => ['topid' => 0],          // 栏目信息
+            'tag'         => $tag,                   // 关键字
+            'system'      => $this->system,          // 系统信息
+            'public'      => $this->public,          // 公共目录
+            'title'       => $this->system['title'] ? $this->system['title'] : $this->system['name'],
+            'keywords'    => $this->system['key'],
+            'description' => $this->system['des'],
         ];
 
-        $template = $this->template.'tag.html';
+        $template = $this->template . 'tag.html';
         View::assign($view);
         return View::fetch($template);
     }
