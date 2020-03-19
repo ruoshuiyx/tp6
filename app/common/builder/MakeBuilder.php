@@ -121,7 +121,7 @@ class MakeBuilder
     {
         // 查询模型的主键
         $module = \app\common\model\Module::where('table_name', $tableName)->find();
-        $model = '\app\common\model\\' . $module->model_name;;
+        $model = '\app\common\model\\' . $module->model_name;
         $user = new $model;
         $pk = $user->getPk();
 
@@ -445,7 +445,7 @@ class MakeBuilder
      * @param array $field 字段信息
      * @return array
      */
-    private function getFieldOptions(array $field)
+    public function getFieldOptions(array $field)
     {
         // 0 字段本身，1 系统字典，2 模型数据
         if ($field['data_source'] == 1) {

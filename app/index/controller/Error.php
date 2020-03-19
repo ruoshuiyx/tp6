@@ -25,6 +25,7 @@
  */
 namespace app\index\controller;
 
+use app\common\facade\Cms;
 use app\common\model\Cate;
 use app\common\model\Field;
 use app\common\model\Module;
@@ -41,44 +42,34 @@ class Error extends Base
     public function initialize()
     {
         parent::initialize();
-
-        if (Request::param('cate')){
+        if (Request::param('cate')) {
             // 当前模型ID
-            $this->moduleId = Cate::where('id', '=', Request::param('cate'))
-                ->value('module_id');
-        }else{
+            $this->moduleId = Cate::where('id', '=', Request::param('cate'))->value('module_id');
+        } else {
             // 当前模型ID
-            $this->moduleId = Cate::where('cate_folder', '=', Request::controller())
-                ->value('module_id');
+            $this->moduleId = Cate::where('cate_folder', '=', Request::controller())->value('module_id');
         }
         // 当前表名称
-        $this->tableName = Module::where('id', '=', $this->moduleId)
-            ->value('table_name');
-        //当前模型字段列表
+        $this->tableName = Module::where('id', '=', $this->moduleId)->value('table_name');
+        // 当前模型字段列表
         $this->fields = Field::getFieldList($this->moduleId);
     }
 
     // 列表
     public function index()
     {
-        // 栏目ID
+        // 获取栏目ID
         $catId = getCateId();
-        if (!empty($catId)) {
-            $cate = Cate::where('id', '=', $catId)
-                ->find();
-        } else {
+        if (empty($catId)) {
             $this->error('未找到对应栏目');
         }
-
-        // 设置顶级栏目，当顶级栏目不存在的时候顶级栏目为本身
-        $cate->topid = $cate['parent_id'] ? $cate['parent_id'] : $cate['id'];
-
+        // 获取栏目信息
+        $cate = Cms::getCateInfo($catId);
         // tdk
-        $title       = $cate['cate_name']   ?: $cate['catname'];     // 标题
-        $keywords    = $cate['keywords']    ?: $this->system['key']; // 关键词
-        $description = $cate['description'] ?: $this->system['des']; // 描述
-
-        // 单页模型
+        $tdk = Cms::getListTdk($cate, $this->system);
+        // 模板
+        $template = Cms::getListView($cate, $this->tableName);
+        // 单页模块
         if ($this->tableName == 'page') {
             $info = Db::name($this->tableName)
                 ->where('cate_id', '=', $cate['id'])
@@ -91,54 +82,38 @@ class Error extends Base
             'fields'      => $this->fields, // 字段列表
             'system'      => $this->system, // 系统信息
             'public'      => $this->public, // 公共目录
-            'title'       => $title,
-            'keywords'    => $keywords,
-            'description' => $description,
+            'title'       => $tdk['title'],
+            'keywords'    => $tdk['keywords'],
+            'description' => $tdk['description'],
         ];
 
-        $template = $cate['template_list'] ? str_replace('.html', '', $cate['template_list']) : $this->tableName . '_list';
         View::assign($view);
         return View::fetch($template);
     }
 
     // 详情
     public function info(string $id){
-        // 栏目ID
+        // 获取栏目ID
         $catId = getCateId();
-        if (!empty($catId)) {
-            $cate = Cate::where('id', '=', $catId)
-                ->find();
-        } else {
+        if (empty($catId)) {
             $this->error('未找到对应栏目');
         }
-
-        // 设置顶级栏目，当顶级栏目不存在的时候顶级栏目为本身
-        $cate->topid = $cate['parent_id'] ? $cate['parent_id'] : $cate['id'];
-
+        // 获取栏目信息
+        $cate = Cms::getCateInfo($catId);
         // 更新点击数
-        if ($id) {
-            Db::name($this->tableName)
-                ->where('id', $id)
-                ->inc('hits')
-                ->update();
-        }
-
-        // 查找详情信息
-        $info = Db::name($this->tableName)
-            ->where('id', $id)
-            ->find();
-        $info = changefield($info, $this->moduleId);
+        Cms::addHits($id, $this->tableName);
+        // 查找内容详情
+        $info = Cms::getInfo($id, $this->tableName);
+        // 跳转
         if (isset($info['url']) && !empty($info['url'])) {
             return redirect($info['url']);
         }
+        // 当前地址
         $info['url'] = getShowUrl($info);
-
         // tdk
-        $title       = $cate['cate_name']   ?: $cate['catname'];                       // 标题
-        $keywords    = $info['keywords']    ?:
-            ($cate['keywords']    ?: $this->system['key']);                            // 关键词
-        $description = $info['description'] ? $info['description'] :
-            ($cate['description'] ?: $this->system['des']);                            // 描述
+        $tdk = Cms::getInfoTdk($info, $cate, $this->system);
+        // 模板
+        $template = Cms::getInfoView($info, $cate, $this->tableName);
 
         $view = [
             'cate'        => $cate,         // 栏目信息
@@ -146,13 +121,11 @@ class Error extends Base
             'info'        => $info,         // 详情信息
             'system'      => $this->system, // 系统信息
             'public'      => $this->public, // 公共目录
-            'title'       => $title,
-            'keywords'    => $keywords,
-            'description' => $description,
+            'title'       => $tdk['title'],
+            'keywords'    => $tdk['keywords'],
+            'description' => $tdk['description'],
         ];
 
-        $template = $info['template'] ? str_replace('.html', '', $info['template']) :
-            ($cate['template_show'] ? str_replace('.html', '', $cate['template_show']) : $this->tableName . '_show');
         View::assign($view);
         return View::fetch($template);
     }

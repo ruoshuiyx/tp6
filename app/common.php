@@ -97,11 +97,11 @@ function changefield($info, $moduleId)
                     break;
                 case 'tag'://TAG标签
                     if (!empty($info[$field])) {
-                        $tags = explode(',',$info[$field]);
+                        $tags = explode(',', $info[$field]);
                         foreach ($tags as $k => $tag) {
                             $tags[$k] = [
                                 'name' => $tag,
-                                'url'  => \think\facade\Route::buildUrl('index/tag', ['module' => $moduleId, 't' => $tag])->__toString(),
+                                'url' => \think\facade\Route::buildUrl('index/tag', ['module' => $moduleId, 't' => $tag])->__toString(),
                             ];
                         }
                         $info[$field] = $tags;
@@ -569,4 +569,49 @@ function getSearchField(string $field)
         }
     }
     return $sql;
+}
+
+/**
+ * 无限分类-权限
+ * @param $cate            栏目
+ * @param string $lefthtml 分隔符
+ * @param int $pid         父ID
+ * @param int $lvl         层级
+ * @return array
+ */
+function tree($cate , $lefthtml = '|— ' , $pid = 0 , $lvl = 0 ){
+    $arr = array();
+    foreach ($cate as $v){
+        if ($v['pid'] == $pid) {
+            $v['lvl']      = $lvl + 1;
+            $v['lefthtml'] = str_repeat($lefthtml,$lvl);
+            $v['ltitle']   = $v['lefthtml'].$v['title'];
+            $arr[] = $v;
+            $arr = array_merge($arr, tree($cate, $lefthtml, $v['id'], $lvl+1));
+        }
+    }
+    return $arr;
+}
+
+/**
+ * 无限分类-权限
+ * @param $cate            栏目
+ * @param string $lefthtml 分隔符
+ * @param int $pid         父ID
+ * @param int $lvl         层级
+ * @return array
+ */
+function tree_three($cate , $lefthtml = '|— ' , $pid = 0 , $lvl = 0 ){
+    $arr = array();
+    foreach ($cate as $v){
+        $keys = array_keys($v);
+        if (end($v) == $pid) {
+            $v['lvl']      = $lvl + 1;
+            $v['lefthtml'] = str_repeat($lefthtml,$lvl);
+            $v[$keys[1]] = $v['lefthtml'] . $v[$keys[1]];
+            $arr[] = $v;
+            $arr = array_merge($arr, tree_three($cate, $lefthtml, $v[$keys[0]], $lvl+1));
+        }
+    }
+    return $arr;
 }
