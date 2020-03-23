@@ -404,6 +404,12 @@ $(document).on("click", '.juanzeng', function () {
     $.modal.open('捐赠', "/static/admin/images/shoukuan.png", 450, 533);
 })
 
+// 多图删除
+$(document).on('click','.remove_images',function(){
+    var remove = $(this).parent().parent();
+    remove.remove();
+})
+
 // 返回顶部显示
 $(window).scroll(function() {
     if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
