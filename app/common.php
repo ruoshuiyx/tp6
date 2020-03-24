@@ -549,19 +549,21 @@ function changeDict(array $list, string $field)
         $list[$k]['hover'] = 0;
         if (!empty($param)) {
             foreach ($param as $kk => $vv) {
-                if (strpos($vv, '|') !== false) {
-                    // 多选
-                    $paramArr = explode("|", $vv);
-                    foreach ($paramArr as $kkk => $vvv) {
-                        if ($vvv == $v['dict_value']) {
-                            $list[$k]['hover'] = 1;
-                            break;
+                if ($kk == $field) {
+                    if (strpos($vv, '|') !== false) {
+                        // 多选
+                        $paramArr = explode("|", $vv);
+                        foreach ($paramArr as $kkk => $vvv) {
+                            if ($vvv == $v['dict_value']) {
+                                $list[$k]['hover'] = 1;
+                                break;
+                            }
                         }
-                    }
-                } else {
-                    // 单选
-                    if ($vv == $v['dict_value']) {
-                        $list[$k]['hover'] = 1;
+                    } else {
+                        // 单选
+                        if ($vv == $v['dict_value']) {
+                            $list[$k]['hover'] = 1;
+                        }
                     }
                 }
             }
