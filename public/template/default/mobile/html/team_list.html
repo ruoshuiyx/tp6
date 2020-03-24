@@ -37,14 +37,15 @@
                                    区域：
                                    <a href="{$Request.baseUrl}" {if $Request.get.area == ''}class="hover"{/if}>全部</a>
                                    {tp:dict name="list" dict_type="10" field="area"}
-                                   <a href="{$list.url}" {if $Request.get.area == $list.dict_value}class="hover"{/if}>{$list.dict_label}</a>
+                                   <!--<a href="{$list.url}" {if $Request.get.area == $list.dict_value}class="hover"{/if}>{$list.dict_label}</a>-->
+                                   <a href="{$list.url}" {if $list.hover}class="hover"{/if}>{$list.dict_label}</a>
                                    {/tp:dict}
                                </div>
                                <div class="box-select">
                                    性别：
                                    <a href="{$Request.baseUrl}" {if $Request.get.sex == ''}class="hover"{/if}>全部</a>
                                    {tp:dict name="list" dict_type="4" field="sex"}
-                                   <a href="{$list.url}" {if $Request.get.sex == $list.dict_value}class="hover"{/if}>{$list.dict_label}</a>
+                                   <a href="{$list.url}" {if $list.hover}class="hover"{/if}>{$list.dict_label}</a>
                                    {/tp:dict}
                                </div>
                            </div>

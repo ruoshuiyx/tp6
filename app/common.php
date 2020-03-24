@@ -543,7 +543,30 @@ function changeDict(array $list, string $field)
     foreach ($list as $k => $v) {
         $url = $get;
         $url[$field] = $v['dict_value'];
-        $list[$k]['url'] = (string)url(\think\facade\Request::controller().'/'.\think\facade\Request::action(), $url);
+        $list[$k]['url'] = (string)url(\think\facade\Request::controller() . '/' . \think\facade\Request::action(), $url);
+        $param = \think\facade\Request::param('', '', 'htmlspecialchars');
+        // 高亮显示
+        $list[$k]['hover'] = 0;
+        if (!empty($param)) {
+            foreach ($param as $kk => $vv) {
+                if (strpos($vv, '|') !== false) {
+                    // 多选
+                    $paramArr = explode("|", $vv);
+                    foreach ($paramArr as $kkk => $vvv) {
+                        if ($vvv == $v['dict_value']) {
+                            $list[$k]['hover'] = 1;
+                            break;
+                        }
+                    }
+                } else {
+                    // 单选
+                    if ($vv == $v['dict_value']) {
+                        $list[$k]['hover'] = 1;
+                    }
+                }
+            }
+        }
+        $list[$k]['param'] = $param;
     }
     return $list;
 }
@@ -563,7 +586,19 @@ function getSearchField(string $field)
             if (!empty($v)) {
                 // 查询浏览器参数是否包含此参数
                 if (\think\facade\Request::has($v, 'get')) {
-                    $sql .= ' AND FIND_IN_SET(\'' . \think\facade\Request::get($v, '', 'htmlspecialchars') . '\', ' . $v . ') ';
+                    $str = \think\facade\Request::get($v, '', 'htmlspecialchars');
+                    if (strpos($str, '|') !== false) {
+                        $sql = ' AND (';
+                        $strArr = explode("|", $str);
+                        foreach ($strArr as &$strAr) {
+                            $sql .= ' FIND_IN_SET(\'' . $strAr . '\', ' . $v . ') OR';
+                        }
+                        // 去除最后一个or
+                        $sql = substr($sql, 0, strlen($sql) - 2);
+                        $sql .= ') ';
+                    } else {
+                        $sql .= ' AND FIND_IN_SET(\'' . $str . '\', ' . $v . ') ';
+                    }
                 }
             }
         }
