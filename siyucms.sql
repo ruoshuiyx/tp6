@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2020-03-26 16:24:33
+Date: 2020-03-26 16:33:39
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -123,7 +123,7 @@ CREATE TABLE `tp_article` (
   `content` text NOT NULL COMMENT '内容',
   `summary` text NOT NULL COMMENT '摘要',
   `image` varchar(80) NOT NULL DEFAULT '' COMMENT '图片',
-  `images` varchar(255) NOT NULL DEFAULT '' COMMENT '图片集',
+  `images` text NOT NULL COMMENT '图片集',
   `download` varchar(80) NOT NULL DEFAULT '' COMMENT '文件下载',
   `tags` varchar(255) NOT NULL DEFAULT '' COMMENT 'TAG',
   `hits` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
@@ -690,7 +690,7 @@ CREATE TABLE `tp_download` (
   `content` text NOT NULL COMMENT '内容',
   `summary` text NOT NULL COMMENT '摘要',
   `image` varchar(80) NOT NULL DEFAULT '' COMMENT '图片',
-  `images` varchar(255) NOT NULL DEFAULT '' COMMENT '图片集',
+  `images` text NOT NULL COMMENT '图片集',
   `download` varchar(80) NOT NULL DEFAULT '' COMMENT '文件下载',
   `tags` varchar(255) NOT NULL DEFAULT '' COMMENT 'TAG',
   `hits` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
@@ -973,7 +973,7 @@ INSERT INTO `tp_field` VALUES ('239', '19', 'source', '来源', '', '0', '0', '0
 INSERT INTO `tp_field` VALUES ('240', '19', 'content', '内容', '', '0', '0', '0', 'editor', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '6', '内容', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'height\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('241', '19', 'summary', '摘要', '', '0', '0', '0', 'textarea', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '7', '摘要', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('242', '19', 'image', '图片', '', '0', '0', '0', 'image', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '8', '图片', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '');
-INSERT INTO `tp_field` VALUES ('243', '19', 'images', '图片集', '', '0', '0', '255', 'images', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '9', '图片集', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('243', '19', 'images', '图片集', '', '0', '0', '0', 'images', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '9', '图片集', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '');
 INSERT INTO `tp_field` VALUES ('244', '19', 'download', '文件下载', '', '0', '0', '0', 'file', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '10', '文件下载', 'array (\n  \'ext\' => \'rar|zip|avi|rmvb|3gp|flv|mp3|txt|doc|xls|ppt|pdf|xls|docx|xlsx|doc\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('245', '19', 'tags', 'TAG', '', '0', '0', '0', 'tag', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '11', 'TAG', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '');
 INSERT INTO `tp_field` VALUES ('246', '19', 'hits', '点击次数', '', '0', '0', '0', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '12', '点击次数', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'step\' => \'1\',\n  \'fieldtype\' => \'int\',\n)', '');
@@ -993,7 +993,7 @@ INSERT INTO `tp_field` VALUES ('259', '21', 'source', '来源', '', '0', '0', '0
 INSERT INTO `tp_field` VALUES ('260', '21', 'content', '内容', '', '0', '0', '0', 'editor', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '6', '内容', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'height\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('261', '21', 'summary', '摘要', '', '0', '0', '0', 'textarea', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '7', '摘要', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('262', '21', 'image', '图片', '', '0', '0', '0', 'image', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '8', '图片', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '');
-INSERT INTO `tp_field` VALUES ('263', '21', 'images', '图片集', '', '0', '0', '255', 'images', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '9', '图片集', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('263', '21', 'images', '图片集', '', '0', '0', '0', 'images', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '9', '图片集', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '');
 INSERT INTO `tp_field` VALUES ('264', '21', 'download', '文件下载', '', '0', '0', '0', 'file', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '10', '文件下载', 'array (\n  \'ext\' => \'rar|zip|avi|rmvb|3gp|flv|mp3|txt|doc|xls|ppt|pdf|xls|docx|xlsx|doc\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('265', '21', 'tags', 'TAG', '', '0', '0', '0', 'tag', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '11', 'TAG', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('266', '21', 'hits', '点击次数', '', '0', '0', '0', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '12', '点击次数', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'step\' => \'1\',\n  \'fieldtype\' => \'int\',\n)', '');
@@ -1012,7 +1012,7 @@ INSERT INTO `tp_field` VALUES ('278', '22', 'source', '来源', '', '0', '0', '0
 INSERT INTO `tp_field` VALUES ('279', '22', 'content', '内容', '', '0', '0', '0', 'editor', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '6', '内容', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'height\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('280', '22', 'summary', '摘要', '', '0', '0', '0', 'textarea', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '7', '摘要', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('281', '22', 'image', '图片', '', '0', '0', '0', 'image', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '8', '图片', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '');
-INSERT INTO `tp_field` VALUES ('282', '22', 'images', '图片集', '', '0', '0', '255', 'images', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '9', '图片集', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('282', '22', 'images', '图片集', '', '0', '0', '0', 'images', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '9', '图片集', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '');
 INSERT INTO `tp_field` VALUES ('283', '22', 'download', '文件下载', '', '0', '0', '0', 'file', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '10', '文件下载', 'array (\n  \'ext\' => \'rar|zip|avi|rmvb|3gp|flv|mp3|txt|doc|xls|ppt|pdf|xls|docx|xlsx|doc\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('284', '22', 'tags', 'TAG', '', '0', '0', '0', 'tag', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '11', 'TAG', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('285', '22', 'hits', '点击次数', '', '0', '0', '0', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '12', '点击次数', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'step\' => \'1\',\n  \'fieldtype\' => \'int\',\n)', '');
@@ -1031,7 +1031,7 @@ INSERT INTO `tp_field` VALUES ('297', '23', 'source', '来源', '', '0', '0', '0
 INSERT INTO `tp_field` VALUES ('298', '23', 'content', '内容', '', '0', '0', '0', 'editor', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '6', '内容', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'height\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('299', '23', 'summary', '摘要', '', '0', '0', '0', 'textarea', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '7', '摘要', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('300', '23', 'image', '图片', '', '0', '0', '0', 'image', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '8', '图片', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '');
-INSERT INTO `tp_field` VALUES ('301', '23', 'images', '图片集', '', '0', '0', '255', 'images', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '9', '图片集', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('301', '23', 'images', '图片集', '', '0', '0', '0', 'images', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '9', '图片集', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '');
 INSERT INTO `tp_field` VALUES ('302', '23', 'download', '文件下载', '', '0', '0', '0', 'file', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '10', '文件下载', 'array (\n  \'ext\' => \'rar|zip|avi|rmvb|3gp|flv|mp3|txt|doc|xls|ppt|pdf|xls|docx|xlsx|doc\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('303', '23', 'tags', 'TAG', '', '0', '0', '0', 'tag', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '11', 'TAG', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('304', '23', 'hits', '点击次数', '', '0', '0', '0', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '12', '点击次数', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'step\' => \'1\',\n  \'fieldtype\' => \'int\',\n)', '');
@@ -1050,7 +1050,7 @@ INSERT INTO `tp_field` VALUES ('316', '24', 'source', '来源', '', '0', '0', '0
 INSERT INTO `tp_field` VALUES ('317', '24', 'content', '内容', '', '0', '0', '0', 'editor', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '6', '内容', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'height\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('318', '24', 'summary', '摘要', '', '0', '0', '0', 'textarea', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '7', '摘要', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('319', '24', 'image', '图片', '', '0', '0', '0', 'image', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '8', '图片', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '');
-INSERT INTO `tp_field` VALUES ('320', '24', 'images', '图片集', '', '0', '0', '255', 'images', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '9', '图片集', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('320', '24', 'images', '图片集', '', '0', '0', '0', 'images', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '9', '图片集', 'array (\n  \'ext\' => \'jpg|jpeg|gif|png\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '');
 INSERT INTO `tp_field` VALUES ('321', '24', 'download', '文件下载', '', '0', '0', '0', 'file', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '10', '文件下载', 'array (\n  \'ext\' => \'rar|zip|avi|rmvb|3gp|flv|mp3|txt|doc|xls|ppt|pdf|xls|docx|xlsx|doc\',\n  \'size\' => \'10240\',\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('322', '24', 'tags', 'TAG', '', '0', '0', '0', 'tag', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '11', 'TAG', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('323', '24', 'hits', '点击次数', '', '0', '0', '0', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '12', '点击次数', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'step\' => \'1\',\n  \'fieldtype\' => \'int\',\n)', '');
@@ -1241,7 +1241,7 @@ CREATE TABLE `tp_picture` (
   `content` text NOT NULL COMMENT '内容',
   `summary` text NOT NULL COMMENT '摘要',
   `image` varchar(80) NOT NULL DEFAULT '' COMMENT '图片',
-  `images` varchar(255) NOT NULL DEFAULT '' COMMENT '图片集',
+  `images` text NOT NULL COMMENT '图片集',
   `download` varchar(80) NOT NULL DEFAULT '' COMMENT '文件下载',
   `tags` varchar(255) NOT NULL DEFAULT '' COMMENT 'TAG',
   `hits` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
@@ -1279,7 +1279,7 @@ CREATE TABLE `tp_product` (
   `content` text NOT NULL COMMENT '内容',
   `summary` text NOT NULL COMMENT '摘要',
   `image` varchar(80) NOT NULL DEFAULT '' COMMENT '图片',
-  `images` varchar(255) NOT NULL DEFAULT '' COMMENT '图片集',
+  `images` text NOT NULL COMMENT '图片集',
   `download` varchar(80) NOT NULL DEFAULT '' COMMENT '文件下载',
   `tags` varchar(255) NOT NULL DEFAULT '' COMMENT 'TAG',
   `hits` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
@@ -1383,7 +1383,7 @@ CREATE TABLE `tp_team` (
   `content` text NOT NULL COMMENT '内容',
   `summary` text NOT NULL COMMENT '摘要',
   `image` varchar(80) NOT NULL DEFAULT '' COMMENT '图片',
-  `images` varchar(255) NOT NULL DEFAULT '' COMMENT '图片集',
+  `images` text NOT NULL COMMENT '图片集',
   `download` varchar(80) NOT NULL DEFAULT '' COMMENT '文件下载',
   `tags` varchar(255) NOT NULL DEFAULT '' COMMENT 'TAG',
   `hits` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',

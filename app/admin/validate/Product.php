@@ -6,7 +6,7 @@
  *                      .::::.
  *                    .::::::::.            | AUTHOR: siyu
  *                    :::::::::::           | EMAIL: 407593529@qq.com
- *                 ..:::::::::::'           | DATETIME: 2020/03/08
+ *                 ..:::::::::::'           | DATETIME: 2020/03/26
  *             '::::::::::::'
  *                .::::::::::
  *           '::::::::::::::..
@@ -44,9 +44,6 @@ class Product extends Validate
         ],
         'title|标题' => [
             'require' => 'require',
-        ],
-        'images|图片集' => [
-            'max' => '255',
         ],
         'hits|点击次数' => [
             'number' => 'number',
