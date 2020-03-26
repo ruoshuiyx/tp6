@@ -51,8 +51,8 @@ class Base extends Model
                 }
             }
         }
-        $result = self::where('id',$data['id'])
-            ->update($data);
+
+        $result = self::update($data);
         if ($result) {
             return ['error' => 0, 'msg' => '修改成功'];
         } else {
