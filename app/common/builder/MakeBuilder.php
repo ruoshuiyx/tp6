@@ -300,6 +300,12 @@ class MakeBuilder
                 ];
             }
             elseif ($field['type'] == 'image' || $field['type'] == 'images' || $field['type'] == 'file' || $field['type'] == 'files') {
+
+                // 多图上传执行解析操作
+                if ($field['type'] == 'images') {
+                    $field['setup']['default'] = json_decode($field['setup']['default'], true);
+                }
+
                 $columns[] = [
                     $field['type'],                       // 类型
                     $field['field'],                      // 字段名称
@@ -638,7 +644,17 @@ class MakeBuilder
                     } else {
                         $formData[$k] = md5($v);
                     }
+                } else if ($fieldsNew[$k]['type'] == 'images') {
+                    $images = [];
+                    for ($i = 0; $i < count($formData[$k]); $i++) {
+                        $images[$i]['image'] = $formData[$k][$i];
+                        $images[$i]['title'] = $formData[$k . '_title'][$i];
+                    }
+                    $formData[$k] = json_encode($images);
                 }
+
+            } else {
+                unset($formData[$k]);
             }
         }
         return $formData;
