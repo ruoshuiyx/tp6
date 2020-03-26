@@ -2,7 +2,7 @@
     // 封装上传组件
     function webupload(list, filePicker_image, image_preview, image, more, upload_allowext, size) {
         if (upload_allowext) {
-            upload_allowext = upload_allowext.replace('|', ',');
+            upload_allowext = upload_allowext.replace(/\|/g, ",");
         }
         if (size) {
             size = size * 1024;
