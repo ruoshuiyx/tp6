@@ -194,6 +194,8 @@ class Cate extends Base
     public function del(string $id)
     {
         if (Request::isPost()) {
+            // 删除子分类
+            $this->delChildsCate($id);
             if (strpos($id, ',') !== false) {
                 return $this->selectDel($id);
             }
@@ -250,4 +252,53 @@ class Cate extends Base
         }
         return $result;
     }
+
+    /**
+     * 删除分类时删除子分类和子分类的数据
+     * @param string $id
+     * @throws \Exception
+     */
+    private function delChildsCate(string $id)
+    {
+        // 多选时重新调用
+        if (strpos($id, ',') !== false) {
+            $idArr = explode(',', $id);
+            foreach ($idArr as $k => $v) {
+                $this->delChildsCate($v);
+            }
+        }
+        // 查找当前分类的所有子分类
+        $cate = \app\common\model\Cate::select()->toArray();
+        $ids = getChildsId($cate, $id);
+        foreach ($ids as $k => $v) {
+            // 删除一个分类的内容
+            $this->delCateContent($v['id'], $v['module_id']);
+            // 删除一个分类
+            \app\common\model\Cate::where('id', '=', $v['id'])->delete();
+        }
+        // 查找当前分类信息并尝试删除
+        $cateOn = \app\common\model\Cate::find($id);
+        if ($cateOn) {
+            // 删除一个分类的内容
+            $this->delCateContent($cateOn['id'], $cateOn['module_id']);
+        }
+    }
+
+    /**
+     * 删除某个分类的内容
+     * @param string $cateId
+     * @param string $moduleId
+     * @return bool
+     */
+    private function delCateContent(string $cateId, string $moduleId)
+    {
+        $module = \app\common\model\Module::find($moduleId);
+        if ($module) {
+            $model = '\app\common\model\\' . $module->model_name;
+            return $model::where('cate_id', $cateId)->delete();
+        } else {
+            return false;
+        }
+    }
+
 }
