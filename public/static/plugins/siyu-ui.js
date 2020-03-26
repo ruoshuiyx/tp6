@@ -640,7 +640,7 @@
                     $.modal.msgSuccess(result.msg);
                     $.table.refresh();
                 } else {
-                    $.modal.msgError(result.msg);
+                    $.modal.alertError(result.msg);
                 }
             },
 		},

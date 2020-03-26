@@ -149,6 +149,15 @@ class Module extends Base
     public function del(string $id)
     {
         if (Request::isPost()) {
+            // 当有栏目使用该模块时不可删除
+            if ($this->checkCate($id) == false) {
+                return ['error' => 1, 'msg' => '删除失败，请先删除已使用该模块的栏目'];
+            }
+            // 模块删除的同时删除字段管理中对应的数据
+            $this->delModuleField($id);
+            // 是否清空表[不删除]
+            // 是否删除模型、控制器、验证器文件[不删除]
+
             if (strpos($id, ',') !== false) {
                 return $this->selectDel($id);
             }
@@ -202,6 +211,33 @@ class Module extends Base
     public function makeRule(string $id)
     {
         return MakeBuilder::makeRule($id);
+    }
+
+    /**
+     * 删除模块时判断是否已有栏目在应用[兼容多选和单选]
+     * @param $id 模块id
+     * @return bool false 不可删除，true 可删除
+     */
+    private function checkCate(string $id)
+    {
+        strpos($id, ',') !== false ? $op = 'in' : $op = '=';
+        $count = \app\common\model\Cate::where('module_id', $op, $id)->count();
+        if ($count) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 删除模型时删除当前模型的所有字段数据[兼容多选和单选]
+     * @param string $id
+     * @return bool
+     * @throws \Exception
+     */
+    private function delModuleField(string $id)
+    {
+        strpos($id, ',') !== false ? $op = 'in' : $op = '=';
+        return \app\common\model\Field::where('module_id', $op, $id)->delete();
     }
 
 }
