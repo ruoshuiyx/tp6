@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2020-03-26 16:33:39
+Date: 2020-03-27 15:28:48
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -123,7 +123,7 @@ CREATE TABLE `tp_article` (
   `content` text NOT NULL COMMENT '内容',
   `summary` text NOT NULL COMMENT '摘要',
   `image` varchar(80) NOT NULL DEFAULT '' COMMENT '图片',
-  `images` text NOT NULL COMMENT '图片集',
+  `images` text COMMENT '图片集',
   `download` varchar(80) NOT NULL DEFAULT '' COMMENT '文件下载',
   `tags` varchar(255) NOT NULL DEFAULT '' COMMENT 'TAG',
   `hits` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
@@ -690,7 +690,7 @@ CREATE TABLE `tp_download` (
   `content` text NOT NULL COMMENT '内容',
   `summary` text NOT NULL COMMENT '摘要',
   `image` varchar(80) NOT NULL DEFAULT '' COMMENT '图片',
-  `images` text NOT NULL COMMENT '图片集',
+  `images` text COMMENT '图片集',
   `download` varchar(80) NOT NULL DEFAULT '' COMMENT '文件下载',
   `tags` varchar(255) NOT NULL DEFAULT '' COMMENT 'TAG',
   `hits` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
@@ -1241,7 +1241,7 @@ CREATE TABLE `tp_picture` (
   `content` text NOT NULL COMMENT '内容',
   `summary` text NOT NULL COMMENT '摘要',
   `image` varchar(80) NOT NULL DEFAULT '' COMMENT '图片',
-  `images` text NOT NULL COMMENT '图片集',
+  `images` text COMMENT '图片集',
   `download` varchar(80) NOT NULL DEFAULT '' COMMENT '文件下载',
   `tags` varchar(255) NOT NULL DEFAULT '' COMMENT 'TAG',
   `hits` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
@@ -1279,7 +1279,7 @@ CREATE TABLE `tp_product` (
   `content` text NOT NULL COMMENT '内容',
   `summary` text NOT NULL COMMENT '摘要',
   `image` varchar(80) NOT NULL DEFAULT '' COMMENT '图片',
-  `images` text NOT NULL COMMENT '图片集',
+  `images` text COMMENT '图片集',
   `download` varchar(80) NOT NULL DEFAULT '' COMMENT '文件下载',
   `tags` varchar(255) NOT NULL DEFAULT '' COMMENT 'TAG',
   `hits` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
@@ -1383,7 +1383,7 @@ CREATE TABLE `tp_team` (
   `content` text NOT NULL COMMENT '内容',
   `summary` text NOT NULL COMMENT '摘要',
   `image` varchar(80) NOT NULL DEFAULT '' COMMENT '图片',
-  `images` text NOT NULL COMMENT '图片集',
+  `images` text COMMENT '图片集',
   `download` varchar(80) NOT NULL DEFAULT '' COMMENT '文件下载',
   `tags` varchar(255) NOT NULL DEFAULT '' COMMENT 'TAG',
   `hits` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',

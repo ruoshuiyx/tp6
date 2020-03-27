@@ -580,7 +580,7 @@ class Field extends Base
                     $maxlength = min($maxlength, 255);
                     $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
-                    $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NOT NULL COMMENT '$comment'";
+                    $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NULL COMMENT '$comment'";
                 }
                 break;
             case 'file':
@@ -604,7 +604,7 @@ class Field extends Base
                     $maxlength = min($maxlength, 255);
                     $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
-                    $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NOT NULL COMMENT '$comment'";
+                    $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NULL COMMENT '$comment'";
                 }
                 break;
             case 'editor':
