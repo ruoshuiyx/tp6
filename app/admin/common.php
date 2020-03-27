@@ -233,7 +233,9 @@ function format_bread_crumb($data)
         $cateId = \think\facade\Request::param('cate_id');
         if (empty($cateId)) {
             $model = '\app\common\model\\' . $module->model_name;
-            $cateId = $model::where($module['pk'], \think\facade\Request::param('id'))->value('cate_id');
+            if ($module['pk'] && \think\facade\Request::param('id')) {
+                $cateId = $model::where($module['pk'], \think\facade\Request::param('id'))->value('cate_id');
+            }
         }
 
         // 调用当前栏目名称
