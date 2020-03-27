@@ -96,9 +96,10 @@ class Admin extends Base
     {
         if (Request::isPost()) {
             $data = MakeBuilder::changeFormData(Request::except(['file'], 'post'), $this->tableName);
+            $data['group_id'] = Request::param('group_id');
             // 单独校验并去除角色组
             if (empty($data['group_id'])) {
-                $this->error('请选择用户组');
+                $this->error('请选择角色组');
             } else {
                 $groupId = $data['group_id'];
                 unset($data['group_id']);
@@ -152,6 +153,10 @@ class Admin extends Base
     {
         if (Request::isPost()) {
             $data = MakeBuilder::changeFormData(Request::except(['file'], 'post'), $this->tableName);
+            $data['group_id'] = Request::param('group_id');
+            if (!$data['group_id']) {
+                $this->error('请选择角色组!');
+            }
             // 非管理员组不可修改他人信息
             if (Session::get('admin.group_id') != 1) {
                 if (Session::get('admin.id') != $data['id']) {
