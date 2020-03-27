@@ -918,6 +918,7 @@ class MakeBuilder
 
         $content = str_replace('{$relations}'   , $relations , $content);
         $content = str_replace('{$listInfo}'    , $listInfo  , $content);
+        $content = str_replace('{$moduleTable}' , $this->checkModuleTable($module->table_name, $module->model_name), $content);
         return $content;
     }
 
@@ -993,6 +994,28 @@ class MakeBuilder
     {
         if (file_exists($file)) {
             rename($file, $file . '_' . time() . '_back');
+        }
+    }
+
+    /**
+     * 生成模型时替换模型文件中的table属性
+     * @param string $tableName
+     * @param string $modelName
+     * @return string
+     */
+    public function checkModuleTable(string $tableName, string $modelName)
+    {
+        // ThinkPHP规范的模型名称
+        $moduleNameNew = '';
+        $tableNameArr = explode('_', $tableName);
+        foreach ($tableNameArr as $k => $v) {
+            $moduleNameNew .= ucfirst($v);
+        }
+        if ($modelName == $moduleNameNew) {
+            return '';
+        } else {
+            $tableName = \think\facade\Config::get('database.connections.mysql.prefix') . $tableName;
+            return 'protected $table = \'' . $tableName . '\';';
         }
     }
 
@@ -1107,5 +1130,6 @@ class MakeBuilder
         }
         echo $id;
     }
+
 
 }

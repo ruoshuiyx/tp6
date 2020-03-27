@@ -37,6 +37,7 @@ class {$modelName} extends Base
     protected $createTime = 'create_time';
     protected $updateTime = 'update_time';
 
+    {$moduleTable}
     {$relations}
 
     // 获取列表
