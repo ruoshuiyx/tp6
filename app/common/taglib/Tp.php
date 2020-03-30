@@ -320,7 +320,7 @@ class Tp extends TagLib {
     // 详情上一篇
     Public function tagPrev($tag)
     {
-        $len = $tag['len'] ?? '500';
+        $len = $tag['len'] ?: '500';
         $str = '<?php ';
         $str .= '
                 $__CATEID__ = getCateId();
@@ -352,7 +352,7 @@ class Tp extends TagLib {
     // 详情下一篇
     Public function tagNext($tag)
     {
-        $len = $tag['len'] ?? '500';
+        $len = $tag['len'] ?: '500';
         $str = '<?php ';
         $str .= '
                 $__CATEID__ = getCateId();
