@@ -186,7 +186,7 @@ class Tp extends TagLib {
         $name = $tag['name'] ?? '';
         $type = $tag['type'] ?? '';
         $str  = '<?php ';
-        $str .= 'echo \app\common\model\Debris::where("name",\'' . $name . '\')->value("' . $type . '");';
+        $str .= 'echo \app\common\model\Debris::where("name",\'' . $name . '\')->where("status", 1)->value("' . $type . '");';
         $str .= '?>';
         return $str;
     }
