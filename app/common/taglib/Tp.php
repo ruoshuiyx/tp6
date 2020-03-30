@@ -33,7 +33,7 @@ class Tp extends TagLib {
         // 标签定义： attr 属性列表 close 是否闭合（0 或者1 默认1） alias 标签别名 level 嵌套层次
         'close'     => ['attr' => 'time,format', 'close' => 0],                              // 闭合标签，默认为不闭合
         'open'      => ['attr' => 'name,type', 'close' => 1],
-        'nav'       => ['attr' => 'id,limit', 'close' => 1],                                 // 通用导航信息
+        'nav'       => ['attr' => 'id,limit,name', 'close' => 1],                            // 通用导航信息
         'cate'      => ['attr' => 'id,type,anchor','close' => 0],                            // 通用栏目信息
         'position'  => ['attr' => 'name','close' => 1],                                      // 通用位置信息
         'link'      => ['attr' => 'name','close' => 1],                                      // 获取友情链接
@@ -76,9 +76,9 @@ class Tp extends TagLib {
     // 通用导航信息
     Public function tagNav($tag, $content)
     {
-        $tag['limit'] = isset($tag['limit']) ? $tag['limit'] : '0';
-        $tag['id']    = isset($tag['id'])    ? $tag['id']    : '';
-        $name         = isset($tag['name'])  ? $tag['name']  : 'nav';
+        $tag['limit'] = $tag['limit'] ?? '0';
+        $tag['id']    = $tag['id']    ?? '';
+        $name         = $tag['name']  ?? 'nav';
         if (!empty($tag['id'])) {
             $cateStr = '$__CATE__ = \app\common\model\Cate::where(\'is_menu\',1)->order(\'sort ASC,id DESC\')->select();';
             $cateStr .= '$__LIST__ = getChildsOn($__CATE__,' . $tag['id'] . ');';
@@ -158,6 +158,7 @@ class Tp extends TagLib {
         $parse = '<?php ';
         $parse .= '
             $__WHERE__ = array();
+            $__WHERE__[] = [\'a.status\', \'=\', 1];
             if (!empty(\'' . $id . '\')) {
                 $__WHERE__[] = [\'a.type_id\', \'=\', ' . $id . '];
             }
