@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2020-03-27 15:28:48
+Date: 2020-04-01 16:36:21
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -803,7 +803,7 @@ INSERT INTO `tp_field` VALUES ('60', '2', 'sort', '排序', '', '1', '0', '5', '
 INSERT INTO `tp_field` VALUES ('61', '2', 'remark', '备注', '', '0', '0', '200', 'textarea', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '22', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('62', '2', 'setup', '其他设置', '', '0', '0', '0', 'textarea', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '23', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('63', '1', 'id', '编号', '', '0', '0', '0', 'hidden', '0', '', '', '', '0', '0', '1', '0', '0', '', '1', '1', '自增ID', 'array (\'default\' => \'0\',\'extra_attr\' => \'\',\'extra_class\' => \'\',\'step\' => \'1\',\'fieldtype\' => \'int\',\'group\' => \'\')', '0');
-INSERT INTO `tp_field` VALUES ('64', '1', 'password', '密码', '', '1', '0', '100', 'password', '0', '', '', '', '1', '0', '0', '0', '0', '=', '1', '3', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('64', '1', 'password', '密码', '', '0', '0', '100', 'password', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '3', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '');
 INSERT INTO `tp_field` VALUES ('65', '1', 'sex', '性别', '', '1', '0', '1', 'radio', '1', '', '', '4', '1', '1', '1', '1', '1', '=', '1', '4', '', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('66', '1', 'last_login_time', '最后登录时间', '', '0', '0', '10', 'datetime', '0', '', '', '', '1', '0', '1', '0', '0', '=', '1', '5', '', 'array (\n  \'default\' => \'0\',\n  \'format\' => \'yyyy-mm-dd hh:ii:ss\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'int\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('67', '1', 'last_login_ip', '最后登录IP', '', '0', '0', '15', 'text', '0', '', '', '', '1', '0', '1', '1', '0', '=', '1', '6', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
@@ -1423,7 +1423,7 @@ DROP TABLE IF EXISTS `tp_users`;
 CREATE TABLE `tp_users` (
   `id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `email` varchar(100) NOT NULL DEFAULT '' COMMENT '邮箱',
-  `password` varchar(100) NOT NULL COMMENT '密码',
+  `password` varchar(100) NOT NULL DEFAULT '' COMMENT '密码',
   `sex` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0 保密, 1 男, 2 女',
   `last_login_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最后登录时间',
   `last_login_ip` varchar(15) NOT NULL DEFAULT '' COMMENT '最后登录IP',
