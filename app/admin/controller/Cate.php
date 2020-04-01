@@ -174,6 +174,9 @@ class Cate extends Base
     {
         if (Request::isPost()) {
             $data = MakeBuilder::changeFormData(Request::except(['file'], 'post'), $this->tableName);
+            if ($data['id'] == $data['parent_id']) {
+                $this->error('上级栏目不可以为当前栏目');
+            }
             $result = $this->validate($data, $this->validate);
             if (true !== $result) {
                 // 验证失败 输出错误信息
