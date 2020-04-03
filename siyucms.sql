@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2020-04-01 16:36:21
+Date: 2020-04-03 14:10:55
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -614,7 +614,7 @@ CREATE TABLE `tp_dictionary` (
   `sort` int(5) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
   `status` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tp_dictionary
@@ -634,8 +634,8 @@ INSERT INTO `tp_dictionary` VALUES ('12', '新增', 'add', '6', '新增按钮', 
 INSERT INTO `tp_dictionary` VALUES ('13', '修改', 'edit', '6', '修改按钮', '1580442715', '1580442715', '2', '1');
 INSERT INTO `tp_dictionary` VALUES ('14', '删除', 'del', '6', '批量删除按钮', '1580442742', '1580442742', '3', '1');
 INSERT INTO `tp_dictionary` VALUES ('15', '导出', 'export', '6', '导出按钮', '1580442770', '1580442770', '4', '1');
-INSERT INTO `tp_dictionary` VALUES ('16', '修改', 'edit', '7', '修改按钮', '1580444389', '1580444389', '1', '1');
-INSERT INTO `tp_dictionary` VALUES ('17', '删除', 'delete', '7', '删除按钮', '1580444406', '1580444406', '2', '1');
+INSERT INTO `tp_dictionary` VALUES ('16', '修改', 'edit', '7', '修改按钮', '1580444389', '1585894146', '2', '1');
+INSERT INTO `tp_dictionary` VALUES ('17', '删除', 'delete', '7', '删除按钮', '1580444406', '1585894149', '3', '1');
 INSERT INTO `tp_dictionary` VALUES ('18', '开启', '1', '8', '开启', '1580559235', '1580559235', '1', '1');
 INSERT INTO `tp_dictionary` VALUES ('19', '关闭', '0', '8', '关闭', '1580559262', '1580559262', '2', '1');
 INSERT INTO `tp_dictionary` VALUES ('20', '字段本身', '0', '9', '字段本身', '1580793928', '1580793928', '1', '1');
@@ -643,6 +643,7 @@ INSERT INTO `tp_dictionary` VALUES ('21', '系统字典', '1', '9', '系统字�
 INSERT INTO `tp_dictionary` VALUES ('22', '模型数据', '2', '9', '模型数据', '1580793975', '1580793975', '3', '1');
 INSERT INTO `tp_dictionary` VALUES ('23', '国内', '1', '10', '', '1584510855', '1584510855', '1', '1');
 INSERT INTO `tp_dictionary` VALUES ('24', '国外', '2', '10', '', '1584510871', '1584510871', '2', '1');
+INSERT INTO `tp_dictionary` VALUES ('25', '预览', 'preview', '7', '预览按钮', '1585894123', '1585894136', '1', '1');
 
 -- ----------------------------
 -- Table structure for tp_dictionary_type
@@ -1193,12 +1194,12 @@ INSERT INTO `tp_module` VALUES ('15', '管理员管理', 'admin', 'Admin', '管�
 INSERT INTO `tp_module` VALUES ('16', '菜单规则', 'auth_rule', 'AuthRule', '菜单规则', '2', 'id', '*', '', '16', '1580702184', '1580702320', '1', '1', 'add,edit,del,export', 'edit,delete', '0', '1', '');
 INSERT INTO `tp_module` VALUES ('17', '管理员日志', 'admin_log', 'AdminLog', '管理员日志', '2', 'id', '*', '管理员日志', '16', '1580722266', '1580722266', '0', '0', 'edit,del,export', 'edit,delete', '0', '1', '');
 INSERT INTO `tp_module` VALUES ('18', '单页模块', 'page', 'Page', '单页模块', '1', 'id', '*', '单页模块', '51', '1580892306', '1580892306', '1', '1', 'add,edit,del,export', 'edit,delete', '1', '1', '');
-INSERT INTO `tp_module` VALUES ('19', '文章模块', 'article', 'Article', '文章模块', '1', 'id', '*', '文章模块', '52', '1580892395', '1580892395', '1', '1', 'add,edit,del,export', 'edit,delete', '0', '1', 'cate_id');
+INSERT INTO `tp_module` VALUES ('19', '文章模块', 'article', 'Article', '文章模块', '1', 'id', '*', '文章模块', '52', '1580892395', '1585894205', '1', '1', 'add,edit,del,export', 'preview,edit,delete', '0', '1', 'cate_id');
 INSERT INTO `tp_module` VALUES ('20', '栏目管理', 'cate', 'Cate', '栏目管理', '2', 'id', '*', '栏目管理', '50', '1580892776', '1580892776', '1', '1', 'add,edit,del,export', 'edit,delete', '0', '1', '');
-INSERT INTO `tp_module` VALUES ('21', '图片模块', 'picture', 'Picture', '图片模块', '1', 'id', '*', '图片模块', '53', '1580899028', '1580899028', '1', '1', 'add,edit,del,export', 'edit,delete', '0', '1', 'cate_id');
-INSERT INTO `tp_module` VALUES ('22', '产品模块', 'product', 'Product', '产品模块', '1', 'id', '*', '产品模块', '54', '1580899060', '1580899060', '1', '1', 'add,edit,del,export', 'edit,delete', '0', '1', 'cate_id');
-INSERT INTO `tp_module` VALUES ('23', '下载模块', 'download', 'Download', '下载模块', '1', 'id', '*', '下载模块', '55', '1580899102', '1580899102', '1', '1', 'add,edit,del,export', 'edit,delete', '0', '1', 'cate_id');
-INSERT INTO `tp_module` VALUES ('24', '团队模块', 'team', 'Team', '团队模块', '1', 'id', '*', '团队模块', '56', '1580899132', '1580899132', '1', '1', 'add,edit,del,export', 'edit,delete', '0', '1', 'cate_id');
+INSERT INTO `tp_module` VALUES ('21', '图片模块', 'picture', 'Picture', '图片模块', '1', 'id', '*', '图片模块', '53', '1580899028', '1585894194', '1', '1', 'add,edit,del,export', 'preview,edit,delete', '0', '1', 'cate_id');
+INSERT INTO `tp_module` VALUES ('22', '产品模块', 'product', 'Product', '产品模块', '1', 'id', '*', '产品模块', '54', '1580899060', '1585894186', '1', '1', 'add,edit,del,export', 'preview,edit,delete', '0', '1', 'cate_id');
+INSERT INTO `tp_module` VALUES ('23', '下载模块', 'download', 'Download', '下载模块', '1', 'id', '*', '下载模块', '55', '1580899102', '1585894179', '1', '1', 'add,edit,del,export', 'preview,edit,delete', '0', '1', 'cate_id');
+INSERT INTO `tp_module` VALUES ('24', '团队模块', 'team', 'Team', '团队模块', '1', 'id', '*', '团队模块', '56', '1580899132', '1585894171', '1', '1', 'add,edit,del,export', 'preview,edit,delete', '0', '1', 'cate_id');
 INSERT INTO `tp_module` VALUES ('25', '留言模块', 'message', 'Message', '留言模块', '1', 'id', '*', '留言模块', '57', '1580899172', '1580899172', '0', '1', 'add,edit,del,export', 'edit,delete', '0', '1', 'cate_id');
 
 -- ----------------------------
