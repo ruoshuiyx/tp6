@@ -159,6 +159,32 @@ class Index extends Base
         return json($result);
     }
 
+    // 预览
+    public function preview(string $module, string $id)
+    {
+        // 查询当前模块信息
+        $model = '\app\common\model\\' . $module;
+        $info = $model::find($id);
+        if ($info) {
+            // 查询所在栏目信息
+            $cate = \app\common\model\Cate::find($info['cate_id']);
+            if ($cate['cate_folder']) {
+                $url = $cate['cate_folder'] . Config::get('route.pathinfo_depr') . $id . '.' . Config::get('route.url_html_suffix');
+            } else {
+                $url = $module . '/info.' . Config::get('route.url_html_suffix') . '?cate=' . $cate['id'] . '&id=' . $id;
+            }
+            if (isset($url) && !empty($url)) {
+                // 检测是否开启了域名绑定
+                if (Config::get('app.domain_bind')) {
+                    $url = Request::rootDomain() . '/' . $url;
+                } else {
+                    $url = '/index/' . $url;
+                }
+            }
+        }
+        return redirect($url);
+    }
+
     // 执行删除
     private function _deleteDir($R)
     {

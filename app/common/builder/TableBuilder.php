@@ -297,6 +297,18 @@ class TableBuilder
     public function addRightButton($type = '', $attribute = [])
     {
         switch ($type) {
+            // 预览按钮
+            case 'preview':
+                // 默认属性
+                $btn_attribute = [
+                    'type'   => 'preview',
+                    'title'  => '预览',
+                    'icon'   => 'fa fa-eye',
+                    'class'  => 'btn btn-success btn-xs',
+                    'href'   => url('index/preview', ['module' => Request::controller(), 'id' => '__id__']),
+                    'target' => '_blank'
+                ];
+                break;
             // 编辑按钮
             case 'edit':
                 // 默认属性

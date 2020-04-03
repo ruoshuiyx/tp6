@@ -86,6 +86,7 @@ class Module extends Base
         // 构建页面
         return FormBuilder::getInstance()
             ->addFormItems($coloumns)
+            ->setExtraJs($this->getAddExtraJs()) // 设置额外JS
             ->fetch();
     }
 
@@ -121,6 +122,7 @@ class Module extends Base
         // 构建页面
         return FormBuilder::getInstance()
             ->addFormItems($coloumns)
+            ->setExtraJs($this->getEditExtraJs()) // 设置额外JS
             ->fetch();
     }
 
@@ -238,6 +240,81 @@ class Module extends Base
     {
         strpos($id, ',') !== false ? $op = 'in' : $op = '=';
         return \app\common\model\Field::where('module_id', $op, $id)->delete();
+    }
+
+    // 添加页额外JS
+    private function getAddExtraJs()
+    {
+        $js = '<script type="text/javascript">
+                $(function () {
+                    // 添加默认隐藏预览按钮
+                    $("input[name=\'right_button[]\']").each(function(){
+                        var value = $(this).val();
+                        if(value == \'preview\'){
+                            $(this).parent(\'.dd_radio_lable\').hide();
+                        }
+                    });
+                    // 切换表类型为CMS时显示预览按钮
+                    $("select[name=\'table_type\']").change(function(){
+                        var value = $(this).val();
+                        if(value == \'1\'){
+                            $("input[name=\'right_button[]\']").each(function(){
+                                if($(this).val() == \'preview\'){
+                                    $(this).attr("checked",true);
+                                    $(this).parent(\'.dd_radio_lable\').show();
+                                }
+                            });
+                        } else {
+                            $("input[name=\'right_button[]\']").each(function(){
+                                if($(this).val() == \'preview\'){
+                                    $(this).attr("checked",false);
+                                    $(this).parent(\'.dd_radio_lable\').hide();
+                                }
+                            });
+                        }
+                    })
+                })
+            </script>';
+        return $js;
+    }
+
+    // 编辑页额外JS
+    private function getEditExtraJs()
+    {
+        $js = '<script type="text/javascript">
+                $(function () {
+                    // 添加默认隐藏预览按钮
+                    if($("select[name=\'table_type\']").val() != "1"){
+                        $("input[name=\'right_button[]\']").each(function(){
+                            var value = $(this).val();
+                            if(value == \'preview\'){
+                                $(this).parent(\'.dd_radio_lable\').hide();
+                            }
+                        });
+                    }
+
+                    // 切换表类型为CMS时显示预览按钮
+                    $("select[name=\'table_type\']").change(function(){
+                        var value = $(this).val();
+                        if(value == \'1\'){
+                            $("input[name=\'right_button[]\']").each(function(){
+                                if($(this).val() == \'preview\'){
+                                    //$(this).attr("checked",true);
+                                    $(this).parent(\'.dd_radio_lable\').show();
+                                }
+                            });
+                        } else {
+                            $("input[name=\'right_button[]\']").each(function(){
+                                if($(this).val() == \'preview\'){
+                                    $(this).attr("checked",false);
+                                    $(this).parent(\'.dd_radio_lable\').hide();
+                                }
+                            });
+                        }
+                    })
+                })
+            </script>';
+        return $js;
     }
 
 }

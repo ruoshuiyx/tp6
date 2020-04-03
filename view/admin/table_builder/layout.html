@@ -215,7 +215,7 @@
 									formatter: function(value, row, index) {
 										var actions = [];
 										{volist name="right_buttons" id="right_button"}
-										if('{$right_button.type|default=''}' == 'edit'){
+										if('{$right_button.type|default=''}' == 'edit' || '{$right_button.type|default=''}' == 'preview'){
                                             if('{$right_button.href|default=''}'){
                                                 var url = '{$right_button.href|default=''}';
                                                 var reg = /__(.*?)__/g;
@@ -296,5 +296,7 @@
     {/notempty}
     {// 额外HTML代码 }
     {$extra_html_content_bottom|raw|default=''}
+    {// 额外JS代码 }
+    {$extra_js|raw|default=''}
 </section>
 <!--内容结束-->
