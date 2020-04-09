@@ -217,7 +217,7 @@ class Config extends Base
                 $("#test_sms").click(function () {
                     var url = "' . url('smsSend') . '";
                     var mobile = $("input[name=\'mobile\']").val();
-                    $.modal.confirm(\'确定要发送吗？\', function () {
+                    $.modal.confirm(\'确定要发送吗？如有修改请先提交保存！\', function () {
                         $.post(url,{mobile:mobile},function(result){
                         if(result.error == 0){
                             $.modal.alertSuccess(result.msg);
