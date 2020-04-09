@@ -27,9 +27,12 @@ namespace app\admin\controller;
 
 // 引入框架内置类
 use think\facade\Request;
-
 // 引入表格和表单构建器
 use app\common\builder\FormBuilder;
+// 引入阿里云SDK
+use AlibabaCloud\Client\AlibabaCloud;
+use AlibabaCloud\Client\Exception\ClientException;
+use AlibabaCloud\Client\Exception\ServerException;
 
 class Config extends Base
 {
@@ -170,16 +173,42 @@ class Config extends Base
         $data = \app\common\model\Config::where('inc_type', 'sms')->select();
         $config = convert_arr_kv($data, 'name', 'value');
 
-        //生成验证码
-        $code = rand(1000, 9999);
-        //发送短信
-        $sms = new \Sms($config);
-        //短信验证码
-        $status = $sms->send_verify($mobile, $code);
-        if (!$status) {
-            return json(['error' => 1, 'msg' => $sms->error]);
-        } else {
-            return json(['error' => 0, 'msg' => '短信发送成功！']);
+        // 生成验证码
+        $code = json_encode(['code' => rand(1000, 9999)]);
+
+        // 新版发送
+        AlibabaCloud::accessKeyClient($config['accessKeyId'], $config['accessKeySecret'])
+            ->regionId('cn-hangzhou')
+            ->asDefaultClient();
+
+        try {
+            $result = AlibabaCloud::rpc()
+                ->product('Dysmsapi')
+                // ->scheme('https') // https | http
+                ->version('2017-05-25')
+                ->action('SendSms')
+                ->method('POST')
+                ->host('dysmsapi.aliyuncs.com')
+                ->options([
+                    'query' => [
+                        'RegionId'      => "cn-hangzhou",
+                        'PhoneNumbers'  => $config['test_mobile'],
+                        'SignName'      => $config['signName'],
+                        'TemplateCode'  => $config['templateCode'],
+                        'TemplateParam' => $code,
+                    ],
+                ])
+                ->request();
+            $resultArr = $result->toArray();
+            if ($resultArr['Code'] == 'OK') {
+                return json(['error' => 0, 'msg' => '发送成功']);
+            } else {
+                return json(['error' => 1, 'msg' => $resultArr['Message']]);
+            }
+        } catch (ClientException $e) {
+            return json(['error' => 1, 'msg' => $e->getErrorMessage()]);
+        } catch (ServerException $e) {
+            return json(['error' => 1, 'msg' => $e->getErrorMessage()]);
         }
     }
 
@@ -203,6 +232,5 @@ class Config extends Base
             ';
         return $str;
     }
-
 
 }
