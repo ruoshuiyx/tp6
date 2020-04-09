@@ -169,7 +169,6 @@ class Config extends Base
     // 测试短信发送
     public function smsSend()
     {
-        $mobile = input('mobile');
         $data = \app\common\model\Config::where('inc_type', 'sms')->select();
         $config = convert_arr_kv($data, 'name', 'value');
 
