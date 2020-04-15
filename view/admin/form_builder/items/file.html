@@ -16,6 +16,6 @@
     </div>
 </div>
 <script type="text/javascript">
-    webupload('fileList_{$form[type].name}', 'filePicker_{$form[type].name}', '{$form[type].name}_preview', '{$form[type].name}', false ,'{$form[type].ext}','{$form[type].size}');
+    webupload('fileList_{$form[type].name}', 'filePicker_{$form[type].name}', '{$form[type].name}_preview', '{$form[type].name}', false ,'{$system.upload_file_ext|default=""}', '{$system.upload_file_size|default="0"}', 'file');
 </script>
 

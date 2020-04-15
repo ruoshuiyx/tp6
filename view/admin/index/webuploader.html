@@ -1,28 +1,47 @@
 <script type="text/javascript">
-    // 封装上传组件
-    function webupload(list, filePicker_image, image_preview, image, more, upload_allowext, size) {
+    /**
+     * 封装上传组件
+     * @param list
+     * @param filePicker_image
+     * @param image_preview
+     * @param image
+     * @param more            是否图集
+     * @param upload_allowext 格式限制
+     * @param size            大小限制
+     * @param type            上传类型[file/img]
+     */
+    function webupload(list, filePicker_image, image_preview, image, more, upload_allowext, size, type) {
         if (upload_allowext) {
             upload_allowext = upload_allowext.replace(/\|/g, ",");
         }
         if (size) {
             size = size * 1024;
         } else {
-            size = 200 * 1024 * 1024;
+            size = 10240 * 1024 * 1024;
         }
-        var $list = $("#" + list + "");   //这几个初始化全局的百度文档上没说明，好蛋疼
+        type = type || 'img';
+        var $list = $("#" + list + "");                                // 这几个初始化全局的百度文档上没说明，好蛋疼
+        var GUID = WebUploader.Base.guid();                            // 一个GUID
         var uploader = WebUploader.create({
-            auto: true,// 选完文件后，是否自动上传。
-            swf: '/static/plugins/webuploader-0.1.5/uploader.swf', //加载swf文件，路径一定要对
-            server: '{:url("index/upload")}',// 文件接收服务端
-            pick: '#' + filePicker_image,// 选择文件的按钮。可选。
-            resize: false,//不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+            auto: true,                                                // 选完文件后，是否自动上传。
+            swf: '/static/plugins/webuploader-0.1.5/uploader.swf',     // 加载swf文件，路径一定要对
+            server: '{:url("upload/index")}' + '?upload_type=' + type, // 文件接收服务端
+            pick: '#' + filePicker_image,                              // 选择文件的按钮。可选。
+            resize: false,                                             // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+            chunked: true,                                             // 是否分片
+            chunkSize: 5 * 1024 * 1024,                                // 分片大小
+            threads: 1,                                                // 上传并发数
+            formData: {
+                // 由于Http的无状态特征，在往服务器发送数据过程传递一个进入当前页面是生成的GUID作为标示
+                GUID: GUID,                                            // 自定义参数
+            },
             compress: false,
-            fileSingleSizeLimit: size,//限制大小200M，单文件
-            //fileSizeLimit: allMaxSize*1024*1024,//限制大小10M，所有被选文件，超出选择不上
+            fileSingleSizeLimit: size,                                 // 限制大小200M，单文件
+            //fileSizeLimit: allMaxSize*1024*1024,                     // 限制大小10M，所有被选文件，超出选择不上
             accept: {
                 title: '上传图片/文件',
-                extensions: upload_allowext,//'gif,jpg,jpeg,bmp,png', //格式由字段控制
-                mimeTypes: '*',//默认全部文件，为兼容上传文件功能，如只上传图片可写成img/*
+                extensions: upload_allowext,                           // 允许上传的类型 'gif,jpg,jpeg,bmp,png'
+                mimeTypes: '*',                                        // 默认全部文件，为兼容上传文件功能，如只上传图片可写成img/*
             }
         });
 
@@ -41,7 +60,10 @@
             $percent.css('width', percentage * 100 + '%');
         });
         uploader.on('uploadSuccess', function (file, response) {
-            var url = response._raw;
+            if (response.code == 0) {
+                $.modal.alertError(response.msg);
+            }
+            var url = response.url;
             if (more == true) {
                 var images = '<div class="row"><div class="col-xs-6"><input type="text" name="' + image + '[]" value="' + url + '" class="form-control"/></div> <div class="col-xs-3"><input class="form-control input-sm" type="text" name="' + image + '_title[]" value="' + file.name + '" ></div> <div class="col-xs-3"><button type="button" class="btn btn-block btn-warning remove_images">移除</button></div></div>';
                 var images_list = $('#more_images_' + image).html();
@@ -56,32 +78,16 @@
         uploader.on('uploadComplete', function (file) {
             $list.find('.progress').fadeOut();
         });
-        //错误提示
+        // 错误提示
         uploader.on("error", function (type) {
             if (type == "Q_TYPE_DENIED") {
-                sweetAlert(
-                        '',
-                        '请上传' + upload_allowext + '格式文件！',
-                        'error'
-                )
+                $.modal.alertError('请上传' + upload_allowext + '格式的文件！');
             } else if (type == "F_EXCEED_SIZE") {
-                sweetAlert(
-                        '',
-                        '单个文件大小不能超过' + size / 1024 + 'kb！',
-                        'error'
-                )
+                $.modal.alertError('单个文件大小不能超过' + size / 1024 + 'kb！');
             } else if (type == "F_DUPLICATE") {
-                sweetAlert(
-                        '',
-                        '请不要重复选择文件！',
-                        'error'
-                )
+                $.modal.alertError('请不要重复选择文件');
             } else {
-                sweetAlert(
-                        '',
-                        '上传出错！请检查后重新上传！错误代码' + type,
-                        'error'
-                )
+                $.modal.alertError('上传出错！请检查后重新上传！错误代码' + type);
             }
         });
     }

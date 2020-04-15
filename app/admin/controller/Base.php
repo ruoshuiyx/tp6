@@ -72,6 +72,12 @@ abstract class Base
     protected $pageSize = '';
 
     /**
+     * 系统设置
+     * @var array
+     */
+    protected $system = [];
+
+    /**
      * 构造方法
      * @access public
      * @param  App  $app  应用对象
@@ -88,29 +94,34 @@ abstract class Base
     // 初始化
     protected function initialize()
     {
-        //每页显示数据量
+        // 每页显示数据量
         $this->pageSize = Request::param('pageSize', Config::get('app.page_size'));
 
-        //左侧菜单
+        // 左侧菜单
         $menus = \app\admin\model\Base::getMenus();
         View::assign(['menus'=>$menus]);
 
-        //pjax
+        // pjax
         if (Request::has('_pjax')) {
             View::assign(['pjax' => true]);
         } else {
             View::assign(['pjax' => false]);
         }
 
-        //面包导航
+        // 面包导航
         $auth = new \Auth();
         $breadCrumb = $auth->getBreadCrumb();
         $breadCrumb = format_bread_crumb($breadCrumb);
         View::assign(['breadCrumb' => $breadCrumb]);
 
-        //内容管理,获取栏目列表
+        // 内容管理,获取栏目列表
         $cates = \app\common\model\Cate::getList();
         View::assign(['cates' => unlimitedForLayer($cates['data'])]);
+
+        // 查询系统设置
+        $system = \app\common\model\System::find(1);
+        $this->system = $system;
+        View::assign(['system' => $system]);
     }
 
     /**

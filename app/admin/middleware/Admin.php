@@ -43,7 +43,7 @@ class Admin
         // 定义方法白名单
         $allow = [
             'Index/index',      // 首页
-            'Index/upload',     // 上传文件
+            'Upload/index',     // 上传文件
             'Index/clear',      // 清除缓存
             'Index/preview',    // 预览
             'Login/index',      // 登录页面
