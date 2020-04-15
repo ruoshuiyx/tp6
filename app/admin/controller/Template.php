@@ -161,7 +161,11 @@ class Template extends Base
             if (file_exists($file)) {
                 $this->error('文件已经存在!');
             } else {
-                file_put_contents($file,stripslashes(input('post.content')));
+                try {
+                    file_put_contents($file, stripslashes(input('post.content')));
+                } catch (\Exception $e) {
+                    $this->error($e->getMessage());
+                }
                 if ($type=='html') {
                     $this->success('添加成功!',url('index', ['type' => 'html']));
                 } else {
@@ -212,16 +216,16 @@ class Template extends Base
             }
             $file = $path . $filename;
             if (file_exists($file)) {
-                //判断是否有写入权限
+                // 判断是否有写入权限
                 if (!is_writable($file)) {
                     $this->error('无写入权限!');
                 }
 
-                //备份文件(防止出错)
+                // 备份文件(防止出错)
                 if ($this->templateOpening) {
-                    //设置备份文件名
+                    // 设置备份文件名
                     $newFile = $path . str_replace('.' ,'_back-'.date("Y-m-d_H-i-s").'.', $filename);
-                    //执行复制操作
+                    // 执行复制操作
                     copy($file,$newFile);
                 }
 
