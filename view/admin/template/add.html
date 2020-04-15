@@ -25,7 +25,7 @@
                             <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l">文件名称</label>
                             <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
                                 <input type="text" name="filename" class="form-control" placeholder="请输入文件名称"
-                                       value="{$info.filename?$info.filename:''}" {if $info['filename']}readonly{/if}>
+                                       value="{$info.filename|default=''}" {if $info}{if $info['filename']}readonly{/if}{/if}>
                             </div>
                             <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">* 不需要输入文件后缀，如 style.css
                                 请填写style
@@ -75,7 +75,7 @@
                         <div class="form-group">
                             <div class="col-xs-12 col-sm-11 col-md-10 col-lg-8">
                                 <label class="text-lable">内容</label>
-                                <textarea class="form-control" name="content" rows="15" placeholder="请输入内容">{$info.content?$info.content:''}</textarea>
+                                <textarea class="form-control" name="content" rows="15" placeholder="请输入内容">{$info.content|default=''}</textarea>
                             </div>
                         </div>
                     </div>
