@@ -792,15 +792,13 @@ class FormBuilder
      * @param string $title       字段别名
      * @param string $tips        提示信息
      * @param string $default     默认值
-     * @param string $size        图片大小，单位为kb，0为不限制
-     * @param string $ext         文件后缀
      * @param string $extra_attr  额外属性
      * @param string $extra_class 额外css类名
      * @param string $placeholder 占位符
      * @param bool   $required    是否必填
      * @return $this|array
      */
-    public function addImage($name = '', $title = '', $tips = '', $default = '', $size = '', $ext = '',$extra_attr = '', $extra_class = '', $placeholder = '', $required = false)
+    public function addImage($name = '', $title = '', $tips = '', $default = '',$extra_attr = '', $extra_class = '', $placeholder = '', $required = false)
     {
         $item = [
             'type'        => 'image',
@@ -808,8 +806,6 @@ class FormBuilder
             'title'       => $title,
             'tips'        => $tips,
             'value'       => $default,
-            'size'        => $size,
-            'ext'         => $ext,
             'extra_attr'  => $extra_attr,
             'extra_class' => $extra_class,
             'placeholder' => !empty($placeholder) ? $placeholder : '请点击按钮上传或手动输入地址',
@@ -830,15 +826,13 @@ class FormBuilder
      * @param string $title       字段别名
      * @param string $tips        提示信息
      * @param string $default     默认值
-     * @param string $size        文件大小，单位为kb，0为不限制
-     * @param string $ext         文件后缀
      * @param string $extra_attr  额外属性
      * @param string $extra_class 额外css类名
      * @param string $placeholder 占位符
      * @param bool   $required    是否必填
      * @return $this|array
      */
-    public function addFile($name = '', $title = '', $tips = '', $default = '', $size = '', $ext = '',$extra_attr = '', $extra_class = '', $placeholder = '', $required = false)
+    public function addFile($name = '', $title = '', $tips = '', $default = '',$extra_attr = '', $extra_class = '', $placeholder = '', $required = false)
     {
         $item = [
             'type'        => 'file',
@@ -846,8 +840,6 @@ class FormBuilder
             'title'       => $title,
             'tips'        => $tips,
             'value'       => $default,
-            'size'        => $size,
-            'ext'         => $ext,
             'extra_attr'  => $extra_attr,
             'extra_class' => $extra_class,
             'placeholder' => !empty($placeholder) ? $placeholder : '请点击按钮上传或手动输入地址',
@@ -868,15 +860,13 @@ class FormBuilder
      * @param string $title       字段别名
      * @param string $tips        提示信息
      * @param string $default     默认值
-     * @param string $size        图片大小，单位为kb，0为不限制
-     * @param string $ext         文件后缀
      * @param string $extra_attr  额外属性
      * @param string $extra_class 额外css类名
      * @param string $placeholder 占位符
      * @param bool   $required    是否必填
      * @return $this|array
      */
-    public function addImages($name = '', $title = '', $tips = '', $default = '', $size = '', $ext = '',$extra_attr = '', $extra_class = '', $placeholder = '', $required = false)
+    public function addImages($name = '', $title = '', $tips = '', $default = '',$extra_attr = '', $extra_class = '', $placeholder = '', $required = false)
     {
         $item = [
             'type'        => 'images',
@@ -884,8 +874,6 @@ class FormBuilder
             'title'       => $title,
             'tips'        => $tips,
             'value'       => $default,
-            'size'        => $size,
-            'ext'         => $ext,
             'extra_attr'  => $extra_attr,
             'extra_class' => $extra_class,
             'placeholder' => !empty($placeholder) ? $placeholder : '请点击按钮上传或手动输入地址',
@@ -906,15 +894,13 @@ class FormBuilder
      * @param string $title       字段别名
      * @param string $tips        提示信息
      * @param string $default     默认值
-     * @param string $size        文件大小，单位为kb，0为不限制
-     * @param string $ext         文件后缀
      * @param string $extra_attr  额外属性
      * @param string $extra_class 额外css类名
      * @param string $placeholder 占位符
      * @param bool   $required    是否必填
      * @return $this|array
      */
-    public function addFiles($name = '', $title = '', $tips = '', $default = '', $size = '', $ext = '',$extra_attr = '', $extra_class = '', $placeholder = '', $required = false)
+    public function addFiles($name = '', $title = '', $tips = '', $default = '',$extra_attr = '', $extra_class = '', $placeholder = '', $required = false)
     {
         $item = [
             'type'        => 'files',
@@ -922,8 +908,6 @@ class FormBuilder
             'title'       => $title,
             'tips'        => $tips,
             'value'       => $default,
-            'size'        => $size,
-            'ext'         => $ext,
             'extra_attr'  => $extra_attr,
             'extra_class' => $extra_class,
             'placeholder' => !empty($placeholder) ? $placeholder : '请点击按钮上传或手动输入地址',

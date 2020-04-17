@@ -159,7 +159,8 @@ class MakeBuilder
 
             $field['options'] = $options ?? [];
             // text
-            $field['group'] = '';
+            $field['group'] = isset($field['setup']['group']) && !empty($field['setup']['group']) ? explode('|', $field['setup']['group']) : [];
+
             // 必填项转换
             $field['required'] = $field['required'] == 1 ? true : false;
             // 添加到返回数组中,注意form构建器和table构建器的不一致
@@ -312,8 +313,6 @@ class MakeBuilder
                     $field['name'],                       // 字段别名
                     $field['tips'],                       // 提示信息
                     $field['setup']['default'],           // 默认值
-                    $field['setup']['size'],              // 限制大小（单位kb）
-                    $field['setup']['ext'],               // 文件后缀
                     $field['setup']['extra_attr'] ?? '',  // 额外属性
                     $field['setup']['extra_class'] ?? '', // 额外CSS
                     $field['setup']['placeholder'] ?? '', // 占位符
