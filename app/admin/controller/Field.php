@@ -399,7 +399,7 @@ class Field extends Base
                     $maxlength = min($maxlength, 255);
                     $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
-                    $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NOT NULL COMMENT '$comment'";
+                    $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NULL COMMENT '$comment'";
                 }
                 break;
             case 'textarea':
@@ -411,7 +411,7 @@ class Field extends Base
                     $maxlength = min($maxlength, 255);
                     $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
-                    $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NOT NULL COMMENT '$comment'";
+                    $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NULL COMMENT '$comment'";
                 }
                 break;
             case 'radio':
@@ -496,7 +496,7 @@ class Field extends Base
                     $maxlength = min($maxlength, 255);
                     $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
-                    $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NOT NULL COMMENT '$comment'";
+                    $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NULL COMMENT '$comment'";
                 }
                 break;
             case 'number':
@@ -522,7 +522,7 @@ class Field extends Base
                     $maxlength = min($maxlength, 255);
                     $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
-                    $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NOT NULL COMMENT '$comment'";
+                    $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NULL COMMENT '$comment'";
                 }
                 break;
             case 'select':
@@ -539,7 +539,7 @@ class Field extends Base
                         $maxlength = 10;
                     $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) " . ($numbertype == 1 ? 'UNSIGNED' : '') . " NOT NULL DEFAULT {$default} COMMENT '$comment'";
                 } else {
-                    $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NOT NULL COMMENT '$comment'";
+                    $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NULL COMMENT '$comment'";
                 }
                 break;
             case 'select2':
@@ -556,7 +556,7 @@ class Field extends Base
                         $maxlength = 10;
                     $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) " . ($numbertype == 1 ? 'UNSIGNED' : '') . " NOT NULL DEFAULT {$default} COMMENT '$comment'";
                 } else {
-                    $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NOT NULL COMMENT '$comment'";
+                    $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NULL COMMENT '$comment'";
                 }
                 break;
             case 'image':
@@ -568,7 +568,7 @@ class Field extends Base
                     $maxlength = min($maxlength, 255);
                     $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
-                    $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NOT NULL COMMENT '$comment'";
+                    $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NULL COMMENT '$comment'";
                 }
                 break;
             case 'images':
@@ -592,7 +592,7 @@ class Field extends Base
                     $maxlength = min($maxlength, 255);
                     $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
-                    $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NOT NULL COMMENT '$comment'";
+                    $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NULL COMMENT '$comment'";
                 }
                 break;
             case 'files':
@@ -616,7 +616,7 @@ class Field extends Base
                     $maxlength = min($maxlength, 255);
                     $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
-                    $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NOT NULL COMMENT '$comment'";
+                    $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NULL COMMENT '$comment'";
                 }
                 break;
             case 'hidden':
@@ -641,7 +641,7 @@ class Field extends Base
                     $maxlength = min($maxlength, 255);
                     $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
-                    $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NOT NULL COMMENT '$comment'";
+                    $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NULL COMMENT '$comment'";
                 }
                 break;
         }

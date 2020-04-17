@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2020-04-14 17:39:02
+Date: 2020-04-17 11:16:57
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -165,7 +165,7 @@ CREATE TABLE `tp_auth_group` (
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `status` tinyint(1) DEFAULT NULL COMMENT '状态',
   `title` varchar(255) NOT NULL DEFAULT '' COMMENT '角色组',
-  `rules` text NOT NULL COMMENT '权限',
+  `rules` text COMMENT '权限',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='角色组管理';
 
