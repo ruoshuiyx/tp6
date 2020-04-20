@@ -26,6 +26,7 @@
 namespace app\common\model;
 
 // 引入框架内置类
+use think\facade\Config;
 use think\facade\Request;
 
 // 引入构建器
@@ -66,8 +67,8 @@ class Module extends Base
         return $list;
     }
 
-    // 添加模块时创建表，并初始化主键字段、添加时间、修改时间
-    public static function makeModule(string $tableName)
+    // 添加模块时创建表，并初始化主键字段、添加时间、修改时间等字段
+    public static function makeModule(string $tableName, int $tableType = 2)
     {
         // 获取模块信息
         $module = self::where('table_name', $tableName)->find();
@@ -90,6 +91,11 @@ class Module extends Base
             if ($module->is_status) {
                 $sqlStr .= '`status` tinyint(1) DEFAULT NULL COMMENT \'状态\',';
             }
+            // 添加CMS模块时自动增加栏目ID字段
+            if ($tableType == 1 && Config::get('builder.add_cate_id')) {
+               $sqlStr .= '`cate_id` tinyint(10) unsigned NOT NULL DEFAULT \'0\' COMMENT \'栏目\',';
+            }
+
             $sql = "CREATE TABLE `{$tableName}` (
               {$sqlStr}
               PRIMARY KEY (`id`)
@@ -98,8 +104,8 @@ class Module extends Base
             // 插入表记录
             $data = [
                 ['module_id' => $module->id, 'field' => 'id', 'name' => '编号', 'type' => 'hidden', 'is_list' => '1', 'status' => '1', 'sort' => '1', 'remark' => '自增ID', 'setup' => "array ('default' => '0','extra_attr' => '','extra_class' => '','step' => '1','fieldtype' => 'int','group' => '')"],
-                ['module_id' => $module->id, 'field' => 'create_time', 'name' => '添加时间', 'maxlength' => '11', 'type' => 'datetime', 'is_list' => '1', 'search_type' => '=', 'status' => '1', 'sort' => '50', 'remark' => '自增ID', 'setup' => "array ('default' => '0', 'format' => 'yyyy-mm-dd hh:ii:ss', 'extra_attr' => '', 'extra_class' => '', 'placeholder' => '', 'fieldtype' => 'int',)"],
-                ['module_id' => $module->id, 'field' => 'update_time', 'name' => '更新时间', 'maxlength' => '11', 'type' => 'datetime', 'is_list' => '1', 'search_type' => '=', 'status' => '1', 'sort' => '50', 'remark' => '自增ID', 'setup' => "array ('default' => '0', 'format' => 'yyyy-mm-dd hh:ii:ss', 'extra_attr' => '', 'extra_class' => '', 'placeholder' => '', 'fieldtype' => 'int',)"],
+                ['module_id' => $module->id, 'field' => 'create_time', 'name' => '添加时间', 'maxlength' => '11', 'type' => 'datetime', 'is_list' => '1', 'search_type' => '=', 'status' => '1', 'sort' => '50', 'remark' => '添加时间', 'setup' => "array ('default' => '0', 'format' => 'yyyy-mm-dd hh:ii:ss', 'extra_attr' => '', 'extra_class' => '', 'placeholder' => '', 'fieldtype' => 'int',)"],
+                ['module_id' => $module->id, 'field' => 'update_time', 'name' => '更新时间', 'maxlength' => '11', 'type' => 'datetime', 'is_list' => '1', 'search_type' => '=', 'status' => '1', 'sort' => '50', 'remark' => '更新时间', 'setup' => "array ('default' => '0', 'format' => 'yyyy-mm-dd hh:ii:ss', 'extra_attr' => '', 'extra_class' => '', 'placeholder' => '', 'fieldtype' => 'int',)"],
             ];
             // 自动添加排序字段
             if ($module->is_sort) {
@@ -108,6 +114,11 @@ class Module extends Base
             // 自动添加状态字段
             if ($module->is_status) {
                 $data[] = ['module_id' => $module->id, 'field' => 'status', 'name' => '状态', 'required' => '1', 'maxlength' => '1', 'type' => 'radio', 'data_source' => '1', 'dict_code' => '1', 'is_add' => '1', 'is_edit' => '1', 'is_list' => '1', 'is_search' => '1', 'is_sort' => '0', 'search_type' => '=', 'status' => '1', 'sort' => '48', 'remark' => '', 'setup' => "array ('default' => '1', 'extra_attr' => '', 'extra_class' => '', 'fieldtype' => 'tinyint',)"];
+            }
+
+            // 添加CMS模块时自动增加栏目ID字段
+            if ($tableType == 1 && Config::get('builder.add_cate_id')) {
+                $data[] = ['module_id' => $module->id, 'field' => 'cate_id', 'name' => '栏目', 'required' => '1', 'maxlength' => '0', 'type' => 'select', 'data_source' => '2', 'relation_model' => 'Cate', 'relation_field' => 'cate_name', 'is_add' => '1', 'is_edit' => '1', 'is_list' => '1', 'is_search' => '1', 'is_sort' => '0', 'search_type' => '=', 'status' => '1', 'sort' => '2', 'remark' => '栏目', 'setup' => "array ('default' => '0', 'extra_attr' => '', 'extra_class' => '', 'fieldtype' => 'tinyint',)"];
             }
 
             $fild = new Field();
