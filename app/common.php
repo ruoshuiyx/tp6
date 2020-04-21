@@ -515,7 +515,7 @@ function getCateId()
  * @param array $list
  * @return array
  */
-function changeDict(array $list, string $field)
+function changeDict(array $list, string $field, string $all="全部")
 {
     $get = \think\facade\Request::except(['page'], 'get');
     foreach ($list as $k => $v) {
@@ -524,7 +524,7 @@ function changeDict(array $list, string $field)
         $list[$k]['url'] = (string)url(\think\facade\Request::controller() . '/' . \think\facade\Request::action(), $url);
         $param = \think\facade\Request::param('', '', 'htmlspecialchars');
         // 高亮显示
-        $list[$k]['hover'] = 0;
+        $list[$k]['current'] = 0;
         if (!empty($param)) {
             foreach ($param as $kk => $vv) {
                 if ($kk == $field) {
@@ -533,14 +533,14 @@ function changeDict(array $list, string $field)
                         $paramArr = explode("|", $vv);
                         foreach ($paramArr as $kkk => $vvv) {
                             if ($vvv == $v['dict_value']) {
-                                $list[$k]['hover'] = 1;
+                                $list[$k]['current'] = 1;
                                 break;
                             }
                         }
                     } else {
                         // 单选
                         if ($vv == $v['dict_value']) {
-                            $list[$k]['hover'] = 1;
+                            $list[$k]['current'] = 1;
                         }
                     }
                 }
@@ -548,6 +548,23 @@ function changeDict(array $list, string $field)
         }
         $list[$k]['param'] = $param;
     }
+
+    // 添加[全部]字段在第一位
+    if (isset($get[$field])) {
+        unset($get[$field]);
+    } else {
+        $hover = 1;
+    }
+    $url = (string)url(\think\facade\Request::controller() . '/' . \think\facade\Request::action(), $get);
+
+    $all = [
+        'dict_label' => $all,
+        'dict_value' => 0,
+        'url'        => $url,
+        'current'    => $hover ?? 0,
+    ];
+    array_unshift($list, $all);
+
     return $list;
 }
 

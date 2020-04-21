@@ -44,7 +44,7 @@ class Tp extends TagLib {
         'tag'       => ['attr' => 'name,pagesize,order','close' => 1],                       // 通用标签
         'prev'	    => ['attr' => 'len','close' => 0],                                       // 上一篇
         'next'	    => ['attr' => 'len','close' => 0],                                       // 下一篇
-        'dict'      => ['attr' => 'name,dict_type,field','close' => 1],                      // 获取字典类型
+        'dict'      => ['attr' => 'name,dict_type,field,all','close' => 1],                  // 获取字典类型
     );
 
     // 这是一个闭合标签的简单演示
@@ -388,9 +388,10 @@ class Tp extends TagLib {
         $name     = $tag['name'] ?? 'dictionary';
         $dictType = $tag['dict_type'] ?? 0;
         $field    = $tag['field'] ?? 'type';
+        $all      = $tag['all'] ?? '全部';
         $parse = '<?php ';
         $parse .= '$__DICTS__ = \app\common\model\Dictionary::where(\'status\',1)->where(\'dict_type\',' . $dictType . ')->order(\'sort ASC,id desc\')->select()->toArray();
-                   $__DICTS__ = changeDict($__DICTS__,\'' . $field . '\');
+                   $__DICTS__ = changeDict($__DICTS__, \'' . $field . '\', \'' . $all . '\');
         ';
         $parse .= ' ?>';
         $parse .= '{volist name="__DICTS__" id="' . $name . '"}';
