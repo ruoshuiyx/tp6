@@ -377,7 +377,11 @@ class Field extends Base
         $moduleid = $info['module_id'];
         $default = $info['setup']['default'] ?? '';
         $field = $info['field'];
-        $name = \app\common\model\Module::where('id',$moduleid)->value('table_name');
+
+        $module = \app\common\model\Module::find($moduleid);
+        $name = $module->table_name;
+        $pk = $module->pk ?: 'id';
+
         $tablename = Config::get('database.connections.mysql.prefix') . $name;
         $maxlength = intval($info['maxlength']);
         $minlength = intval($info['minlength']);
@@ -629,7 +633,12 @@ class Field extends Base
                 } else {
                     if (!$maxlength)
                         $maxlength = 10;
-                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) ".($numbertype ==1 ? 'UNSIGNED' : '')." NOT NULL DEFAULT '$default' COMMENT '$comment'";
+                    // 主键字段自增
+                    if ($pk == $field) {
+                        $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) " . ($numbertype == 1 ? 'UNSIGNED' : '') . " NOT NULL AUTO_INCREMENT COMMENT '$comment'";
+                    } else {
+                        $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) " . ($numbertype == 1 ? 'UNSIGNED' : '') . " NOT NULL DEFAULT '$default' COMMENT '$comment'";
+                    }
                 }
                 break;
             case 'color':
