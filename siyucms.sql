@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2020-04-17 11:16:57
+Date: 2020-04-22 15:34:06
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -201,7 +201,7 @@ INSERT INTO `tp_auth_group_access` VALUES ('2', '2', '1583728403', '1583748601')
 DROP TABLE IF EXISTS `tp_auth_rule`;
 CREATE TABLE `tp_auth_rule` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `pid` text NOT NULL COMMENT '父ID',
+  `pid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '父ID',
   `name` varchar(255) NOT NULL DEFAULT '' COMMENT '控制器/方法',
   `title` char(20) NOT NULL DEFAULT '',
   `type` tinyint(1) NOT NULL DEFAULT '1',
