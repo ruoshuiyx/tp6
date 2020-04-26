@@ -16,11 +16,11 @@
         </div>
 
         <!-- search form (Optional) -->
-        <form action="" method="get" class="sidebar-form" onsubmit="return false;">
+        <form action="" method="get" class="sidebar-form">
             <div class="input-group">
                 <input type="text" name="q" class="form-control" placeholder="Search..." autocomplete="off">
                 <span class="input-group-btn">
-                    <button type="submit" name="search" id="search-btn" class="btn btn-flat" onclick="search_menu()"><i class="fa fa-search"></i></button>
+                    <button type="submit" name="search" id="search-btn" class="btn btn-flat" onclick="search_menu(); return false;"><i class="fa fa-search"></i></button>
                 </span>
                 <div class="menuresult list-group sidebar-form hide">
                 </div>
@@ -234,27 +234,27 @@
 
     // 本地搜索菜单
     function search_menu() {
-        //要搜索的值
+        // 要搜索的值
         var text = $('input[name=q]').val();
         var $ul = $('.sidebar-menu');
-        //取消空搜索
         if(text == ''){
             return false;
         }
         $ul.find("a:not([href^='#'])").each(function () {
             var $a = $(this).css("border","");
-            //判断是否含有要搜索的字符串
+            // 判断是否含有要搜索的字符串
             if ($("span:first", this).text().indexOf(text) > -1) {
-                //如果a标签的父级是隐藏的就展开
+                // 如果a标签的父级是隐藏的就展开
                 $ul = $a.parents("ul");
                 if ($ul.is(":hidden")) {
                     $a.parents("ul").prev().click();
                 }
-                //点击该菜单并设置边框
-                //$a.click().css("border","1px solid");
-                //点击该菜单
+                // 点击该菜单
                 $a.click();
-                //return false;
+                // 高亮当前菜单
+                $a.parent('li').addClass('active');
+                // 跳出遍历
+                return false;
             }
         });
     }
