@@ -1026,11 +1026,15 @@ class MakeBuilder
     {
         $module = \app\common\model\Module::find($id);
         if ($module) {
+            if ($module->table_type == 1) {
+                $pid = \app\common\model\AuthRule::where('title', '=', '内容管理')->value('id');
+            }
             $data = [
-                'pid'   => 0,
-                'name'  => $module->model_name . '/index',
-                'title' => $module->module_name,
-                'sort'  => 50,
+                'pid'    => $pid ?? 0,
+                'name'   => $module->model_name . '/index',
+                'title'  => $module->module_name,
+                'sort'   => 50,
+                'status' => isset($pid) && !empty($pid) ? 1 : 0,
             ];
             // 查询是否已存在，存在的不再处理
             $rule = \app\common\model\AuthRule::where('name', $module->model_name . '/index')->find();
