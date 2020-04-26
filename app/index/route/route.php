@@ -29,7 +29,7 @@ $cate = \app\common\model\Cate::field('id,cate_name,cate_folder,module_id')->ord
 foreach ($cate as $k => $v) {
     // 当栏目设置了[栏目目录]字段时注册路由
     if ($v['cate_folder']) {
-        if ($v->module->getData('module_name') == 'Page') {
+        if ($v->module->getData('model_name') == 'Page') {
             Route::any('' . $v['cate_folder'] . '', '' . $v['cate_folder'] . '/index');
         } else {
             // 列表+详情模型

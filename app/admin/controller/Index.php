@@ -104,10 +104,18 @@ class Index extends Base
         if ($info) {
             // 查询所在栏目信息
             $cate = \app\common\model\Cate::find($info['cate_id']);
-            if ($cate['cate_folder']) {
-                $url = $cate['cate_folder'] . Config::get('route.pathinfo_depr') . $id . '.' . Config::get('route.url_html_suffix');
+            if ($cate->module->getData('model_name') == 'Page') {
+                if ($cate['cate_folder']) {
+                    $url = $cate['cate_folder'] . '.' . Config::get('route.url_html_suffix');
+                } else {
+                    $url = $module . Config::get('route.pathinfo_depr') . 'index.' . Config::get('route.url_html_suffix') . '?cate=' . $cate['id'];
+                }
             } else {
-                $url = $module . '/info.' . Config::get('route.url_html_suffix') . '?cate=' . $cate['id'] . '&id=' . $id;
+                if ($cate['cate_folder']) {
+                    $url = $cate['cate_folder'] . Config::get('route.pathinfo_depr') . $id . '.' . Config::get('route.url_html_suffix');
+                } else {
+                    $url = $module . Config::get('route.pathinfo_depr') . 'info.' . Config::get('route.url_html_suffix') . '?cate=' . $cate['id'] . '&id=' . $id;
+                }
             }
             if (isset($url) && !empty($url)) {
                 // 检测是否开启了域名绑定
