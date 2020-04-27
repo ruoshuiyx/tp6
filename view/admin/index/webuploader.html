@@ -73,6 +73,7 @@
             } else {
                 $("input[name='" + image + "']").val(url);
                 $("#" + image_preview).attr('src', url);
+                $("#" + image_preview).parent("a").attr('href', url);
             }
         });
         uploader.on('uploadComplete', function (file) {
