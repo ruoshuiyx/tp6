@@ -11,7 +11,7 @@
           <span>Email: {$system.email}</span>
           <span class="login">
               <i class="zmdi zmdi-account"></i>
-              <a href="{:url('user/index')}">用户中心</a>
+              <a href="{:url('user/index')}">{$Request.session.user.email|default="用户中心"}</a>
           </span>
          </div> 
         </div> 
