@@ -335,7 +335,8 @@ class Template extends Base
 
     // 媒体文件删除
     public function imgDel(){
-        $path = $this->template_path . $this->template_img . '/' . Request::post('folder');
+        $folder = str_replace("..", "", Request::param('folder'));
+        $path = $this->template_path . $this->template_img . '/' . $folder;
         $file = $path . $this->checkFilename(Request::post('filename'));
 
         if (file_exists($file)) {
