@@ -86,12 +86,16 @@ class Plugin extends Base
             ]);
             return View::fetch($file);
         } else {
+            // 获取字段数据
             $columns = $this->makeAddColumns($config);
-            return FormBuilder::getInstance()
-                ->setFormUrl(url('configSave'))
-                ->addHidden('id', $name)
-                ->addFormItems($columns)
-                ->fetch();
+            // 判断是否分组
+            $group = ThinkAddons::checkConfigGroup($config);
+            // 构建页面
+            $builder = FormBuilder::getInstance();
+            $builder->setFormUrl(url('configSave'))
+                    ->addHidden('id', $name);
+            $group ? $builder->addGroup($columns) : $builder->addFormItems($columns);
+            return $builder->fetch();
         }
     }
 
@@ -130,6 +134,23 @@ class Plugin extends Base
 
     // 生成表单信息
     private function makeAddColumns(array $config)
+    {
+        // 判断是否开启了分组
+        if (ThinkAddons::checkConfigGroup($config) === false) {
+            // 未开启分组
+            return $this->makeAddColumnsArr($config);
+        } else {
+            $columns = [];
+            // 开启分组
+            foreach ($config as $k => $v) {
+                $columns[$k] = $this->makeAddColumnsArr($v);
+            }
+            return $columns;
+        }
+    }
+
+    // 生成表单返回数组
+    private function makeAddColumnsArr(array $config)
     {
         $columns = [];
         foreach ($config as $k => $field) {

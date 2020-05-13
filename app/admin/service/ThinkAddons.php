@@ -108,11 +108,26 @@ class ThinkAddons
 
             // 获取插件配置信息
             $config = $this->getConfig($data['id']);
+            // 判断是否分组
+            $group = $this->checkConfigGroup($config);
             if ($data) {
-                foreach ($config as $k => $v) {
-                    if (isset($data[$k])) {
-                        $value = is_array($data[$k]) ? implode(',', $data[$k]) : ($data[$k] ?? $v['value']);
-                        $config[$k]['value'] = $value;
+                if ($group) {
+                    // 开启分组
+                    foreach ($config as $k => $v) {
+                        foreach ($v as $kk => $vv) {
+                            if (isset($data[$kk])) {
+                                $value = is_array($data[$kk]) ? implode(',', $data[$kk]) : ($data[$kk] ?? $vv['value']);
+                                $config[$k][$kk]['value'] = $value;
+                            }
+                        }
+                    }
+                } else {
+                    // 未开启分组
+                    foreach ($config as $k => $v) {
+                        if (isset($data[$k])) {
+                            $value = is_array($data[$k]) ? implode(',', $data[$k]) : ($data[$k] ?? $v['value']);
+                            $config[$k]['value'] = $value;
+                        }
                     }
                 }
             }
@@ -280,6 +295,19 @@ class ThinkAddons
         ];
     }
 
+    // 判断插件配置文件是否进行了分组
+    public function checkConfigGroup(array $config)
+    {
+        // 获取第一个元素
+        $arrayShift = array_shift($config);
+        if (array_key_exists('title', $arrayShift) && array_key_exists('type', $arrayShift)) {
+            // 未开启分组
+            return false;
+        } else {
+            // 开启分组
+            return true;
+        }
+    }
     // ===========================================
 
     // 验证插件是否完整
