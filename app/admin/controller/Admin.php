@@ -157,10 +157,15 @@ class Admin extends Base
             if (!$data['group_id']) {
                 $this->error('请选择角色组!');
             }
-            // 非管理员组不可修改他人信息
+
             if (Session::get('admin.group_id') != 1) {
+                // 非管理员组不可修改他人信息
                 if (Session::get('admin.id') != $data['id']) {
-                    $this->error('非管理员组不可修改他人信息!', 'index');
+                    $this->error('非管理员组人员不可修改他人信息!', 'index');
+                }
+                // 非管理员组不可修改角色组
+                if (Session::get('admin.group_id') != $data['group_id']) {
+                    $this->error('非管理员组人员不可修改所属角色组!', 'index');
                 }
             }
 
