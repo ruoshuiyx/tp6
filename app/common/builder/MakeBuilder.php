@@ -97,8 +97,8 @@ class MakeBuilder
                 $dicts = $this->changeSelect($dicts);
             }
 
-            // 筛选可搜索字段
-            if ($field['is_list'] != 1) {
+            // 筛选可搜索且状态不为0的字段
+            if ($field['is_list'] != 1 || $field['status'] == 0) {
                 continue;
             }
             // select等需要获取数据的字段需设置好 param 或考虑是否变更字段(字典类型的在这里获取，关联的在模型里重构该字段)
@@ -133,8 +133,18 @@ class MakeBuilder
                 continue;
             }
 
-            // 非自增字段判断是否可添加/可修改
-            if ($field['is_pk'] != 1 && $field['is_add'] != 1) {
+            // 非自增字段判断是否可添加
+            if ($field['is_pk'] != 1 && strpos(strtolower(Request::action()), 'add') !== false && $field['is_add'] != 1) {
+                continue;
+            }
+
+            // 非自增字段判断是否可修改
+            if ($field['is_pk'] != 1 && strpos(strtolower(Request::action()), 'edit') !== false && $field['is_edit'] != 1) {
+                continue;
+            }
+
+            // 状态为0的字段不可新增或修改
+            if ($field['status'] == 0) {
                 continue;
             }
 
