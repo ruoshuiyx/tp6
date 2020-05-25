@@ -129,7 +129,12 @@
                                     }else if (value == 3) {
                                         return '<span class="badge badge-{$column.param.1.class|default='success'}">{$column.param.3|default='状态3'}</span>';
                                     }else {
-                                        return '<span class="badge badge-{$column.param.1.class|default='info'}">{$column.param.4|default='其他'}</span>';
+                                        {foreach $column.param as $key=>$vo }
+                                            var kk = '{$key}';
+                                            if(value == kk){
+                                                return '<span class="badge badge-info">{$vo}</span>';
+                                            }
+                                        {/foreach}
                                     }
                                 }
 								{/if}
