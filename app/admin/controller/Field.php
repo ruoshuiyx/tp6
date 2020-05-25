@@ -336,8 +336,8 @@ class Field extends Base
         foreach ($ids as $k => $v) {
             $r = Db::name('field')->find($v);
             if ($r) {
-                //删除字段表中的记录
-                Db::name('field')->delete($id);
+                // 删除字段表中的记录
+                Db::name('field')->delete($r['id']);
             }
 
             $moduleId = $r['module_id'];
