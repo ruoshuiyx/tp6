@@ -62,10 +62,9 @@ class Cate extends Base
         }
         // 搜索
         if (Request::param('getList') == 1) {
-            $where = MakeBuilder::getListWhere($this->tableName);
             $orderByColumn = Request::param('orderByColumn') ?? $pk;
             $isAsc = Request::param('isAsc') ?? 'desc';
-            return $model::getList($where, $this->pageSize, [$orderByColumn => $isAsc]);
+            return $model::getList([$orderByColumn => $isAsc]);
         }
         // 构建页面
         return TableBuilder::getInstance()
@@ -110,7 +109,7 @@ class Cate extends Base
         $groups = MakeBuilder::getgetAddGroups($this->modelName, $this->tableName, $coloumns);
         // 构建页面
         $builder = FormBuilder::getInstance();
-        
+
         $groups ? $builder->addGroup($groups) : $builder->addFormItems($coloumns);
         return $builder->fetch();
     }
