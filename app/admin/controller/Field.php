@@ -169,10 +169,10 @@ class Field extends Base
                 if (isset($addfieldsql) && !empty($addfieldsql)) {
                     if (is_array($addfieldsql)) {
                         foreach ($addfieldsql as $sql) {
-                            $model->execute($sql);
+                            Db::execute($sql);
                         }
                     } else {
-                        $model->execute($addfieldsql);
+                        Db::execute($addfieldsql);
                     }
                 }
                 $this->success('添加成功！', url('index', array('moduleId' => $data['module_id'])));
@@ -267,10 +267,10 @@ class Field extends Base
             if (false !== $model->update($data)) {
                 if (is_array($editfieldsql)) {
                     foreach ($editfieldsql as $sql) {
-                        $model->execute($sql);
+                        Db::execute($sql);
                     }
                 } else {
-                    $model->execute($editfieldsql);
+                    Db::execute($editfieldsql);
                 }
                 $this->success('修改成功！', url('index', array('moduleId' => $data['module_id'])));
             } else {
@@ -322,8 +322,7 @@ class Field extends Base
 
             //实际查询表中是否有该字段
             if ($this->_iset_field($tableName, $field)) {
-                Db::name('field')
-                    ->execute("ALTER TABLE `{$tableName}` DROP `$field`");
+                Db::execute("ALTER TABLE `{$tableName}` DROP `$field`");
             }
             return json(['error' => 0, 'msg' => '删除成功！']);
         }
@@ -351,8 +350,7 @@ class Field extends Base
 
             // 实际查询表中是否有该字段
             if ($this->_iset_field($tableName, $field)) {
-                Db::name('field')
-                    ->execute("ALTER TABLE `{$tableName}` DROP `$field`");
+                Db::execute("ALTER TABLE `{$tableName}` DROP `$field`");
             }
         }
         return json(['error' => 0, 'msg' => '删除成功！']);
