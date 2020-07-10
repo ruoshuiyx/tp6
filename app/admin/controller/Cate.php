@@ -62,9 +62,7 @@ class Cate extends Base
         }
         // 搜索
         if (Request::param('getList') == 1) {
-            $orderByColumn = Request::param('orderByColumn') ?? $pk;
-            $isAsc = Request::param('isAsc') ?? 'desc';
-            return $model::getList([$orderByColumn => $isAsc]);
+            return $model::getList();
         }
         // 构建页面
         return TableBuilder::getInstance()
