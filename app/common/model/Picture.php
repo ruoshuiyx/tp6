@@ -6,7 +6,7 @@
  *                      .::::.
  *                    .::::::::.            | AUTHOR: siyu
  *                    :::::::::::           | EMAIL: 407593529@qq.com
- *                 ..:::::::::::'           | DATETIME: 2020/03/08
+ *                 ..:::::::::::'           | DATETIME: 2020/07/10
  *             '::::::::::::'
  *                .::::::::::
  *           '::::::::::::::..
@@ -37,9 +37,13 @@ class Picture extends Base
     protected $createTime = 'create_time';
     protected $updateTime = 'update_time';
 
+    
     public function cate()
     {
         return $this->belongsTo('Cate', 'cate_id');
+    }public function article()
+    {
+        return $this->belongsTo('Article', 'guanlian');
     }
 
     // 获取列表
@@ -54,6 +58,8 @@ class Picture extends Base
         foreach ($list as $k => $v) {
             if ($list[$k]['cate_id']) {
                 $v['cate_id'] = $v->cate->getData('cate_name');
+            }if ($list[$k]['guanlian']) {
+                $v['guanlian'] = $v->article->getData('title');
             }
         }
         return MakeBuilder::changeTableData($list, 'Picture');
@@ -68,6 +74,8 @@ class Picture extends Base
         foreach ($list as $k => $v) {
             if ($list[$k]['cate_id']) {
                 $v['cate_id'] = $v->cate->getData('cate_name');
+            }if ($list[$k]['guanlian']) {
+                $v['guanlian'] = $v->article->getData('title');
             }
         }
         return MakeBuilder::changeTableData($list, 'Picture');

@@ -6,7 +6,7 @@
  *                      .::::.
  *                    .::::::::.            | AUTHOR: siyu
  *                    :::::::::::           | EMAIL: 407593529@qq.com
- *                 ..:::::::::::'           | DATETIME: 2020/03/08
+ *                 ..:::::::::::'           | DATETIME: 2020/07/10
  *             '::::::::::::'
  *                .::::::::::
  *           '::::::::::::::..
@@ -65,7 +65,7 @@ class Picture extends Base
         // 检测单页模式
         $isSingle = MakeBuilder::checkSingle($this->modelName);
         if ($isSingle) {
-            return redirect($isSingle);
+            return $this->jump($isSingle);
         }
         // 构建页面
         return TableBuilder::getInstance()

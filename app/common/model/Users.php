@@ -6,7 +6,7 @@
  *                      .::::.
  *                    .::::::::.            | AUTHOR: siyu
  *                    :::::::::::           | EMAIL: 407593529@qq.com
- *                 ..:::::::::::'           | DATETIME: 2020/03/08
+ *                 ..:::::::::::'           | DATETIME: 2020/07/10
  *             '::::::::::::'
  *                .::::::::::
  *           '::::::::::::::..
@@ -37,6 +37,7 @@ class Users extends Base
     protected $createTime = 'create_time';
     protected $updateTime = 'update_time';
 
+    
     public function usersType()
     {
         return $this->belongsTo('UsersType', 'type_id');

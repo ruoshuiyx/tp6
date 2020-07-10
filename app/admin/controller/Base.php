@@ -258,4 +258,17 @@ abstract class Base
         throw new HttpResponseException($response);
     }
 
+    /**
+     * 跳转页
+     * @param string $url
+     * @return Response
+     */
+    protected function jump(string $url = '')
+    {
+        if ($this->request->isPjax()) {
+            return response('<span style="display: none">loading...</span>', 200, ['X-PJAX-URL' => $url]);
+        } else {
+            return redirect($url);
+        }
+    }
 }

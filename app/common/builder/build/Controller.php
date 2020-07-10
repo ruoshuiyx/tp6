@@ -65,7 +65,7 @@ class {$modelName} extends Base
         // 检测单页模式
         $isSingle = MakeBuilder::checkSingle($this->modelName);
         if ($isSingle) {
-            return redirect($isSingle);
+            return $this->jump($isSingle);
         }
         // 构建页面
         return TableBuilder::getInstance()

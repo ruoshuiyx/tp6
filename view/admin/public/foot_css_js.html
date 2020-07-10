@@ -35,18 +35,30 @@
 <script src="/static/plugins/AdminLTE/dist/js/demo.js"></script>
 <!-- pjax -->
 <script src="/static/plugins/AdminLTE/plugins/pjax/jquery.pjax.js"></script>
+{literal}
 <script type="text/javascript">
     $(function () {
-        //a 链接
+        // 跳转页
+        $(document).on('pjax:complete', function (event, xhr, textStatus, options) {
+            var url = xhr.getResponseHeader('X-PJAX-URL');
+            if (url) {
+                $.pjax({url: url, container: '.content-wrapper'})
+            }
+        });
+
+        // a 链接
         $(document).pjax('a[target!=_blank]', '.content-wrapper');
-        //form 表单
-        $(document).on('submit', 'form[data-pjax]', function(event) {
+
+        // form 表单
+        $(document).on('submit', 'form[data-pjax]', function (event) {
             $.pjax.submit(event, '.content-wrapper');
         });
-        //重新加载
+
+        // 重新加载
         //$.pjax.reload('.content-wrapper');
     })
 </script>
+{/literal}
 <!-- PACE -->
 <script src="/static/plugins/AdminLTE/bower_components/PACE/pace.min.js"></script>
 <!-- jQueryForm -->

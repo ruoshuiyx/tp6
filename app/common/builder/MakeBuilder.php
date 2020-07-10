@@ -578,9 +578,6 @@ class MakeBuilder
                 $redirect = [
                     'id' => $info[0][$module['pk']]
                 ];
-                if (Request::has('_pjax')) {
-                    $redirect['_pjax'] = Request::param('_pjax');
-                }
                 return (string)url('edit', $redirect);
             } elseif (count($info) == 0) {
                 return (string)url('add');
