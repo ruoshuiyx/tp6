@@ -589,7 +589,7 @@ function getSearchField(string $field)
                         $strArr = explode("|", $str);
                         foreach ($strArr as &$strAr) {
                             // 检测是否存在
-                            $dictCount = \app\common\model\Dictionary::where('dict_value', $str)->count();
+                            $dictCount = \app\common\model\Dictionary::where('dict_value', $strAr)->count();
                             if ($dictCount) {
                                 $sql .= ' FIND_IN_SET(\'' . $strAr . '\', ' . $v . ') OR';
                             }
