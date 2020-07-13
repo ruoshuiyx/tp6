@@ -502,7 +502,7 @@ function object2array($object)
 function getCateId()
 {
     if (\think\facade\Request::has('cate')) {
-        $result = \think\facade\Request::param('cate');
+        $result = (int)\think\facade\Request::param('cate');
     } else {
         $result = \app\common\model\Cate::where('cate_folder', '=', \think\facade\Request::controller())
             ->value('id');
@@ -588,13 +588,21 @@ function getSearchField(string $field)
                         $sql = ' AND (';
                         $strArr = explode("|", $str);
                         foreach ($strArr as &$strAr) {
-                            $sql .= ' FIND_IN_SET(\'' . $strAr . '\', ' . $v . ') OR';
+                            // 检测是否存在
+                            $dictCount = \app\common\model\Dictionary::where('dict_value', $str)->count();
+                            if ($dictCount) {
+                                $sql .= ' FIND_IN_SET(\'' . $strAr . '\', ' . $v . ') OR';
+                            }
                         }
                         // 去除最后一个or
                         $sql = substr($sql, 0, strlen($sql) - 2);
                         $sql .= ') ';
                     } else {
-                        $sql .= ' AND FIND_IN_SET(\'' . $str . '\', ' . $v . ') ';
+                        // 检测是否存在
+                        $dictCount = \app\common\model\Dictionary::where('dict_value', $str)->count();
+                        if ($dictCount) {
+                            $sql .= ' AND FIND_IN_SET(\'' . $str . '\', ' . $v . ') ';
+                        }
                     }
                 }
             }
