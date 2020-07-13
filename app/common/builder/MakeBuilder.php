@@ -312,8 +312,8 @@ class MakeBuilder
             }
             elseif ($field['type'] == 'image' || $field['type'] == 'images' || $field['type'] == 'file' || $field['type'] == 'files') {
 
-                // 多图上传执行解析操作
-                if ($field['type'] == 'images') {
+                // 多(图/文件)上传执行解析操作
+                if ($field['type'] == 'images' || $field['type'] == 'files') {
                     $field['setup']['default'] = json_decode($field['setup']['default'], true);
                 }
 
@@ -650,7 +650,7 @@ class MakeBuilder
                     } else {
                         $formData[$k] = md5($v);
                     }
-                } else if ($fieldsNew[$k]['type'] == 'images') {
+                } else if ($fieldsNew[$k]['type'] == 'images' || $fieldsNew[$k]['type'] == 'files') {
                     $images = [];
                     for ($i = 0; $i < count($formData[$k]); $i++) {
                         $images[$i]['image'] = $formData[$k][$i];
