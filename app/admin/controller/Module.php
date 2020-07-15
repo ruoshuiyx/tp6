@@ -105,8 +105,12 @@ class Module extends Base
                 if ($result['error']) {
                     $this->error($result['msg']);
                 } else {
-                    \app\common\model\Module::makeModule($data['table_name'], $data['table_type']);
-                    $this->success($result['msg'], 'index');
+                    $makeModule = \app\common\model\Module::makeModule($data['table_name'], $data['table_type']);
+                    if($makeModule === true){
+                        $this->success($result['msg'], 'index');
+                    } else {
+                        $this->error($makeModule);
+                    }
                 }
             }
         }
