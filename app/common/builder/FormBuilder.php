@@ -536,7 +536,7 @@ class FormBuilder
             'name'        => $name,
             'title'       => $title,
             'tips'        => $tips,
-            'value'       => $default,
+            'value'       => $default == 0 ? '' : $default,
             'format'      => $format == '' ? 'yyyy-mm-dd hh:ii:ss' : $format,
             'extra_attr'  => $extra_attr,
             'extra_class' => $extra_class,
