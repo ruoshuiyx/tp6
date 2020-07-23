@@ -420,7 +420,7 @@ $(window).scroll(function() {
 });
 
 // 返回顶部点击
-$('#totop').on('click', function(e) {
+$(document).on("click", '#totop', function(e) {
     // 防止打开URL
     e.preventDefault();
     $('html,body').animate({
