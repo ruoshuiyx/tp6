@@ -342,7 +342,7 @@ function getChilds($cate, $pid)
 {
     $arr = array();
     foreach ($cate as $v) {
-        if ($v['parentid'] == $pid) {
+        if ($v['parent_id'] == $pid) {
             $v['url'] = getUrl($v);
             $arr[] = $v;
             $arr = array_merge($arr, getChilds($cate, $v['id']));
