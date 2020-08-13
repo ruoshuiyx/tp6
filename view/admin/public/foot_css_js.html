@@ -54,6 +54,11 @@
             $.pjax.submit(event, '.content-wrapper');
         });
 
+        // 阻止超时导致的链接跳转(ajax默认超时时间650毫秒，超时后强制刷新整个页面)
+        $(document).on('pjax:timeout', function (event) {
+            event.preventDefault()
+        });
+
         // 重新加载
         //$.pjax.reload('.content-wrapper');
     })
