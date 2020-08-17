@@ -655,3 +655,40 @@ function tree_three($cate , $lefthtml = '|— ' , $pid = 0 , $lvl = 0 ){
     }
     return $arr;
 }
+
+/**
+ * 标签云数据处理
+ * @param $list
+ * @return array
+ */
+function get_tagcloud($list, $moduleId, $limit = 10)
+{
+    $result = [];
+    if ($list) {
+        foreach ($list as $k => $v) {
+            if ($v['tags']) {
+                $arr = explode(',', $v['tags']);
+                foreach ($arr as $ar) {
+                    if (!empty($ar)) {
+                        $result[] = $ar;
+                    }
+                }
+            }
+        }
+    }
+    // 截取
+    if ($result) {
+        $arr = array_count_values($result); // 统计数组中所有的值出现的次数
+        arsort($arr); // 降序排序
+        $arr = array_slice($arr, 0, $limit); // 截取前N条数据
+        $result = [];
+        foreach ($arr as $k => $v) {
+            $result[] = [
+                'name' => $k,
+                'num'  => $v,
+                'url'  => \think\facade\Route::buildUrl('index/tag', ['module' => $moduleId, 't' => $k])->__toString(),
+            ];
+        }
+    }
+    return $result;
+}

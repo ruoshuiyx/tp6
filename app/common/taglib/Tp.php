@@ -42,6 +42,7 @@ class Tp extends TagLib {
         'list'      => ['attr' => 'id,name,pagesize,where,search,limit,order','close' => 1], // 通用列表
         'search'    => ['attr' => 'search,table,name,pagesize,where,order','close' => 1],    // 通用搜索
         'tag'       => ['attr' => 'name,pagesize,order','close' => 1],                       // 通用标签
+        'tagcloud'  => ['attr' => 'name,table,limit','close' => 1],                          // 标签云
         'prev'	    => ['attr' => 'len','close' => 0],                                       // 上一篇
         'next'	    => ['attr' => 'len','close' => 0],                                       // 下一篇
         'dict'      => ['attr' => 'name,dict_type,field,all','close' => 1],                  // 获取字典类型
@@ -74,7 +75,7 @@ class Tp extends TagLib {
     }
 
     // 通用导航信息
-    Public function tagNav($tag, $content)
+    public function tagNav($tag, $content)
     {
         $tag['limit'] = $tag['limit'] ?? '0';
         $tag['id']    = $tag['id']    ?? '';
@@ -100,7 +101,7 @@ class Tp extends TagLib {
     }
 
     // 通用栏目信息
-    Public function tagCate($tag)
+    public function tagCate($tag)
     {
         $id     = $tag['id']     ?? getCateId();
         $type   = $tag['type']   ?? 'cate_name';
@@ -121,7 +122,7 @@ class Tp extends TagLib {
     }
 
     // 通用位置信息
-    Public function tagPosition($tag, $content)
+    public function tagPosition($tag, $content)
     {
         $name = $tag['name'] ? $tag['name'] : 'position';
         $parse  = '<?php ';
@@ -137,7 +138,7 @@ class Tp extends TagLib {
     }
 
     // 获取友情链接
-    Public function tagLink($tag, $content)
+    public function tagLink($tag, $content)
     {
         $name = $tag['name'] ? $tag['name'] : 'link';
         $parse = '<?php ';
@@ -150,7 +151,7 @@ class Tp extends TagLib {
     }
 
     // 获取广告信息
-    Public function tagAd($tag, $content)
+    public function tagAd($tag, $content)
     {
         $name = $tag['name'] ?? 'ad';
         $id   = $tag['id']   ?? '';
@@ -171,7 +172,7 @@ class Tp extends TagLib {
     }
 
     // 通用碎片信息
-    Public function tagDebris($tag)
+    public function tagDebris($tag)
     {
         $name = $tag['name'] ?? '';
         $type = $tag['type'] ?? '';
@@ -182,7 +183,7 @@ class Tp extends TagLib {
     }
 
     // 通用列表
-    Public function tagList($tag, $content)
+    public function tagList($tag, $content)
     {
         $id       = $tag['id']       ?? '0';                     // 可以为空
         $name     = $tag['name']     ?? "list";                  // 不可为空
@@ -239,7 +240,7 @@ class Tp extends TagLib {
     }
 
     // 通用搜索
-    Public function tagSearch($tag, $content)
+    public function tagSearch($tag, $content)
     {
         $search   = $tag['search']   ?? "";                      // 关键字
         $table    = $tag['table']    ?? "article";               // 表名称
@@ -273,7 +274,7 @@ class Tp extends TagLib {
     }
 
     // 通用TAG标签
-    Public function tagTag($tag, $content)
+    public function tagTag($tag, $content)
     {
         $name     = $tag['name']     ?? "list";                  //不可为空
         $order    = $tag['order']    ?? 'sort ASC,id DESC';      //排序
@@ -308,8 +309,32 @@ class Tp extends TagLib {
         return $parse;
     }
 
+    // 标签云标签
+    public function tagTagcloud($tag, $content)
+    {
+        $name  = $tag['name']  ?? "list";    // 不可为空
+        $table = $tag['table'] ?? 'article'; // 表
+        $limit = $tag['limit'] ?? '10';      // 条数
+        $parse  = '<?php ';
+        $parse .= '
+                $__MODULE__ = \app\common\model\Module::where("table_name","' . strtolower($table) . '")->find();
+                $__MODEL__ = \'\app\common\model\\\\\' . $__MODULE__->model_name;
+                $__LIST__ = $__MODEL__::where("tags", "<>", "")
+                    ->field(\'tags\')
+                    ->select()
+                    ->toArray();
+                // 处理数据
+                $__LIST__ = get_tagcloud($__LIST__, $__MODULE__->id, ' . $limit . ');
+            ';
+        $parse .= ' ?>';
+        $parse .= '{volist name="__LIST__" id="' . $name . '"}';
+        $parse .= $content;
+        $parse .= '{/volist}';
+        return $parse;
+    }
+
     // 详情上一篇
-    Public function tagPrev($tag)
+    public function tagPrev($tag)
     {
         $len = $tag['len'] ?: '500';
         $str = '<?php ';
@@ -341,7 +366,7 @@ class Tp extends TagLib {
     }
 
     // 详情下一篇
-    Public function tagNext($tag)
+    public function tagNext($tag)
     {
         $len = $tag['len'] ?: '500';
         $str = '<?php ';
@@ -373,7 +398,7 @@ class Tp extends TagLib {
     }
 
     // 字典类型
-    Public function tagDict($tag, $content)
+    public function tagDict($tag, $content)
     {
         $name     = $tag['name'] ?? 'dictionary';
         $dictType = $tag['dict_type'] ?? 0;
