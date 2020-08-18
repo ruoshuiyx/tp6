@@ -684,9 +684,9 @@ function get_tagcloud($list, $moduleId, $limit = 10)
         $result = [];
         foreach ($arr as $k => $v) {
             $result[] = [
-                'name' => $k,
-                'num'  => $v,
-                'url'  => \think\facade\Route::buildUrl('index/tag', ['module' => $moduleId, 't' => $k])->__toString(),
+                'name'  => $k,
+                'count' => $v,
+                'url'   => \think\facade\Route::buildUrl('index/tag', ['module' => $moduleId, 't' => $k])->__toString(),
             ];
         }
     }
