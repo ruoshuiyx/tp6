@@ -469,12 +469,15 @@ class TableBuilder
     {
         if (!empty($items)) {
             foreach ($items as &$item) {
-                $item['type']    = $item[0]; // 字段类型
-                $item['name']    = $item[1]; // 字段名称
-                $item['title']   = $item[2]; // 字段别名
-                $item['option']  = isset($item[3]) ? $item[3] : '='; // 匹配方式
-                $item['default'] = isset($item[4]) ? $item[4] : '';  // 默认值
-                $item['param']   = isset($item[5]) ? $item[5] : [];  // 额外参数
+                $item['type']           = $item[0]; // 字段类型
+                $item['name']           = $item[1]; // 字段名称
+                $item['title']          = $item[2]; // 字段别名
+                $item['option']         = isset($item[3]) ? $item[3] : '='; // 匹配方式
+                $item['default']        = isset($item[4]) ? $item[4] : '';  // 默认值
+                $item['param']          = isset($item[5]) ? $item[5] : [];  // 额外参数
+                $item['data_source']    = isset($item[6]) ? $item[6] : 0;   // 数据源 [0 字段本身, 1 系统字典, 2 模型数据]
+                $item['relation_model'] = isset($item[7]) ? $item[7] : '';  // 模型关联
+                $item['relation_field'] = isset($item[8]) ? $item[8] : '';  // 关联字段
             }
             $this->_vars['search'] = $items;
         }

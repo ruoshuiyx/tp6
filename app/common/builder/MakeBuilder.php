@@ -389,6 +389,9 @@ class MakeBuilder
                 $field['search_type'] ?? '=',  // 匹配方式
                 $field['default_value'] ?? '', // 默认值
                 $field['param'] ?? [],         // 额外参数
+                $field['data_source'] ?? 0,    // 数据源 [0 字段本身, 1 系统字典, 2 模型数据]
+                $field['relation_model'] ?? '',// 模型关联
+                $field['relation_field'] ?? '',// 关联字段
             ];
         }
         return $items;
@@ -406,46 +409,69 @@ class MakeBuilder
         // 循环所有搜索字段，看是否有传递
         foreach ($search as $k => $v) {
             if (Request::param($v[1]) || Request::param($v[1]) === "0") {
-                // 判断字段类型
+                $searhKeywords = Request::param($v[1]);
+                // 判断字段类型，默认为=
                 if (isset($v[3]) && !empty($v[3])) {
                     $option = $v[3];
                 } else {
                     $option = '=';
                 }
+
+                // 模型关联的数据需要考虑转化
+                if ($v[6] == 2) {
+                    // 需要转化的字段类型
+                    $arr = ['text', 'textarea', 'number', 'hidden'];
+                    if (in_array($v[0], $arr)) {
+                        // 查找关联主键
+                        $pk = $this->getPrimarykey($tableName);
+                        // 尝试查找关联的值
+                        $model = '\app\common\model\\' . $v[7];
+                        if (strtoupper($option) == 'LIKE') {
+                            $relationFieldValue = $model::where($v[8], $option, '%' . $searhKeywords . '%')->value($pk);
+                            // 重定义查询表达式
+                            $option = '=';
+                        } else {
+                            $relationFieldValue = $model::where($v[8], $option, $searhKeywords)->value($pk);
+                        }
+                        // 重新定义搜索词
+                        $searhKeywords = $relationFieldValue ?: '-1';
+                    }
+                }
+
                 // text / select / daterange / default
                 switch ($v[0]) {
                     case 'text':
                         if (strtoupper($option) == 'LIKE') {
-                            $where[] = [$v[1], $option, '%' . Request::param($v[1]) . '%'];
+                            $where[] = [$v[1], $option, '%' . $searhKeywords . '%'];
                         } else {
-                            $where[] = [$v[1], $option, Request::param($v[1])];
+                            $where[] = [$v[1], $option, $searhKeywords];
                         }
                         break;
                     case 'select':
                         if (strtoupper($option) == 'LIKE') {
-                            $where[] = [$v[1], $option, '%' . Request::param($v[1]) . '%'];
+                            $where[] = [$v[1], $option, '%' . $searhKeywords . '%'];
                         } else {
-                            $where[] = [$v[1], $option, Request::param($v[1])];
+                            $where[] = [$v[1], $option, $searhKeywords];
                         }
                         break;
                     case 'date':
-                        $getDateran = get_dateran(Request::param($v[1]));
+                        $getDateran = get_dateran($searhKeywords);
                         $where[] = [$v[1], 'between', $getDateran];
                         break;
                     case 'time':
-                        $getDateran = get_dateran(Request::param($v[1]));
+                        $getDateran = get_dateran($searhKeywords);
                         $where[] = [$v[1], 'between', $getDateran];
                         break;
                     case 'datetime':
-                        $getDateran = get_dateran(Request::param($v[1]));
+                        $getDateran = get_dateran($searhKeywords);
                         $where[] = [$v[1], 'between', $getDateran];
                         break;
                     // 默认都当作文本框
                     default:
                         if (strtoupper($option) == 'LIKE') {
-                            $where[] = [$v[1], $option, '%' . Request::param($v[1]) . '%'];
+                            $where[] = [$v[1], $option, '%' . $searhKeywords . '%'];
                         } else {
-                            $where[] = [$v[1], $option, Request::param($v[1])];
+                            $where[] = [$v[1], $option, $searhKeywords];
                         }
 
                 }
