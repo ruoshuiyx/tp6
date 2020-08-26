@@ -4,6 +4,10 @@
             <label class="text-lable" for="{$form[type].name}">{$form[type].title|htmlspecialchars}</label>
             <div class="more_images dd_ts">
                 <div id="more_images_{$form[type].name}">
+                    <div class="hidden">
+                        <input type="text" name="{$form[type].name}[]" value="">
+                        <input type="text" name="{$form[type].name}_title[]" value="">
+                    </div>
                     {notempty name="form[type].value"}
                         {volist name="form[type]['value']" id="vo"}
                             <div class="row">

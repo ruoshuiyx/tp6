@@ -679,8 +679,10 @@ class MakeBuilder
                 } else if ($fieldsNew[$k]['type'] == 'images' || $fieldsNew[$k]['type'] == 'files') {
                     $images = [];
                     for ($i = 0; $i < count($formData[$k]); $i++) {
-                        $images[$i]['image'] = $formData[$k][$i];
-                        $images[$i]['title'] = $formData[$k . '_title'][$i];
+                        if ($formData[$k][$i]) {
+                            $images[$i]['image'] = $formData[$k][$i];
+                            $images[$i]['title'] = $formData[$k . '_title'][$i];
+                        }
                     }
                     $formData[$k] = json_encode($images);
                 }
