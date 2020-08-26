@@ -150,8 +150,8 @@ class Template extends Base
     // 添加保存
     public function addPost(){
         if (Request::isPost()) {
-             $filename = $this->checkFilename(Request::post('filename'));
-            $type     = Request::param('type') ? Request::param('type') : 'html';
+            $filename = $this->checkFilename(Request::post('filename'));
+            $type     = $this->checkFiletype(Request::param('type', 'html'));
             if ($type == 'html') {
                 $path = $this->template_path.$this->template_html.'/';
             } else {
@@ -207,8 +207,8 @@ class Template extends Base
     // 修改保存
     public function editPost(){
         if (Request::isPost()) {
-             $filename = $this->checkFilename(Request::post('filename'));
-            $type     = Request::param('type') ? Request::param('type') : 'html';
+            $filename = $this->checkFilename(Request::post('filename'));
+            $type     = $this->checkFiletype(Request::param('type', 'html'));
             if ($type == 'html') {
                 $path = $this->template_path.$this->template_html.'/';
             } else {
@@ -369,11 +369,23 @@ class Template extends Base
     }
 
     // 过滤文件名
-    private function checkFilename($fileName)
+    private function checkFilename(string $fileName)
     {
         $fileName = str_replace("/", "", $fileName);
         $fileName = str_replace("..", "", $fileName);
         $fileName = str_ireplace(".php", ".html", $fileName);
+        $fileName = str_ireplace(".asp", ".html", $fileName);
         return $fileName;
+    }
+
+    // 过滤类型
+    private function checkFiletype(string $fileType)
+    {
+        $arr = ['html', 'css', 'js'];
+        if (!in_array($fileType, $arr)) {
+            return 'html';
+        } else {
+            return $fileType;
+        }
     }
 }
