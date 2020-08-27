@@ -195,9 +195,9 @@ class Upload extends Base
         // Settings
         // $targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
         // 设置临时上传目录
-        $targetDir = 'uploads' . DIRECTORY_SEPARATOR . 'temp';
+        $targetDir = public_path() . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'temp';
         // 设置上传目录
-        $uploadDir = 'uploads' . DIRECTORY_SEPARATOR . date('Ymd');
+        $uploadDir = public_path() . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . date('Ymd');
         // 上传完后清空临时目录
         $cleanupTargetDir = true;
         // 临时文件期限
@@ -346,6 +346,8 @@ class Upload extends Base
             @fclose($out);
 
             // 输出
+            // 移除public目录
+            $uploadPath = str_replace(public_path() . DIRECTORY_SEPARATOR, '', $uploadPath);
             // windows系统中路径反斜杠处理
             $uploadPath = '/' . str_replace('\\', '/', $uploadPath);
             return [
