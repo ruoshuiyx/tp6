@@ -109,8 +109,6 @@ class Admin extends Base
                 $this->error('密码不能为空');
             }
             $result = $this->validate($data, $this->validate);
-            // 格式化特殊字段
-            $data['password']  = md5(trim($data['password']));
             $data['login_time'] = time();
             $data['login_ip']   = Request::ip();
             if (true !== $result) {
