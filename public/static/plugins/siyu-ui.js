@@ -479,9 +479,9 @@
 		operate: {
             // 修改信息
             edit: function(id) {
-                // 当前窗口打开要修改的地址
-                var url = $.operate.editUrl(id)
-                $.common.jump(url);
+				// 当前窗口打开要修改的地址
+				var url = $.operate.editUrl(id)
+				$.common.jump(url);
             },
 
             // 修改访问的地址
@@ -497,7 +497,10 @@
                     }
                     url = $.table._option.editUrl.replace("__id__", id);
                 }
-                return url;
+				// 获取搜索信息
+				var back = $.common.serializeRemoveNull($("#search_form").serialize());
+				back = back ? '&back_url=' + encodeURIComponent(back) : '';
+				return url + back;
             },
 
             // 添加信息
@@ -719,6 +722,10 @@
                 $.pjax({url: url, container: '.content-wrapper'})
                 //window.location.href = url;
             },
+			// 序列化表单，不含空元素
+			serializeRemoveNull: function (serStr) {
+				return serStr.split("&").filter(str => !str.endsWith("=")).join("&");
+			},
 		}
 
 	});

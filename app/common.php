@@ -692,3 +692,24 @@ function get_tagcloud($list, $moduleId, $limit = 10)
     }
     return $result;
 }
+
+/**
+ * 获取前一页地址中设置的返回url
+ * @return array
+ */
+function get_back_url()
+{
+    if ($_SERVER["HTTP_REFERER"]) {
+        parse_str($_SERVER["HTTP_REFERER"], $queryArr);
+        if (isset($queryArr['back_url']) && !empty($queryArr['back_url'])) {
+            $backUrl = explode("&", urldecode($queryArr['back_url']));
+            foreach ($backUrl as $k => $v) {
+                $v = explode("=", $v);
+                if (isset($v[1]) && !empty($v[1])) {
+                    $backArr[$v[0]] = $v[1];
+                }
+            }
+        }
+    }
+    return $backArr ?? [];
+}
