@@ -94,14 +94,14 @@ class Upload extends Base
         }
     }
 
-    // 上传验证
+    // 上传验证规则
     private function uploadVal()
     {
         $file = [];
         if (Request::param('upload_type') == 'file') {
             // 文件限制
             if ($this->system['upload_file_ext']) {
-                $file['fileExt'] = $this->system['upload_file_ext'];
+                $file['fileExt'] = $this->removeExt($this->system['upload_file_ext']);
             } else {
                 $file['fileExt'] = 'rar,zip,avi,rmvb,3gp,flv,mp3,mp4,txt,doc,xls,ppt,pdf,xls,docx,xlsx,doc';
             }
@@ -112,7 +112,7 @@ class Upload extends Base
         } else {
             // 图片限制
             if ($this->system['upload_image_ext']) {
-                $file['fileExt'] = $this->system['upload_image_ext'];
+                $file['fileExt'] = $this->removeExt($this->system['upload_image_ext']);
             } else {
                 $file['fileExt'] = 'jpg,png,gif,jpeg';
             }
@@ -214,15 +214,9 @@ class Upload extends Base
         }
 
         // 获取上传文件名称
-        if (isset($_REQUEST["name"])) {
-            $fileName = $_REQUEST["name"];
-        } elseif (!empty($_FILES)) {
-            $fileName = $_FILES["file"]["name"];
-        } else {
-            $fileName = uniqid("file_");
-        }
+        $fileName = $file->getOriginalName();
         $oldName = $fileName;
-        $fileName = iconv('UTF-8','gb2312',$fileName);
+        $fileName = iconv('UTF-8', 'gb2312', $fileName);
 
         // 临时上传完整目录信息
         $filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
@@ -372,4 +366,13 @@ class Upload extends Base
         die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
     }
 
+    // 移除上传危险后缀
+    private function removeExt(string $ext = '')
+    {
+        if ($ext) {
+            $ext = str_ireplace("php", "", $ext);
+            $ext = str_ireplace("asp", "", $ext);
+        }
+        return $ext;
+    }
 }
