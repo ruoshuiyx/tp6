@@ -78,15 +78,12 @@ class Tp extends TagLib {
     public function tagNav($tag, $content)
     {
         $tag['limit'] = $tag['limit'] ?? '0';
-        $tag['id']    = $tag['id']    ?? '';
+        $tag['id']    = $tag['id']    ?? '0';
         $name         = $tag['name']  ?? 'nav';
-        if (!empty($tag['id'])) {
-            $cateStr = '$__CATE__ = \app\common\model\Cate::where(\'is_menu\',1)->order(\'sort ASC,id DESC\')->select();';
-            $cateStr .= '$__LIST__ = getChildsOn($__CATE__,' . $tag['id'] . ');';
-        } else {
-            $cateStr  = '$__CATE__ = \app\common\model\Cate::where(\'is_menu\',1)->order(\'sort ASC,id DESC\')->select();';
-            $cateStr .= '$__LIST__ = unlimitedForLayer($__CATE__);';
-        }
+
+        $cateStr  = '$__CATE__ = \app\common\model\Cate::where(\'is_menu\',1)->order(\'sort ASC,id DESC\')->select();';
+        $cateStr .= '$__LIST__ = unlimitedForLayer($__CATE__, \'sub\', ' . $tag['id'] . ');';
+
         // 提取前N条数据,因为sql的LIMIT避免不了子栏目的问题
         if (!empty($tag['limit'])) {
             $cateStr .= '$__LIST__ = array_slice($__LIST__, 0,' . $tag['limit'] . ');';
