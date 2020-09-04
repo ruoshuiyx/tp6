@@ -407,6 +407,26 @@ function getParents($cate, $id)
 }
 
 /**
+ * 查找一个分类id的顶级分类id
+ * @param $id
+ * @return string
+ */
+function getTopId($id)
+{
+    $cate = \app\common\model\Cate::field('id,parent_id')->select()->toArray();
+    $cateArr = [];
+    if ($cate) {
+        foreach ($cate as $k => $v) {
+            $cateArr[$v['id']] = $v['parent_id'] ?: "0";
+        }
+    }
+    while ($cateArr[$id]) {
+        $id = $cateArr[$id];
+    }
+    return $id;
+}
+
+/**
  * 获取文件目录列表
  * @param string $pathname 路径
  * @param integer $fileFlag 文件列表 0所有文件列表,1只读文件夹,2是只读文件(不包含文件夹)

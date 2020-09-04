@@ -34,15 +34,16 @@ class Cms
 {
     /**
      * 获取栏目信息
-     * @param string $cateId  栏目id
-     * @return array|null|\think\Model
+     * @param string $cateId 栏目id
+     * @return null|\think\Model
      */
     public function getCateInfo(string $cateId)
     {
         $cate = Cate::where('id', '=', $cateId)->find();
         // 设置顶级栏目，当顶级栏目不存在的时候顶级栏目为本身
         if ($cate) {
-            $cate->topid = $cate['parent_id'] ? $cate['parent_id'] : $cate['id'];
+            $cate->topid = getTopId($cateId);
+            $cate->top_id = $cate->topid;
         }
         return $cate;
     }
