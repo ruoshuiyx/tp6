@@ -175,7 +175,7 @@ class Field extends Base
                         Db::execute($addfieldsql);
                     }
                 }
-                $this->success('添加成功！', url('index', array('moduleId' => $data['module_id'])));
+                $this->success('添加成功！', url('index', array('module_id' => $data['module_id'])));
             } else {
                 $this->error('添加失败！');
             }
@@ -272,7 +272,7 @@ class Field extends Base
                 } else {
                     Db::execute($editfieldsql);
                 }
-                $this->success('修改成功！', url('index', array('moduleId' => $data['module_id'])));
+                $this->success('修改成功！', 'index');
             } else {
                 $this->error('修改失败！');
             }

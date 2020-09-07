@@ -719,7 +719,7 @@ function get_tagcloud($list, $moduleId, $limit = 10)
  */
 function get_back_url()
 {
-    if ($_SERVER["HTTP_REFERER"]) {
+    if (isset($_SERVER["HTTP_REFERER"]) && !empty($_SERVER["HTTP_REFERER"])) {
         parse_str($_SERVER["HTTP_REFERER"], $queryArr);
         if (isset($queryArr['back_url']) && !empty($queryArr['back_url'])) {
             $backUrl = explode("&", urldecode($queryArr['back_url']));
