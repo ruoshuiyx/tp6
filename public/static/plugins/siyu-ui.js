@@ -40,50 +40,84 @@
 					queryParams: $.table.queryParams,
 				};
 				var options = $.extend(defaults, options);
+
 				$.table._option = options;
 				$.btTable = $('#' + options.id);
                 // 初始化新事件对象的属性
 				$.table.initEvent();
-
-				$('#' + options.id).bootstrapTable({
-                    url: options.url,                                   // 请求后台的URL（*）
-                    height: options.height,                             // 表格的高度
-                    sortable: true,                                     // 是否启用排序
-                    sortName: options.sortName,                         // 排序列名称
-                    sortOrder: options.sortOrder,                       // 排序方式  asc 或者 desc
-                    sortStable: true,                                   // 设置为 true 将获得稳定的排序
-                    method: 'post',                                     // 请求方式（*）
-                    cache: false,                                       // 是否使用缓存
-                    contentType: "application/json",   					// 内容类型
-                    dataType: 'json',                                   // 数据类型
-                    responseHandler: $.table.responseHandler,           // 在加载服务器发送来的数据之前处理函数
-                    pagination: options.pagination,                     // 是否显示分页（*）
-                    paginationLoop: true,                               // 是否禁用分页连续循环模式
-                    sidePagination: options.sidePagination,             // server启用服务端分页client客户端分页
-                    pageNumber: 1,                                      // 初始化加载第一页，默认第一页
-                    pageSize: options.pageSize,                         // 每页的记录行数（*）
-                    pageList: options.pageList,                         // 可供选择的每页的行数（*）
-                    search: options.search,                             // 是否显示搜索框功能
-                    showSearchButton: options.showSearchButton,         // 是否显示检索信息
-                    showColumns: options.showColumns,                   // 是否显示隐藏某列下拉框
-                    showRefresh: options.showRefresh,                   // 是否显示刷新按钮
-                    showToggle: options.showToggle,                     // 是否显示详细视图和列表视图的切换按钮
-                    showFullscreen: options.showFullscreen,             // 是否显示全屏按钮
-                    showFooter: options.showFooter,                     // 是否显示页脚
-                    escape: options.escape,                             // 转义HTML字符串
-                    clickToSelect: options.clickToSelect,				// 是否启用点击选中行
-                    toolbar: '#' + options.toolbar,                     // 指定工作栏
-                    detailView: options.detailView,                     // 是否启用显示细节视图
-                    iconSize: 'undefined',                              // 图标大小：undefined默认的按钮尺寸 xs超小按钮sm小按钮lg大按钮
-                    rowStyle: options.rowStyle,                         // 通过自定义函数设置行样式
-                    showExport: options.showExport,                     // 是否支持导出文件
+				// 构建bootstrap数据
+				var option = {
+					url: options.url,                                   // 请求后台的URL（*）
+					height: options.height,                             // 表格的高度
+					sortable: true,                                     // 是否启用排序
+					sortName: options.sortName,                         // 排序列名称
+					sortOrder: options.sortOrder,                       // 排序方式  asc 或者 desc
+					sortStable: true,                                   // 设置为 true 将获得稳定的排序
+					method: 'post',                                     // 请求方式（*）
+					cache: false,                                       // 是否使用缓存
+					contentType: "application/json",   					// 内容类型
+					dataType: 'json',                                   // 数据类型
+					responseHandler: $.table.responseHandler,           // 在加载服务器发送来的数据之前处理函数
+					pagination: options.pagination,                     // 是否显示分页（*）
+					paginationLoop: true,                               // 是否禁用分页连续循环模式
+					sidePagination: options.sidePagination,             // server启用服务端分页client客户端分页
+					pageNumber: 1,                                      // 初始化加载第一页，默认第一页
+					pageSize: options.pageSize,                         // 每页的记录行数（*）
+					pageList: options.pageList,                         // 可供选择的每页的行数（*）
+					search: options.search,                             // 是否显示搜索框功能
+					showSearchButton: options.showSearchButton,         // 是否显示检索信息
+					showColumns: options.showColumns,                   // 是否显示隐藏某列下拉框
+					showRefresh: options.showRefresh,                   // 是否显示刷新按钮
+					showToggle: options.showToggle,                     // 是否显示详细视图和列表视图的切换按钮
+					showFullscreen: options.showFullscreen,             // 是否显示全屏按钮
+					showFooter: options.showFooter,                     // 是否显示页脚
+					escape: options.escape,                             // 转义HTML字符串
+					clickToSelect: options.clickToSelect,				// 是否启用点击选中行
+					toolbar: '#' + options.toolbar,                     // 指定工作栏
+					detailView: options.detailView,                     // 是否启用显示细节视图
+					iconSize: 'undefined',                              // 图标大小：undefined默认的按钮尺寸 xs超小按钮sm小按钮lg大按钮
+					rowStyle: options.rowStyle,                         // 通过自定义函数设置行样式
+					showExport: options.showExport,                     // 是否支持导出文件
 					uniqueId: options.uniqueId,                         // 唯 一的标识符
 					fixedColumns: options.fixedColumns,                 // 是否启用冻结列（左侧）
 					detailFormatter: options.detailFormatter,           // 在行下面展示其他数据列表
-                    columns: options.columns,                           // 显示列信息（*）
-                    classes: options.classes,                           // 设置表样式
-                    queryParams: options.queryParams,                   // 传递参数（*）
-				});
+					columns: options.columns,                           // 显示列信息（*）
+					classes: options.classes,                           // 设置表样式
+					queryParams: options.queryParams,                   // 传递参数（*）
+				};
+				// 将tree合并到option[关闭分页且传递父id字段才可以看到tree]
+				if (option.pagination == false && $.common.isNotEmpty(options.parentIdField)) {
+					// 构建tree
+					var tree = {
+						idField: options.uniqueId,
+						treeShowField: options.uniqueId,
+						parentIdField: options.parentIdField,
+						rowStyle: function (row, index) {
+							return classes = [
+								'bg-blue',
+								'bg-green',
+								'bg-red'
+							];
+						},
+						onPostBody: function onPostBody() {
+							var columns = $.btTable.bootstrapTable('getOptions').columns;
+							if (columns) {
+								$.btTable.treegrid({
+									initialState: 'collapsed',// 所有节点都折叠
+									// initialState: 'expanded',// 所有节点都展开，默认展开
+									treeColumn: 1, // 默认为第三个
+									// expanderExpandedClass: 'glyphicon glyphicon-minus',  //图标样式
+									// expanderCollapsedClass: 'glyphicon glyphicon-plus',
+									onChange: function () {
+										$.btTable.bootstrapTable('resetWidth');
+									}
+								});
+							}
+						},
+					};
+					$.extend(option, tree);
+				}
+				$.btTable.bootstrapTable(option);
 			},
 
 			// 查询条件
@@ -646,6 +680,18 @@
                     $.modal.alertError(result.msg);
                 }
             },
+
+			// 展开/折叠列表树
+			treeStatus: function (result) {
+				if ($('.treeStatus').hasClass('expandAll')) {
+					$.btTable.treegrid('collapseAll');
+					$('.treeStatus').removeClass('expandAll')
+				} else {
+					$.btTable.treegrid('expandAll');
+					$('.treeStatus').addClass('expandAll')
+				}
+			},
+
 		},
 
 		// 通用方法封装处理

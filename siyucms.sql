@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : 本地
-Source Server Version : 50717
+Source Server Version : 50726
 Source Host           : localhost:3306
 Source Database       : tp6
 
 Target Server Type    : MYSQL
-Target Server Version : 50717
+Target Server Version : 50726
 File Encoding         : 65001
 
-Date: 2020-04-22 15:34:06
+Date: 2020-09-10 11:53:43
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -510,8 +510,8 @@ CREATE TABLE `tp_cate` (
   `cate_name` varchar(255) NOT NULL DEFAULT '' COMMENT '栏目名称',
   `en_name` varchar(255) NOT NULL DEFAULT '' COMMENT '英文名称',
   `cate_folder` varchar(255) NOT NULL DEFAULT '' COMMENT '栏目目录',
-  `parent_id` text NOT NULL COMMENT '上级栏目',
-  `module_id` text NOT NULL COMMENT '所属模块',
+  `parent_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '上级栏目',
+  `module_id` tinyint(10) unsigned NOT NULL DEFAULT '0' COMMENT '所属模块',
   `url` varchar(255) NOT NULL DEFAULT '' COMMENT '外部链接',
   `image` varchar(255) NOT NULL DEFAULT '' COMMENT '栏目图片',
   `ico_image` varchar(255) NOT NULL DEFAULT '' COMMENT 'ICO图片',
@@ -531,19 +531,19 @@ CREATE TABLE `tp_cate` (
 -- ----------------------------
 -- Records of tp_cate
 -- ----------------------------
-INSERT INTO `tp_cate` VALUES ('1', '1580900049', '1583671301', '1', '1', '关于我们', 'About Us', 'about', '', '18', '', '/uploads/20181224/65ea8dcb1cbd16c8dc46144069afeaf5.jpg', '', '', '', '', '', '', '', '0', '1', '0', '0');
+INSERT INTO `tp_cate` VALUES ('1', '1580900049', '1583671301', '1', '1', '关于我们', 'About Us', 'about', '0', '18', '', '/uploads/20181224/65ea8dcb1cbd16c8dc46144069afeaf5.jpg', '', '', '', '', '', '', '', '0', '1', '0', '0');
 INSERT INTO `tp_cate` VALUES ('2', '1580906596', '1580906596', '11', '1', '公司介绍', 'Company Introduction', 'introduction', '1', '18', '', '', '', '', '', '', '', '', '', '0', '1', '0', '0');
 INSERT INTO `tp_cate` VALUES ('3', '1580907009', '1580907009', '12', '1', '公司文化', 'culture', 'culture', '1', '18', '', '', '', '', '', '', '', '', '', '0', '1', '0', '0');
-INSERT INTO `tp_cate` VALUES ('4', '1580907057', '1580907057', '2', '1', '新闻中心', 'News Center', 'news', '', '19', '', '/uploads/20181224/65ea8dcb1cbd16c8dc46144069afeaf5.jpg', '', '', '', '', '', '', '', '0', '1', '0', '0');
+INSERT INTO `tp_cate` VALUES ('4', '1580907057', '1580907057', '2', '1', '新闻中心', 'News Center', 'news', '0', '19', '', '/uploads/20181224/65ea8dcb1cbd16c8dc46144069afeaf5.jpg', '', '', '', '', '', '', '', '0', '1', '0', '0');
 INSERT INTO `tp_cate` VALUES ('5', '1580907159', '1580907159', '21', '1', '公司新闻', '', '', '4', '19', '', '', '', '', '', '', '', '', '', '0', '1', '0', '0');
 INSERT INTO `tp_cate` VALUES ('6', '1580907197', '1580907197', '22', '1', '行业资讯', 'Industry Information', 'information', '4', '19', '', '', '', '', '', '', '', '', '', '0', '1', '0', '0');
-INSERT INTO `tp_cate` VALUES ('7', '1580907252', '1580907252', '3', '1', '资质荣誉', 'Qualifications & Honours', 'honours', '', '21', '', '/uploads/20181224/bf913edfcd8dcdeeec910860f12a0542.jpg', '', '', '', '', '', '', '', '0', '1', '0', '0');
-INSERT INTO `tp_cate` VALUES ('8', '1580907289', '1580907289', '4', '1', '产品中心', 'Pdoduct  Center', 'product', '', '22', '', '/uploads/20181224/643f5b9e297a0bd3accd79981ce347a1.jpg', '', '', '', '', '', '', '', '0', '1', '0', '0');
+INSERT INTO `tp_cate` VALUES ('7', '1580907252', '1580907252', '3', '1', '资质荣誉', 'Qualifications & Honours', 'honours', '0', '21', '', '/uploads/20181224/bf913edfcd8dcdeeec910860f12a0542.jpg', '', '', '', '', '', '', '', '0', '1', '0', '0');
+INSERT INTO `tp_cate` VALUES ('8', '1580907289', '1580907289', '4', '1', '产品中心', 'Pdoduct  Center', 'product', '0', '22', '', '/uploads/20181224/643f5b9e297a0bd3accd79981ce347a1.jpg', '', '', '', '', '', '', '', '0', '1', '0', '0');
 INSERT INTO `tp_cate` VALUES ('9', '1580907315', '1580907315', '41', '1', '精选产品', '', '', '8', '22', '', '', '', '', '', '', '', '', '', '0', '1', '0', '0');
 INSERT INTO `tp_cate` VALUES ('10', '1580907339', '1580907339', '42', '1', '热销产品', '', '', '8', '22', '', '', '', '', '', '', '', '', '', '0', '1', '0', '0');
-INSERT INTO `tp_cate` VALUES ('11', '1580907374', '1580907374', '5', '1', '资料下载', 'Download', 'download', '', '23', '', '/uploads/20181224/f4ef6f5df6abac86e8c685b2f2549079.jpg', '', '', '', '', '', '', '', '0', '1', '0', '0');
+INSERT INTO `tp_cate` VALUES ('11', '1580907374', '1580907374', '5', '1', '资料下载', 'Download', 'download', '0', '23', '', '/uploads/20181224/f4ef6f5df6abac86e8c685b2f2549079.jpg', '', '', '', '', '', '', '', '0', '1', '0', '0');
 INSERT INTO `tp_cate` VALUES ('12', '1580907407', '1580907407', '6', '1', '优秀团队', 'Team', 'team', '0', '24', '', '/uploads/20181224/bf3d6e8ff8f21760572ac25dd216daf9.jpg', '', '', '', '', '', '', '', '4', '1', '0', '0');
-INSERT INTO `tp_cate` VALUES ('13', '1580907441', '1580907441', '7', '1', '联系我们', 'Contact Us', 'contact', '', '25', '', '/uploads/20181224/65ea8dcb1cbd16c8dc46144069afeaf5.jpg', '', '', '', '', '', '', '', '0', '1', '0', '0');
+INSERT INTO `tp_cate` VALUES ('13', '1580907441', '1580907441', '7', '1', '联系我们', 'Contact Us', 'contact', '0', '25', '', '/uploads/20181224/65ea8dcb1cbd16c8dc46144069afeaf5.jpg', '', '', '', '', '', '', '', '0', '1', '0', '0');
 
 -- ----------------------------
 -- Table structure for tp_config

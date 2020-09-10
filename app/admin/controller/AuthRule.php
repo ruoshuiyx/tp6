@@ -77,7 +77,15 @@ class AuthRule extends Base
             ])
             ->addRightButtons($module->right_button)        // 设置右侧操作列
             ->addTopButtons($module->top_button)            // 设置顶部按钮组
+            ->addTopButton('default', [
+                'title'       => '展开/折叠',
+                'icon'        => 'fa fa-exchange',
+                'class'       => 'btn btn-info treeStatus',
+                'href'        => '',
+                'onclick'     => '$.operate.treeStatus()'
+            ]) // 自定义按钮
             ->setPagination('false')                        // 关闭分页显示
+            ->setParentIdField('pid')                       // 设置列表树父id
             ->fetch();
     }
 

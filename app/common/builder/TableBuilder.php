@@ -65,6 +65,7 @@ class TableBuilder
         'sort_url'           => '',        // 默认的排序地址
         'search'             => [],        // 搜索参数
         'pagination'         => 'true',    // 是否进行分页
+        'parent_id_field'    => '',        // 列表树模式需传递父id
         'empty_tips'         => '暂无数据', // 空数据提示信息[待完善]
         'hide_checkbox'      => false,     // 是否隐藏第一列多选[待完善]
 
@@ -273,6 +274,19 @@ class TableBuilder
     {
         if ($value != '') {
             $this->_vars['pagination'] = $value;
+        }
+        return $this;
+    }
+
+    /**
+     * 设置列表树父ID
+     * @param string $value 字段
+     * @return $this
+     */
+    public function setParentIdField($value = '')
+    {
+        if ($value != '') {
+            $this->_vars['parent_id_field'] = $value;
         }
         return $this;
     }
