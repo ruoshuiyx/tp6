@@ -49,6 +49,7 @@ class TableBuilder
         'page_tips_top'      => '',        // 页面提示[top]
         'page_tips_search'   => '',        // 页面提示[search]
         'page_tips_bottom'   => '',        // 页面提示[bottom]
+        'page_size'          => '',        // 每页显示的行数
         'tips_type'          => '',        // 页面提示类型
         'extra_js'           => '',        // 额外JS代码
         'extra_css'          => '',        // 额外CSS代码
@@ -102,6 +103,9 @@ class TableBuilder
      */
     protected function initialize()
     {
+        // 每页显示的行数
+        $this->_vars['page_size']   = \think\facade\Config::get('app.page_size', '10');
+
         // 设置默认模版
         $this->_template = 'table_builder/layout';
 
@@ -287,6 +291,19 @@ class TableBuilder
     {
         if ($value != '') {
             $this->_vars['parent_id_field'] = $value;
+        }
+        return $this;
+    }
+
+    /**
+     * 设置每页显示的行数
+     * @param string $value 数量
+     * @return $this
+     */
+    public function setPageSize($value = '')
+    {
+        if ($value != '') {
+            $this->_vars['page_size'] = $value;
         }
         return $this;
     }

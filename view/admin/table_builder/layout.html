@@ -87,7 +87,8 @@
                 sortOrder     : "desc",                 // 排序方式  asc 或者 desc
 				pagination    : {$pagination},			// 是否进行分页
                 parentIdField : "{$parent_id_field}",   // 列表树模式需传递父id
-				clickToSelect : true,				// 默认false不响应，设为true则当点击此行的某处时，会自动选中此行的checkbox（复选框）或radiobox（单选按钮）
+				clickToSelect : true,				    // 默认false不响应，设为true则当点击此行的某处时，会自动选中此行的checkbox/radiobox
+                pageSize      : "{$page_size}",         // 每页显示的行数
                 columns: [
                     {
                         field: 'state',
