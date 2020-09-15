@@ -78,12 +78,6 @@ class MakeBuilder
     {
         $columns = [];
         $fields = $this->getFields($tableName);
-        /*$fieldColumnsNew = [];
-        $fieldColumns = $this->getAddColumns($tableName);
-        foreach ($fieldColumns as &$fieldColumn) {
-            $arr = isset($fieldColumn[4]) && is_array($fieldColumn[4]) && !empty($fieldColumn[4]) ? $fieldColumn[4] : [];
-            $fieldColumnsNew[][$fieldColumn[1]] = $arr;
-        }*/
 
         foreach ($fields as &$field) {
             // 获取字典列表
@@ -101,13 +95,17 @@ class MakeBuilder
             if ($field['is_list'] != 1 || $field['status'] == 0) {
                 continue;
             }
+
             // select等需要获取数据的字段需设置好 param 或考虑是否变更字段(字典类型的在这里获取，关联的在模型里重构该字段)
             $param = $dicts;
+            // 默认值
             $default = $field['setup']['default'] ?? '';
+            // 额外CSS
+            $class = $field['setup']['extra_class'] ?? '';
             // 排序
             $sortable = $field['is_sort'] ? 'true' : 'false';
             // 添加到返回数组中
-            $columns[] = [$field['field'], $field['name'], $field['type'], $default, $param, '', $sortable];
+            $columns[] = [$field['field'], $field['name'], $field['type'], $default, $param, $class, $sortable];
         }
         return $columns;
     }
