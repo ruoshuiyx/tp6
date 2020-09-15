@@ -70,6 +70,7 @@ class Field extends Base
             ->addColumn('right_button', '操作', 'btn')       // 启用右侧操作列
             ->addRightButtons(['edit', 'delete'])           // 设置右侧操作列
             ->addTopButtons(['add', 'edit', 'del'])         // 设置顶部按钮组
+            ->setExtraJs($this->getIndexExtraJs())          // 设置额外JS
             ->fetch();
     }
 
@@ -290,9 +291,21 @@ class Field extends Base
     }
 
     // 状态变更
-    public function state(string $id)
+    public function state(string $id, string $field = '')
     {
         if (Request::isPost()) {
+            // 其他字段变更
+            if ($field) {
+                $alowField = ['is_add', 'is_edit', 'is_list', 'is_search', 'is_sort', 'required'];
+                if (in_array($field, $alowField)) {
+                    $model = '\app\common\model\\' . $this->moduleName;
+                    $info = $model::find($id);
+                    $value = $info[$field] == 1 ? 0 : 1;
+                    $info[$field] = $value;
+                    $info->save();
+                    return json(['error' => 0, 'msg' => '修改成功!']);
+                }
+            }
             $model = '\app\common\model\\' . $this->moduleName;
             return $model::state($id);
         }
@@ -671,5 +684,55 @@ class Field extends Base
         }
     }
 
-
+    // 列表页额外JS
+    private function getIndexExtraJs()
+    {
+        $url = url('state');
+        $js = '<script type="text/javascript">
+            $(document).ready(function() {
+                //避免pjax重复加载js导致事件重复绑定
+                if (typeof (fieldIndexExtraJs) != "undefined") {
+                    return;
+                }   
+                $(document).on("click", \'.js_is_add\', function () {
+                    var id = $(this).parent(\'tr\').data(\'uniqueid\');
+                    if(id){
+                        $.operate.submit(\'' . $url . '\', "post", "json", {"id": id,"field": \'is_add\'});
+                    }
+                })
+                $(document).on("click", \'.js_is_edit\', function () {
+                    var id = $(this).parent(\'tr\').data(\'uniqueid\');
+                    if(id){
+                        $.operate.submit(\'' . $url . '\', "post", "json", {"id": id,"field": \'is_edit\'});
+                    }
+                })
+                $(document).on("click", \'.js_is_list\', function () {
+                    var id = $(this).parent(\'tr\').data(\'uniqueid\');
+                    if(id){
+                        $.operate.submit(\'' . $url . '\', "post", "json", {"id": id,"field": \'is_list\'});
+                    }
+                })
+                $(document).on("click", \'.js_is_search\', function () {
+                    var id = $(this).parent(\'tr\').data(\'uniqueid\');
+                    if(id){
+                        $.operate.submit(\'' . $url . '\', "post", "json", {"id": id,"field": \'is_search\'});
+                    }
+                })
+                $(document).on("click", \'.js_is_sort\', function () {
+                    var id = $(this).parent(\'tr\').data(\'uniqueid\');
+                    if(id){
+                        $.operate.submit(\'' . $url . '\', "post", "json", {"id": id,"field": \'is_sort\'});
+                    }
+                })
+                $(document).on("click", \'.js_required\', function () {
+                    var id = $(this).parent(\'tr\').data(\'uniqueid\');
+                    if(id){
+                        $.operate.submit(\'' . $url . '\', "post", "json", {"id": id,"field": \'required\'});
+                    }
+                })
+                fieldIndexExtraJs = true;
+            })
+            </script>';
+        return $js;
+    }
 }
