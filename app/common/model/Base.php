@@ -108,8 +108,8 @@ class Base extends Model
     // 状态修改
     public static function state($id){
         $info = self::find($id);
-        $info-> status = $info['status'] == 1 ? 0 : 1;
-        $info -> save();
+        $info->status = $info['status'] == 1 ? 0 : 1;
+        $info->save();
         return json(['error'=>0, 'msg'=>'修改成功!']);
     }
 

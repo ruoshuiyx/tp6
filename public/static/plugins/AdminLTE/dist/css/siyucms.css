@@ -243,4 +243,4 @@ select[readonly] option {display: none;}
 .text-info {color: #3c8dbc; }
 .ztree{padding:0}
 .table_colorpicker{ width: 16px; height: 16px; display: block}
-.cursor_pointer{ cursor: pointer}
+.cursor_pointer, .js_is_add, .js_is_edit, .js_is_list, .js_is_search, .js_is_sort, .js_required {cursor: pointer}
