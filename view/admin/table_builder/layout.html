@@ -120,9 +120,9 @@
 								{if $column.name == 'status' }
 									formatter: function(value, row, index) {
 										if (value == 0) {
-											return '<i class="fa fa-toggle-off text-info fa-2x" onclick="$.operate.state(\'' + row.{$unique_id} + '\',\'{:url('state')}\')"></i>';
+											return '<i class="fa fa-toggle-off text-info fa-2x cursor_pointer" onclick="$.operate.state(\'' + row.{$unique_id} + '\',\'{:url('state')}\')"></i>';
 										} else {
-											return '<i class="fa fa-toggle-on text-info fa-2x" onclick="$.operate.state(\'' + row.{$unique_id} + '\',\'{:url('state')}\')"></i>';
+											return '<i class="fa fa-toggle-on text-info fa-2x cursor_pointer" onclick="$.operate.state(\'' + row.{$unique_id} + '\',\'{:url('state')}\')"></i>';
 										}
 									}
 								{else}
