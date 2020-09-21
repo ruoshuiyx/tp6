@@ -16,11 +16,11 @@ function getUrl($v)
             }
         } else {
             if ($v['cate_folder']) {
-                $v['url'] = (string)url($v['cate_folder'] . '/index');
+                $v['url'] = (string)\think\facade\Route::buildUrl($v['cate_folder'] . '/index')->domain('');
             } else {
                 $moduleName = \app\common\model\Module::where('id', $v['module_id'])
                     ->value('model_name');
-                $v['url'] = (string)url($moduleName . '/index', ['cate' => $v['id']]);
+                $v['url'] = (string)\think\facade\Route::buildUrl($moduleName . '/index', ['cate' => $v['id']])->domain('');
             }
         }
     }
@@ -38,11 +38,11 @@ function getShowUrl($v)
             ->where('id', $v['cate_id'])
             ->find();
         if ($cate['cate_folder']) {
-            $url = url($cate['cate_folder'] . '/info', ['id' => $v['id']]);
+            $url = (string)\think\facade\Route::buildUrl($cate['cate_folder'] . '/info', ['id' => $v['id']])->domain('');
         } else {
             $moduleName = \app\common\model\Module::where('id', $cate['module_id'])
                 ->value('model_name');
-            $url = url($moduleName . '/info', ['cate' => $cate['id'], 'id' => $v['id']]);
+            $url = (string)\think\facade\Route::buildUrl($moduleName . '/info', ['cate' => $cate['id'], 'id' => $v['id']])->domain('');
         }
     }
     return $url;

@@ -91,7 +91,7 @@ class Index extends Base
             $result['msg'] = '清除缓存失败!';
             $result['error'] = 1;
         }
-        $result['url'] = url('/admin/login/index');
+        $result['url'] = (string)url('login/index');
         return json($result);
     }
 
@@ -135,7 +135,7 @@ class Index extends Base
         Cache::clear();
         $handle = opendir($R);
         while (($item = readdir($handle)) !== false) {
-            // log目录不再清楚
+            // log目录不可以删除
             if ($item != '.' && $item != '..' && $item != 'log') {
                 if (is_dir($R . DIRECTORY_SEPARATOR . $item)) {
                     $this->_deleteDir($R . DIRECTORY_SEPARATOR . $item);
