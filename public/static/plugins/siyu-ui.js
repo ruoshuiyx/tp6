@@ -545,10 +545,17 @@
             },
 
             // 添加访问的地址
-            addUrl: function(id) {
-                var url = $.common.isEmpty(id) ? $.table._option.addUrl.replace("__id__", "") : $.table._option.addUrl.replace("__id__", id);
-                return url;
-            },
+			addUrl: function(id) {
+				var url = $.common.isEmpty(id) ? $.table._option.addUrl.replace("__id__", "") : $.table._option.addUrl.replace("__id__", id);
+				// 获取搜索信息
+				var back = $.common.serializeRemoveNull($("#search_form").serialize());
+				if (url.indexOf('?') != -1) {
+					back = back ? '&back_url=' + encodeURIComponent(back) : '';
+				} else {
+					back = back ? '?back_url=' + encodeURIComponent(back) : '';
+				}
+				return url + back;
+			},
 
             // 删除信息
             remove: function(id) {

@@ -720,13 +720,16 @@ function get_tagcloud($list, $moduleId, $limit = 10)
 function get_back_url()
 {
     if (isset($_SERVER["HTTP_REFERER"]) && !empty($_SERVER["HTTP_REFERER"])) {
-        parse_str($_SERVER["HTTP_REFERER"], $queryArr);
-        if (isset($queryArr['back_url']) && !empty($queryArr['back_url'])) {
-            $backUrl = explode("&", urldecode($queryArr['back_url']));
-            foreach ($backUrl as $k => $v) {
-                $v = explode("=", $v);
-                if (isset($v[1]) && !empty($v[1])) {
-                    $backArr[$v[0]] = $v[1];
+        $queryStr = explode('?', $_SERVER["HTTP_REFERER"]);
+        if (count($queryStr) == 2) {
+            parse_str($queryStr[1], $queryArr);
+            if (isset($queryArr['back_url']) && !empty($queryArr['back_url'])) {
+                $backUrl = explode("&", urldecode($queryArr['back_url']));
+                foreach ($backUrl as $k => $v) {
+                    $v = explode("=", $v);
+                    if (isset($v[1]) && !empty($v[1])) {
+                        $backArr[$v[0]] = $v[1];
+                    }
                 }
             }
         }
