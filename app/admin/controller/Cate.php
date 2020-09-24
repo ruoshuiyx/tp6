@@ -135,6 +135,7 @@ class Cate extends Base
                 if ($result['error']) {
                     $this->error($result['msg']);
                 } else {
+                    $this->singleCateInit($data);
                     $this->success($result['msg'], 'index');
                 }
             }
@@ -307,6 +308,30 @@ class Cate extends Base
         } else {
             return false;
         }
+    }
+
+    /**
+     * 单页模块栏目新增时初始化操作
+     * @param array $data
+     * @return bool
+     */
+    private function singleCateInit(array $data = [])
+    {
+        if ($data['module_id'] == '18') {
+            $cate = \app\common\model\Cate::order('id', 'desc')->limit(1)->select()->toArray();
+            if (count($cate) > 0) {
+                $data = [
+                    'sort'    => 50,
+                    'status'  => 1,
+                    'cate_id' => $cate[0]['id'],
+                    'title'   => $cate[0]['cate_name'],
+                    'content' => '',
+                ];
+                \app\common\model\Page::create($data);
+                return true;
+            }
+        }
+        return false;
     }
 
 }
