@@ -48,6 +48,7 @@ class Cate extends Validate
         ],
         'cate_folder|栏目目录' => [
             'max' => '255',
+            'unique' => 'cate'
         ],
         'module_id|所属模块' => [
             'require' => 'require',
