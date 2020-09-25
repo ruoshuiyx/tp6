@@ -10,6 +10,7 @@
     </div>
     {/notempty}
     <!--顶部提示结束-->
+    {if isset($page_tips_search) OR $show_all}
     <div class="search">
         <form class="form-inline" action="">
             {notempty name="page_tips_search"}{$page_tips_search|raw}{/notempty}
@@ -19,6 +20,7 @@
             <a class="btn btn-flat btn-success m_10 f_r m_t_5" onclick="javascript :history.back(-1)"><i class="fa fa-undo m-r-10"></i>返 回</a>
         </form>
     </div>
+    {/if}
     <!--数据表开始-->
     <form name="form-builder" method="{$form_method}" action="{$form_url}" {$submit_confirm ?= 'submit_confirm' }>
         <!---->
