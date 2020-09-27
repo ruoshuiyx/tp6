@@ -170,10 +170,18 @@ class Field extends Base
                 if (isset($addfieldsql) && !empty($addfieldsql)) {
                     if (is_array($addfieldsql)) {
                         foreach ($addfieldsql as $sql) {
-                            Db::execute($sql);
+                            try {
+                                Db::execute($sql);
+                            } catch (\Exception $e) {
+                                $this->error($e->getMessage() . '<br><br>[SQL]: ' . $sql);
+                            }
                         }
                     } else {
-                        Db::execute($addfieldsql);
+                        try {
+                            Db::execute($addfieldsql);
+                        } catch (\Exception $e) {
+                            $this->error($e->getMessage() . '<br><br>[SQL]: ' . $addfieldsql);
+                        }
                     }
                 }
                 $this->success('添加成功！', url('index', array('module_id' => $data['module_id'])));
@@ -268,10 +276,18 @@ class Field extends Base
             if (false !== $model->update($data)) {
                 if (is_array($editfieldsql)) {
                     foreach ($editfieldsql as $sql) {
-                        Db::execute($sql);
+                        try {
+                            Db::execute($sql);
+                        } catch (\Exception $e) {
+                            $this->error($e->getMessage() . '<br><br>[SQL]: ' . $sql);
+                        }
                     }
                 } else {
-                    Db::execute($editfieldsql);
+                    try {
+                        Db::execute($editfieldsql);
+                    } catch (\Exception $e) {
+                        $this->error($e->getMessage() . '<br><br>[SQL]: ' . $editfieldsql);
+                    }
                 }
                 $this->success('修改成功！', 'index');
             } else {
