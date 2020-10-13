@@ -157,7 +157,8 @@ class Index extends Base
             $where[] = [$field['relation_field'], 'LIKE', '%' . $keyWord . '%'];
         }
 
-        $list = $model::where($where)
+        $list = $model::field($pk . ',' . $field['relation_field'])
+            ->where($where)
             ->order($pk . ' desc')
             ->paginate([
                 'query' => Request::get(),

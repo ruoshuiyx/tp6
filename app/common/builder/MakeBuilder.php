@@ -513,7 +513,7 @@ class MakeBuilder
                 ->toArray();
             $result = $this->changeSelect($result);
         } elseif ($field['data_source'] == 2) {
-            if (\think\facade\Config::get('builder.select2_ajax') == true) {
+            if (\think\facade\Config::get('builder.select2_ajax') == true && $field['type'] == 'select2') {
                 $result = [];
             } else {
                 // 取出对应模型的所有数据
@@ -528,9 +528,9 @@ class MakeBuilder
                 $moduleId = \app\common\model\Module::where('model_name', $field['relation_model'])->value('id');
                 if ($moduleId) {
                     // 查询字段名称
-                    $fieldPid = \app\common\model\Field::where("field = 'pid' OR field = 'parent_id' ")->where('module_id', $moduleId)->field('field')->find();
-                    if ($fieldPid) {
-                        $fieldPid = ',' . $fieldPid['field'];
+                    $fieldArr = \app\common\model\Field::where("field = 'pid' OR field = 'parent_id' ")->where('module_id', $moduleId)->field('field')->find();
+                    if ($fieldArr) {
+                        $fieldPid = ',' . $fieldArr['field'];
                     }
                 }
                 // 获取数据列表
