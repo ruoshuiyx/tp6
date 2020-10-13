@@ -761,9 +761,10 @@ class FormBuilder
      * @param string $extra_class 额外css类
      * @param string $placeholder 占位符
      * @param bool   $required    是否必填
+     * @param string $ajax_url    ajax 地址(传递时无需再传递选项值)
      * @return $this|array
      */
-    public function addSelect2($name = '', $title = '', $tips = '', $options = [], $default = '', $extra_attr = '', $extra_class = '', $placeholder = '', $required = false)
+    public function addSelect2($name = '', $title = '', $tips = '', $options = [], $default = '', $extra_attr = '', $extra_class = '', $placeholder = '', $required = false, $ajax_url = '')
     {
         $item = [
             'type'        => 'select2',
@@ -776,6 +777,7 @@ class FormBuilder
             'extra_class' => $extra_class,
             'placeholder' => !empty($placeholder) ? $placeholder : '请选择',
             'required'    => $required,
+            'ajax_url'    => $ajax_url,
         ];
 
         if ($this->_is_group) {

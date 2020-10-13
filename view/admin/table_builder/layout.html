@@ -43,6 +43,43 @@
                                 	{if $search.type == 'date' OR $search.type == 'time' OR $search.type == 'datetime' }
                                     	{// 日期类型的数据 }
                                         <input type="text" id="search_{$search.name|default=''}" name="{$search.name|default=''}" value="{$search.default|default=''}" daterange="true" autocomplete="off"/>
+                                    {elseif $search.type == 'select2'}
+                                        <select class="select2" id="search_{$search.name|default=''}" name="{$search.name|default=''}">
+                                            <option value="">所有</option>
+                                        </select>
+                                        <script>
+                                            $(function () {
+                                                var option = {};
+                                                    // 启用ajax分页查询
+                                                    option = {
+                                                        language: "zh-CN",
+                                                        //allowClear: true,
+                                                        ajax: {
+                                                            delay: 250, // 限速请求
+                                                            url: "{:url('Index/select2',['id'=>$search.field_id])}",   //  请求地址
+                                                            dataType: 'json',
+                                                            data: function (params) {
+                                                                return {
+                                                                    keyWord: params.term || '',    //搜索参数
+                                                                    page: params.page || 1,        //分页参数
+                                                                    rows: params.pagesize || 8,   //每次查询10条记录
+                                                                };
+                                                            },
+                                                            processResults: function (data, params) {
+                                                                params.page = params.page || 1;
+                                                                return {
+                                                                    results: data.data,
+                                                                    pagination: {
+                                                                        more: (params.page) < data.last_page
+                                                                    }
+                                                                };
+                                                            },
+                                                            cache: true
+                                                        }
+                                                    };
+                                                $("#search_{$search.name|default=''}").select2(option);
+                                                })
+                                        </script>
                                     {else}
                                         {// 其他类型的数据 }
                                         <input type="text" id="search_{$search.name|default=''}" name="{$search.name|default=''}" value="{$search.default|default=''}"/>

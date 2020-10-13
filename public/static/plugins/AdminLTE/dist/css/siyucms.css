@@ -58,7 +58,9 @@ label {font-weight: normal;}
 .select-list li p{float:left;width:80px;margin:5px 15px 5px 0;text-align:right}
 .select-list li input{border:1px solid #ddd;border-radius:4px;background:0 0;outline:0;height:30px;width:180px;padding-left:5px}
 .select-list li .submit-btn{border:0;border-radius:4px;background:0 0;outline:0;width:40px;height:23px}
-.select-list li select{border:1px solid #ddd;border-radius:4px;background:0 0;outline:0;height:30px;width:200px}
+.select-list li select, .select-list .select2-container .select2-selection--single{border:1px solid #ddd;border-radius:4px;background:0 0;outline:0;height:30px;width:200px;padding-left: 6px;}
+.select-list .select2-container--default .select2-selection--single .select2-selection__rendered{ line-height: 25px; padding-left: 4px;}
+.select-list .select2-container--default .select2-selection--single .select2-selection__arrow{ height: 26px}
 .btn-rounded {border-radius: 50px;}
 
 /*每页显示记录数*/

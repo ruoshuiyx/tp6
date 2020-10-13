@@ -43,9 +43,10 @@ class Admin
         // 定义方法白名单
         $allow = [
             'Index/index',      // 首页
-            'Upload/index',     // 上传文件
             'Index/clear',      // 清除缓存
             'Index/preview',    // 预览
+            'Index/select2',    // ajax select2
+            'Upload/index',     // 上传文件
             'Login/index',      // 登录页面
             'Login/checkLogin', // 校验登录
             'Login/captcha',    // 登录验证码

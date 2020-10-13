@@ -110,7 +110,6 @@ class Cate extends Base
                 }
             }
         }
-        //halt($coloumns);
         // 获取分组后的字段信息
         $groups = MakeBuilder::getgetAddGroups($this->modelName, $this->tableName, $coloumns);
         // 构建页面

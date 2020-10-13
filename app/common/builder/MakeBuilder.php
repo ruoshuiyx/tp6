@@ -212,7 +212,7 @@ class MakeBuilder
                     $field['required'],            // 是否必填
                 ];
             }
-            elseif ($field['type'] == 'select' || $field['type'] == 'select2' ) {
+            elseif ($field['type'] == 'select') {
                 $columns[] = [
                     $field['type'],                       // 类型
                     $field['field'],                      // 字段名称
@@ -224,6 +224,22 @@ class MakeBuilder
                     $field['setup']['extra_class'] ?? '', // 额外CSS
                     $field['setup']['placeholder'] ?? '', // 占位符
                     $field['required'],                   // 是否必填
+                ];
+            }
+            elseif ($field['type'] == 'select2' ) {
+                $ajaxUrl = (string)url('Index/select2', ['id' => $field['id']]);
+                $columns[] = [
+                    $field['type'],                       // 类型
+                    $field['field'],                      // 字段名称
+                    $field['name'],                       // 字段别名
+                    $field['tips'],                       // 提示信息
+                    $field['options'],                    // 选项（数组）
+                    $field['setup']['default'],           // 默认值
+                    $field['setup']['extra_attr'],        // 额外属性
+                    $field['setup']['extra_class'] ?? '', // 额外CSS
+                    $field['setup']['placeholder'] ?? '', // 占位符
+                    $field['required'],                   // 是否必填
+                    $ajaxUrl,                             // ajax请求地址
                 ];
             }
             elseif ($field['type'] == 'number') {
@@ -390,6 +406,7 @@ class MakeBuilder
                 $field['data_source'] ?? 0,    // 数据源 [0 字段本身, 1 系统字典, 2 模型数据]
                 $field['relation_model'] ?? '',// 模型关联
                 $field['relation_field'] ?? '',// 关联字段
+                $field['id'] ?? 0,             // 字段编号
             ];
         }
         return $items;
@@ -496,29 +513,33 @@ class MakeBuilder
                 ->toArray();
             $result = $this->changeSelect($result);
         } elseif ($field['data_source'] == 2) {
-            // 取出对应模型的所有数据
-            $module = '\app\common\model\\' . $field['relation_model'];
-            // 根据模型名称获取select的排序
-            $order = $this->getOrder($field['relation_model']);
-            // 主键
-            $pk = $this->getPk($field['relation_model']);
+            if (\think\facade\Config::get('builder.select2_ajax') == true) {
+                $result = [];
+            } else {
+                // 取出对应模型的所有数据
+                $module = '\app\common\model\\' . $field['relation_model'];
+                // 根据模型名称获取select的排序
+                $order = $this->getOrder($field['relation_model']);
+                // 主键
+                $pk = $this->getPk($field['relation_model']);
 
-            // 当模块中包含pid/parent_id时格式化展示效果
-            $fieldPid = '';
-            $moduleId = \app\common\model\Module::where('model_name', $field['relation_model'])->value('id');
-            if ($moduleId) {
-                // 查询字段名称
-                $fieldPid = \app\common\model\Field::where("field = 'pid' OR field = 'parent_id' ")->where('module_id', $moduleId)->field('field')->find();
-                if ($fieldPid) {
-                    $fieldPid = ',' . $fieldPid['field'];
+                // 当模块中包含pid/parent_id时格式化展示效果
+                $fieldPid = '';
+                $moduleId = \app\common\model\Module::where('model_name', $field['relation_model'])->value('id');
+                if ($moduleId) {
+                    // 查询字段名称
+                    $fieldPid = \app\common\model\Field::where("field = 'pid' OR field = 'parent_id' ")->where('module_id', $moduleId)->field('field')->find();
+                    if ($fieldPid) {
+                        $fieldPid = ',' . $fieldPid['field'];
+                    }
                 }
+                // 获取数据列表
+                $result = $module::field($pk . ',' . $field['relation_field'] . $fieldPid)
+                    ->order($order)
+                    ->select()
+                    ->toArray();
+                $result = $this->changeSelect($result);
             }
-            // 获取数据列表
-            $result = $module::field($pk . ',' . $field['relation_field'] . $fieldPid)
-                ->order($order)
-                ->select()
-                ->toArray();
-            $result = $this->changeSelect($result);
         } else {
             $result = [];
         }

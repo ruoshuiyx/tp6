@@ -82,11 +82,11 @@ class AdminLog extends Base
     {
         // 入库信息
         $adminId   = Session::get('admin.id',0);
-        $url        = Request::url();
-        $title      = '';
-        $content    = Request::except(['s','_pjax']); //s 变量为系统内置的变量，_pjax为js的变量，无记录的必要
-        $ip         = Request::ip();
-        $userAgent  = Request::server('HTTP_USER_AGENT');
+        $url       = Request::url();
+        $title     = '';
+        $content   = Request::except(['s','_pjax']); //s 变量为系统内置的变量，_pjax为js的变量，无记录的必要
+        $ip        = Request::ip();
+        $userAgent = Request::server('HTTP_USER_AGENT');
 
         // 标题处理
         $auth = new \Auth();

@@ -95,7 +95,12 @@ class Index extends Base
         return json($result);
     }
 
-    // 预览
+    /**
+     * 预览
+     * @param string $module 模型名称
+     * @param string $id     文章id
+     * @return \think\response\Redirect
+     */
     public function preview(string $module, string $id)
     {
         // 查询当前模块信息
@@ -129,6 +134,41 @@ class Index extends Base
         return redirect($url);
     }
 
+    /**
+     * select 2 ajax分页获取数据
+     * @param  int $id  字段id
+     * @param  string $keyWord 搜索词
+     * @param  string $rows 显示数量
+     * @return array
+     */
+    public function select2(int $id, string $keyWord = '', string $rows = '10')
+    {
+        // 字段信息
+        $field = \app\common\model\Field::find($id);
+        if (is_null($field) || empty($field['relation_model']) || empty($field['relation_field'])) {
+            return [];
+        }
+        $model = '\app\common\model\\' . $field['relation_model'];
+        // 获取主键
+        $pk = \app\common\model\Module::where('model_name', $field['relation_model'])->value('pk') ?? 'id';
+        // 搜索条件
+        $where = [];
+        if ($keyWord) {
+            $where[] = [$field['relation_field'], 'LIKE', '%' . $keyWord . '%'];
+        }
+
+        $list = $model::where($where)
+            ->order($pk . ' desc')
+            ->paginate([
+                'query' => Request::get(),
+                'list_rows' => $rows,
+            ]);
+        foreach ($list as $k => $v) {
+            $v['text'] = $v[$field['relation_field']];
+        }
+        return $list;
+    }
+
     // 执行删除
     private function _deleteDir($R)
     {
@@ -152,5 +192,4 @@ class Index extends Base
         return true;
         //return rmdir($R); // 删除空的目录
     }
-
 }
