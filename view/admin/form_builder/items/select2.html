@@ -2,7 +2,7 @@
     <div class="form-group">
         <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l" for="{$form[type].name}">{$form[type].title|htmlspecialchars}</label>
         <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-            <select class="select2 form-control" id="{$form[type].name}" name="{$form[type].name}" {$form[type].extra_attr|default=''}>
+            <select class="select2 form-control" id="{$form[type].name}" name="{$form[type].name}" data-value="{$form[type].value}" {$form[type].extra_attr|default=''}>
                 <option value="">{$form[type].placeholder}</option>
                 {volist name="form[type].options" id="option"}
                 <option value="{$key}" {in name="key" value="$form[type].value"}selected{/in}>{$option}</option>
@@ -48,6 +48,19 @@
                     cache: true
                 }
             };
+            // 默认值设置
+            var defaultValue = $('#{$form[type].name}').data("value");
+            if (defaultValue) {
+                $.ajax({
+                    type: "POST",
+                    url: "{$form[type].ajax_url}",
+                    data: {value:defaultValue},
+                    dataType: "json",
+                    success: function(data){
+                        $('#{$form[type].name}').append("<option selected value='" + data.key + "'>" + data.value + "</option>");
+                    }
+                });
+            }
         }
         {/if}
         $('#{$form[type].name}').select2(option);

@@ -138,10 +138,11 @@ class Index extends Base
      * select 2 ajax分页获取数据
      * @param  int $id  字段id
      * @param  string $keyWord 搜索词
-     * @param  string $rows 显示数量
+     * @param  string $rows    显示数量
+     * @param  string $value   默认值
      * @return array
      */
-    public function select2(int $id, string $keyWord = '', string $rows = '10')
+    public function select2(int $id, string $keyWord = '', string $rows = '10', string $value = '')
     {
         // 字段信息
         $field = \app\common\model\Field::find($id);
@@ -151,6 +152,17 @@ class Index extends Base
         $model = '\app\common\model\\' . $field['relation_model'];
         // 获取主键
         $pk = \app\common\model\Module::where('model_name', $field['relation_model'])->value('pk') ?? 'id';
+        // 默认值
+        if ($value) {
+            $valueText = $model::where($pk, $value)->value($field['relation_field']);
+            if ($valueText) {
+                return [
+                    'key' => $value,
+                    'value' => $valueText
+                ];
+            }
+        }
+
         // 搜索条件
         $where = [];
         if ($keyWord) {
