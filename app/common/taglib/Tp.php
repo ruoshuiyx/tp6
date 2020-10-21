@@ -187,6 +187,7 @@ class Tp extends TagLib {
         $order    = $tag['order']    ?? 'sort ASC,id DESC';      // 排序
         $limit    = $tag['limit']    ?? '0';                     // 多少条数据,传递时不再进行分页
         $search   = $tag['search']   ?? '';                      // 分类筛选字段,通过,或|传递多个
+        $simple   = $tag['simple']   ?? 'false';                 // 是否简洁模式
 
         $where    = isset($tag['where']) ? $tag['where'] . ' AND status = 1 ' : ' status = 1 '; // 查询条件
         $pageSize = $tag['pagesize'] ?? config('app.page_size'); // 每页数量
@@ -220,7 +221,7 @@ class Tp extends TagLib {
                         ->paginate([
                             \'query\'     => request()->param(),
                             \'list_rows\' => $__PAGESIZE__,
-                        ]);
+                        ], ' . $simple . ');
                     $page = $__LIST__->render();
                 }
                 // 处理数据（把列表中需要处理的字段转换成数组和对应的值）
