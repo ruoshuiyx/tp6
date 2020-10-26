@@ -62,11 +62,14 @@
                                                             return {
                                                                 keyWord: params.term || '',    //搜索参数
                                                                 page: params.page || 1,        //分页参数
-                                                                rows: params.pagesize || 8,   //每次查询10条记录
+                                                                rows: params.pagesize || 10,   //每次查询10条记录
                                                             };
                                                         },
                                                         processResults: function (data, params) {
                                                             params.page = params.page || 1;
+                                                            if (params.page == 1) {
+                                                                data.data.unshift({id: '', name: "", text: "所有"});
+                                                            }
                                                             return {
                                                                 results: data.data,
                                                                 pagination: {
@@ -83,8 +86,9 @@
                                                     $.ajax({
                                                         type: "POST",
                                                         url: "{:url('Index/select2',['id'=>$search.field_id])}",
-                                                        data: {value:defaultValue},
+                                                        data: {value: defaultValue},
                                                         dataType: "json",
+                                                        async: false,
                                                         success: function(data){
                                                             $("#search_{$search.name|default=''}").append("<option selected value='" + data.key + "'>" + data.value + "</option>");
                                                         }

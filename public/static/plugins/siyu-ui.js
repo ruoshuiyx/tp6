@@ -287,9 +287,10 @@
 			reset: function(formId) {
 				var currentId = $.common.isEmpty(formId) ? 'search_form' : formId;
 				$("#" + currentId)[0].reset();
-				$.btTable.bootstrapTable('refresh');
 				// 重置select2
 				$('select.select2').val(null).trigger("change");
+				// 刷新表格
+				$.btTable.bootstrapTable('refresh');
 			},
 		},
 

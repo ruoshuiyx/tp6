@@ -37,6 +37,9 @@
                     },
                     processResults: function (data, params) {
                         params.page = params.page || 1;
+                        if (params.page == 1) {
+                            data.data.unshift({id: '', name: "", text: "{$form[type].placeholder}"});
+                        }
                         return {
                             results: data.data,
                             pagination: {
