@@ -369,9 +369,14 @@ class Upload extends Base
     // 移除上传危险后缀
     private function removeExt(string $ext = '')
     {
-        if ($ext) {
+        $ext = strtolower($ext);
+        if (strpos($ext, 'php') !== false) {
             $ext = str_ireplace("php", "", $ext);
+            return $this->removeExt($ext);
+        }
+        if (strpos($ext, 'asp') !== false) {
             $ext = str_ireplace("asp", "", $ext);
+            return $this->removeExt($ext);
         }
         return $ext;
     }
