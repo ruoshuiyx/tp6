@@ -376,7 +376,7 @@ class Tp extends TagLib {
                     ->where(\'id\',\'>\',input(\'id\'))
                     ->where(\'status\',\'=\',1)
                     ->field(\'id,cate_id,title\')
-                    ->order(\'sort ASC,id DESC\')
+                    ->order(\'id ASC\')
                     ->find();
                 if($__PREV__){
                     //处理字数
