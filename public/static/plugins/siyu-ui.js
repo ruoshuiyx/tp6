@@ -780,7 +780,14 @@
             },
 			// 序列化表单，不含空元素
 			serializeRemoveNull: function (serStr) {
-				return serStr.split("&").filter(str => !str.endsWith("=")).join("&");
+				// return serStr.split("&").filter(str => !str.endsWith("=")).join("&"); // 不兼容ie
+				return serStr.split("&").filter(function (item) {
+						var itemArr = item.split('=');
+						if(itemArr[1]){
+							return item;
+						}
+					}
+				).join("&");
 			},
 		}
 
