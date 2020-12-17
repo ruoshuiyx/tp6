@@ -1,43 +1,44 @@
 <!--内容开始-->
 <section class="content">
-    {// 额外HTML代码 }
-    {$extra_html_content_top|raw|default=''}
-    <!--顶部提示开始-->
-    {notempty name="page_tips_top"}
-    <div class="alert alert-{$tips_type} alert-dismissable">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        <p>{$page_tips_top|raw}</p>
-    </div>
-    {/notempty}
-    <!--顶部提示结束-->
-    {if isset($page_tips_search) OR $show_all}
-    <div class="search">
-        <form class="form-inline" action="">
-            {notempty name="page_tips_search"}{$page_tips_search|raw}{/notempty}
-            {if $show_all}
-            <a class="btn btn-flat btn-primary m_10" href="{:url('index')}"><i class="fa fa-list-ul m-r-10"></i>查看全部</a>
-            {/if}
-            <a class="btn btn-flat btn-success m_10 f_r m_t_5" onclick="javascript :history.back(-1)"><i class="fa fa-undo m-r-10"></i>返 回</a>
-        </form>
-    </div>
-    {/if}
-    <!--数据表开始-->
-    <form name="form-builder" method="{$form_method}" action="{$form_url}" {$submit_confirm ?= 'submit_confirm' }>
-        <!---->
-        {if $form_items}
+    {// 额外CSS代码 }
+    {$extra_css|raw|default=''}
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-12 col-xs-12">
-                <div class="box box-body">
+            {// 额外HTML代码 }
+            {$extra_html_content_top|raw|default=''}
+            <!--顶部提示开始-->
+            {notempty name="page_tips_top"}
+            <div class="col-12 alert alert-{$tips_type} alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <p>{$page_tips_top|raw}</p>
+            </div>
+            {/notempty}
+            <!--顶部提示结束-->
+            {if isset($page_tips_search) OR $show_all}
+            <div class="col-12 callout search">
+                <form action="">
+                    {notempty name="page_tips_search"}{$page_tips_search|raw}{/notempty}
+                    {if $show_all}
+                    <a class="btn btn-flat btn-primary" href="{:url('index')}"><i class="fa fa-list-ul m-r-10"></i>查看全部</a>
+                    {/if}
+                    <a class="btn btn-flat btn-success f_r" onclick="javascript :history.back(-1)"><i class="fa fa-undo m-r-10"></i>返 回</a>
+                </form>
+            </div>
+            {/if}
+            <!--数据表开始-->
+            <form name="form-builder" class="col-12 form_builder" method="{$form_method}" action="{$form_url}" {$submit_confirm ?= 'submit_confirm' }>
+                <!---->
+                {if $form_items}
                     <!---->
                     {volist name="form_items" id="form"}
                     {switch form.type}
-                    	{case value="group"}
+                        {case value="group"}
                             {// 分组 }
                             {include file="form_builder/items/group" type='' /}
                         {/case}
                         {case text}
-                        	{// 单行文本框 }
-                        	{include file="form_builder/items/text" type='' /}
+                            {// 单行文本框 }
+                            {include file="form_builder/items/text" type='' /}
                         {/case}
                         {case value="textarea"}
                             {// 多行文本框 }
@@ -131,8 +132,8 @@
                     <!---->
                     <div class="row dd_input_group">
                         <div class="form-group">
-                            <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5 text-center">
-                            	{php}if(isset($btn_hide) && !in_array('submit', $btn_hide)):{/php}
+                            <div class="col-12 col-md-6 col-lg-5 text-center">
+                                {php}if(isset($btn_hide) && !in_array('submit', $btn_hide)):{/php}
                                 <button type="submit" class="btn btn-flat btn-primary ">{$btn_title['submit']|default='提 交'}</button>
                                 {php}endif;{/php}
                                 {php}if(isset($btn_hide) && !in_array('back', $btn_hide)):{/php}
@@ -145,32 +146,27 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- /.box -->
+                    <!-- /.box -->
+                {else /}
+                    <div class="box box-body">
+                        {$empty_tips|raw}
+                    </div>
+                    <!-- /.box -->
+                {/if}
+            </form>
+            <!--底部提示-->
+            {notempty name="page_tips_bottom"}
+            <div class="col-12 alert alert-{$tips_type} alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <p>{$page_tips_bottom|raw}</p>
             </div>
+            {/notempty}
+            {// 额外HTML代码 }
+            {$extra_html_content_bottom|raw|default=''}
+            {// 额外JS代码 }
+            {$extra_js|raw|default=''}
         </div>
-        {else /}
-        <div class="row">
-            <div class="col-sm-12 col-xs-12">
-                <div class="box box-body">
-                    {$empty_tips|raw}
-                </div>
-                <!-- /.box -->
-            </div>
-        </div>
-        {/if}
-    </form>
-    <!--底部提示-->
-    {notempty name="page_tips_bottom"}
-    <div class="alert alert-{$tips_type} alert-dismissable">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        <p>{$page_tips_bottom|raw}</p>
     </div>
-    {/notempty}
-    {// 额外HTML代码 }
-    {$extra_html_content_bottom|raw|default=''}
-    {// 额外JS代码 }
-    {$extra_js|raw|default=''}
-</section>
+</div>
 
 <!--内容结束-->

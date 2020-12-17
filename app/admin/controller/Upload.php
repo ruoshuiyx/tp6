@@ -76,13 +76,13 @@ class Upload extends Base
                 } else {
                     $result["url"] = $path;
                 }
-                return json_encode($result);
+                return json($result);
             } else {
                 // 上传失败
                 $result['uploaded'] = false;
                 $result['url'] = '';
                 $result['message'] = $error;
-                return json_encode($result, true);
+                return json($result);
             }
         } else {
             if ($this->uploadType == 'tp') {

@@ -2,18 +2,15 @@
 <section class="content">
     <div class="row">
         <!-- 消息提示 -->
-        <div class="col-sm-6">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><font style="vertical-align: inherit;">消息提示</font></h3>
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                class="fa fa-minus"></i></button>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
-                        </button>
+        <div class="col-12 col-sm-6">
+            <div class="card">
+                <div class="card-header ui-sortable-handle">
+                    <h3 class="card-title">消息提示</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
                     </div>
                 </div>
-                <div class="box-body">
+                <div class="card-body">
                     <p>通过调用<code>$.modal.msg()</code>实现。 </p>
                     <button type="button" class="btn btn-primary" onclick="$.modal.msg('Hi，普通！')">普通</button>
                     <button type="button" class="btn btn-success" onclick="$.modal.msgSuccess('Hi，成功！')">成功</button>
@@ -24,17 +21,14 @@
         </div>
         <!-- 弹出提示 -->
         <div class="col-sm-6">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><font style="vertical-align: inherit;">弹出提示</font></h3>
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                class="fa fa-minus"></i></button>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
-                        </button>
+            <div class="card">
+                <div class="card-header ui-sortable-handle">
+                    <h3 class="card-title">弹出提示</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
                     </div>
                 </div>
-                <div class="box-body" id="test">
+                <div class="card-body" id="test">
                     <p>通过调用<code>$.modal.alert()</code>实现。 </p>
                     <button type="button" class="btn btn-primary" onclick="$.modal.alert('Hi，普通！')">普通</button>
                     <button type="button" class="btn btn-success" onclick="$.modal.alertSuccess('Hi，成功！')">成功</button>
@@ -47,17 +41,14 @@
     <div class="row">
         <!-- 确认提示 -->
         <div class="col-sm-6">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><font style="vertical-align: inherit;">确认提示</font></h3>
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                class="fa fa-minus"></i></button>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i
-                                class="fa fa-times"></i></button>
+            <div class="card">
+                <div class="card-header ui-sortable-handle">
+                    <h3 class="card-title">确认提示</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
                     </div>
                 </div>
-                <div class="box-body">
+                <div class="card-body">
                     <p>通过调用<code>$.modal.confirm()</code>实现。 </p>
                     <button type="button" class="btn btn-primary" id="button-confirm">询问按钮</button>
                 </div>
@@ -65,18 +56,14 @@
         </div>
         <!-- 消息提示并刷新父窗体 -->
         <div class="col-sm-6">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><font style="vertical-align: inherit;">消息提示并刷新父窗体</font></h3>
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                class="fa fa-minus"></i></button>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i
-                                class="fa fa-times"></i>
-                        </button>
+            <div class="card">
+                <div class="card-header ui-sortable-handle">
+                    <h3 class="card-title">消息提示并刷新父窗体</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
                     </div>
                 </div>
-                <div class="box-body">
+                <div class="card-body">
                     <div class="ibox-content">
                         <p>通过调用<code>$.modal.msgReload()</code>实现。 </p>
                         <button type="button" class="btn btn-primary" id="button-msgReload">提示刷新按钮</button>
@@ -88,17 +75,14 @@
     <div class="row">
         <!-- 普通弹出层 -->
         <div class="col-sm-6">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><font style="vertical-align: inherit;">普通弹出层</font></h3>
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                class="fa fa-minus"></i></button>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i
-                                class="fa fa-times"></i></button>
+            <div class="card">
+                <div class="card-header ui-sortable-handle">
+                    <h3 class="card-title">普通弹出层</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
                     </div>
                 </div>
-                <div class="box-body">
+                <div class="card-body">
                     <p>通过调用<code>$.modal.open()</code>实现。 </p>
                     <button type="button" class="btn btn-primary" id="button-open-1">默认</button>
                     <button type="button" class="btn btn-success" id="button-open-2">设置宽高</button>
@@ -110,17 +94,14 @@
         </div>
         <!-- 其他内容 -->
         <div class="col-sm-6">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><font style="vertical-align: inherit;">其他内容</font></h3>
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                class="fa fa-minus"></i></button>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i
-                                class="fa fa-times"></i></button>
+            <div class="card">
+                <div class="card-header ui-sortable-handle">
+                    <h3 class="card-title">其他内容</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
                     </div>
                 </div>
-                <div class="box-body">
+                <div class="card-body">
                     <p>通过调用<code>layer</code>实现。 </p>
                     <button type="button" class="btn btn-primary" id="button-open-6">tab层</button>
                     <button type="button" class="btn btn-primary" id="button-open-7">prompt层</button>

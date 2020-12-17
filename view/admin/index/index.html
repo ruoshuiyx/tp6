@@ -1,90 +1,96 @@
 <!--内容开始-->
 <section class="content content_main">
-    <!---->
-    <div class="row boot-col-space15">
-        <div class="col-sm-8 col-xs-12">
-            <div class="row boot-col-space15">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="row">
                 <!--快捷方式-->
-                <div class="col-sm-6 col-xs-12">
-                    <div class="box box-default">
-                        <div class="box-header with-border">
-                            <i class="fa fa-gift"></i>
-                            <h3 class="box-title">快捷方式</h3>
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                <div class="col-12 col-sm-6">
+                    <div class="card">
+                        <div class="card-header ui-sortable-handle">
+                            <h3 class="card-title"><i class="fa fa-gift"></i> 快捷方式</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                </button>
                             </div>
+                            <!-- /.card-tools -->
                         </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
+                        <!-- /.card-header -->
+                        <div class="card-body" style="display: block;">
                             <a class="btn btn-app" href="{:url('system/edit',['id'=>1])}"><i class="fa fa-cogs"></i>系统设置</a><a
                                 class="btn btn-app" href="{:url('database/database')}"><i class="fa fa-database"></i>数据备份</a><a
                                 class="btn btn-app" href="{:url('module/index')}"><i class="fa fa-th-list"></i>模型管理</a><a
                                 class="btn btn-app" href="{:url('cate/index')}"><i class="fa fa-th"></i>栏目管理</a><a
                                 class="btn btn-app" href="{:url('link/index')}"><i class="fa fa-link"></i>友情链接</a><a
-                                class="btn btn-app" href="{:url('ad/index')}"><i class="fa fa-photo"></i>广告管理</a><a
+                                class="btn btn-app" href="{:url('ad/index')}"><i class="fa fa-ad"></i>广告管理</a><a
                                 class="btn btn-app" href="{:url('debris/index')}"><i class="fa fa-puzzle-piece"></i>碎片管理</a><a
                                 class="btn btn-app" href="{:url('template/index')}"><i class="fa fa-code"></i>模板管理</a>
                         </div>
-                        <!-- /.box-body -->
+                        <!-- /.card-body -->
                     </div>
-                </div>
-                <!---->
-                <div class="col-sm-6 col-xs-12">
-                    <div class="box box-default">
-                        <div class="box-header with-border">
-                            <i class="fa fa-pie-chart"></i>
-                            <h3 class="box-title">数据统计</h3>
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                <!-- /.card -->
+            </div>
+                <!--数据统计-->
+                <div class="col-12 col-sm-6">
+                    <div class="card">
+                        <div class="card-header ui-sortable-handle">
+                            <h3 class="card-title"><i class="fas fa-chart-bar"></i> 数据统计</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
                                 </button>
                             </div>
+                            <!-- /.card-tools -->
                         </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                            <!-- ./col -->
-                            <div class="col-sm-6 col-xs-6">
-                                <div class="small-box bg-green">
-                                    <div class="inner">
-                                        <h3>{$message}</h3>
-                                        <p>待处理留言</p>
+                        <!-- /.card-header -->
+                        <div class="card-body" style="display: block;">
+                            <div class="row pt-1 pb-1">
+                                <!-- ./col -->
+                                <div class="col-6">
+                                    <div class="small-box bg-info">
+                                        <div class="inner">
+                                            <h3>{$message}</h3>
+                                            <p>待处理留言</p>
+                                        </div>
+                                        <div class="icon">
+                                            <i class="ion ion-android-clipboard"></i>
+                                        </div>
+                                        <a href="{$messageCatUrl}" class="small-box-footer">更多信息 <i class="fa fa-arrow-circle-right"></i></a>
                                     </div>
-                                    <div class="icon">
-                                        <i class="ion ion-android-clipboard"></i>
-                                    </div>
-                                    <a href="{$messageCatUrl}" class="small-box-footer">更多信息 <i class="fa fa-arrow-circle-right"></i></a>
                                 </div>
-                            </div>
-                            <!-- ./col -->
-                            <div class="col-sm-6 col-xs-6">
-                                <div class="small-box bg-yellow">
-                                    <div class="inner">
-                                        <h3>{$user}</h3>
-                                        <p>一周用户注册</p>
+                                <!-- ./col -->
+                                <div class="col-6">
+                                    <div class="small-box bg-yellow">
+                                        <div class="inner">
+                                            <h3>{$user}</h3>
+                                            <p>一周用户注册</p>
+                                        </div>
+                                        <div class="icon">
+                                            <i class="ion ion-person-add"></i>
+                                        </div>
+                                        <a href="{:url('users/index')}" class="small-box-footer">更多信息 <i class="fa fa-arrow-circle-right"></i></a>
                                     </div>
-                                    <div class="icon">
-                                        <i class="ion ion-person-add"></i>
-                                    </div>
-                                    <a href="{:url('users/index')}" class="small-box-footer">更多信息 <i class="fa fa-arrow-circle-right"></i></a>
                                 </div>
+                                <!-- ./col -->
                             </div>
-                            <!-- ./col -->
                         </div>
-                        <!-- /.box-body -->
+                        <!-- /.card-body -->
                     </div>
-                </div>
-                <!--系统信息开始-->
-                <div class="col-sm-12 col-xs-12">
-                    <div class="box box-default">
-                        <div class="box-header with-border">
-                            <i class="fa fa-gear"></i>
-                            <h3 class="box-title">系统信息</h3>
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                <!-- /.card -->
+            </div>
+            </div>
+            <div class="row">
+                <!--系统信息-->
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header ui-sortable-handle">
+                            <h3 class="card-title"><i class="fa fa-cog"></i> 系统信息</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
                                 </button>
                             </div>
+                            <!-- /.card-tools -->
                         </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
+                        <!-- /.card-header -->
+                        <div class="card-body" style="display: block;">
                             <table class="table table-striped">
                                 <tr>
                                     <td>网站域名</td>
@@ -124,97 +130,98 @@
                                 </tr>
                             </table>
                         </div>
-                        <!-- /.box-body -->
+                        <!-- /.card-body -->
                     </div>
+                    <!-- /.card -->
                 </div>
             </div>
-            <!--系统信息结束-->
         </div>
-        <div class="col-sm-4 col-xs-12">
-            <!--版本信息-->
-            <div class="box box-default">
-                <div class="box-header with-border">
-                    <i class="fa fa-tag"></i>
-                    <h3 class="box-title">版本信息</h3>
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+        <div class="col-lg-4">
+            <div class="row">
+                <!--版本信息-->
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header ui-sortable-handle">
+                            <h3 class="card-title"><i class="fas fa-tag"></i> 版本信息</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                            <!-- /.card-tools -->
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body" style="display: block;">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td class="text-center">当前版本</td>
+                                    <td>SIYUCMS V{$config.siyu_version}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">基于框架</td>
+                                    <td>ThinkPHP {$config.version} + AdminLTE</td>
+                                </tr>
+                                <tr>
+                                    <td valign="middle" class="text-center" style="padding-top:15px">获取授权</td>
+                                    <td>
+                                        <a href="http://www.siyucms.com" target="_blank" class="btn btn-flat btn-info">获取授权</a>&nbsp;&nbsp;
+                                        <a href="https://gitee.com/ruoshuiyx/tp6" target="_blank" class="btn btn-flat btn-warning">查看更新</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="study">
+                                        <a href="https://www.kancloud.cn/ruoshuiyx/siyucms" target="_blank" class="btn btn-flat btn-default ">SIYUCMS 开发手册</a>
+                                        <a href="https://www.kancloud.cn/manual/thinkphp6_0" target="_blank" class="btn btn-flat btn-default ">ThinkPHP6 开发手册</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
                     </div>
+                    <!-- /.card -->
                 </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <table class="table table-bordered">
-                        <tr>
-                            <td>当前版本</td>
-                            <td>SIYUCMS V{$config.siyu_version}</td>
-                        </tr>
-                        <tr>
-                            <td>基于框架</td>
-                            <td>ThinkPHP {$config.version} + AdminLTE</td>
-                        </tr>
-                        <tr>
-                            <td valign="middle" style="padding-top:15px">获取授权</td>
-                            <td>
-                                <a href="http://www.siyucms.com" target="_blank" class="btn btn-flat btn-success">获取授权</a>&nbsp;&nbsp;
-                                <a href="https://gitee.com/ruoshuiyx/tp6" target="_blank" class="btn btn-flat btn-warning">查看更新</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" class="study">
-                                <a href="https://www.kancloud.cn/ruoshuiyx/siyucms" target="_blank" class="btn btn-flat btn-default ">SIYUCMS 开发手册</a>
-                                <a href="https://www.kancloud.cn/manual/thinkphp6_0" target="_blank" class="btn btn-flat btn-default ">ThinkPHP6 开发手册</a>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <!-- /.box-body -->
-            </div>
-            <!--版本信息-->
-
-            <!--推荐-->
-            <div class="box box-default" style=" margin: 15px 0;">
-                <div class="box-header with-border">
-                    <i class="fa fa-bullhorn"></i>
-                    <h3 class="box-title">推荐</h3>
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                        </button>
+                <!--推荐-->
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header ui-sortable-handle">
+                            <h3 class="card-title"><i class="fas fa-bullhorn"></i> 推荐</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                            <!-- /.card-tools -->
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body main_ad" style="display: block;">
+                        </div>
+                        <!-- /.card-body -->
                     </div>
+                    <!-- /.card -->
                 </div>
-                <!-- /.box-header -->
-                <div class="box-body main_ad">
-
-                </div>
-                <!-- /.box-body -->
-            </div>
-            <!---->
-            <div class="box box-default">
-                <div class="box-header with-border">
-                    <i class="fa fa-bookmark"></i>
-                    <h3 class="box-title">作者</h3>
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                        </button>
+                <!--作者-->
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header ui-sortable-handle">
+                            <h3 class="card-title"><i class="fas fa-bookmark"></i> 作者</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                            <!-- /.card-tools -->
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body" style="display: block;">
+                            <p class="mb-2">SIYUCMS 基于 ThinkPHP {$config.version} + AdminLTE-3 开发<br>简单 / 易用 / 响应式 / 低门槛 。</p>
+                            <p class="mb-2">请尊重SIYUCMS开发者的劳动成果，未授权前请保留前台 Powered by SIYUCMS ，并不得修改后台版权信息。</p>
+                            <p class="mb-1 text-info juanzeng">如果SIYUCMS有帮到您，就请作者喝杯茶吧!</p>
+                            <small>--<cite class="text-muted">感谢您的使用！</cite></small>
+                        </div>
+                        <!-- /.card-body -->
                     </div>
+                    <!-- /.card -->
                 </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <p>SIYUCMS 基于 ThinkPHP {$config.version} + AdminLTE-2.4 开发<br>简单 / 易用 / 响应式 / 低门槛 。</p>
-                    <p>请尊重SIYUCMS开发者的劳动成果，未授权前请保留前台 Powered by SIYUCMS ，并不得修改后台版权信息。</p>
-                    <p class="text-light-blue juanzeng">如果SIYUCMS有帮到您，就请作者喝杯茶吧!</p>
-                    <small>--<cite title="Source Title">感谢您的使用！</cite></small>
-                </div>
-                <!-- /.box-body -->
             </div>
-            <!---->
         </div>
     </div>
-    <!---->
 </section>
-<!-- right col -->
-</div>
-<!-- /.row (main row) -->
-
-</section>
-<!--内容结束-->
-<script src="http://www.siyucms.com/ad.js"></script>
+<script src="https://www.siyucms.com/ad.js?date={:date('Y-m-d')}"></script>
 

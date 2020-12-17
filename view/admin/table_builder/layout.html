@@ -1,5 +1,7 @@
 <!--内容开始-->
 <section class="content">
+    {// 额外CSS代码 }
+    {$extra_css|raw|default=''}
     {// 额外HTML代码 }
     {$extra_html_content_top|raw|default=''}
     <!--顶部提示开始-->
@@ -10,125 +12,25 @@
     </div>
     {/notempty}
     <!--顶部提示结束-->
-	
-    <!--bootstrap table begin-->
-    <div class="container-div">
+    <div class="container-fluid">
         <div class="row">
-        	{if $search OR $page_tips_search }
-            <div class="col-sm-12 search-collapse">
-                <form id="search_form">
-                    <div class="select-list">
-                        {notempty name="page_tips_search"}{$page_tips_search|raw}{/notempty}
-                        {notempty name="search"}
-                        <ul>
-                            {volist name="search" id="search"}
-                            <li>
-                            	<label>{$search.title|default=''}： </label>
-                            	{if $search.param }
-                                	{// 存在数组 }
-                                    {if $search.data_source == 2 && ($search.type == 'text' || $search.type == 'textarea' || $search.type == 'number' || $search.type == 'hidden') }
-                                        {// 模型关联且需要转换的单独处理 }
-                                        <input type="text" id="search_{$search.name|default=''}" name="{$search.name|default=''}" value="{$search.default|default=''}"/>
-                                    {else}
-                                	<select id="search_{$search.name|default=''}" name="{$search.name|default=''}">
-                                        <option value="">所有</option>
-                                        {notempty name="search.param"}
-                                            {volist name="search.param" id="v"}
-                                                <option value="{$key}" {if ((string)$search.default == (string)$key)}selected{/if}>{$v}</option>
-                                            {/volist}
-                                        {/notempty}
-                                	</select>
-                                    {/if}
-                                {else}
-                                	{if $search.type == 'date' OR $search.type == 'time' OR $search.type == 'datetime' }
-                                    	{// 日期类型的数据 }
-                                        <input type="text" id="search_{$search.name|default=''}" name="{$search.name|default=''}" value="{$search.default|default=''}" daterange="true" autocomplete="off"/>
-                                    {elseif $search.type == 'select2'}
-                                        <select class="select2" id="search_{$search.name|default=''}" name="{$search.name|default=''}" data-value="{$search.default|default=''}">
-                                            <option value="">所有</option>
-                                        </select>
-                                        <script>
-                                            $(function () {
-                                                var option = {};
-                                                // 启用ajax分页查询
-                                                option = {
-                                                    language: "zh-CN",
-                                                    //allowClear: true,
-                                                    ajax: {
-                                                        delay: 250, // 限速请求
-                                                        url: "{:url('Index/select2',['id'=>$search.field_id])}",   //  请求地址
-                                                        dataType: 'json',
-                                                        data: function (params) {
-                                                            return {
-                                                                keyWord: params.term || '',    //搜索参数
-                                                                page: params.page || 1,        //分页参数
-                                                                rows: params.pagesize || 10,   //每次查询10条记录
-                                                            };
-                                                        },
-                                                        processResults: function (data, params) {
-                                                            params.page = params.page || 1;
-                                                            if (params.page == 1) {
-                                                                data.data.unshift({id: '', name: "", text: "所有"});
-                                                            }
-                                                            return {
-                                                                results: data.data,
-                                                                pagination: {
-                                                                    more: (params.page) < data.last_page
-                                                                }
-                                                            };
-                                                        },
-                                                        cache: true
-                                                    }
-                                                };
-                                                // 默认值设置
-                                                var defaultValue = $("#search_{$search.name|default=''}").data("value");
-                                                if (defaultValue) {
-                                                    $.ajax({
-                                                        type: "POST",
-                                                        url: "{:url('Index/select2',['id'=>$search.field_id])}",
-                                                        data: {value: defaultValue},
-                                                        dataType: "json",
-                                                        async: false,
-                                                        success: function(data){
-                                                            $("#search_{$search.name|default=''}").append("<option selected value='" + data.key + "'>" + data.value + "</option>");
-                                                        }
-                                                    });
-                                                }
-                                                $("#search_{$search.name|default=''}").select2(option);
-                                                })
-                                        </script>
-                                    {else}
-                                        {// 其他类型的数据 }
-                                        <input type="text" id="search_{$search.name|default=''}" name="{$search.name|default=''}" value="{$search.default|default=''}"/>
-                                    {/if}
-                                {/if}
-                            </li>
-                            {/volist}
-                            <li>
-                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
-                                <a class="btn btn-warning btn-rounded btn-sm" onclick="resetPre()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
-                                <input class="hide" type="submit" name="btnSave" value="提交" onclick="$.table.search();return false;"/>
-                            </li>
-                        </ul>
-                        {/notempty}
-                    </div>
-                </form>
-            </div>
-            {/if}
-            <div class="col-sm-12 select-table table-striped"><div class="btn-group-sm" id="toolbar" role="group">
+            <!--搜索区域开始-->
+            {include file="table_builder/search" /}
+            <!--列表区域开始-->
+            <div class="col-sm-12 select-table table-striped">
+                <div class="btn-group-sm" id="toolbar" role="group">
                 {volist name="top_buttons" id="top_button"}
                 <a class="{$top_button.class|default=''}" {notempty name="top_button.href"}href="{$top_button.href|default=''}"{/notempty}{notempty name="top_button.target"} target="{$top_button.target|default=''}"{/notempty}{notempty name="top_button.onclick"} onclick="{$top_button.onclick|default=''}"{/notempty}>
                     <i class="{$top_button.icon|default=''}"></i> {$top_button.title|default=''}
                 </a>
                 {/volist}
-            </div>
+                </div>
                 <table id="bootstrap-table" data-mobile-responsive="true"></table>
             </div>
         </div>
     </div>
     <script>
         $(function() {
-
             var options = {
                 uniqueId      : "{$unique_id}",         // 表格主键名称，（默认为id，如表主键不为id必须设置主键）
                 url           : "{$data_url|raw}",      // 请求后台的URL
@@ -140,12 +42,12 @@
                 sortName      : "{$unique_id}",         // 排序列名称
                 sortOrder     : "desc",                 // 排序方式  asc 或者 desc
 				pagination    : {$pagination},			// 是否进行分页
-                parentIdField : "{$parent_id_field}",   // 列表树模式需传递父id
+                parentIdField : "{$parent_id_field}",   // 列表树模式需传递父id字段名（parent_id/pid）
 				clickToSelect : true,				    // 默认false不响应，设为true则当点击此行的某处时，会自动选中此行的checkbox/radiobox
                 pageSize      : "{$page_size}",         // 每页显示的行数
                 columns: [
                     {
-                        field: 'state',
+                        //field: 'state',
                         checkbox: true,
 						// 当某行包含checkbox_disabled时禁止选择
 						formatter: function(value, row, index) {
@@ -158,8 +60,8 @@
                     },
                     {volist name="columns" id="column"}
                         {
-                            field: '{$column.name|default=''}',  {// 字段}
-                            title: '{$column.title|default=''}', {// 字段标题}
+                            field: '{$column.name|default=''}',  {// 字段名称}
+                            title: '{$column.title|default=''}', {// 字段别名}
 							
                             {if $column.name==$unique_id}
                                 sortable: true,                  {// 主键必须可以排序}

@@ -104,7 +104,7 @@
 							if (columns) {
 								$.btTable.treegrid({
 									initialState: 'collapsed',// 所有节点都折叠
-									// initialState: 'expanded',// 所有节点都展开，默认展开
+									//initialState: 'expanded',// 所有节点都展开
 									treeColumn: 1, // 默认为第三个
 									// expanderExpandedClass: 'glyphicon glyphicon-minus',  //图标样式
 									// expanderCollapsedClass: 'glyphicon glyphicon-plus',

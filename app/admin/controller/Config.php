@@ -68,7 +68,13 @@ class Config extends Base
             $data = Request::post();
             foreach ($data as $k => $v) {
                 $result = \app\common\model\Config::where([['name', '=', $k], ['inc_type', '=', 'smtp']])->find();
-                $result->value = $v;
+                if ($k == 'smtp_pwd') {
+                    if (!empty($v)) {
+                        $result->value = $v;
+                    }
+                } else {
+                    $result->value = $v;
+                }
                 $result->save();
             }
             $this->success('修改成功', 'email');
@@ -146,7 +152,7 @@ class Config extends Base
             ->hideBtn('back')
             ->addBtn('<button type="button" id="test_sms" class="btn btn-flat btn-info ">测试发送</button>')
             ->setExtraHtml($this->getSmsExtraHtml(), 'content_bottom')
-            ->setPageTips('<div style="line-height: 44px;float: left">系统采用阿里云短信服务发送短信 <a class="btn btn-flat btn-primary m_10" href="https://help.aliyun.com/document_detail/101346.html" target="_blank">查看错误码</a><a class="btn btn-flat btn-primary m_10" href="https://help.aliyun.com/document_detail/59210.html" target="_blank">使用指引</a></div>', 'success', 'search')
+            ->setPageTips('<div style="line-height: 44px;float: left">系统采用阿里云短信服务发送短信 <a class="btn btn-flat btn-primary m-r-10" href="https://help.aliyun.com/document_detail/101346.html" target="_blank">查看错误码</a><a class="btn btn-flat btn-primary" href="https://help.aliyun.com/document_detail/59210.html" target="_blank">使用指引</a></div>', 'success', 'search')
             ->hideShowAll()
             ->fetch();
     }

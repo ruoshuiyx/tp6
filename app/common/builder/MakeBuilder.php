@@ -32,7 +32,9 @@ use think\facade\Request;
 class MakeBuilder
 {
     /**
-     * 获取某个表的主键
+     * 获取表的主键
+     * @param string $tableName 表名称
+     * @return mixed|string
      */
     public function getPrimarykey(string $tableName = '')
     {
@@ -41,7 +43,7 @@ class MakeBuilder
     }
 
     /**
-     * 获取某个表中所有的字段信息
+     * 获取表的所有字段信息
      * @param string $tableName 表名称
      * @return array
      */
@@ -77,9 +79,14 @@ class MakeBuilder
     public function getListColumns(string $tableName = '')
     {
         $columns = [];
-        $fields = $this->getFields($tableName);
+        $fields  = $this->getFields($tableName);
 
         foreach ($fields as &$field) {
+            // 筛选可搜索且状态不为0的字段
+            if ($field['is_list'] != 1 || $field['status'] == 0) {
+                continue;
+            }
+
             // 获取字典列表
             $dicts = [];
             if ($field['data_source'] == 1) {
@@ -89,11 +96,6 @@ class MakeBuilder
                     ->select()
                     ->toArray();
                 $dicts = $this->changeSelect($dicts);
-            }
-
-            // 筛选可搜索且状态不为0的字段
-            if ($field['is_list'] != 1 || $field['status'] == 0) {
-                continue;
             }
 
             // select等需要获取数据的字段需设置好 param 或考虑是否变更字段(字典类型的在这里获取，关联的在模型里重构该字段)
@@ -126,17 +128,17 @@ class MakeBuilder
         $fields = $this->getFields($tableName);
         $columns = [];
         foreach ($fields as &$field) {
-            // 主键不可新增，当方法名中包含add时系统认为是新增页面
+            // 主键不可新增，当方法名中包含add时系统认为是新增页面，应跳过主键字段
             if (strpos(strtolower(Request::action()), 'add') !== false && $field['field'] == $pk) {
                 continue;
             }
 
-            // 非自增字段判断是否可添加
+            // 非主键字段判断是否可添加
             if ($field['is_pk'] != 1 && strpos(strtolower(Request::action()), 'add') !== false && $field['is_add'] != 1) {
                 continue;
             }
 
-            // 非自增字段判断是否可修改
+            // 非主键字段判断是否可修改
             if ($field['is_pk'] != 1 && strpos(strtolower(Request::action()), 'edit') !== false && $field['is_edit'] != 1) {
                 continue;
             }
@@ -269,21 +271,9 @@ class MakeBuilder
             elseif ($field['type'] == 'date' || $field['type'] == 'time' || $field['type'] == 'datetime') {
                 // 使用每个字段设定的格式
                 if ($field['type'] == 'time') {
-                    $format = $field['setup']['format'];
-                    $format = str_replace("HH", "h", $format);
-                    $format = str_replace("mm", "i", $format);
-                    $format = str_replace("ss", "s", $format);
-                    $format = $format ?? 'H:i:s';
+                    $format = $field['setup']['format'] ?: 'H:i:s';
                 } else {
-                    $format = $field['setup']['format'];
-
-                    $format = str_replace("yyyy", "Y", $format);
-                    $format = str_replace("mm", "m", $format);
-                    $format = str_replace("dd", "d", $format);
-                    $format = str_replace("hh", "h", $format);
-                    $format = str_replace("ii", "i", $format);
-                    $format = str_replace("ss", "s", $format);
-                    $format = $format ?? 'Y-m-d H:i:s';
+                    $format = $field['setup']['format'] ?: 'Y-m-d H:i:s';
                 }
                 $field['setup']['default'] = (int)$field['setup']['default'] > 0 && is_int($field['setup']['default']) ? date($format, $field['setup']['default']) : $field['setup']['default'];
                 $columns[] = [
@@ -750,20 +740,11 @@ class MakeBuilder
                     if ($vv['type'] == 'date' || $vv['type'] == 'time' || $vv['type'] == 'datetime') {
                         // 使用每个字段设定的格式
                         if ($vv['type'] == 'time') {
-                            $format = str_replace("HH", "h", $vv['setup']['format']);
-                            $format = str_replace("mm", "i", $format);
-                            $format = str_replace("ss", "s", $format);
-                            $format = $format ?: 'H:i:s';
+                            $format = $vv['setup']['format'] ?: 'H:i:s';
                         } else {
-                            $format = str_replace("yyyy", "Y", $vv['setup']['format']);
-                            $format = str_replace("mm", "m", $format);
-                            $format = str_replace("dd", "d", $format);
-                            $format = str_replace("hh", "h", $format);
-                            $format = str_replace("ii", "i", $format);
-                            $format = str_replace("ss", "s", $format);
-                            $format = $format ?? 'Y-m-d H:i:s';
+                            $format = $vv['setup']['format'] ?: 'Y-m-d H:i:s';
                         }
-                        $data[$k][$kk] = date($format, $data[$k][$kk]);
+                        $data[$k][$kk] = $data[$k][$kk] === 0 ? '' : date($format, $data[$k][$kk]);
                     }
                 }
             }
@@ -1170,7 +1151,7 @@ class MakeBuilder
                         'status'=> 0,
                     ];
                 }
-                // 排序规则
+                // 状态规则
                 if ($module->is_status) {
                     $data[] = [
                         'pid'   => $rule->id,
@@ -1187,6 +1168,4 @@ class MakeBuilder
         }
         echo $id;
     }
-
-
 }

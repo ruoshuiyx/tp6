@@ -1,154 +1,85 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
-    <!--渲染器-->
-    <meta name="renderer" content="webkit">
-    <!--优先使用最新版本的IE 和 Chrome 内核-->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>SIYUCMS 后台管理面板</title>
-    <!-- 告诉浏览器该页面是自适应布局 -->
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SIYUCMS | 控制台</title>
 
     {include file="public/css_js" /}
-    {// 额外CSS代码 }
-    {$extra_css|raw|default=''}
 </head>
-<!--
-BODY TAG OPTIONS:
-=================
-应用以下一个或多个类以达到你想要的效果
-|---------------------------------------------------------|
-| SKINS         | skin-blue                               |
-|               | skin-black                              |
-|               | skin-purple                             |
-|               | skin-yellow                             |
-|               | skin-red                                |
-|               | skin-green                              |
-|---------------------------------------------------------|
-|LAYOUT OPTIONS | fixed                                   |
-|               | layout-boxed                            |
-|               | layout-top-nav                          |
-|               | sidebar-collapse                        |
-|               | sidebar-mini                            |
-|---------------------------------------------------------|
--->
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed pace-primary text-sm">
 <div class="wrapper">
-    <!-- Main Header -->
-    <header class="main-header">
-        <!-- Logo -->
-        <a href="{:url('Index/index')}" class="logo">
-            <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b>SIYU</b></span>
-            <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>SIYU</b> CMS</span>
-        </a>
-        <!-- Header Navbar -->
-        <nav class="navbar navbar-static-top" role="navigation">
-            <!-- 切换边栏-->
-            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button" title="切换边栏">
-                <span class="sr-only">切换边栏</span>
-            </a>
-            <a href="javascript:;" class="sidebar-toggle fullscreen" title="全屏模式">
-                <i class="glyphicon glyphicon-fullscreen"></i>
-            </a>
-            <!-- Navbar Left Menu -->
-            <ul class="nav navbar-nav js_left_menu">
-                <li class="active">
-                    <a href="javascript:;">
-                        <i class="fa  fa-gear"></i>
-                        <span>主导航</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="javascript:;">
-                        <i class="fa fa-th-large"></i>
-                        <span>内容管理</span>
-                    </a>
-                </li>
-            </ul>
-            <!-- Navbar Right Menu -->
-            <div class="navbar-custom-menu">
-                <ul class="nav navbar-nav">
-                    <!-- User Account Menu -->
-                    <li class="dropdown user user-menu">
-                        <!-- Menu Toggle Button -->
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <!-- The user image in the navbar-->
-                            <img src="{:session('admin.image') ? session('admin.image') : '/static/plugins/AdminLTE/dist/img/user2-160x160.jpg'}" class="user-image">
-                            <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                            <span class="hidden-xs">{:session('admin.nickname') ? session('admin.nickname') : session('admin.username')}</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <!-- The user image in the menu -->
-                            <li class="user-header">
-                                <img src="{:session('admin.image') ? session('admin.image') : '/static/plugins/AdminLTE/dist/img/user2-160x160.jpg'}" class="img-circle">
 
-                                <h5>
-                                    上次登录时间：{:session('admin.login_time')}
-                                </h5>
-                                <h5>
-                                    上次登录IP：{:session('admin.login_ip')}
-                                </h5>
-                            </li>
-                            <!-- Menu Footer-->
-                            <li class="user-footer">
-                                <div class="pull-left">
-                                    <a href="{:url('Admin/edit',['id'=>session('admin.id')])}" class="btn btn-default btn-flat">资料</a>
-                                </div>
-                                <div class="pull-right">
-                                    <a href="{:url('Login/logout')}" class="btn btn-default btn-flat">退出</a>
-                                </div>
-                            </li>
-                        </ul>
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+            </li>
+        </ul>
+
+        <!-- Left navbar links -->
+        <ul class="navbar-nav js_left_menu">
+            <li class="nav-item active">
+                <a class="nav-link" href="javascript:;">
+                    <i class="fas fa-cog"></i>
+                    <span>主导航</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:;">
+                    <i class="fa fa-th-large"></i>
+                    <span>内容管理</span>
+                </a>
+            </li>
+        </ul>
+
+        <!-- Right navbar links -->
+        <ul class="navbar-nav ml-auto">
+            <!-- User Account Menu -->
+            <li class="nav-item dropdown user user-menu">
+                <!-- Menu Toggle Button -->
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <img src="{:session('admin.image') ?: '/static/plugins/AdminLTE/dist/img/user2-160x160.jpg'}" class="user-image">
+                    <span class="d-none d-lg-block">{:session('admin.nickname') ?: session('admin.username')}</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li class="user-header">
+                        <img src="{:session('admin.image') ?: '/static/plugins/AdminLTE/dist/img/user2-160x160.jpg'}" class="img-circle">
+                        <h5>上次登录时间：{:session('admin.login_time')}</h5>
+                        <h5>上次登录IP：{:session('admin.login_ip')}</h5>
                     </li>
-                    <li>
-                        <a class="js_clear_cash" href="javascript:;" title="清空缓存">
-                            <i class="glyphicon glyphicon-refresh"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/" target="_blank" title="访问系统前台">
-                            <i class="glyphicon glyphicon-home"></i>
-                        </a>
-                    </li>
-                    <!-- Control Sidebar Toggle Button -->
-                    <li>
-                        <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                    <li class="user-footer">
+                        <div class="pull-left">
+                            <a href="{:url('Admin/edit',['id'=>session('admin.id')])}" class="btn btn-default btn-flat">资料</a>
+                        </div>
+                        <div class="pull-right">
+                            <a href="{:url('Login/logout')}" class="btn btn-default btn-flat">退出</a>
+                        </div>
                     </li>
                 </ul>
-            </div>
-        </nav>
-    </header>
-    <script>
-        // 主导航、内容管理切换
-        $(".js_left_menu li").click(function () {
-            // 通过 .index()方法获取元素下标，从0开始，赋值给某个变量
-            var _index = $(this).index();
-            // 让左侧菜单第 _index 个显示出来，其他的被隐藏
-            $(".js_left_menu_show").eq(_index).show().siblings('.js_left_menu_show').hide();
-            // 当前菜单添加选中效果,同级的移除。
-            $(this).addClass('active').siblings('li').removeClass('active');
-        })
-
-        // 清空缓存
-        $(".js_clear_cash").click(function () {
-            var url = "{:url('index/clear')}";
-            $.modal.confirm('确定要清除缓存吗？', function () {
-                $.post(url, {
-                    del: true
-                }, function (result) {
-                    if (result.error == 0) {
-                        $.modal.alertSuccess(result.msg, function (index) {
-                            layer.close(index);
-                            $.pjax.reload('.content-wrapper'); // pjax 重载
-                        });
-                    } else {
-                        $.modal.alertError(result.msg);
-                    }
-                });
-            });
-        })
-
-    </script>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-widget="fullscreen" href="#" role="button" title="全屏">
+                    <i class="fas fa-expand-arrows-alt"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button" title="自定义">
+                    <i class="fas fa-palette"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link js_clear_cash" href="javascript:;" title="清空缓存">
+                    <i class="fas fa-sync-alt"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/" target="_blank" title="前台首页">
+                    <i class="fas fa-home"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <!-- /.navbar -->

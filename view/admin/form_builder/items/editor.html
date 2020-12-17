@@ -1,14 +1,12 @@
 <div class="row dd_input_group {$form[type].extra_class|default=''}" id="form_group_{$form[type].name}">
-    <div class="form-group">
-        <div class="col-xs-11 col-sm-11 col-md-10 col-lg-8">
-            <label class="text-lable" for="{$form[type].name}">{$form[type].title|htmlspecialchars}</label>
-            <textarea id="{$form[type].name}" name="{$form[type].name}" {$form[type].extra_attr|raw}>{$form[type].value}</textarea>
-        </div>
-        <div class="col-xs-{if $form[type].tips}12{else /}1{/if} col-sm-1 col-md-2 col-lg-4 dd_ts">
-            {notempty name="form[type].required"} *{/notempty}
-            {notempty name="form[type].tips"} {$form[type].tips|raw}{/notempty}
-        </div>
+    <div class="col-11 col-md-10 col-lg-8">
+        <label class="text-lable" for="{$form[type].name}">{$form[type].title|htmlspecialchars}</label>
+        <textarea id="{$form[type].name}" name="{$form[type].name}" {$form[type].extra_attr|raw}>{$form[type].value}</textarea>
+    </div>
+    <div class="col-{if $form[type].tips}12{else /}1{/if} col-md-6 col-lg-6 dd_ts">
+        {notempty name="form[type].required"} *{/notempty}
+        {notempty name="form[type].tips"} {$form[type].tips|raw}{/notempty}
     </div>
 </div>
 
-<script>CKEDITOR.replace('{$form[type].name}', { height: '{$form[type].height}px' });</script>
+<script>CKEDITOR.replace('{$form[type].name}', {height: '{$form[type].height}px'});</script>

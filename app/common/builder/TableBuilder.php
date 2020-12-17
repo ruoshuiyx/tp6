@@ -44,32 +44,31 @@ class TableBuilder
      * @var array 模板变量
      */
     private $_vars = [
-        'page_title'         => '',        // 页面标题
-        'page_tips'          => '',        // 页面提示
-        'page_tips_top'      => '',        // 页面提示[top]
-        'page_tips_search'   => '',        // 页面提示[search]
-        'page_tips_bottom'   => '',        // 页面提示[bottom]
-        'page_size'          => '',        // 每页显示的行数
-        'tips_type'          => '',        // 页面提示类型
-        'extra_js'           => '',        // 额外JS代码
-        'extra_css'          => '',        // 额外CSS代码
-        'extra_html'         => '',        // 额外HTML代码
-        'columns'            => [],        // 表格列集合
-        'right_buttons'      => [],        // 表格右侧按钮
-        'top_buttons'        => [],        // 顶部栏按钮组[toolbar]
-        'unique_id'          => 'id',      // 表格主键名称，（默认为id，如表主键不为id必须设置主键）
-        'data_url'           => '',        // 表格数据源
-        'add_url'            => '',        // 默认的新增地址
-        'edit_url'           => '',        // 默认的修改地址
-        'del_url'            => '',        // 默认的删除地址
-        'export_url'         => '',        // 默认的导出地址
-        'sort_url'           => '',        // 默认的排序地址
-        'search'             => [],        // 搜索参数
-        'pagination'         => 'true',    // 是否进行分页
-        'parent_id_field'    => '',        // 列表树模式需传递父id
-        'empty_tips'         => '暂无数据', // 空数据提示信息[待完善]
-        'hide_checkbox'      => false,     // 是否隐藏第一列多选[待完善]
-
+        'page_title'       => '',        // 页面标题
+        'page_tips'        => '',        // 页面提示
+        'page_tips_top'    => '',        // 页面提示[top]
+        'page_tips_search' => '',        // 页面提示[search]
+        'page_tips_bottom' => '',        // 页面提示[bottom]
+        'page_size'        => '',        // 每页显示的行数
+        'tips_type'        => '',        // 页面提示类型
+        'extra_js'         => '',        // 额外JS代码
+        'extra_css'        => '',        // 额外CSS代码
+        'extra_html'       => '',        // 额外HTML代码
+        'columns'          => [],        // 表格列集合
+        'right_buttons'    => [],        // 表格右侧按钮
+        'top_buttons'      => [],        // 顶部栏按钮组[toolbar]
+        'unique_id'        => 'id',      // 表格主键名称，（默认为id，如表主键不为id必须设置主键）
+        'data_url'         => '',        // 表格数据源
+        'add_url'          => '',        // 默认的新增地址
+        'edit_url'         => '',        // 默认的修改地址
+        'del_url'          => '',        // 默认的删除地址
+        'export_url'       => '',        // 默认的导出地址
+        'sort_url'         => '',        // 默认的排序地址
+        'search'           => [],        // 搜索参数
+        'pagination'       => 'true',    // 是否进行分页
+        'parent_id_field'  => '',        // 列表树模式需传递父id
+        'empty_tips'       => '暂无数据', // 空数据提示信息[待完善]
+        'hide_checkbox'    => false,     // 是否隐藏第一列多选[待完善]
     ];
 
     /**
@@ -180,7 +179,7 @@ class TableBuilder
     {
         if ($tips != '') {
             $this->_vars['page_tips_' . $pos] = $tips;
-            $this->_vars['tips_type'] = trim($type) ?? 'info';
+            $this->_vars['tips_type']         = trim($type);
         }
         return $this;
     }
@@ -240,13 +239,13 @@ class TableBuilder
     public function addColumn($name = '', $title = '', $type = '', $default = '', $param = '', $class = '', $sortable = 'false')
     {
         $column = [
-            'name'    => $name,
-            'title'   => $title,
-            'type'    => $type,
-            'default' => $default,
-            'param'   => $param,
-            'class'   => $class,
-            'sortable'=> $sortable,
+            'name'     => $name,
+            'title'    => $title,
+            'type'     => $type,
+            'default'  => $default,
+            'param'    => $param,
+            'class'    => $class,
+            'sortable' => $sortable,
         ];
 
         $this->_vars['columns'][] = $column;
@@ -357,7 +356,7 @@ class TableBuilder
                 $btn_attribute = [
                     'type'  => 'delete',
                     'title' => '删除',
-                    'icon'  => 'fa fa-trash-o',
+                    'icon'  => 'far fa-trash-alt',
                     'class' => 'btn btn-danger btn-xs confirm',
                 ];
                 break;
@@ -492,7 +491,7 @@ class TableBuilder
      * 第一个参数：类型
      * 第二个参数：字段名称
      * 第三个参数：字段别名
-     * 第四个参数：匹配方式（默认为“=”，也可以是“<>，>，>=，<，<=，LIKE”等等）
+     * 第四个参数：匹配方式（默认为'='，也可以是'<>，>，>=，<，<=，LIKE'等等）
      * 第五个参数：默认值
      * 第六个参数：额外参数（不同类型，用途不同）
      */
@@ -542,11 +541,11 @@ class TableBuilder
             case 'edit':
                 // 默认属性
                 $btn_attribute = [
-                    'title'       => '修改',
-                    'icon'        => 'fa fa-edit',
-                    'class'       => 'btn btn-primary single disabled',
-                    'href'        => '',
-                    'onclick'     => '$.operate.edit()',
+                    'title'   => '修改',
+                    'icon'    => 'fa fa-edit',
+                    'class'   => 'btn btn-primary single disabled',
+                    'href'    => '',
+                    'onclick' => '$.operate.edit()',
                 ];
                 break;
 
@@ -554,11 +553,11 @@ class TableBuilder
             case 'del':
                 // 默认属性
                 $btn_attribute = [
-                    'title'       => '删除',
-                    'icon'        => 'fa fa-remove',
-                    'class'       => 'btn btn-danger multiple disabled',
-                    'href'        => '',
-                    'onclick'     => '$.operate.removeAll()'
+                    'title'   => '删除',
+                    'icon'    => 'fa fa-times',
+                    'class'   => 'btn btn-danger multiple disabled',
+                    'href'    => '',
+                    'onclick' => '$.operate.removeAll()'
                 ];
                 break;
 
@@ -566,11 +565,11 @@ class TableBuilder
             case 'export':
                 // 默认属性
                 $btn_attribute = [
-                    'title'       => '导出',
-                    'icon'        => 'fa fa-download',
-                    'class'       => 'btn btn-warning',
-                    'href'        => '',
-                    'onclick'     => '$.table.export()'
+                    'title'   => '导出',
+                    'icon'    => 'fa fa-download',
+                    'class'   => 'btn btn-warning',
+                    'href'    => '',
+                    'onclick' => '$.table.export()'
                 ];
                 break;
 
@@ -578,11 +577,11 @@ class TableBuilder
             case 'build':
                 // 默认属性
                 $btn_attribute = [
-                    'title'       => '代码生成',
-                    'icon'        => 'fa fa-file-code-o',
-                    'class'       => 'btn btn-info single disabled',
-                    'href'        => '',
-                    'onclick'     => '$.operate.build(\'\', \''.url('module/build').'\')'
+                    'title'   => '代码生成',
+                    'icon'    => 'fa fa-file-code-o',
+                    'class'   => 'btn btn-info single disabled',
+                    'href'    => '',
+                    'onclick' => '$.operate.build(\'\', \'' . url('module/build') . '\')'
                 ];
                 break;
 
@@ -590,11 +589,11 @@ class TableBuilder
             default:
                 // 默认属性
                 $btn_attribute = [
-                    'title'       => '自定义',
-                    'icon'        => 'fa fa-lightbulb-o',
-                    'class'       => 'btn btn-default',
-                    'href'        => '',
-                    'onclick'     => ''
+                    'title'   => '自定义',
+                    'icon'    => 'fa fa-lightbulb',
+                    'class'   => 'btn btn-default',
+                    'href'    => '',
+                    'onclick' => ''
                 ];
                 break;
         }
@@ -610,11 +609,11 @@ class TableBuilder
     /**
      * 一次性添加多个顶部按钮
      * @param array|string $buttons 按钮组
-     * 例如：
-     * addTopButtons('add')
-     * addTopButtons('add, edit, del')
-     * addTopButtons(['add', 'del'])
-     * addTopButtons(['add' => ['title' => '增加'], 'del'])
+     *                              例如：
+     *                              addTopButtons('add')
+     *                              addTopButtons('add, edit, del')
+     *                              addTopButtons(['add', 'del'])
+     *                              addTopButtons(['add' => ['title' => '增加'], 'del'])
      * @return $this
      */
     public function addTopButtons($buttons = [])

@@ -1,68 +1,61 @@
-<!-- Bootstrap 3.3.7 -->
-<link rel="stylesheet" href="/static/plugins/AdminLTE/bower_components/bootstrap/dist/css/bootstrap.min.css">
+<!-- layui -->
+<link rel="stylesheet" href="/static/plugins/layui/css/layui.css">
+<!-- Google Font: Source Sans Pro -->
+<link rel="stylesheet" href="/static/plugins/AdminLTE/plugins/google-fonts/google.fonts.css">
 <!-- Font Awesome -->
-<link rel="stylesheet" href="/static/plugins/AdminLTE/bower_components/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="/static/plugins/AdminLTE/plugins/fontawesome-free/css/all.min.css">
+<!-- Ionicons -->
+<link rel="stylesheet" href="https://cdn.staticfile.org/ionicons/2.0.1/css/ionicons.min.css">
+<!-- Tempusdominus Bootstrap 4 -->
+<link rel="stylesheet" href="/static/plugins/AdminLTE/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+<!-- iCheck -->
+<link rel="stylesheet" href="/static/plugins/AdminLTE/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
 <!-- Theme style -->
-<link rel="stylesheet" href="/static/plugins/AdminLTE/dist/css/AdminLTE.min.css">
-<!-- AdminLTE Skins. Choose a skin from the css/skins folder instead of downloading all of them to reduce the load. -->
-<link rel="stylesheet" href="/static/plugins/AdminLTE/dist/css/skins/_all-skins.min.css">
-
-<!-- Bootstrap Table 表格插件样式 -->
-<link rel="stylesheet" href="/static/plugins/bootstrap-table/bootstrap-table.min.css" />
-
-<!-- Date Picker -->
-<link rel="stylesheet" href="/static/plugins/AdminLTE/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
-<!-- Time Picker -->
-<link rel="stylesheet" href="/static/plugins/AdminLTE/plugins/timepicker/bootstrap-timepicker.min.css">
-<!-- Datetime Picker -->
-<link rel="stylesheet" href="/static/plugins/AdminLTE/bower_components/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
+<link rel="stylesheet" href="/static/plugins/AdminLTE/dist/css/adminlte.min.css">
+<!-- overlayScrollbars -->
+<link rel="stylesheet" href="/static/plugins/AdminLTE/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
 <!-- Daterange picker -->
-<link rel="stylesheet" href="/static/plugins/AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.css">
-<!-- Color Picker -->
-<link rel="stylesheet" href="/static/plugins/AdminLTE/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">
-<!-- Pace style -->
-<link rel="stylesheet" href="/static/plugins/AdminLTE/plugins/pace/pace.css">
-<!-- jQuery 3 -->
-<script src="/static/plugins/AdminLTE/bower_components/jquery/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="/static/plugins/AdminLTE/plugins/daterangepicker/daterangepicker.css">
+<!-- Bootstrap Color Picker -->
+<link rel="stylesheet" href="/static/plugins/AdminLTE/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
+<!-- Toastr -->
+<link rel="stylesheet" href="/static/plugins/AdminLTE/plugins/toastr/toastr.min.css">
+<!-- pace-progress -->
+<link rel="stylesheet" href="/static/plugins/AdminLTE/plugins/pace-progress/themes/black/pace-theme-flat-top.css">
+<!-- jQuery -->
+<script src="/static/plugins/AdminLTE/plugins/jquery/jquery.min.js"></script>
+<!-- layui -->
+<script src="/static/plugins/layui/layui.js"></script>
+<!-- zTree 树节点组件 -->
+<script type="text/javascript" src="/static/plugins/zTree_v3/js/jquery.ztree.core.js"></script>
+<script type="text/javascript" src="/static/plugins/zTree_v3/js/jquery.ztree.excheck.js"></script>
 <!-- webuploader -->
-<link rel="stylesheet" type="text/css" href="/static/plugins/webuploader-0.1.5/webuploader.css">
+<link rel="stylesheet" href="/static/plugins/webuploader-0.1.5/webuploader.css">
 <script src="/static/plugins/webuploader-0.1.5/webuploader.js"></script>
 {include file="index/webuploader" /}
 <!-- ckeditor4 -->
 <script src="/static/plugins/ckeditor/ckeditor.js"></script>
-
-<!-- sweetalert -->
-<link rel="stylesheet" href="/static/plugins/sweetalert/dist/sweetalert2.min.css">
-<script src="/static/plugins/sweetalert/dist/sweetalert2.min.js"></script>
-<script src="/static/plugins/sweetalert/lib/es6-promise.min.js"></script>
-<!-- Include a polyfill for ES6 Promises (optional) for IE11 -->
-<script src="/static/plugins/sweetalert/polyfill.js"></script>
-
+<!-- Bootstrap Table -->
+<link rel="stylesheet" href="/static/plugins/bootstrap-table/bootstrap-table.min.css" />
 <!-- layer 弹层组件 -->
-<script src="/static/plugins/layer/layer.js"></script>
-
+<script>
+    layui.use('layer',
+        function () {
+            var layer = layui.layer;
+        })
+</script>
 <!-- zTree 树节点组件 -->
 <script type="text/javascript" src="/static/plugins/zTree_v3/js/jquery.ztree.core.js"></script>
 <script type="text/javascript" src="/static/plugins/zTree_v3/js/jquery.ztree.excheck.js"></script>
-
 <!-- jQueryTagsInput -->
-<script src="/static/plugins/AdminLTE/plugins/jQueryTagsInput/jquery.tagsinput.js"></script>
 <link rel="stylesheet" href="/static/plugins/AdminLTE/plugins/jQueryTagsInput/jquery.tagsinput.css">
+<script src="/static/plugins/AdminLTE/plugins/jQueryTagsInput/jquery.tagsinput.js"></script>
 <!-- Select2 -->
-<link rel="stylesheet" href="/static/plugins/AdminLTE/bower_components/select2/dist/css/select2.min.css">
+<link rel="stylesheet" href="/static/plugins/AdminLTE/plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="/static/plugins/AdminLTE/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+<script src="/static/plugins/AdminLTE/plugins/select2/js/select2.full.min.js"></script>
+
 <!-- SIYUCMS -->
-<link rel="stylesheet" href="/static/plugins/AdminLTE/dist/css/siyucms.css?v=20201013">
-
-<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!-- 警告：Respond.js 不支持 file:// 方式查看（即本地方式查看）-->
-<!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
-
-<!-- Google Font -->
-<!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">-->
-
-<!-- SIYUCMS 常用封装 -->
+<link rel="stylesheet" href="/static/plugins/AdminLTE/dist/css/siyucms.css">
 <script src="/static/plugins/siyu-ui.js?v=20201013"></script>
-<script src="/static/plugins/AdminLTE/siyucms.js?v=20200310"></script>
+<script src="/static/plugins/siyucms.js?v=20201013"></script>

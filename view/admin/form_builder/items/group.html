@@ -1,110 +1,108 @@
-<div class="nav-tabs-custom">
-    <ul class="nav nav-tabs" id="builder-form-group-tab">
-        {volist name="form.options" id="item" key="items_key"}
-        <li {eq name="items_key" value="1" }class="active" {/eq}>
-            <a href="#tab_{$items_key}" data-toggle="tab" aria-expanded="false">{$key|htmlspecialchars}</a>
-        </li>
-        {/volist}
-    </ul>
-    <div class="tab-content no-padding">
-        {volist name="form.options" id="items" key="items_key"}
-        <div class="tab-pane {eq name="items_key" value="1"}active{/eq}" id="tab_{$items_key}" >
-        {volist name="items" id="form_group"}
-            {switch name="form_group.type"}
-                {case value="text"}
-                    {// 单行文本框 }
-                    {include file="form_builder/items/text" type="_group" /}
-                {/case}
-                {case value="textarea"}
-                    {// 多行文本框 }
-                    {include file="form_builder/items/textarea" type="_group" /}
-                {/case}
-                {case value="radio"}
-                    {// 单选 }
-                    {include file="form_builder/items/radio" type="_group" /}
-                {/case}
-                {case value="checkbox"}
-                    {// 多选 }
-                    {include file="form_builder/items/checkbox" type="_group" /}
-                {/case}
-                {case value="date"}
-                    {// 日期 }
-                    {include file="form_builder/items/date" type="_group" /}
-                {/case}
-                {case value="time"}
-                    {// 时间 }
-                    {include file="form_builder/items/time" type="_group" /}
-                {/case}
-                {case value="datetime"}
-                    {// 日期时间 }
-                    {include file="form_builder/items/datetime" type="_group" /}
-                {/case}
-                {case value="daterange"}
-                    {// 日期范围 }
-                    {include file="form_builder/items/daterange" type="_group" /}
-                {/case}
-                {case value="tags"}
-                    {// 标签 }
-                    {include file="form_builder/items/tags" type="_group" /}
-                {/case}
-                {case value="number"}
-                    {// 数字 }
-                    {include file="form_builder/items/number" type="_group" /}
-                {/case}
-                {case value="password"}
-                    {// 密码 }
-                    {include file="form_builder/items/password" type="_group" /}
-                {/case}
-                {case value="select"}
-                    {// 下拉菜单 }
-                    {include file="form_builder/items/select" type="_group" /}
-                {/case}
-                {case value="select2"}
-                    {// 下拉菜单2 }
-                    {include file="form_builder/items/select2" type="_group" /}
-                {/case}
-                {case value="image"}
-                    {// 单图片 }
-                    {include file="form_builder/items/image" type="_group" /}
-                {/case}
-                {case value="images"}
-                    {// 多图片 }
-                    {include file="form_builder/items/images" type="_group" /}
-                {/case}
-                {case value="file"}
-                    {// 单文件 }
-                    {include file="form_builder/items/file" type="_group" /}
-                {/case}
-                {case value="files"}
-                    {// 多文件 }
-                    {include file="form_builder/items/files" type="_group" /}
-                {/case}
-                {case value="editor"}
-                    {// 编辑器 }
-                    {include file="form_builder/items/editor" type="_group" /}
-                {/case}
-                {case value="editor"}
-                    {// 按钮 }
-                    {include file="form_builder/items/button" type="_group" /}
-                {/case}
-                {case value="hidden"}
-                    {// 隐藏域 }
-                    {include file="form_builder/items/hidden" type="_group" /}
-                {/case}
-                {case value="html"}
-                    {// 自定义html }
-                    {include file="form_builder/items/html" type="_group" /}
-                {/case}
-                {case value="color"}
-                    {// 取色器 }
-                    {include file="form_builder/items/color" type="_group" /}
-                {/case}
+<ul class="nav nav-tabs" id="builder-form-group-tab" role="tablist">
+    {volist name="form.options" id="item" key="items_key"}
+    <li class="nav-item">
+        <a class="nav-link {eq name="items_key" value="1" }active{/eq}" id="nav-tab-{$items_key}" href="#nav-tab-content-{$items_key}" role="tab" data-toggle="tab">{$key|htmlspecialchars}</a>
+    </li>
+    {/volist}
+</ul>
+<div class="tab-content no-padding">
+    {volist name="form.options" id="items" key="items_key"}
+    <div class="tab-pane {eq name="items_key" value="1"}active{/eq}" id="nav-tab-content-{$items_key}" >
+    {volist name="items" id="form_group"}
+        {switch name="form_group.type"}
+            {case value="text"}
+                {// 单行文本框 }
+                {include file="form_builder/items/text" type="_group" /}
+            {/case}
+            {case value="textarea"}
+                {// 多行文本框 }
+                {include file="form_builder/items/textarea" type="_group" /}
+            {/case}
+            {case value="radio"}
+                {// 单选 }
+                {include file="form_builder/items/radio" type="_group" /}
+            {/case}
+            {case value="checkbox"}
+                {// 多选 }
+                {include file="form_builder/items/checkbox" type="_group" /}
+            {/case}
+            {case value="date"}
+                {// 日期 }
+                {include file="form_builder/items/date" type="_group" /}
+            {/case}
+            {case value="time"}
+                {// 时间 }
+                {include file="form_builder/items/time" type="_group" /}
+            {/case}
+            {case value="datetime"}
+                {// 日期时间 }
+                {include file="form_builder/items/datetime" type="_group" /}
+            {/case}
+            {case value="daterange"}
+                {// 日期范围 }
+                {include file="form_builder/items/daterange" type="_group" /}
+            {/case}
+            {case value="tags"}
+                {// 标签 }
+                {include file="form_builder/items/tags" type="_group" /}
+            {/case}
+            {case value="number"}
+                {// 数字 }
+                {include file="form_builder/items/number" type="_group" /}
+            {/case}
+            {case value="password"}
+                {// 密码 }
+                {include file="form_builder/items/password" type="_group" /}
+            {/case}
+            {case value="select"}
+                {// 下拉菜单 }
+                {include file="form_builder/items/select" type="_group" /}
+            {/case}
+            {case value="select2"}
+                {// 下拉菜单2 }
+                {include file="form_builder/items/select2" type="_group" /}
+            {/case}
+            {case value="image"}
+                {// 单图片 }
+                {include file="form_builder/items/image" type="_group" /}
+            {/case}
+            {case value="images"}
+                {// 多图片 }
+                {include file="form_builder/items/images" type="_group" /}
+            {/case}
+            {case value="file"}
+                {// 单文件 }
+                {include file="form_builder/items/file" type="_group" /}
+            {/case}
+            {case value="files"}
+                {// 多文件 }
+                {include file="form_builder/items/files" type="_group" /}
+            {/case}
+            {case value="editor"}
+                {// 编辑器 }
+                {include file="form_builder/items/editor" type="_group" /}
+            {/case}
+            {case value="editor"}
+                {// 按钮 }
+                {include file="form_builder/items/button" type="_group" /}
+            {/case}
+            {case value="hidden"}
+                {// 隐藏域 }
+                {include file="form_builder/items/hidden" type="_group" /}
+            {/case}
+            {case value="html"}
+                {// 自定义html }
+                {include file="form_builder/items/html" type="_group" /}
+            {/case}
+            {case value="color"}
+                {// 取色器 }
+                {include file="form_builder/items/color" type="_group" /}
+            {/case}
 
-                {default/}
+            {default/}
 
-            {/switch}
-        {/volist}
-    </div>
+        {/switch}
     {/volist}
 </div>
+{/volist}
 </div>

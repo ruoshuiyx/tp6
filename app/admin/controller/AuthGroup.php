@@ -71,8 +71,8 @@ class AuthGroup extends Base
             ->addColumn('right_button', '操作', 'btn')      // 启用右侧操作列
             ->addRightButton('info', [
                 'title' => '权限',
-                'icon'  => 'fa fa-check-square-o',
-                'class' => 'btn btn-flat btn-warning btn-xs confirm',
+                'icon'  => 'far fa-check-square',
+                'class' => 'btn btn-warning btn-xs confirm',
                 'href'  => url('access', ['id' => '__id__'])
             ]) // 添加额外按钮
             ->addRightButtons($module->right_button)        // 设置右侧操作列

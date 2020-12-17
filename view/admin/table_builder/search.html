@@ -1,0 +1,102 @@
+{if $search OR $page_tips_search }
+<div class="col-12 search-collapse">
+    <form id="search_form">
+        <div class="select-list">
+            {notempty name="page_tips_search"}{$page_tips_search|raw}{/notempty}
+            {notempty name="search"}
+            <ul>
+                {volist name="search" id="search"}
+                <li>
+                    <label>{$search.title|default=''}： </label>
+                    {if $search.param }
+                        {// 存在数组 }
+                        {if $search.data_source == 2 && ($search.type == 'text' || $search.type == 'textarea' || $search.type == 'number' || $search.type == 'hidden') }
+                            {// 模型关联且需要转换的单独处理 }
+                            <input type="text" id="search_{$search.name|default=''}" name="{$search.name|default=''}" value="{$search.default|default=''}"/>
+                        {else}
+                            <select id="search_{$search.name|default=''}" name="{$search.name|default=''}">
+                                <option value="">所有</option>
+                                {notempty name="search.param"}
+                                {volist name="search.param" id="v"}
+                                <option value="{$key}" {if ((string)$search.default == (string)$key)}selected{/if}>{$v}</option>
+                                {/volist}
+                                {/notempty}
+                            </select>
+                        {/if}
+                    {else}
+                        {// 不存在数组 }
+                        {if $search.type == 'date' OR $search.type == 'time' OR $search.type == 'datetime' }
+                            {// 日期类型的数据 }
+                            <input type="text" id="search_{$search.name|default=''}" name="{$search.name|default=''}" value="{$search.default|default=''}" daterange="true" autocomplete="off"/>
+                        {elseif $search.type == 'select2'}
+                            <select class="select2" id="search_{$search.name|default=''}" name="{$search.name|default=''}" data-value="{$search.default|default=''}">
+                                <option value="">所有</option>
+                            </select>
+                            <script>
+                                $(function () {
+                                    var option = {};
+                                    // 启用ajax分页查询
+                                    option = {
+                                        language: "zh-CN",
+                                        //allowClear: true,
+                                        ajax: {
+                                            delay: 250, // 限速请求
+                                            url: "{:url('Index/select2',['id'=>$search.field_id])}",   //  请求地址
+                                            dataType: 'json',
+                                            data: function (params) {
+                                                return {
+                                                    keyWord: params.term || '',    //搜索参数
+                                                    page: params.page || 1,        //分页参数
+                                                    rows: params.pagesize || 10,   //每次查询10条记录
+                                                };
+                                            },
+                                            processResults: function (data, params) {
+                                                params.page = params.page || 1;
+                                                if (params.page == 1) {
+                                                    data.data.unshift({id: '', name: "", text: "所有"});
+                                                }
+                                                return {
+                                                    results: data.data,
+                                                    pagination: {
+                                                        more: (params.page) < data.last_page
+                                                    }
+                                                };
+                                            },
+                                            cache: true
+                                        }
+                                    };
+                                    // 默认值设置
+                                    var defaultValue = $("#search_{$search.name|default=''}").data("value");
+                                    if (defaultValue) {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "{:url('Index/select2',['id'=>$search.field_id])}",
+                                            data: {value: defaultValue},
+                                            dataType: "json",
+                                            async: false,
+                                            success: function(data){
+                                                $("#search_{$search.name|default=''}").append("<option selected value='" + data.key + "'>" + data.value + "</option>");
+                                            }
+                                        });
+                                    }
+                                    $("#search_{$search.name|default=''}").select2(option);
+                                })
+                            </script>
+                        {else}
+                            {// 其他类型的数据 }
+                            <input type="text" id="search_{$search.name|default=''}" name="{$search.name|default=''}" value="{$search.default|default=''}"/>
+                        {/if}
+                    {/if}
+                </li>
+                {/volist}
+                <li>
+                    <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                    <a class="btn btn-warning btn-rounded btn-sm" onclick="resetPre()"><i class="fas fa-sync-alt"></i>&nbsp;重置</a>
+                    <input class="hide" type="submit" name="btnSave" value="提交" onclick="$.table.search();return false;"/>
+                </li>
+            </ul>
+            {/notempty}
+        </div>
+    </form>
+</div>
+{/if}

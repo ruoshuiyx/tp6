@@ -1,6 +1,7 @@
 {__NOLAYOUT__}
 <style>
     .typeTable tr td {padding: 5px;}
+    .typeTable tr td:first-child{text-align: right}
 </style>
 <script>
     // 修改不同`字段类型`的默认值
@@ -22,15 +23,15 @@
     </tr>
     <tr>
         <td>额外属性</td>
-        <td><input type="text" class="form-control" name="setup[extra_attr]" value="{$fieldInfo.setup.extra_attr ? $fieldInfo.setup.extra_attr : ''}"/></td>
+        <td><input type="text" class="form-control" name="setup[extra_attr]" value="{$fieldInfo.setup.extra_attr ?: ''}"/></td>
     </tr>
     <tr>
         <td>额外css类</td>
-        <td><input type="text" class="form-control" name="setup[extra_class]" value="{$fieldInfo.setup.extra_class ? $fieldInfo.setup.extra_class : ''}"/></td>
+        <td><input type="text" class="form-control" name="setup[extra_class]" value="{$fieldInfo.setup.extra_class ?: ''}"/></td>
     </tr>
     <tr>
         <td>占位符</td>
-        <td><input type="text" class="form-control" name="setup[placeholder]" value="{$fieldInfo.setup.placeholder ? $fieldInfo.setup.placeholder : ''}"/></td>
+        <td><input type="text" class="form-control" name="setup[placeholder]" value="{$fieldInfo.setup.placeholder ?: ''}"/></td>
     </tr>
     <tr>
         <td>字段类型</td>
@@ -45,7 +46,7 @@
     </tr>
     <tr>
         <td>标签组</td>
-        <td><input type="text" class="form-control" name="setup[group]" value="{$fieldInfo.setup.group ? $fieldInfo.setup.group : ''}"/></td>
+        <td><input type="text" class="form-control" name="setup[group]" value="{$fieldInfo.setup.group ?: ''}"/></td>
     </tr>
 </table>
 {/case}
@@ -58,17 +59,17 @@
     <tr>
         <td>额外属性</td>
         <td><input type="text" class="form-control" name="setup[extra_attr]"
-                   value="{$fieldInfo.setup.extra_attr ? $fieldInfo.setup.extra_attr : ''}"/></td>
+                   value="{$fieldInfo.setup.extra_attr ?: ''}"/></td>
     </tr>
     <tr>
         <td>额外css类</td>
         <td><input type="text" class="form-control" name="setup[extra_class]"
-                   value="{$fieldInfo.setup.extra_class ? $fieldInfo.setup.extra_class : ''}"/></td>
+                   value="{$fieldInfo.setup.extra_class ?: ''}"/></td>
     </tr>
     <tr>
         <td>占位符</td>
         <td><input type="text" class="form-control" name="setup[placeholder]"
-                   value="{$fieldInfo.setup.placeholder ? $fieldInfo.setup.placeholder : ''}"/></td>
+                   value="{$fieldInfo.setup.placeholder ?: ''}"/></td>
     </tr>
     <tr>
         <td>字段类型</td>
@@ -93,12 +94,12 @@
     <tr>
         <td>额外属性</td>
         <td><input type="text" class="form-control" name="setup[extra_attr]"
-                   value="{$fieldInfo.setup.extra_attr ? $fieldInfo.setup.extra_attr : ''}"/></td>
+                   value="{$fieldInfo.setup.extra_attr ?: ''}"/></td>
     </tr>
     <tr>
         <td>额外css类</td>
         <td><input type="text" class="form-control" name="setup[extra_class]"
-                   value="{$fieldInfo.setup.extra_class ? $fieldInfo.setup.extra_class : ''}"/></td>
+                   value="{$fieldInfo.setup.extra_class ?: ''}"/></td>
     </tr>
     <tr>
         <td>字段类型</td>
@@ -124,12 +125,12 @@
     <tr>
         <td>额外属性</td>
         <td><input type="text" class="form-control" name="setup[extra_attr]"
-                   value="{$fieldInfo.setup.extra_attr ? $fieldInfo.setup.extra_attr : ''}"/></td>
+                   value="{$fieldInfo.setup.extra_attr ?: ''}"/></td>
     </tr>
     <tr>
         <td>额外css类</td>
         <td><input type="text" class="form-control" name="setup[extra_class]"
-                   value="{$fieldInfo.setup.extra_class ? $fieldInfo.setup.extra_class : ''}"/></td>
+                   value="{$fieldInfo.setup.extra_class ?: ''}"/></td>
     </tr>
     <tr>
         <td>字段类型</td>
@@ -153,24 +154,24 @@
                    value="{$fieldInfo.setup.default ?? '0'}"/></td>
     </tr>
     <tr>
-        <td>日期格式</td>
+        <td>日期格式 <a href="https://www.php.net/manual/zh/function.date.php" target="_blank" title="点击查看php 日期格式"><i class="far fa-question-circle"></i></a></td>
         <td><input type="text" class="form-control" name="setup[format]"
-                   value="{$fieldInfo.setup.format ? $fieldInfo.setup.format : 'yyyy-mm-dd'}"/></td>
+                   value="{$fieldInfo.setup.format ?: 'Y-m-d'}"/></td>
     </tr>
     <tr>
         <td>额外属性</td>
         <td><input type="text" class="form-control" name="setup[extra_attr]"
-                   value="{$fieldInfo.setup.extra_attr ? $fieldInfo.setup.extra_attr : ''}"/></td>
+                   value="{$fieldInfo.setup.extra_attr ?: ''}"/></td>
     </tr>
     <tr>
         <td>额外css类</td>
         <td><input type="text" class="form-control" name="setup[extra_class]"
-                   value="{$fieldInfo.setup.extra_class ? $fieldInfo.setup.extra_class : ''}"/></td>
+                   value="{$fieldInfo.setup.extra_class ?: ''}"/></td>
     </tr>
     <tr>
         <td>占位符</td>
         <td><input type="text" class="form-control" name="setup[placeholder]"
-                   value="{$fieldInfo.setup.placeholder ? $fieldInfo.setup.placeholder : ''}"/></td>
+                   value="{$fieldInfo.setup.placeholder ?: ''}"/></td>
     </tr>
     <tr>
         <td>字段类型</td>
@@ -192,24 +193,26 @@
                    value="{$fieldInfo.setup.default ?? '0'}"/></td>
     </tr>
     <tr>
-        <td>日期格式</td>
-        <td><input type="text" class="form-control" name="setup[format]"
-                   value="{$fieldInfo.setup.format ? $fieldInfo.setup.format : 'HH:mm:ss'}"/></td>
+        <td>时间格式 <a href="https://www.php.net/manual/zh/function.date.php" target="_blank" title="点击查看php 日期格式"><i class="far fa-question-circle"></i></a></td>
+        <td>
+            <input type="text" class="form-control" name="setup[format]"
+                   value="{$fieldInfo.setup.format ?: 'H:i:s'}"/>
+        </td>
     </tr>
     <tr>
         <td>额外属性</td>
         <td><input type="text" class="form-control" name="setup[extra_attr]"
-                   value="{$fieldInfo.setup.extra_attr ? $fieldInfo.setup.extra_attr : ''}"/></td>
+                   value="{$fieldInfo.setup.extra_attr ?: ''}"/></td>
     </tr>
     <tr>
         <td>额外css类</td>
         <td><input type="text" class="form-control" name="setup[extra_class]"
-                   value="{$fieldInfo.setup.extra_class ? $fieldInfo.setup.extra_class : ''}"/></td>
+                   value="{$fieldInfo.setup.extra_class ?: ''}"/></td>
     </tr>
     <tr>
         <td>占位符</td>
         <td><input type="text" class="form-control" name="setup[placeholder]"
-                   value="{$fieldInfo.setup.placeholder ? $fieldInfo.setup.placeholder : ''}"/></td>
+                   value="{$fieldInfo.setup.placeholder ?: ''}"/></td>
     </tr>
     <tr>
         <td>字段类型</td>
@@ -231,24 +234,24 @@
                    value="{$fieldInfo.setup.default ?? '0'}"/></td>
     </tr>
     <tr>
-        <td>日期格式</td>
+        <td>日期时间格式</td>
         <td><input type="text" class="form-control" name="setup[format]"
-                   value="{$fieldInfo.setup.format ? $fieldInfo.setup.format : 'yyyy-mm-dd hh:ii:ss'}"/></td>
+                   value="{$fieldInfo.setup.format ?: 'Y-m-d H:i:s'}"/></td>
     </tr>
     <tr>
         <td>额外属性</td>
         <td><input type="text" class="form-control" name="setup[extra_attr]"
-                   value="{$fieldInfo.setup.extra_attr ? $fieldInfo.setup.extra_attr : ''}"/></td>
+                   value="{$fieldInfo.setup.extra_attr ?: ''}"/></td>
     </tr>
     <tr>
         <td>额外css类</td>
         <td><input type="text" class="form-control" name="setup[extra_class]"
-                   value="{$fieldInfo.setup.extra_class ? $fieldInfo.setup.extra_class : ''}"/></td>
+                   value="{$fieldInfo.setup.extra_class ?: ''}"/></td>
     </tr>
     <tr>
         <td>占位符</td>
         <td><input type="text" class="form-control" name="setup[placeholder]"
-                   value="{$fieldInfo.setup.placeholder ? $fieldInfo.setup.placeholder : ''}"/></td>
+                   value="{$fieldInfo.setup.placeholder ?: ''}"/></td>
     </tr>
     <tr>
         <td>字段类型</td>
@@ -272,17 +275,17 @@
     <tr>
         <td>日期格式</td>
         <td><input type="text" class="form-control" name="setup[format]"
-                   value="{$fieldInfo.setup.format ? $fieldInfo.setup.format : 'yyyy-mm-dd'}"/></td>
+                   value="{$fieldInfo.setup.format ?: 'Y-m-d'}"/></td>
     </tr>
     <tr>
         <td>额外属性</td>
         <td><input type="text" class="form-control" name="setup[extra_attr]"
-                   value="{$fieldInfo.setup.extra_attr ? $fieldInfo.setup.extra_attr : ''}"/></td>
+                   value="{$fieldInfo.setup.extra_attr ?: ''}"/></td>
     </tr>
     <tr>
         <td>额外css类</td>
         <td><input type="text" class="form-control" name="setup[extra_class]"
-                   value="{$fieldInfo.setup.extra_class ? $fieldInfo.setup.extra_class : ''}"/></td>
+                   value="{$fieldInfo.setup.extra_class ?: ''}"/></td>
     </tr>
     <tr>
         <td>字段类型</td>
@@ -305,12 +308,12 @@
     <tr>
         <td>额外属性</td>
         <td><input type="text" class="form-control" name="setup[extra_attr]"
-                   value="{$fieldInfo.setup.extra_attr ? $fieldInfo.setup.extra_attr : ''}"/></td>
+                   value="{$fieldInfo.setup.extra_attr ?: ''}"/></td>
     </tr>
     <tr>
         <td>额外css类</td>
         <td><input type="text" class="form-control" name="setup[extra_class]"
-                   value="{$fieldInfo.setup.extra_class ? $fieldInfo.setup.extra_class : ''}"/></td>
+                   value="{$fieldInfo.setup.extra_class ?: ''}"/></td>
     </tr>
     <tr>
         <td>字段类型</td>
@@ -335,17 +338,17 @@
     <tr>
         <td>额外属性</td>
         <td><input type="text" class="form-control" name="setup[extra_attr]"
-                   value="{$fieldInfo.setup.extra_attr ? $fieldInfo.setup.extra_attr : ''}"/></td>
+                   value="{$fieldInfo.setup.extra_attr ?: ''}"/></td>
     </tr>
     <tr>
         <td>额外css类</td>
         <td><input type="text" class="form-control" name="setup[extra_class]"
-                   value="{$fieldInfo.setup.extra_class ? $fieldInfo.setup.extra_class : ''}"/></td>
+                   value="{$fieldInfo.setup.extra_class ?: ''}"/></td>
     </tr>
     <tr>
         <td>步进值</td>
         <td><input type="text" class="form-control" name="setup[step]"
-                   value="{$fieldInfo.setup.step ? $fieldInfo.setup.step : '1'}"/></td>
+                   value="{$fieldInfo.setup.step ?: '1'}"/></td>
     </tr>
     <tr>
         <td>字段类型</td>
@@ -370,17 +373,17 @@
     <tr>
         <td>额外属性</td>
         <td><input type="text" class="form-control" name="setup[extra_attr]"
-                   value="{$fieldInfo.setup.extra_attr ? $fieldInfo.setup.extra_attr : ''}"/></td>
+                   value="{$fieldInfo.setup.extra_attr ?: ''}"/></td>
     </tr>
     <tr>
         <td>额外css类</td>
         <td><input type="text" class="form-control" name="setup[extra_class]"
-                   value="{$fieldInfo.setup.extra_class ? $fieldInfo.setup.extra_class : ''}"/></td>
+                   value="{$fieldInfo.setup.extra_class ?: ''}"/></td>
     </tr>
     <tr>
         <td>占位符</td>
         <td><input type="text" class="form-control" name="setup[placeholder]"
-                   value="{$fieldInfo.setup.placeholder ? $fieldInfo.setup.placeholder : ''}"/></td>
+                   value="{$fieldInfo.setup.placeholder ?: ''}"/></td>
     </tr>
     <tr>
         <td>字段类型</td>
@@ -405,12 +408,12 @@
     <tr>
         <td>额外属性</td>
         <td><input type="text" class="form-control" name="setup[extra_attr]"
-                   value="{$fieldInfo.setup.extra_attr ? $fieldInfo.setup.extra_attr : ''}"/></td>
+                   value="{$fieldInfo.setup.extra_attr ?: ''}"/></td>
     </tr>
     <tr>
         <td>额外css类</td>
         <td><input type="text" class="form-control" name="setup[extra_class]"
-                   value="{$fieldInfo.setup.extra_class ? $fieldInfo.setup.extra_class : ''}"/></td>
+                   value="{$fieldInfo.setup.extra_class ?: ''}"/></td>
     </tr>
     <tr>
         <td>字段类型</td>
@@ -437,17 +440,17 @@
     <tr>
         <td>额外属性</td>
         <td><input type="text" class="form-control" name="setup[extra_attr]"
-                   value="{$fieldInfo.setup.extra_attr ? $fieldInfo.setup.extra_attr : ''}"/></td>
+                   value="{$fieldInfo.setup.extra_attr ?: ''}"/></td>
     </tr>
     <tr>
         <td>额外css类</td>
         <td><input type="text" class="form-control" name="setup[extra_class]"
-                   value="{$fieldInfo.setup.extra_class ? $fieldInfo.setup.extra_class : ''}"/></td>
+                   value="{$fieldInfo.setup.extra_class ?: ''}"/></td>
     </tr>
     <tr>
         <td>占位符</td>
         <td><input type="text" class="form-control" name="setup[placeholder]"
-                   value="{$fieldInfo.setup.placeholder ? $fieldInfo.setup.placeholder : ''}"/></td>
+                   value="{$fieldInfo.setup.placeholder ?: ''}"/></td>
     </tr>
     <tr>
         <td>字段类型</td>

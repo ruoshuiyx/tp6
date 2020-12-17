@@ -65,7 +65,7 @@
             }
             var url = response.url;
             if (more == true) {
-                var images = '<div class="row"><div class="col-xs-6"><input type="text" name="' + image + '[]" value="' + url + '" class="form-control"/></div> <div class="col-xs-3"><input class="form-control input-sm" type="text" name="' + image + '_title[]" value="' + file.name + '" ></div> <div class="col-xs-3"><button type="button" class="btn btn-block btn-warning remove_images">移除</button></div></div>';
+                var images = '<div class="row"><div class="col-6"><input type="text" name="' + image + '[]" value="' + url + '" class="form-control"/></div> <div class="col-3"><input class="form-control input-sm" type="text" name="' + image + '_title[]" value="' + file.name + '" ></div> <div class="col-xs-3"><button type="button" class="btn btn-block btn-warning remove_images">移除</button></div></div>';
                 var images_list = $('#more_images_' + image).html();
 
                 $('#more_images_' + image).html(images + images_list);

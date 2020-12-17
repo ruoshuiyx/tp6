@@ -1,35 +1,25 @@
 <div class="row dd_input_group {$form[type].extra_class|default=''}" id="form_group_{$form[type].name}">
-    <div class="form-group">
-        <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l" for="{$form[type].name}">{$form[type].title|htmlspecialchars}</label>
-        <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-            <div class="input-group">
-                <input class="form-control" type="text" id="{$form[type].name}" name="{$form[type].name}" value="{$form[type].value|default=''}" data-date-format="{$form[type].format}" placeholder="{$form[type].placeholder}" autocomplete="off" {$form[type].extra_attr|raw}>
-                <div class="input-group-addon">
-                    <i class="fa fa-calendar"></i>
-                </div>
+    <label class="col-4 col-md-2 col-lg-1 control-label dd_input_l" for="{$form[type].name}">{$form[type].title|htmlspecialchars}</label>
+    <div class="col-{if $form[type].tips}8{else /}7{/if} col-md-4 col-lg-4">
+        <div class="input-group date" id="reservationdate_{$form[type].name}"
+             data-date-format="{$form[type].format|convert_php_to_moment_format}" data-target-input="nearest">
+            <input class="form-control" type="text" id="{$form[type].name}" name="{$form[type].name}"
+                   value="{$form[type].value|default=''}" placeholder="{$form[type].placeholder}"
+                   autocomplete="off" {$form[type].extra_attr|raw}>
+            <div class="input-group-append" data-target="#reservationdate_{$form[type].name}"
+                 data-toggle="datetimepicker">
+                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
             </div>
         </div>
-        <div class="col-xs-{if $form[type].tips}12{else /}1{/if} col-sm-4 col-md-6 col-lg-6 dd_ts">
-            {notempty name="form[type].required"} *{/notempty}
-            {notempty name="form[type].tips"} {$form[type].tips|raw}{/notempty}
-        </div>
+    </div>
+    <div class="col-{if $form[type].tips}12{else /}1{/if} col-md-6 col-lg-6 dd_ts">
+        {notempty name="form[type].required"} *{/notempty}
+        {notempty name="form[type].tips"} {$form[type].tips|raw}{/notempty}
     </div>
 </div>
 
 <script>
     $(function () {
-        var date_format = $('#{$form[type].name}').attr('data-date-format');
-        //如果格式中含有 hh 或 ii 或 ss 则为0，否则为2
-        var minView = 2;
-        if (date_format.indexOf("hh") > 0 || date_format.indexOf("ii") > 0 || date_format.indexOf("ss") > 0) {
-            minView = 0;
-        }
-        $('#{$form[type].name}').datetimepicker({
-            autoclose: true,
-            format: date_format, //yyyy-mm-dd hh:ii:ss
-            language: "zh-CN",
-            todayHighlight: true,//高亮当前日期
-            minView: minView, //最精确的时间
-        })
+        $('#reservationdate_{$form[type].name}').datetimepicker();
     })
 </script>

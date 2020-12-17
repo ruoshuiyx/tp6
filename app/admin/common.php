@@ -154,13 +154,14 @@ function make_editor($name, $conetnt = '', $editor = '' ,$height = '400px', $wid
  * @param $dateran
  * @return array
  */
-function get_dateran($dateran){
+function get_dateran($dateran)
+{
     if ($dateran) {
-        $dateran = explode(" 至 ",$dateran);
+        $dateran = explode(" 至 ", $dateran);
     }
     if (is_array($dateran) && count($dateran) == 2) {
         $dateran[0] = strtotime($dateran[0]);
-        $dateran[1] = strtotime($dateran[1])+24*60*60-1;
+        $dateran[1] = strtotime($dateran[1]) + 24 * 60 * 60 - 1;
     }
     return $dateran;
 }

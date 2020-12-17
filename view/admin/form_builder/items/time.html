@@ -1,37 +1,24 @@
 <div class="row dd_input_group {$form[type].extra_class|default=''}" id="form_group_{$form[type].name}">
-    <div class="form-group">
-        <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l" for="{$form[type].name}">{$form[type].title|htmlspecialchars}</label>
-        <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-            <div class="input-group">
-                <input class="form-control" type="text" id="{$form[type].name}" name="{$form[type].name}" value="{$form[type].value|default=''}" data-date-format="{$form[type].format}" placeholder="{$form[type].placeholder}" autocomplete="off" {$form[type].extra_attr|raw}>
-                <div class="input-group-addon">
-                    <i class="fa fa-clock-o"></i>
-                </div>
+    <label class="col-4 col-md-2 col-lg-1 control-label dd_input_l" for="{$form[type].name}">{$form[type].title|htmlspecialchars}</label>
+    <div class="col-{if $form[type].tips}8{else /}7{/if} col-md-4 col-lg-4">
+        <div class="input-group date" id="timepicker_{$form[type].name}"
+             data-date-format="{$form[type].format|convert_php_to_moment_format}" data-target-input="nearest">
+            <input class="form-control datetimepicker-input" type="text" id="{$form[type].name}"
+                   name="{$form[type].name}" value="{$form[type].value|default=''}"
+                   placeholder="{$form[type].placeholder}" autocomplete="off" {$form[type].extra_attr|raw}>
+            <div class="input-group-append" data-target="#timepicker_{$form[type].name}" data-toggle="datetimepicker">
+                <div class="input-group-text"><i class="far fa-clock"></i></div>
             </div>
         </div>
-        <div class="col-xs-{if $form[type].tips}12{else /}1{/if} col-sm-4 col-md-6 col-lg-6 dd_ts">
-            {notempty name="form[type].required"} *{/notempty}
-            {notempty name="form[type].tips"} {$form[type].tips|raw}{/notempty}
-        </div>
+    </div>
+    <div class="col-{if $form[type].tips}12{else /}1{/if} col-md-6 col-lg-6 dd_ts">
+        {notempty name="form[type].required"} *{/notempty}
+        {notempty name="form[type].tips"} {$form[type].tips|raw}{/notempty}
     </div>
 </div>
 
 <script>
     $(function () {
-        var date_format = $('#{$form[type].name}').attr('data-date-format');
-        var showSeconds = true;
-        if (date_format == 'HH:mm:ss') {
-            showSeconds = true;
-        } else if (date_format == 'HH:mm') {
-            showSeconds = false;
-        }
-        $('#{$form[type].name}').timepicker({
-            showInputs: true,         //显示窗口小部件中的文本输入
-            defaultTime: '',          //设置时间
-            minuteStep: 1,            //分钟字段的步数
-            showMeridian: false,      // 是否启用12小时模式
-            showSeconds: showSeconds, //是否显示秒
-        })
-
+        //$('#timepicker_{$form[type].name}').datetimepicker()
     })
 </script>

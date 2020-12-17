@@ -79,7 +79,7 @@ class AuthRule extends Base
             ->addTopButtons($module->top_button)            // 设置顶部按钮组
             ->addTopButton('default', [
                 'title'       => '展开/折叠',
-                'icon'        => 'fa fa-exchange',
+                'icon'        => 'fas fa-exchange-alt',
                 'class'       => 'btn btn-info treeStatus',
                 'href'        => '',
                 'onclick'     => '$.operate.treeStatus()'

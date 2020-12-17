@@ -12,8 +12,6 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
     {include file="public/css_js" /}
-    <link rel="stylesheet" href="/static/plugins/layui/css/layui.css">
-    <script src="/static/plugins/layui/layui.js"></script>
     {// 额外CSS代码 }
     {$extra_css|raw|default=''}
 </head>
@@ -21,76 +19,39 @@
 <body>
 <form name="form-builder" id="form-builder" method="post" action="addPost">
     <!---->
-    <div class="row">
-        <div class="col-sm-12 col-xs-12">
-            <div class="box box-body">
+    <div class="row" style="margin: 0 .75rem;">
+        <div class="col-12">
+            <div class="">
                 <!---->
                 <div class="row dd_input_group " id="form_group_name">
-                    <div class="form-group">
-                        <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l" for="name">网站名称</label>
-                        <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-                            <input class="form-control" type="text" id="name" name="name" value="" placeholder="请输入网站名称">
-                        </div>
-                        <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">
-                            *        </div>
+                    <label class="col-4 col-md-2 col-lg-1 control-label dd_input_l" for="name">网站名称</label>
+                    <div class="col-7 col-md-4 col-lg-4">
+                        <input class="form-control" type="text" id="name" name="name" value="SIYUCMS" placeholder="请输入网站名称">
+                    </div>
+                    <div class="col-1 col-md-6 col-lg-6 dd_ts">
                     </div>
                 </div>
 
                 <div class="row dd_input_group " id="form_group_url">
-                    <div class="form-group">
-                        <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l" for="url">网站地址</label>
-                        <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-                            <input class="form-control" type="text" id="url" name="url" value="" placeholder="请输入网站地址">
-                        </div>
-                        <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">
-                            * 请填写完整的网站地址        </div>
+                    <label class="col-4 col-md-2 col-lg-1 control-label dd_input_l" for="url">网站地址</label>
+                    <div class="col-7 col-md-4 col-lg-4">
+                        <input class="form-control" type="text" id="url" name="url" value="www.xxx.com" placeholder="请输入网站地址">
+                    </div>
+                    <div class="col-1 col-md-6 col-lg-6 dd_ts">
                     </div>
                 </div>
 
-                <div class="row dd_input_group " id="form_group_description">
-                    <div class="form-group">
-                        <div class="col-xs-11 col-sm-8 col-md-6 col-lg-5">
-                            <label class="text-lable" for="description">描述</label>
-                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="请输入描述"></textarea>
-                        </div>
-                        <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">
-                        </div>
+                <div class="row dd_input_group " id="form_group_copyright">
+                    <div class="col-11 col-sm-8 col-md-6 col-lg-5">
+                        <label class="text-lable" for="copyright">版权信息</label>
+                        <textarea class="form-control" id="copyright" name="copyright" rows="3" placeholder="请输入版权信息">Copyright © SIYUCMS 2019.All right reserved.Powered by SIYUCMS</textarea>
                     </div>
-                </div>
-
-                <div class="row dd_input_group " id="form_group_sort">
-                    <div class="form-group">
-                        <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l" for="sort">排序</label>
-                        <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-                            <input class="form-control" type="number" id="sort" name="sort" value="50" step="1">
-                        </div>
-                        <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row dd_input_group " id="form_group_status">
-                    <div class="form-group">
-                        <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l" for="status">状态</label>
-                        <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-                            <div class="dd_radio_lable_left">
-                                <label class="dd_radio_lable">
-                                    <input type="radio" name="status" class="dd_radio" id="status1" value="1" checked="">
-                                    <span>显示</span>
-                                </label>
-                                <label class="dd_radio_lable">
-                                    <input type="radio" name="status" class="dd_radio" id="status2" value="0">
-                                    <span>隐藏</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-xs-1 col-sm-4 col-md-6 col-lg-6 dd_ts">
-                            *        </div>
+                    <div class="col-1 col-sm-4 col-md-6 col-lg-6 dd_ts">
                     </div>
                 </div>
 
                 <!---->
-                <div class="row dd_input_group hidden">
+                <div class="row dd_input_group hide">
                     <div class="form-group">
                         <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5 text-center">
                             <button type="submit" class="btn btn-flat btn-primary ">提 交</button>
@@ -102,7 +63,6 @@
         </div>
     </div>
 </form>
-
 {include file="public/foot_css_js" /}
 <script type="text/javascript">
     function submitHandler() {

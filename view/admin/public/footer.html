@@ -1,28 +1,20 @@
+    <!-- /.content-wrapper -->
+    <footer class="main-footer">
+        <strong>Copyright &copy; 2019-{:date("Y")} <a href="https://siyucms.com" target="_blank">siyucms.com</a>.</strong>
+        All rights reserved.
+        <div class="float-right d-none d-sm-inline-block">
+            <b>Version</b> {:config('app.siyu_version')}
+        </div>
+    </footer>
+
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
-        <!-- Create the tabs -->
-        <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-            <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-        </ul>
-        <!-- Tab panes -->
-        <div class="tab-content">
-            <!-- Home tab content -->
-            <div class="tab-pane" id="control-sidebar-home-tab">
-                <h3 class="control-sidebar-heading">首页</h3>
-            </div>
-            <!-- /.tab-pane -->
-            <!-- /.tab-pane -->
-        </div>
+        <!-- Control sidebar content goes here -->
     </aside>
     <!-- /.control-sidebar -->
-
-    <!-- Add the sidebar's background. This div must be placed immediately after the control sidebar -->
-    <div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
-
 <button id="totop" title="返回顶部" style="display: none;"><i class="fa fa-chevron-up"></i></button>
-
 {include file="public/foot_css_js" /}
 </body>
 </html>

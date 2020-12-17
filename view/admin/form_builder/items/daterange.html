@@ -1,36 +1,45 @@
-<div class="row dd_input_group {$form[type].extra_class|default=''}" id="form_group_{$form[type].id}">
-    <div class="form-group">
-        <label class="col-xs-4 col-sm-2 col-md-2 col-lg-1 control-label dd_input_l" for="{$form[type].id}_daterange">{$form[type].title|htmlspecialchars}</label>
-        <div class="col-xs-7 col-sm-6 col-md-4 col-lg-4">
-
-            <div class="input-daterange input-group" id="{$form[type].id}_daterange" data-date-format="{$form[type].format ? $form[type].format : 'yyyy-mm-dd'}" {$form[type].extra_attr|default=''}>
-                <input class="form-control" type="text" id="{$form[type].id_from}" name="{$form[type].name_from}" value="{$form[type].value_from|default=''}" placeholder="{$form[type].format}" autocomplete="off">
-                <span class="input-group-addon"><i class="fa fa-chevron-right"></i></span>
-                <input class="form-control" type="text" id="{$form[type].id_to}" name="{$form[type].name_to}" value="{$form[type].value_to|default=''}" placeholder="{$form[type].format}" autocomplete="off">
+<div class="row dd_input_group {$form[type].extra_class|default=''}" id="form_group_{$form[type].name}">
+    <label class="col-4 col-md-2 col-lg-1 control-label dd_input_l" for="{$form[type].name}">{$form[type].title|htmlspecialchars}</label>
+    <div class="col-{if $form[type].tips}8{else /}7{/if} col-md-4 col-lg-4">
+        <div class="input-group">
+            <input class="form-control" type="text" id="{$form[type].name}" name="{$form[type].name}"
+                   value="{$form[type].value|default=''}" placeholder="{$form[type].placeholder}"
+                   autocomplete="off" {$form[type].extra_attr|raw}>
+            <div class="input-group-append">
+                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
             </div>
-
-        </div>
-        <div class="col-xs-{if $form[type].tips}12{else /}1{/if} col-sm-4 col-md-6 col-lg-6 dd_ts">
-            {notempty name="form[type].required"} *{/notempty}
-            {notempty name="form[type].tips"} {$form[type].tips|raw}{/notempty}
         </div>
     </div>
+    <div class="col-{if $form[type].tips}12{else /}1{/if} col-md-6 col-lg-6 dd_ts">
+        {notempty name="form[type].required"} *{/notempty}
+        {notempty name="form[type].tips"} {$form[type].tips|raw}{/notempty}
+    </div>
 </div>
+
 <script>
     $(function () {
-        var date_format = $('#{$form[type].id}_daterange').attr('data-date-format');
-        //如果格式中含有 hh 或 ii 或 ss 则为0，否则为2
-        var minView = 2;
-        if (date_format.indexOf("hh") > 0 || date_format.indexOf("ii") > 0 || date_format.indexOf("ss") > 0) {
-            minView = 0;
-        }
-        $('#{$form[type].id_from},#{$form[type].id_to}').datetimepicker({
-            autoclose: true,
-            format: date_format, //yyyy-mm-dd hh:ii:ss
-            language: "zh-CN",
-            todayHighlight: true,//高亮当前日期
-            minView: minView, //最精确的时间
-        })
+        $('#{$form[type].name}').daterangepicker({
+            showDropdowns: true,     // 年月份下拉框
+            timePicker: true,        // 显示时间
+            timePicker24Hour: true,  // 时间制
+            timePickerSeconds: true, // 时间显示到秒
+            ranges: {
+                '今天': [moment(), moment()],
+                '昨天': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                '上周': [moment().subtract(6, 'days'), moment()],
+                '前30天': [moment().subtract(29, 'days'), moment()],
+                '本月': [moment().startOf('month'), moment().endOf('month')],
+                '上月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            },
+            //timePicker: true,
+            //timePickerIncrement: 30,
+            locale: {
+                format: '{$form[type].format|convert_php_to_moment_format}',
+                applyLabel: '确定',       // 确定按钮文本
+                cancelLabel: '取消',      // 取消按钮文本
+                customRangeLabel: '自定义',
+            }
+        });
     })
 </script>
 
