@@ -40,7 +40,7 @@ label{margin-bottom: 0;}
 .layout-navbar-fixed .wrapper .main-sidebar:hover .brand-link{width: 230px;}
 .layout-navbar-fixed .wrapper .brand-link{width: 230px;}
 @media (min-width: 768px){
-    body:not(.sidebar-mini-md) .content-wrapper, body:not(.sidebar-mini-md) .main-footer, body:not(.sidebar-mini-md) .main-header{margin-left: 230px;}
+    /*body:not(.sidebar-mini-md) .content-wrapper, body:not(.sidebar-mini-md) .main-footer, body:not(.sidebar-mini-md) .main-header{margin-left: 230px;}*/
 }
 @media (min-width: 992px){
     .sidebar-mini.sidebar-collapse .main-sidebar.sidebar-focused, .sidebar-mini.sidebar-collapse .main-sidebar:hover{width: 230px;}
