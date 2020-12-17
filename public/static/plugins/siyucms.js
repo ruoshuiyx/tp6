@@ -103,7 +103,7 @@ $(document).on('pjax:complete', function () {
 	
     // 首页重新请求远程ad
     if ($(".main_ad").length > 0) {
-        $.getScript("http://www.siyucms.com/ad.js");
+        $.getScript("https://www.siyucms.com/ad.js");
     }
 
     // tag 标签

@@ -56,7 +56,7 @@ class Config extends Base
             ->hideBtn('back')
             ->addBtn('<button type="button" id="test_email" class="btn btn-flat btn-info ">测试发送</button>')
             ->setExtraHtml($this->getEmailExtraHtml(), 'content_bottom')
-            ->setPageTips('<div style="line-height: 44px;float: left">系统采用SMTP方式发送邮件</div>', 'success', 'search')
+            ->setPageTips('<div style="line-height: 32px;float: left">系统采用SMTP方式发送邮件</div>', 'success', 'search')
             ->hideShowAll()
             ->fetch();
     }
@@ -152,7 +152,7 @@ class Config extends Base
             ->hideBtn('back')
             ->addBtn('<button type="button" id="test_sms" class="btn btn-flat btn-info ">测试发送</button>')
             ->setExtraHtml($this->getSmsExtraHtml(), 'content_bottom')
-            ->setPageTips('<div style="line-height: 44px;float: left">系统采用阿里云短信服务发送短信 <a class="btn btn-flat btn-primary m-r-10" href="https://help.aliyun.com/document_detail/101346.html" target="_blank">查看错误码</a><a class="btn btn-flat btn-primary" href="https://help.aliyun.com/document_detail/59210.html" target="_blank">使用指引</a></div>', 'success', 'search')
+            ->setPageTips('<div style="line-height: 32px;float: left">系统采用阿里云短信服务发送短信 <a class="btn btn-flat btn-primary m-r-10" href="https://help.aliyun.com/document_detail/101346.html" target="_blank">查看错误码</a><a class="btn btn-flat btn-primary" href="https://help.aliyun.com/document_detail/59210.html" target="_blank">使用指引</a></div>', 'success', 'search')
             ->hideShowAll()
             ->fetch();
     }
