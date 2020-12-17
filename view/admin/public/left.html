@@ -47,7 +47,7 @@
                             {volist name="vo.children" id="voo"}
                             <li class="nav-item {if count($voo.children)}has-treeview{/if}">
                                 <a href="{if count($voo.children)}#{else /}{$voo.href}{/if}" class="nav-link">
-                                    <i class="{$voo.icon|default='fa fa-circle'} nav-icon"></i>
+                                    <i class="{$voo.icon|default='far fa-circle'} nav-icon"></i>
                                     <p>{$voo.title}{if count($voo.children)}<i class="right fas fa-angle-left"></i>{/if}</p>
                                 </a>
                                 {if count($voo.children)}
@@ -55,7 +55,7 @@
                                     {volist name="voo.children" id="vooo"}
                                     <li class="nav-item">
                                         <a href="{$vooo.href}" class="nav-link">
-                                            <i class="{$vooo.icon|default='fa fa-circle'} nav-icon"></i>
+                                            <i class="{$vooo.icon|default='far fa-circle'} nav-icon"></i>
                                             <p>{$vooo.title}</p>
                                         </a>
                                     </li>
@@ -93,7 +93,7 @@
                                     {volist name="voo.sub" id="vooo"}
                                     <li class="nav-item">
                                         <a href="{:url($vooo.module.model_name.'/index',['cate_id'=>$vooo.id])}" class="nav-link">
-                                            <i class="fa fa-circle nav-icon"></i>
+                                            <i class="far fa-circle nav-icon"></i>
                                             <p>
                                                 {$vooo.cate_name}
                                             </p>

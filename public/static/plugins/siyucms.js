@@ -116,6 +116,9 @@ $(document).on('pjax:complete', function () {
         });
     }
 
+    // tooltip 提示
+    $('[data-toggle="tooltip"]').tooltip()
+
     // 更改网站标题
     changeWebTitle();
 
@@ -193,8 +196,11 @@ $(function () {
             'defaultText': '添加标签',
         });
     }
-})
 
+    // tooltip 提示
+    $('[data-toggle="tooltip"]').tooltip()
+
+})
 
 
 // =============================================
