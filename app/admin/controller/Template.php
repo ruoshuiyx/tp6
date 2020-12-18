@@ -150,7 +150,7 @@ class Template extends Base
             ->addFormItems([
                 ['text', 'filename', '文件名称', '不需要输入文件后缀，如 style.css 请填写style', '', [], '', '', '', true],
                 ['radio', 'type', '文件类型', '', $fileType, $type, '', '', true],
-                ['textarea', 'content', '内容', '', '', '', '', '', false, 20]
+                ['code', 'content', '内容', '', '', '', '', '', false, $type],
             ])
             ->fetch();
     }
@@ -214,7 +214,7 @@ class Template extends Base
             ->addFormItems([
                 ['text', 'filename', '文件名称', '不需要输入文件后缀，如 style.css 请填写style', $info['filename'], [], 'readonly', '', '', true],
                 ['radio', 'type', '文件类型', '', $fileType, $info['type'], '', '', true],
-                ['textarea', 'content', '内容', '', $info['content'], '', '', '', false, 20],
+                ['code', 'content', '内容', '', $info['content'], '', '', '', false, $type],
                 ['hidden', 'file', $info['file']]
             ])
             ->fetch();

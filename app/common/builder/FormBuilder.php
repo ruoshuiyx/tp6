@@ -1027,6 +1027,50 @@ class FormBuilder
     }
 
     /**
+     * 添加代码编辑器
+     * @param string $name        字段名称
+     * @param string $title       字段别名
+     * @param string $tips        提示信息
+     * @param string $default     默认值
+     * @param string $height      高度
+     * @param string $extra_attr  额外属性
+     * @param string $extra_class 额外css类名
+     * @param string $placeholder 占位符
+     * @param bool   $required    是否必填
+     * @param string $mode        编程语言（htmlmixed/javascript/css）
+     * @param string $theme       主题
+     * @return $this|array
+     */
+    public function addCode($name = '', $title = '', $tips = '', $default = '', $height = '', $extra_attr = '', $extra_class = '', $required = false, $mode = 'htmlmixed', $theme = 'monokai')
+    {
+        if ($mode == 'html') {
+            $mode = 'htmlmixed';
+        } else if ($mode == 'js') {
+            $mode = 'javascript';
+        }
+        $item = [
+            'type'        => 'code',
+            'name'        => $name,
+            'title'       => $title,
+            'tips'        => $tips,
+            'value'       => $default,
+            'height'      => $height ?: '500',
+            'extra_class' => $extra_class,
+            'extra_attr'  => $extra_attr,
+            'required'    => $required,
+            'mode'        => $mode,
+            'theme'       => $theme,
+        ];
+
+        if ($this->_is_group) {
+            return $item;
+        }
+
+        $this->_vars['form_items'][] = $item;
+        return $this;
+    }
+
+    /**
      * 添加自定义Html
      * @param string $html html代码
      * @return $this|array
