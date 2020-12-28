@@ -215,10 +215,12 @@ class Cms
             } elseif ($field['type'] == 'textarea' || $field['type'] == 'password') {
                 // 忽略
             } elseif ($field['type'] == 'radio' || $field['type'] == 'checkbox') {
-                $info[$field['field']] = $this->changeOptionsValue($options, $info[$field['field']], false);
+                $info[$field['field'] . '_array'] = $this->changeOptionsValue($options, $info[$field['field']], true);
+                $info[$field['field']]            = $this->changeOptionsValue($options, $info[$field['field']], false);
             } elseif ($field['type'] == 'select' || $field['type'] == 'select2') {
                 if ($field['field'] !== 'cate_id') {
-                    $info[$field['field']] = $this->changeOptionsValue($options, $info[$field['field']], false);
+                    $info[$field['field'] . '_array'] = $this->changeOptionsValue($options, $info[$field['field']], true);
+                    $info[$field['field']]            = $this->changeOptionsValue($options, $info[$field['field']], false);
                 }
             } elseif ($field['type'] == 'number') {
             } elseif ($field['type'] == 'hidden') {
@@ -252,20 +254,35 @@ class Cms
      * 改变内容中有选项的值为可用数组
      * @param array  $options 选项
      * @param string $value   当前值
-     * @param bool   $type    返回类型(true array/false string)
+     * @param bool   $type    返回类型(true array/false string)，数组类型会返回全部数据
      * @return array/string
      */
     private function changeOptionsValue(array $options = [], string $value = '', bool $type = true)
     {
         $result = [];
-        if ($value) {
-            $value = explode(',', $value);
-            foreach ($value as $k => $v) {
-                $result[] = $options[$v];
+        if ($type === false) {
+            if ($value) {
+                $value = explode(',', $value);
+                foreach ($value as $k => $v) {
+                    $result[] = $options[$v];
+                }
             }
-        }
-        if ($type == false) {
             $result = implode(" ", $result);
+        } else {
+            if ($value) {
+                $value = explode(',', $value);
+            }
+            foreach ($options as $k => $v) {
+                $selected = false;
+                if (is_array($value) && in_array($k, $value)) {
+                    $selected = true;
+                }
+                $result[] = [
+                    'key'      => $k,
+                    'value'    => $v,
+                    'selected' => $selected,
+                ];
+            }
         }
         return $result;
     }
