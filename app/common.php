@@ -77,41 +77,49 @@ function changeFields($list, $moduleid)
 function changefield($info, $moduleId)
 {
     $fields = \app\common\model\Field::where('module_id', '=', $moduleId)
-        ->select();
+        ->select()
+        ->toArray();
     foreach ($fields as $k => $v) {
-        $field = $v['field'];
-        if ($info[$field]) {
-            switch ($v['type']) {
-                case 'textarea'://多行文本
-                    break;
-                case 'editor'://编辑器
-                    $info[$field] = $info[$field];
-                    break;
-                case 'select'://下拉列表
-                    break;
-                case 'radio'://单选按钮
-                    break;
-                case 'checkbox'://复选框
-                    $info[$field] = explode(',', $info[$field]);
-                    break;
-                case 'images'://多张图片
-                    $info[$field] = json_decode($info[$field], true);
-                    break;
-                case 'tag'://TAG标签
-                    if (!empty($info[$field])) {
-                        $tags = explode(',', $info[$field]);
-                        foreach ($tags as $k => $tag) {
-                            $tags[$k] = [
-                                'name' => $tag,
-                                'url' => \think\facade\Route::buildUrl('index/tag', ['module' => $moduleId, 't' => $tag])->__toString(),
-                            ];
-                        }
-                        $info[$field] = $tags;
+        // select等需要获取数据的字段
+        $options = \app\common\facade\MakeBuilder::getFieldOptions($v);
+        if (isset($info[$v['field']])) {
+            if ($v['type'] == 'text') {
+                // 忽略
+            } elseif ($v['type'] == 'textarea' || $v['type'] == 'password') {
+                // 忽略
+            } elseif ($v['type'] == 'radio' || $v['type'] == 'checkbox') {
+
+                $info[$v['field'] . '_array'] = \app\common\facade\Cms::changeOptionsValue($options, $info[$v['field']], true);
+                $info[$v['field']]            = \app\common\facade\Cms::changeOptionsValue($options, $info[$v['field']], false);
+            } elseif ($v['type'] == 'select' || $v['type'] == 'select2') {
+                if ($v['field'] !== 'cate_id') {
+                    $info[$v['field'] . '_array'] = \app\common\facade\Cms::changeOptionsValue($options, $info[$v['field']], true);
+                    $info[$v['field']]            = \app\common\facade\Cms::changeOptionsValue($options, $info[$v['field']], false);
+                }
+            } elseif ($v['type'] == 'number') {
+            } elseif ($v['type'] == 'hidden') {
+            } elseif ($v['type'] == 'date' || $v['type'] == 'time' || $v['type'] == 'datetime') {
+
+            } elseif ($v['type'] == 'daterange') {
+            } elseif ($v['type'] == 'tag') {
+                if (!empty($info[$v['field']])) {
+                    $tags = explode(',', $info[$v['field']]);
+                    foreach ($tags as $k => $tag) {
+                        $tags[$k] = [
+                            'name' => $tag,
+                            'url'  => \think\facade\Route::buildUrl('index/tag', ['module' => $moduleId, 't' => $tag])->__toString(),
+                        ];
                     }
-                default:
+                    $info[$v['field']] = $tags;
+                }
+            } elseif ($v['type'] == 'images' || $v['type'] == 'files') {
+                $info[$v['field']] = json_decode($info[$v['field']], true);
+            } elseif ($v['type'] == 'editor') {
+
+            } elseif ($v['type'] == 'color') {
+
             }
         }
-
     }
     return $info;
 }

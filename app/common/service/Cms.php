@@ -257,7 +257,7 @@ class Cms
      * @param bool   $type    返回类型(true array/false string)，数组类型会返回全部数据
      * @return array/string
      */
-    private function changeOptionsValue(array $options = [], string $value = '', bool $type = true)
+    public function changeOptionsValue(array $options = [], string $value = '', bool $type = true)
     {
         $result = [];
         if ($type === false) {
