@@ -694,6 +694,12 @@ class MakeBuilder
                         }
                     }
                     $formData[$k] = json_encode($images);
+                } else if ($fieldsNew[$k]['type'] == 'checkbox') {
+                    for ($i = 0; $i < count($formData[$k]); $i++) {
+                        if ($formData[$k][$i] === '') {
+                            unset($formData[$k][$i]);
+                        }
+                    }
                 }
 
             } else {

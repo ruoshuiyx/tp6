@@ -46,7 +46,7 @@ class Base extends Model
     {
         if ($data) {
             foreach ($data as $k => $v) {
-                if ($v && is_array($v)) {
+                if (is_array($v)) {
                     $data[$k] = implode(',', $v);
                 }
             }
@@ -64,7 +64,7 @@ class Base extends Model
     public static function addPost($data){
         if ($data) {
             foreach ($data as $k => $v) {
-                if ($v && is_array($v)) {
+                if (is_array($v)) {
                     $data[$k] = implode(',', $v);
                 }
             }
