@@ -102,9 +102,15 @@
 						onPostBody: function onPostBody() {
 							var columns = $.btTable.bootstrapTable('getOptions').columns;
 							if (columns) {
+								// 查看是否默认展开
+								var initialState = 'collapsed';
+								if (typeof (Storage) !== 'undefined') {
+									initialState = localStorage.getItem('initialState');
+								}
 								$.btTable.treegrid({
-									initialState: 'collapsed',// 所有节点都折叠
+									//initialState: 'collapsed',// 所有节点都折叠
 									//initialState: 'expanded',// 所有节点都展开
+									initialState: initialState,// 所有节点都保留上次的效果
 									treeColumn: 1, // 默认为第三个
 									// expanderExpandedClass: 'glyphicon glyphicon-minus',  //图标样式
 									// expanderCollapsedClass: 'glyphicon glyphicon-plus',
@@ -693,12 +699,29 @@
 
 			// 展开/折叠列表树
 			treeStatus: function (result) {
+				// 上次展开则增加样式
+				var initialState = 'collapsed';
+				if (typeof (Storage) !== 'undefined') {
+					initialState = localStorage.getItem('initialState');
+				}
+				if (initialState == 'expanded') {
+					$('.treeStatus').addClass('expandAll');
+				}
+
 				if ($('.treeStatus').hasClass('expandAll')) {
 					$.btTable.treegrid('collapseAll');
-					$('.treeStatus').removeClass('expandAll')
+					$('.treeStatus').removeClass('expandAll');
+					// 更新
+					if (typeof (Storage) !== 'undefined') {
+						localStorage.setItem('initialState', 'collapsed');
+					}
 				} else {
 					$.btTable.treegrid('expandAll');
-					$('.treeStatus').addClass('expandAll')
+					$('.treeStatus').addClass('expandAll');
+					// 更新
+					if (typeof (Storage) !== 'undefined') {
+						localStorage.setItem('initialState', 'expanded');
+					}
 				}
 			},
 
