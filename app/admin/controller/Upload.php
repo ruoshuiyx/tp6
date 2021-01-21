@@ -133,11 +133,20 @@ class Upload extends Base
                 ->check(['file' => $file]);
             $savename = \think\facade\Filesystem::disk('public')->putFile('uploads', $file);
             // windows系统中路径反斜杠处理
-            $savename = str_replace('\\', '/', $savename);
+            $savename = '/' . str_replace('\\', '/', $savename);
+            // 上传驱动
+            $savename = $this->uploadDriver($savename);
+            if (is_array($savename)) {
+                return [
+                    'code' => 0,
+                    'msg'  => $savename['msg'],
+                    'url'  => '',
+                ];
+            }
             return [
                 'code' => 1,
                 'msg'  => '上传成功',
-                'url'  => '/' . $savename
+                'url'  => $savename
             ];
         } catch (\Exception $e) { // think\exception\ValidateException  取消验证异常捕获
             return [
@@ -344,6 +353,15 @@ class Upload extends Base
             $uploadPath = str_replace(public_path() . DIRECTORY_SEPARATOR, '', $uploadPath);
             // windows系统中路径反斜杠处理
             $uploadPath = '/' . str_replace('\\', '/', $uploadPath);
+            // 上传驱动
+            $uploadPath = $this->uploadDriver($uploadPath);
+            if (is_array($uploadPath)) {
+                return [
+                    'code' => 0,
+                    'msg'  => $uploadPath['msg'],
+                    'url'  => '',
+                ];
+            }
             return [
                 'code' => 1,
                 'msg'  => '上传完毕',
@@ -379,5 +397,34 @@ class Upload extends Base
             return $this->removeExt($ext);
         }
         return $ext;
+    }
+
+    // 上传驱动
+    private function uploadDriver(string $fineName = '')
+    {
+        if ($fineName) {
+            $uploadDriver = \app\common\model\System::where('id', 1)->value('upload_driver');
+            if ($uploadDriver == '1') {
+                return $fineName;
+            } else if ($uploadDriver == '2') {
+                // 阿里云
+                $urlArr = hook('aliyunOssHook', ['url' => $fineName]);
+                $urlArr = json_decode($urlArr, true);
+                if (isset($urlArr['error']) && $urlArr['error'] == 0) {
+                    return $urlArr['data'];
+                } else {
+                    return $urlArr;
+                }
+            } else if ($uploadDriver == '3') {
+                // 七牛云
+                $urlArr = hook('qiniuOssHook', ['url' => $fineName]);
+                $urlArr = json_decode($urlArr, true);
+                if (isset($urlArr['error']) && $urlArr['error'] == 0) {
+                    return $urlArr['data'];
+                } else {
+                    return $urlArr;
+                }
+            }
+        }
     }
 }
