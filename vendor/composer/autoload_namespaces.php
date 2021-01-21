@@ -9,3 +9,4 @@ return array(
     'HTMLPurifier' => array($vendorDir . '/ezyang/htmlpurifier/library'),
     '' => array($baseDir . '/extend'),
 );
+
