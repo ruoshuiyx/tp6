@@ -84,4 +84,3 @@ return array(
     '1cfd2761b63b0a29ed23657ea394cb2d' => $vendorDir . '/topthink/think-captcha/src/helper.php',
     '39594db8502267d6df2fe2dca5f3914d' => $vendorDir . '/zzstudio/think-addons/src/helper.php',
 );
-
