@@ -235,7 +235,7 @@ class ThinkAddons
         // 获取插件基础信息
         $info = $object->getInfo();
 
-        if (false !== $object->install()) {
+        if (false !== $object->uninstall()) {
             $info['status'] = 0;
             $info['install'] = 0;
             // 更新或创建插件的ini文件
