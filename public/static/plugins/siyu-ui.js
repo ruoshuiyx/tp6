@@ -403,7 +403,7 @@
                         // 获取弹出层中的form表单元素
                         var formSubmit=layer.getChildFrame('form', index);
                         // 获取表单中的提交按钮（在我的表单里第一个button按钮就是提交按钮，使用find方法寻找即可）
-                        var submited = formSubmit.find('button')[0];
+                        var submited = formSubmit.find('.form-builder-submit').find('button')[0];
                         // 触发点击事件，会对表单进行验证，验证成功则提交表单，失败则返回错误信息
                         submited.click();
                         //window.parent.location.reload();

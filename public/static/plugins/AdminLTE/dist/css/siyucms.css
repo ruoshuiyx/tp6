@@ -207,6 +207,7 @@ label{margin-bottom: 0;}
 .dd_input_group{margin: .75rem 0;}
 .dd_input_group .input-group{ width: 100%}
 .dd_input_group button{ margin: 0 10px 0 0}
+.dd_input_group .btn-group button{ margin: 0}
 .dd_input_l{padding: 8px 0; height: 38px; line-height: 22px; text-align: center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; box-sizing: border-box;border-color: #d2d6de;margin: 0;border-right: 0;font-weight: normal !important;}
 /*.dd_input_group .col-8, .dd_input_group .col-7 .dd_input_group .col-md-4, .dd_input_group .col-lg-4, .dd_input_group .col-12, .dd_input_group .col-11, .dd_input_group .col-5, .dd_input_group .col-2{margin-left: 0;padding-left: 0;border-right: 0;}*/
 .dd_input_group input, .dd_input_group select, .ldd_input_group textarea{height: 38px; line-height: 1.3; line-height: 38px \9; border-width: 1px; border-style: solid; background-color: #fff; border-radius: 2px;border-top-left-radius: 0; border-bottom-left-radius: 0;}
@@ -235,7 +236,9 @@ label{margin-bottom: 0;}
 #builder-form-group-tab .nav-item.show .nav-link, #builder-form-group-tab .nav-link.active{color: inherit;}
 /* 多图上传细节处理 */
 .more_images{border: 1px solid #d2d6de; min-height: 38px; background-color: #F8F8F8;}
-.more_images .row{padding: 5px;}
+.more_images .row{padding: 2.5px;}
+.more_images .row > div{padding: 2.5px;}
+.more_images .row .btn-group{padding-top: 3px;}
 .webuploader-container, .webuploader-pick{width: 110px;}
 .webuploader-container{margin-right: 5px;}
 .text-sm .webuploader-container, .text-sm .webuploader-pick{width: 100px;}

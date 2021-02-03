@@ -9,15 +9,25 @@
                 </div>
                 {notempty name="form[type].value"}
                 {volist name="form[type]['value']" id="vo"}
-                <div class="row">
-                    <div class="col-6">
+                <div class="row no-gutters">
+                    <div class="col-4 col-sm-6">
                         <input type="text" name="{$form[type].name}[]" value="{$vo['image']}" class="form-control">
                     </div>
-                    <div class="col-3">
+                    <div class="col-3 col-sm-3">
                         <input type="text" name="{$form[type].name}_title[]" value="{$vo['title']}" class="form-control input-sm">
                     </div>
-                    <div class="col-xs-3">
-                        <button type="button" class="btn btn-block btn-warning remove_images">移除</button>
+                    <div class="col-4 col-sm-3">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default btn-sm move_up_images">
+                                <i class="fa fa-chevron-up"></i>
+                            </button>
+                            <button type="button" class="btn btn-default btn-sm move_down_images">
+                                <i class="fa fa-chevron-down"></i>
+                            </button>
+                            <button type="button" class="btn btn-default btn-sm remove_images">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 {/volist}

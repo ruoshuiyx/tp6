@@ -75,10 +75,23 @@ $(document).on("click", '.juanzeng', function () {
 })
 
 // 多图删除
-$(document).on('click','.remove_images',function(){
-    var remove = $(this).parent().parent();
+$(document).on('click', '.remove_images', function () {
+    var remove = $(this).parent().parent().parent();
     remove.remove();
 })
+
+// 多图上移
+$(document).on('click', '.move_up_images', function () {
+    var move = $(this).parent().parent().parent();
+    move.prev().insertAfter(move);
+})
+
+// 多图下移
+$(document).on('click', '.move_down_images', function () {
+    var move = $(this).parent().parent().parent();
+    move.next().insertBefore(move);
+})
+
 
 // 返回顶部显示
 $(window).scroll(function() {
