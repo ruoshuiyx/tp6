@@ -112,7 +112,7 @@ class Config extends Base
                 $("#test_email").click(function () {
                     var url = "' . url('emailSend') . '";
                     var email = $("input[name=\'test_eamil\']").val();
-                    $.modal.confirm(\'确定要发送吗？\', function () {
+                    $.modal.confirm(\'确定要发送吗？如有修改请先提交保存！\', function () {
                         $.post(url,{email:email},function(result){
                             if(result.error == 0){
                                 $.modal.alertSuccess(result.msg);
