@@ -108,6 +108,13 @@ abstract class Base
             View::assign(['pjax' => false]);
         }
 
+        // layer open
+        if (Request::has('_layer')) {
+            View::assign(['layer' => true]);
+        } else {
+            View::assign(['layer' => false]);
+        }
+
         // 面包导航
         $auth = new \Auth();
         $breadCrumb = $auth->getBreadCrumb();

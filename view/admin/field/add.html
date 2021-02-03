@@ -2,12 +2,14 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row">
+            {if $layer == false}
             <div class="col-12 callout search">
                 <form action="">
                     <a class="btn btn-flat btn-primary" href="{:url('index')}"><i class="fa fa-list-ul m-r-10"></i>查看全部</a>
                     <a class="btn btn-flat btn-success f_r" onclick="javascript :history.back(-1)"><i class="fa fa-undo m-r-10"></i>返 回</a>
                 </form>
             </div>
+            {/if}
             <!--数据表开始-->
             {if $info}
             <form class="col-12 form_builder" method="post" action="{:url('editPost')}" submit_confirm>
@@ -18,9 +20,9 @@
             {/if}
                     <input type="hidden" name="module_id" value="{$info ? $info.module_id : $module_id}"/>
                     <!---->
-                    <div class="row dd_input_group">
-                        <label class="col-4 col-md-2 col-lg-1 control-label dd_input_l">所属模块</label>
-                        <div class="col-7 col-md-4 col-lg-4">
+                    <div class="row dd_input_group no-gutters">
+                        <label class="col-3 col-sm-2 col-md-2 col-lg-2 col-xl-1 dd_input_l col-form-label is-required">所属模块</label>
+                        <div class="col-9 col-sm-9 col-md-9 col-lg-6 col-xl-4">
                             <select id="module_id" name="module_id" class="form-control">
                                 <option value=''>请选择</option>
                                 {volist name="modules" id="module"}
@@ -28,13 +30,17 @@
                                 {/volist}
                             </select>
                         </div>
-                        <div class="col-1 col-md-6 col-lg-6 dd_ts">* 字段所属的模块/表</div>
+                        <div class="col-12 offset-sm-2 offset-md-2 offset-lg-0 offset-xl-0 col-sm-10 col-md-10 col-lg-4 col-xl-7 dd_ts">
+                            <small class="text-muted">
+                                <i class="fa fa-info-circle"></i> 字段所属的模块/表
+                            </small>
+                        </div>
                     </div>
                     <!---->
                     {if $groups}
-                    <div class="row dd_input_group">
-                        <label class="col-4 col-md-2 col-lg-1 control-label dd_input_l">所属分组</label>
-                        <div class="col-7 col-md-4 col-lg-4">
+                    <div class="row dd_input_group no-gutters">
+                        <label class="col-3 col-sm-2 col-md-2 col-lg-2 col-xl-1 dd_input_l col-form-label is-required">所属分组</label>
+                        <div class="col-9 col-sm-9 col-md-9 col-lg-6 col-xl-4">
                             <select id="group_id" name="group_id" class="form-control">
                                 <option value=''>请选择</option>
                                 {volist name="groups" id="group"}
@@ -42,13 +48,17 @@
                                 {/volist}
                             </select>
                         </div>
-                        <div class="col-1 col-md-6 col-lg-6 dd_ts">* 字段所属分组</div>
+                        <div class="col-12 offset-sm-2 offset-md-2 offset-lg-0 offset-xl-0 col-sm-10 col-md-10 col-lg-4 col-xl-7 dd_ts">
+                            <small class="text-muted">
+                                <i class="fa fa-info-circle"></i> 字段所属分组
+                            </small>
+                        </div>
                     </div>
                     {/if}
                     <!---->
-                    <div class="row dd_input_group">
-                        <label class="col-4 col-md-2 col-lg-1 control-label dd_input_l">字段类型</label>
-                        <div class="col-7 col-md-4 col-lg-4">
+                    <div class="row dd_input_group no-gutters">
+                        <label class="col-3 col-sm-2 col-md-2 col-lg-2 col-xl-1 dd_input_l col-form-label is-required">字段类型</label>
+                        <div class="col-9 col-sm-9 col-md-9 col-lg-6 col-xl-4">
                             <select id="type" name="type" class="form-control">
                                 <option value=''>请选择字段类型</option>
                                 <option value="text" {if $info}{$info.type == 'text' ? 'selected="selected"' : ''}{/if}>单行文本</option>
@@ -73,39 +83,50 @@
                                 <option value="color" {if $info}{$info.type == 'color' ? 'selected="selected"' : ''}{/if}>取色器</option>
                             </select>
                         </div>
-                        <div class="col-1 col-md-6 col-lg-6 dd_ts">* </div>
                     </div>
                     <!---->
-                    <div class="row dd_input_group">
-                        <label class="col-4 col-md-2 col-lg-1 control-label dd_input_l">字段名称</label>
-                        <div class="col-7 col-md-4 col-lg-4">
+                    <div class="row dd_input_group no-gutters">
+                        <label class="col-3 col-sm-2 col-md-2 col-lg-2 col-xl-1 dd_input_l col-form-label is-required">字段名称</label>
+                        <div class="col-9 col-sm-9 col-md-9 col-lg-6 col-xl-4">
                             <input type="text" name="field" class="form-control" placeholder="字段英文名称，如 title"
                                    value="{$info.field?$info.field:''}">
                         </div>
-                        <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">* 注意不要包含空格，建议全部小写，通过_分割，如 user_name, goods_price</div>
+                        <div class="col-12 offset-sm-2 offset-md-2 offset-lg-0 offset-xl-0 col-sm-10 col-md-10 col-lg-4 col-xl-7 dd_ts">
+                            <small class="text-muted">
+                                <i class="fa fa-info-circle"></i> 注意不要包含空格，建议全部小写，通过_分割，如 user_name, goods_price
+                            </small>
+                        </div>
                     </div>
                     <!---->
-                    <div class="row dd_input_group">
-                        <label class="col-4 col-md-2 col-lg-1 control-label dd_input_l">字段别名</label>
-                        <div class="col-7 col-md-4 col-lg-4">
+                    <div class="row dd_input_group no-gutters">
+                        <label class="col-3 col-sm-2 col-md-2 col-lg-2 col-xl-1 dd_input_l col-form-label is-required">字段别名</label>
+                        <div class="col-9 col-sm-9 col-md-9 col-lg-6 col-xl-4">
                             <input type="text" name="name" class="form-control" placeholder="字段中文名称，如 标题"
                                    value="{$info.name?$info.name:''}">
                         </div>
-                        <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">* 建议不超过4个汉字</div>
+                        <div class="col-12 offset-sm-2 offset-md-2 offset-lg-0 offset-xl-0 col-sm-10 col-md-10 col-lg-4 col-xl-7 dd_ts">
+                            <small class="text-muted">
+                                <i class="fa fa-info-circle"></i> 建议不超过4个汉字
+                            </small>
+                        </div>
                     </div>
                     <!---->
-                    <div class="row dd_input_group">
-                        <label class="col-4 col-md-2 col-lg-1 control-label dd_input_l">提示信息</label>
-                        <div class="col-7 col-md-4 col-lg-4">
+                    <div class="row dd_input_group no-gutters">
+                        <label class="col-3 col-sm-2 col-md-2 col-lg-2 col-xl-1 dd_input_l col-form-label">提示信息</label>
+                        <div class="col-9 col-sm-9 col-md-9 col-lg-6 col-xl-4">
                             <input type="text" name="tips" class="form-control" placeholder="字段右侧提示信息"
                                    value="{$info.tips?$info.tips:''}">
                         </div>
-                        <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts"> 新增/修改页面字段右侧的提示信息</div>
+                        <div class="col-12 offset-sm-2 offset-md-2 offset-lg-0 offset-xl-0 col-sm-10 col-md-10 col-lg-4 col-xl-7 dd_ts">
+                            <small class="text-muted">
+                                <i class="fa fa-info-circle"></i> 新增/修改页面字段右侧的提示信息
+                            </small>
+                        </div>
                     </div>
                     <!---->
-                    <div class="row dd_input_group">
-                        <label class="col-4 col-md-2 col-lg-1 control-label dd_input_l">是否必填</label>
-                        <div class="col-7 col-md-4 col-lg-4">
+                    <div class="row dd_input_group no-gutters">
+                        <label class="col-3 col-sm-2 col-md-2 col-lg-2 col-xl-1 dd_input_l col-form-label">是否必填</label>
+                        <div class="col-9 col-sm-9 col-md-9 col-lg-6 col-xl-4">
                             <div class="dd_radio_lable_left">
                                 <label class="dd_radio_lable">
                                     <input type="radio" name="required" value="1" class="dd_radio"
@@ -119,9 +140,9 @@
                         </div>
                     </div>
                     <!---->
-                    <div class="row dd_input_group">
-                        <label class="col-4 col-md-2 col-lg-1 control-label dd_input_l">字段展示</label>
-                        <div class="col-7 col-md-4 col-lg-4">
+                    <div class="row dd_input_group no-gutters">
+                        <label class="col-3 col-sm-2 col-md-2 col-lg-2 col-xl-1 dd_input_l col-form-label is-required">字段展示</label>
+                        <div class="col-9 col-sm-9 col-md-9 col-lg-6 col-xl-4">
                             <div class="dd_radio_lable_left">
                                 <label class="dd_radio_lable">
                                     <input type="checkbox" name="is_list" value="1" class="dd_radio" {if $info}{$info.is_list===0?'':'checked'}{else /}checked{/if}><span>列表</span></label>
@@ -135,21 +156,29 @@
                                     <input type="checkbox" name="is_sort" value="1" class="dd_radio" {if $info}{$info.is_sort===0?'':'checked'}{else /}checked{/if}><span>排序</span></label>
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts">* 设置字段的使用场景</div>
+                        <div class="col-12 offset-sm-2 offset-md-2 offset-lg-0 offset-xl-0 col-sm-10 col-md-10 col-lg-4 col-xl-7 dd_ts">
+                            <small class="text-muted">
+                                <i class="fa fa-info-circle"></i> 设置字段的使用场景
+                            </small>
+                        </div>
                     </div>
                     <!---->
-                    <div class="row dd_input_group">
-                        <label class="col-4 col-md-2 col-lg-1 control-label dd_input_l">搜索类型</label>
-                        <div class="col-7 col-md-4 col-lg-4">
+                    <div class="row dd_input_group no-gutters">
+                        <label class="col-3 col-sm-2 col-md-2 col-lg-2 col-xl-1 dd_input_l col-form-label">搜索类型</label>
+                        <div class="col-9 col-sm-9 col-md-9 col-lg-6 col-xl-4">
                             <input type="text" name="search_type" class="form-control" placeholder="请填写搜索类型"
                                    value="{$info.search_type?$info.search_type:'='}">
                         </div>
-                        <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts"> 如：=, <>, >, <, LIKE 等表达式，如字段可被搜索则必须设置</div>
+                        <div class="col-12 offset-sm-2 offset-md-2 offset-lg-0 offset-xl-0 col-sm-10 col-md-10 col-lg-4 col-xl-7 dd_ts">
+                            <small class="text-muted">
+                                <i class="fa fa-info-circle"></i> 如：=, <>, >, <, LIKE 等表达式，如字段可被搜索则必须设置
+                            </small>
+                        </div>
                     </div>
                     <!---->
-                    <div class="row dd_input_group">
-                        <label class="col-4 col-md-2 col-lg-1 control-label dd_input_l">字符长度</label>
-                        <div class="col-7 col-md-4 col-lg-4">
+                    <div class="row dd_input_group no-gutters">
+                        <label class="col-3 col-sm-2 col-md-2 col-lg-2 col-xl-1 dd_input_l col-form-label">字符长度</label>
+                        <div class="col-9 col-sm-9 col-md-9 col-lg-6 col-xl-4">
                             <div class="col-4 p-0 float-left">
                                 <input type="text" name="minlength" class="form-control"
                                        value="{$info.minlength?$info.minlength:'0'}">
@@ -160,42 +189,58 @@
                                        value="{$info.maxlength?$info.maxlength:'0'}">
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts"> 通常无需配置，系统会自动设置</div>
+                        <div class="col-12 offset-sm-2 offset-md-2 offset-lg-0 offset-xl-0 col-sm-10 col-md-10 col-lg-4 col-xl-7 dd_ts">
+                            <small class="text-muted">
+                                <i class="fa fa-info-circle"></i> 通常无需配置，系统会自动设置
+                            </small>
+                        </div>
                     </div>
                     <!---->
-                    <div class="row dd_input_group">
-                        <label class="col-4 col-md-2 col-lg-1 control-label dd_input_l">数据源</label>
-                        <div class="col-7 col-md-4 col-lg-4">
+                    <div class="row dd_input_group no-gutters">
+                        <label class="col-3 col-sm-2 col-md-2 col-lg-2 col-xl-1 dd_input_l col-form-label is-required">数据源</label>
+                        <div class="col-9 col-sm-9 col-md-9 col-lg-6 col-xl-4">
                             <select id="data_source" name="data_source" class="form-control">
                                 <option value='0'>字段本身</option>
                                 <option value="1" {if $info}{$info.data_source=='1'?'selected="selected"':''}{/if}>系统字典</option>
                                 <option value="2" {if $info}{$info.data_source=='2'?'selected="selected"':''}{/if}>模型数据</option>
                             </select>
                         </div>
-                        <div class="col-1 col-md-6 col-lg-6 dd_ts">* 通常 select|radio|checkbox 或关联了其他模型时需配置 </div>
+                        <div class="col-12 offset-sm-2 offset-md-2 offset-lg-0 offset-xl-0 col-sm-10 col-md-10 col-lg-4 col-xl-7 dd_ts">
+                            <small class="text-muted">
+                                <i class="fa fa-info-circle"></i> 通常 select|radio|checkbox 或关联了其他模型时需配置
+                            </small>
+                        </div>
                     </div>
                     <!---->
-                    <div class="row dd_input_group">
-                        <label class="col-4 col-md-2 col-lg-1 control-label dd_input_l">关联模型</label>
-                        <div class="col-7 col-md-4 col-lg-4">
+                    <div class="row dd_input_group no-gutters">
+                        <label class="col-3 col-sm-2 col-md-2 col-lg-2 col-xl-1 dd_input_l col-form-label">关联模型</label>
+                        <div class="col-9 col-sm-9 col-md-9 col-lg-6 col-xl-4">
                             <input type="text" name="relation_model" class="form-control" placeholder="请填写关联的模型"
                                    value="{$info.relation_model?$info.relation_model:''}">
                         </div>
-                        <div class="col-1 col-md-6 col-lg-6 dd_ts">* 只有数据源选择<模型数据>时生效，填写完整的模型名称，如 User</div>
+                        <div class="col-12 offset-sm-2 offset-md-2 offset-lg-0 offset-xl-0 col-sm-10 col-md-10 col-lg-4 col-xl-7 dd_ts">
+                            <small class="text-muted">
+                                <i class="fa fa-info-circle"></i> 只有数据源选择<模型数据>时生效，填写完整的模型名称，如 User
+                            </small>
+                        </div>
                     </div>
                     <!---->
-                    <div class="row dd_input_group">
-                        <label class="col-4 col-md-2 col-lg-1 control-label dd_input_l">展示字段</label>
-                        <div class="col-7 col-md-4 col-lg-4">
+                    <div class="row dd_input_group no-gutters">
+                        <label class="col-3 col-sm-2 col-md-2 col-lg-2 col-xl-1 dd_input_l col-form-label">展示字段</label>
+                        <div class="col-9 col-sm-9 col-md-9 col-lg-6 col-xl-4">
                             <input type="text" name="relation_field" class="form-control" placeholder="请填写关联模型对应的字段"
                                    value="{$info.relation_field?$info.relation_field:''}">
                         </div>
-                        <div class="col-1 col-md-6 col-lg-6 dd_ts">* 只有数据源选择<模型数据>时生效，填写完整的字段名称，如 type_name</div>
+                        <div class="col-12 offset-sm-2 offset-md-2 offset-lg-0 offset-xl-0 col-sm-10 col-md-10 col-lg-4 col-xl-7 dd_ts">
+                            <small class="text-muted">
+                                <i class="fa fa-info-circle"></i> 只有数据源选择<模型数据>时生效，填写完整的字段名称，如 type_name
+                            </small>
+                        </div>
                     </div>
                     <!---->
-                    <div class="row dd_input_group">
-                        <label class="col-4 col-md-2 col-lg-1 control-label dd_input_l">字典类型</label>
-                        <div class="col-7 col-md-4 col-lg-4">
+                    <div class="row dd_input_group no-gutters">
+                        <label class="col-3 col-sm-2 col-md-2 col-lg-2 col-xl-1 dd_input_l col-form-label">字典类型</label>
+                        <div class="col-9 col-sm-9 col-md-9 col-lg-6 col-xl-4">
                             <select id="dict_code" name="dict_code" class="form-control">
                                 <option value=''>请选择</option>
                                 {volist name="dictTypes" id="dictTypes"}
@@ -203,12 +248,16 @@
                                 {/volist}
                             </select>
                         </div>
-                        <div class="col-1 col-md-6 col-lg-6 dd_ts">* 只有数据源选择<系统字典>时生效</div>
+                        <div class="col-12 offset-sm-2 offset-md-2 offset-lg-0 offset-xl-0 col-sm-10 col-md-10 col-lg-4 col-xl-7 dd_ts">
+                            <small class="text-muted">
+                                <i class="fa fa-info-circle"></i> 只有数据源选择<系统字典>时生效
+                            </small>
+                        </div>
                     </div>
                     <!---->
-                    <div class="row dd_input_group">
-                        <label class="col-4 col-md-2 col-lg-1 control-label dd_input_l">字段设置</label>
-                        <div class="col-7 col-md-4 col-lg-4">
+                    <div class="row dd_input_group no-gutters">
+                        <label class="col-3 col-sm-2 col-md-2 col-lg-2 col-xl-1 dd_input_l col-form-label">字段设置</label>
+                        <div class="col-9 col-sm-9 col-md-9 col-lg-6 col-xl-4">
                             <div class="dd_radio_lable_left" id="field_setup">
                                 <!--ajax调用文件-->
                                 <!--ajax调用结束-->
@@ -216,9 +265,9 @@
                         </div>
                     </div>
                     <!---->
-                    <div class="row dd_input_group">
-                        <label class="col-4 col-md-2 col-lg-1 control-label dd_input_l">状态</label>
-                        <div class="col-7 col-md-4 col-lg-4">
+                    <div class="row dd_input_group no-gutters">
+                        <label class="col-3 col-sm-2 col-md-2 col-lg-2 col-xl-1 dd_input_l col-form-label">状态</label>
+                        <div class="col-9 col-sm-9 col-md-9 col-lg-6 col-xl-4">
                             <div class="dd_radio_lable_left">
                                 {if $info}
                                 <label class="dd_radio_lable">
@@ -239,34 +288,40 @@
                                 {/if}
                             </div>
                         </div>
-                        <div class="col-1 col-md-6 col-lg-6 dd_ts">*</div>
                     </div>
                     <!---->
-                    <div class="row dd_input_group">
-                        <label class="col-4 col-md-2 col-lg-1 control-label dd_input_l">排序</label>
-                        <div class="col-7 col-md-4 col-lg-4">
+                    <div class="row dd_input_group no-gutters">
+                        <label class="col-3 col-sm-2 col-md-2 col-lg-2 col-xl-1 dd_input_l col-form-label is-required">排序</label>
+                        <div class="col-9 col-sm-9 col-md-9 col-lg-6 col-xl-4">
                             <input type="text" name="sort" class="form-control" placeholder="请输入排序"
                                    value="{$info.sort ? $info.sort : '50'}">
                         </div>
-                        <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 dd_ts"> * 排序为从小到大排序，默认为50</div>
+                        <div class="col-12 offset-sm-2 offset-md-2 offset-lg-0 offset-xl-0 col-sm-10 col-md-10 col-lg-4 col-xl-7 dd_ts">
+                            <small class="text-muted">
+                                <i class="fa fa-info-circle"></i> 排序为从小到大排序，默认为50
+                            </small>
+                        </div>
                     </div>
-                    <div class="row dd_input_group">
-                        <div class="col-11 col-sm-8 col-md-6 col-lg-5">
-                            <label class="text-lable">字段备注</label>
+                    <!---->
+                    <div class="row dd_input_group no-gutters">
+                        <label class="col-3 col-sm-2 col-md-2 col-lg-2 col-xl-1 dd_input_l col-form-label">字段备注</label>
+                        <div class="col-9 col-sm-9 col-md-9 col-lg-6 col-xl-4">
                             <textarea class="form-control" name="remark" rows="3" placeholder="请输入字段备注">{$info.remark|default=''}</textarea>
+                        </div>
+                        <div class="col-12 offset-sm-2 offset-md-2 offset-lg-0 offset-xl-0 col-sm-10 col-md-10 col-lg-4 col-xl-7 dd_ts">
+                            <small class="text-muted">
+                                <i class="fa fa-info-circle"></i> 字段备注
+                            </small>
                         </div>
                     </div>
 
                     <!---->
-                    <div class="row dd_input_group">
-                        <div class="form-group">
-                            <div class="col-12 col-md-6 col-lg-5 text-center">
-                                <button type="submit" class="btn btn-flat btn-primary ">提 交</button>
-                                <button type="button" class="btn btn-flat btn-default"
-                                        onclick="javascript :history.back(-1)">返 回
-                                </button>
-                            </div>
-
+                    <div class="row dd_input_group no-gutters {if $layer == true}hide{/if}">
+                        <div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-11 offset-sm-2 offset-md-2 offset-lg-2 offset-xl-1">
+                            <button type="submit" class="btn btn-flat btn-primary ">提 交</button>
+                            <button type="button" class="btn btn-flat btn-default"
+                                    onclick="javascript :history.back(-1)">返 回
+                            </button>
                         </div>
                     </div>
             </form>

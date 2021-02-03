@@ -398,14 +398,14 @@
 				if ($.common.isEmpty(callback)) {
                     // 当前层索引参数（index）、当前层的DOM对象（layero）
 					callback = function(index, layero) {
-						var iframeWin = layero.find('iframe')[0];
-						iframeWin.contentWindow.submitHandler(index, layero);
+						//var iframeWin = layero.find('iframe')[0];
+						//iframeWin.contentWindow.submitHandler(index, layero);
                         // 获取弹出层中的form表单元素
-                        //var formSubmit=layer.getChildFrame('form', index);
+                        var formSubmit=layer.getChildFrame('form', index);
                         // 获取表单中的提交按钮（在我的表单里第一个button按钮就是提交按钮，使用find方法寻找即可）
-                        //var submited = formSubmit.find('button')[0];
+                        var submited = formSubmit.find('button')[0];
                         // 触发点击事件，会对表单进行验证，验证成功则提交表单，失败则返回错误信息
-                        //submited.click();
+                        submited.click();
                         //window.parent.location.reload();
                         //location.reload();
 					}
@@ -431,6 +431,17 @@
 					shadeClose: true,
                     // 确定按钮回调方法
 					yes: callback,
+					// 层弹出后的成功回调方法
+					success: function(layero, index){
+						//var body = layer.getChildFrame('body', index);
+						//body.addClass('layer-body')
+						//body.find('.main-sidebar').hide()
+						//body.find('.main-header').hide()
+						//body.find('.main-footer').hide()
+						//body.find('.content-header').hide()
+						//body.find('.content .search').hide()
+						//body.find('.content-wrapper').hide()
+					},
                     // 右上角关闭按钮触发的回调
 					cancel: function(index) {
 						return true;
@@ -521,11 +532,22 @@
 		// 操作封装处理
 		operate: {
             // 修改信息
-            edit: function(id) {
-				// 当前窗口打开要修改的地址
+			edit: function(id) {
 				var url = $.operate.editUrl(id)
-				$.common.jump(url);
-            },
+				if ($.table._option.layerOpen == "1") {
+					// 通过参数隐藏左侧和顶部等数据
+					if (url.indexOf('?') != -1) {
+						url = url + '&_layer=1'
+					} else {
+						url = url + '?_layer=1'
+					}
+					// 弹窗打开要添加的地址
+					$.modal.open("修改", url);
+				} else {
+					// 当前窗口打开要添加的地址
+					$.common.jump(url);
+				}
+			},
 
             // 修改访问的地址
             editUrl: function(id) {
@@ -547,11 +569,22 @@
             },
 
             // 添加信息
-            add: function(id) {
-                // 当前窗口打开要添加的地址
-                var url = $.operate.addUrl(id)
-                $.common.jump(url);
-            },
+			add: function(id) {
+				var url = $.operate.addUrl(id)
+				if ($.table._option.layerOpen == "1") {
+					// 通过参数隐藏左侧和顶部等数据
+					if (url.indexOf('?') != -1) {
+						url = url + '&_layer=1'
+					} else {
+						url = url + '?_layer=1'
+					}
+					// 弹窗打开要添加的地址
+					$.modal.open("添加", url);
+				} else {
+					// 当前窗口打开要添加的地址
+					$.common.jump(url);
+				}
+			},
 
             // 添加访问的地址
 			addUrl: function(id) {

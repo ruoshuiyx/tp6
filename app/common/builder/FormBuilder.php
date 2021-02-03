@@ -524,7 +524,7 @@ class FormBuilder
     public function addDatetime($name = '', $title = '', $tips = '', $default = '', $format = '', $extra_attr = '', $extra_class = '', $placeholder = '', $required = false)
     {
         $item = [
-            'type'        => 'date',
+            'type'        => 'datetime',
             'name'        => $name,
             'title'       => $title,
             'tips'        => $tips,

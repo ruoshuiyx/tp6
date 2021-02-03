@@ -208,15 +208,22 @@ $(function () {
 // 表单提交
 function formSubmit($this) {
     $this.ajaxSubmit(function (result) {
-        if (result.code == 1) {
-            // 提交成功
-            $.modal.alertSuccess(result.msg, function (index) {
-                layer.close(index);
-                $.common.jump(result.url);
-            });
+        var url = window.location.href;
+        if (url.indexOf("_layer=1") >= 0) {
+            // layer 弹层
+            $.operate.successCallback(result);
         } else {
-            // 提交失败
-            $.modal.alertError(result.msg);
+            // 普通提交跳转
+            if (result.code == 1) {
+                // 提交成功
+                $.modal.alertSuccess(result.msg, function (index) {
+                    layer.close(index);
+                    $.common.jump(result.url);
+                });
+            } else {
+                // 提交失败
+                $.modal.alertError(result.msg);
+            }
         }
     });
 }

@@ -1,6 +1,6 @@
-<div class="row dd_input_group {$form[type].extra_class|default=''}" id="form_group_{$form[type].name}">
-    <div class="col-11 col-sm-8 col-md-6 col-lg-5">
-        <label class="text-lable" for="{$form[type].name}">{$form[type].title|htmlspecialchars}</label>
+<div class="row dd_input_group no-gutters {$form[type].extra_class|default=''}" id="form_group_{$form[type].name}">
+    <label class="col-3 col-sm-2 col-md-2 col-lg-2 col-xl-1 dd_input_l col-form-label {notempty name="form[type].required"}is-required{/notempty}" for="{$form[type].name}">{$form[type].title|htmlspecialchars}</label>
+    <div class="col-9 col-sm-6 col-md-6 col-lg-6 col-xl-4">
         <div class="more_images dd_ts">
             <div id="more_images_{$form[type].name}">
                 <div class="hide">
@@ -25,14 +25,17 @@
             </div>
         </div>
     </div>
-    <div class="col-12 col-sm-4 col-md-6 col-lg-6 dd_ts">
+    <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-7 dd_ts dd_ts_img">
         <!--上传图片-->
         <!--用来存放item-->
         <div id="fileList_{$form[type].name}" class="uploader-list"></div>
         <div id="filePicker_{$form[type].name}"><i class="fa fa-upload m-r-10"></i>选择文件</div>
         <!--上传图片-->
-        {notempty name="form[type].required"}&nbsp; *{/notempty}
-        {notempty name="form[type].tips"} {$form[type].tips|raw}{/notempty}
+        {notempty name="form[type].tips"}
+        <small class="text-muted">
+            <i class="fa fa-info-circle"></i> {$form[type].tips|raw}
+        </small>
+        {/notempty}
     </div>
 </div>
 <script type="text/javascript">

@@ -1,6 +1,6 @@
-<div class="row dd_input_group {$form[type].extra_class|default=''}" id="form_group_{$form[type].name}">
-    <label class="col-4 col-md-2 col-lg-1 control-label dd_input_l" for="{$form[type].name}">{$form[type].title|htmlspecialchars}</label>
-    <div class="col-{if $form[type].tips}8{else /}7{/if} col-md-4 col-lg-4">
+<div class="row dd_input_group no-gutters {$form[type].extra_class|default=''}" id="form_group_{$form[type].name}">
+    <label class="col-3 col-sm-2 col-md-2 col-lg-2 col-xl-1 dd_input_l col-form-label {notempty name="form[type].required"}is-required{/notempty}" for="{$form[type].name}">{$form[type].title|htmlspecialchars}</label>
+    <div class="col-9 col-sm-9 col-md-9 col-lg-6 col-xl-4">
         <div class="input-group {$form[type].name}-colorpicker">
             <input class="form-control" type="text" id="{$form[type].name}" name="{$form[type].name}" value="{$form[type].value}" placeholder="{$form[type].placeholder}" {$form[type].extra_attr|raw}>
             <div class="input-group-append">
@@ -10,12 +10,14 @@
             </div>
         </div>
     </div>
-    <div class="col-{if $form[type].tips}12{else /}1{/if} col-md-6 col-lg-6 dd_ts">
-        {notempty name="form[type].required"} *{/notempty}
-        {notempty name="form[type].tips"} {$form[type].tips|raw}{/notempty}
+    {notempty name="form[type].tips"}
+    <div class="col-12 offset-sm-2 offset-md-2 offset-lg-0 offset-xl-0 col-sm-10 col-md-10 col-lg-4 col-xl-7 dd_ts">
+        <small class="text-muted">
+            <i class="fa fa-info-circle"></i> {$form[type].tips|raw}
+        </small>
     </div>
+    {/notempty}
 </div>
-
 <script>
     $(function () {
         $('.{$form[type].name}-colorpicker').colorpicker()

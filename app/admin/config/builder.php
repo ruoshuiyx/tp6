@@ -8,4 +8,6 @@ return [
     'add_cate_id'             => true,
     // select2 插件是否启用ajax分页
     'select2_ajax'            => true,
+    // 添加/编辑等页启用layer弹层加载
+    'layer_open'              => env('builder.layer_open', true),
 ];

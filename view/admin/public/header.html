@@ -7,9 +7,9 @@
 
     {include file="public/css_js" /}
 </head>
-<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed pace-primary text-sm">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed pace-primary text-sm {if $layer == true}layer-body{/if}">
 <div class="wrapper">
-
+{if $layer == false}
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
         <!-- Left navbar links -->
@@ -83,3 +83,4 @@
         </ul>
     </nav>
     <!-- /.navbar -->
+{/if}

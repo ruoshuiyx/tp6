@@ -69,6 +69,7 @@ class TableBuilder
         'parent_id_field'  => '',        // 列表树模式需传递父id
         'empty_tips'       => '暂无数据', // 空数据提示信息[待完善]
         'hide_checkbox'    => false,     // 是否隐藏第一列多选[待完善]
+        'layer_open'       => true,      // 添加/编辑等页启用layer弹层加载
     ];
 
     /**
@@ -103,7 +104,9 @@ class TableBuilder
     protected function initialize()
     {
         // 每页显示的行数
-        $this->_vars['page_size']   = \think\facade\Config::get('app.page_size', '10');
+        $this->_vars['page_size']  = \think\facade\Config::get('app.page_size', '10');
+        // layer弹层
+        $this->_vars['layer_open'] = \think\facade\Config::get('builder.layer_open', false);
 
         // 设置默认模版
         $this->_template = 'table_builder/layout';
@@ -633,4 +636,14 @@ class TableBuilder
         return $this;
     }
 
+    /**
+     * 设置是否在添加/编辑等页启用layer弹层加载
+     * @param string $value 是否启用layer true|false
+     * @return $this
+     */
+    public function setLayerOpen($value = true)
+    {
+        $this->_vars['layer_open'] = $value;
+        return $this;
+    }
 }

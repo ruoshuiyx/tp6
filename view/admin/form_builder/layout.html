@@ -14,6 +14,7 @@
             </div>
             {/notempty}
             <!--顶部提示结束-->
+            {if $layer == false}
             {if isset($page_tips_search) OR $show_all}
             <div class="col-12 callout search">
                 <form action="">
@@ -24,6 +25,7 @@
                     <a class="btn btn-flat btn-success f_r" onclick="javascript :history.back(-1)"><i class="fa fa-undo m-r-10"></i>返 回</a>
                 </form>
             </div>
+            {/if}
             {/if}
             <!--数据表开始-->
             <form name="form-builder" class="col-12 form_builder" method="{$form_method}" action="{$form_url}" {$submit_confirm ?= 'submit_confirm' }>
@@ -134,20 +136,18 @@
                     {/switch}
                     {/volist}
                     <!---->
-                    <div class="row dd_input_group">
-                        <div class="form-group">
-                            <div class="col-12 col-md-6 col-lg-5 text-center">
-                                {php}if(isset($btn_hide) && !in_array('submit', $btn_hide)):{/php}
-                                <button type="submit" class="btn btn-flat btn-primary ">{$btn_title['submit']|default='提 交'}</button>
-                                {php}endif;{/php}
-                                {php}if(isset($btn_hide) && !in_array('back', $btn_hide)):{/php}
-                                <button type="button" class="btn btn-flat btn-default" onclick="javascript :history.back(-1)">{$btn_title['back']|default='返 回'}</button>
-                                {php}endif;{/php}
-                                {// 额外按钮}
-                                {foreach $btn_extra as $key=>$vo }
-                                {$vo|raw|default=''}
-                                {/foreach}
-                            </div>
+                    <div class="row dd_input_group no-gutters">
+                        <div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-11 offset-sm-2 offset-md-2 offset-lg-2 offset-xl-1">
+                            {php}if(isset($btn_hide) && !in_array('submit', $btn_hide)):{/php}
+                            <button type="submit" class="btn btn-flat btn-primary {if $layer == true}hide{/if}">{$btn_title['submit']|default='提 交'}</button>
+                            {php}endif;{/php}
+                            {php}if(isset($btn_hide) && !in_array('back', $btn_hide)):{/php}
+                            <button type="button" class="btn btn-flat btn-default {if $layer == true}hide{/if}" onclick="javascript :history.back(-1)">{$btn_title['back']|default='返 回'}</button>
+                            {php}endif;{/php}
+                            {// 额外按钮}
+                            {foreach $btn_extra as $key=>$vo }
+                            {$vo|raw|default=''}
+                            {/foreach}
                         </div>
                     </div>
                     <!-- /.box -->
