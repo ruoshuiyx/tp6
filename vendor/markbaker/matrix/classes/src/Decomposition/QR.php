@@ -2,6 +2,7 @@
 
 namespace Matrix\Decomposition;
 
+use Matrix\Exception;
 use Matrix\Matrix;
 
 class QR
@@ -21,7 +22,7 @@ class QR
         $this->decompose();
     }
 
-    public function getHouseholdVectors()
+    public function getHouseholdVectors(): Matrix
     {
         $householdVectors = [];
         for ($row = 0; $row < $this->rows; ++$row) {
@@ -37,7 +38,7 @@ class QR
         return new Matrix($householdVectors);
     }
 
-    public function getQ()
+    public function getQ(): Matrix
     {
         $qGrid = [];
 
@@ -76,7 +77,7 @@ class QR
         return new Matrix($qGrid);
     }
 
-    public function getR()
+    public function getR(): Matrix
     {
         $rGrid = [];
 
@@ -99,7 +100,7 @@ class QR
         return new Matrix($rGrid);
     }
 
-    private function hypo($a, $b)
+    private function hypo($a, $b): float
     {
         if (abs($a) > abs($b)) {
             $r = $b / $a;
@@ -117,7 +118,7 @@ class QR
     /**
      * QR Decomposition computed by Householder reflections.
      */
-    private function decompose()
+    private function decompose(): void
     {
         for ($k = 0; $k < $this->columns; ++$k) {
             // Compute 2-norm of k-th column without under/overflow.
@@ -148,5 +149,43 @@ class QR
             }
             $this->rDiagonal[$k] = -$norm;
         }
+    }
+
+    public function isFullRank(): bool
+    {
+        for ($j = 0; $j < $this->columns; ++$j) {
+            if ($this->rDiagonal[$j] == 0.0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Least squares solution of A*X = B.
+     *
+     * @param Matrix $B a Matrix with as many rows as A and any number of columns
+     *
+     * @throws Exception
+     *
+     * @return Matrix matrix that minimizes the two norm of Q*R*X-B
+     */
+    public function solve(Matrix $B): Matrix
+    {
+        if ($B->rows !== $this->rows) {
+            throw new Exception('Matrix row dimensions are not equal');
+        }
+
+        if (!$this->isFullRank()) {
+            throw new Exception('Can only perform this operation on a full-rank matrix');
+        }
+
+        // Compute Y = transpose(Q)*B
+        $Y = $this->getQ()->transpose()
+            ->multiply($B);
+        // Solve R*X = Y;
+        return $this->getR()->inverse()
+            ->multiply($Y);
     }
 }
