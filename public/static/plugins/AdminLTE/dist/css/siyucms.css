@@ -236,7 +236,7 @@ label{margin-bottom: 0;}
 #builder-form-group-tab .nav-item.show .nav-link, #builder-form-group-tab .nav-link.active{color: inherit;}
 /* 多图上传细节处理 */
 .more_images{border: 1px solid #d2d6de; min-height: 38px; background-color: #F8F8F8;}
-.more_images .row{padding: 2.5px;}
+.more_images .row{padding: 0 2.5px;}
 .more_images .row > div{padding: 2.5px;}
 .more_images .row .btn-group{padding-top: 3px;}
 .webuploader-container, .webuploader-pick{width: 110px;}
