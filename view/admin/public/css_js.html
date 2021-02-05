@@ -33,8 +33,15 @@
 <link rel="stylesheet" href="/static/plugins/webuploader-0.1.5/webuploader.css">
 <script src="/static/plugins/webuploader-0.1.5/webuploader.js"></script>
 {include file="index/webuploader" /}
+{if $system.editor == '1'}
+<!-- ueditor -->
+<script src="/static/plugins/ueditor/ueditor.config.js"></script>
+<script src="/static/plugins/ueditor/ueditor.all.min.js"> </script>
+<script src="/static/plugins/ueditor/lang/zh-cn/zh-cn.js"></script>
+{else}
 <!-- ckeditor4 -->
 <script src="/static/plugins/ckeditor/ckeditor.js"></script>
+{/if}
 <!-- Bootstrap Table -->
 <link rel="stylesheet" href="/static/plugins/bootstrap-table/bootstrap-table.min.css" />
 <!-- layer 弹层组件 -->
