@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50726
 File Encoding         : 65001
 
-Date: 2020-12-16 16:28:34
+Date: 2021-02-05 14:59:12
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -614,7 +614,7 @@ CREATE TABLE `tp_dictionary` (
   `sort` int(5) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
   `status` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tp_dictionary
@@ -645,6 +645,7 @@ INSERT INTO `tp_dictionary` VALUES ('23', '国内', '1', '10', '', '1584510855',
 INSERT INTO `tp_dictionary` VALUES ('24', '国外', '2', '10', '', '1584510871', '1584510871', '2', '1');
 INSERT INTO `tp_dictionary` VALUES ('25', '预览', 'preview', '7', '预览按钮', '1585894123', '1585894136', '1', '1');
 INSERT INTO `tp_dictionary` VALUES ('26', '本地上传', '1', '11', '本地上传', '1586855924', '1586855935', '1', '1');
+INSERT INTO `tp_dictionary` VALUES ('27', 'CKEditor', '0', '12', 'CKEditor', '1612507944', '1612508054', '1', '1');
 
 -- ----------------------------
 -- Table structure for tp_dictionary_type
@@ -659,7 +660,7 @@ CREATE TABLE `tp_dictionary_type` (
   `remark` varchar(200) NOT NULL DEFAULT '' COMMENT '备注',
   `sort` int(5) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tp_dictionary_type
@@ -675,6 +676,7 @@ INSERT INTO `tp_dictionary_type` VALUES ('8', '开关状态', '1', '1580559205',
 INSERT INTO `tp_dictionary_type` VALUES ('9', '数据源', '1', '1580793811', '1581165226', '0 字段本身，1 系统字典， 2  模型数据', '8');
 INSERT INTO `tp_dictionary_type` VALUES ('10', '所属地区', '1', '1584510809', '1584510822', '', '10');
 INSERT INTO `tp_dictionary_type` VALUES ('11', '上传驱动', '1', '1586855872', '1586855880', '上传驱动', '11');
+INSERT INTO `tp_dictionary_type` VALUES ('12', '编辑器', '1', '1612507874', '1612508175', '编辑器', '12');
 
 -- ----------------------------
 -- Table structure for tp_download
@@ -741,7 +743,7 @@ CREATE TABLE `tp_field` (
   `setup` text COMMENT '其他设置',
   `group_id` char(8) NOT NULL DEFAULT '0' COMMENT '字段分组',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=349 DEFAULT CHARSET=utf8 COMMENT='模型字段表';
+) ENGINE=MyISAM AUTO_INCREMENT=350 DEFAULT CHARSET=utf8 COMMENT='模型字段表';
 
 -- ----------------------------
 -- Records of tp_field
@@ -895,7 +897,7 @@ INSERT INTO `tp_field` VALUES ('158', '13', 'message_send_mail', '留言邮件�
 INSERT INTO `tp_field` VALUES ('159', '13', 'template_opening', '模板修改备份', '开启后后台模板管理中修改文件时会进行自动备份', '0', '0', '0', 'radio', '1', '', '', '8', '1', '1', '1', '0', '0', '=', '1', '22', '', 'array (\n  \'default\' => \'1\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '3');
 INSERT INTO `tp_field` VALUES ('160', '13', 'template', '模板目录', '模版所在的目录名称，默认为 default', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '23', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '4');
 INSERT INTO `tp_field` VALUES ('161', '13', 'html', 'Html目录', 'Html所在的目录名称，默认为 html', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '24', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '4');
-INSERT INTO `tp_field` VALUES ('162', '13', 'other', '其他', '其他信息', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '25', '备用字段', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '5');
+INSERT INTO `tp_field` VALUES ('162', '13', 'other', '其他', '其他信息', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '50', '备用字段', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '5');
 INSERT INTO `tp_field` VALUES ('163', '14', 'id', '编号', '', '0', '0', '0', 'hidden', '0', '', '', '', '0', '0', '1', '0', '0', '', '1', '1', '自增ID', 'array (\'default\' => \'0\',\'extra_attr\' => \'\',\'extra_class\' => \'\',\'step\' => \'1\',\'fieldtype\' => \'int\',\'group\' => \'\')', '0');
 INSERT INTO `tp_field` VALUES ('164', '14', 'create_time', '添加时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\'default\' => \'0\', \'format\' => \'Y-m-d H:i:s\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'placeholder\' => \'\', \'fieldtype\' => \'int\',)', '0');
 INSERT INTO `tp_field` VALUES ('165', '14', 'update_time', '更新时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\n  \'default\' => \'0\',\n  \'format\' => \'Y-m-d H:i:s\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'int\',\n)', '');
@@ -1082,6 +1084,7 @@ INSERT INTO `tp_field` VALUES ('345', '13', 'upload_file_size', '文件限制', 
 INSERT INTO `tp_field` VALUES ('346', '13', 'upload_file_ext', '文件格式', '多个格式请用英文逗号（,）隔开', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '28', '文件格式', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '9');
 INSERT INTO `tp_field` VALUES ('347', '13', 'upload_image_size', '图片限制', '单位：KB，0表示不限制上传大小', '0', '0', '50', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '29', '图片限制', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '9');
 INSERT INTO `tp_field` VALUES ('348', '13', 'upload_image_ext', '图片格式', '多个格式请用英文逗号（,）隔开', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '30', '图片格式', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '9');
+INSERT INTO `tp_field` VALUES ('349', '13', 'editor', '编辑器', '', '0', '0', '0', 'radio', '1', '', '', '12', '1', '1', '0', '0', '0', '=', '1', '31', '', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '5');
 
 -- ----------------------------
 -- Table structure for tp_field_group
@@ -1348,13 +1351,14 @@ CREATE TABLE `tp_system` (
   `upload_file_ext` varchar(255) NOT NULL DEFAULT '' COMMENT '文件格式',
   `upload_image_size` varchar(50) NOT NULL DEFAULT '' COMMENT '图片限制',
   `upload_image_ext` varchar(255) NOT NULL DEFAULT '' COMMENT '图片格式',
+  `editor` tinyint(10) unsigned NOT NULL DEFAULT '0' COMMENT '编辑器',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='系统设置';
 
 -- ----------------------------
 -- Records of tp_system
 -- ----------------------------
-INSERT INTO `tp_system` VALUES ('1', '1580560560', '1586857104', 'SIYUCMS', '/uploads/20181226/a3a4245ec095da4903c6c81123fd480d.png', '辽ICP备12345678号-1', 'Copyright © SIYUCMS 2019.All right reserved.Powered by SIYUCMS', 'www.xxx.com', '辽宁省沈阳市铁西区重工街XX路XX号1-1-1', 'X先生', '010-8888 7777', '158 4018 8888', '010-8888 9999', '407593529@qq.com', '407593529', '/uploads/20181226/cb7a4c21d6443bc5e7a8d16ac2cbe242.png', 'SIYUCMS 官网', 'SIYUCMS，SIYUCMS内容管理系统，php，ThinkPHP CMS，ThinkPHP建站系统', 'SIYUCMS 是一款基于 ThinkPHP + AdminLTE 的内容管理系统。后台界面采用响应式布局，清爽、极简、简单、易用，是做开发的最佳选择。', '0', '1', '0', '0', '1', 'default', 'html', '', '1', '0', 'rar,zip,avi,rmvb,3gp,flv,mp3,mp4,txt,doc,xls,ppt,pdf,xls,docx,xlsx,doc', '0', 'jpg,png,gif,jpeg,ico');
+INSERT INTO `tp_system` VALUES ('1', '1580560560', '1586857104', 'SIYUCMS', '/uploads/20181226/a3a4245ec095da4903c6c81123fd480d.png', '辽ICP备12345678号-1', 'Copyright © SIYUCMS 2019.All right reserved.Powered by SIYUCMS', 'www.xxx.com', '辽宁省沈阳市铁西区重工街XX路XX号1-1-1', 'X先生', '010-8888 7777', '158 4018 8888', '010-8888 9999', '407593529@qq.com', '407593529', '/uploads/20181226/cb7a4c21d6443bc5e7a8d16ac2cbe242.png', 'SIYUCMS 官网', 'SIYUCMS，SIYUCMS内容管理系统，php，ThinkPHP CMS，ThinkPHP建站系统', 'SIYUCMS 是一款基于 ThinkPHP + AdminLTE 的内容管理系统。后台界面采用响应式布局，清爽、极简、简单、易用，是做开发的最佳选择。', '0', '1', '0', '0', '1', 'default', 'html', '', '1', '0', 'rar,zip,avi,rmvb,3gp,flv,mp3,mp4,txt,doc,xls,ppt,pdf,xls,docx,xlsx,doc', '0', 'jpg,png,gif,jpeg,ico', '0');
 
 -- ----------------------------
 -- Table structure for tp_system_group
