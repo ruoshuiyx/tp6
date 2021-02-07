@@ -299,6 +299,10 @@ class ThinkAddons
     // 判断插件配置文件是否进行了分组
     public function checkConfigGroup(array $config)
     {
+        // 空配置信息
+        if (!$config) {
+            return false;
+        }
         // 获取第一个元素
         $arrayShift = array_shift($config);
         if (array_key_exists('title', $arrayShift) && array_key_exists('type', $arrayShift)) {

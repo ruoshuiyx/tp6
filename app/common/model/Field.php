@@ -48,7 +48,7 @@ class Field extends Base
     }
 
     // 获取列表
-    public static function getList($where = array(), $pageSize, $order = ['sort', 'id' => 'desc'])
+    public static function getList($where, $pageSize, $order = ['sort', 'id' => 'desc'])
     {
         $list = self::where($where)
             ->order($order)
