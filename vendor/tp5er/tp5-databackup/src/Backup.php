@@ -453,6 +453,8 @@ class Backup
      */
     public function __destruct()
     {
-        $this->config['compress'] ? @gzclose($this->fp) : @fclose($this->fp);
+        if ($this->fp) {
+            $this->config['compress'] ? @gzclose($this->fp) : @fclose($this->fp);
+        }
     }
 }
