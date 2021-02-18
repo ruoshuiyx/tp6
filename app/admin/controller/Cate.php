@@ -262,6 +262,7 @@ class Cate extends Base
                     .form_builder .form-control{padding-left: 0.5rem; padding-right: 0.5rem}
                     .form_builder .js_cates_content .col-form-label{display: none}
                     .form_builder .js_cates button{display: none}
+                    .form_builder .js_cates_content button{margin-top: 4px}
                 </style>';
 
         // 额外js
