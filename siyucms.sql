@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50726
 File Encoding         : 65001
 
-Date: 2021-02-05 14:59:12
+Date: 2021-02-18 16:01:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -32,7 +32,7 @@ CREATE TABLE `tp_ad` (
   `url` varchar(255) NOT NULL DEFAULT '' COMMENT '链接地址',
   `description` varchar(250) NOT NULL DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='广告列表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='广告列表';
 
 -- ----------------------------
 -- Records of tp_ad
@@ -98,7 +98,7 @@ CREATE TABLE `tp_ad_type` (
   `sort` int(10) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
   `status` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='广告分组';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='广告分组';
 
 -- ----------------------------
 -- Records of tp_ad_type
@@ -173,7 +173,7 @@ CREATE TABLE `tp_auth_group` (
 -- Records of tp_auth_group
 -- ----------------------------
 INSERT INTO `tp_auth_group` VALUES ('1', '1580633995', '1583732574', '1', '超级管理员', '0,157,92,93,94,95,96,97,98,99,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,171,172,173,174,175,176,268,269,270,271,272,273,274,275,276,158,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,106,107,108,109,110,111,112,113,114,115,100,101,102,103,104,105,159,163,164,165,166,167,168,169,170,160,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,39,40,41,42,43,44,45,46,47,48,187,177,178,179,180,181,182,183,184,185,186,161,49,50,51,52,53,54,55,56,57,58,69,70,71,72,73,74,75,76,77,78,59,60,61,62,63,64,65,66,67,68,79,80,81,82,83,84,85,86,87,88,162,1,2,3,4,5,6,7,8,29,30,31,32,33,34,35,36,37,38,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,258,260,261,262,263,264,265,266,267,');
-INSERT INTO `tp_auth_group` VALUES ('2', '1580634019', '1583976504', '1', '测试组', '0,157,92,93,95,99,9,10,12,16,19,20,22,26,171,174,268,269,271,274,277,278,158,116,117,119,123,125,126,128,132,134,106,107,109,113,100,101,105,159,163,164,165,166,167,169,170,160,136,137,139,143,147,148,150,154,39,40,42,46,187,177,178,180,184,161,49,50,52,56,69,70,72,76,59,60,62,66,79,80,82,86,162,1,2,4,8,29,30,32,36,188,189,190,192,196,199,200,202,206,209,210,212,216,219,220,222,226,229,230,232,236,239,240,242,246,249,252,256,258,260,261,262,263,264,265,266,267,');
+INSERT INTO `tp_auth_group` VALUES ('2', '1580634019', '1613634834', '1', '测试组', '0,157,92,93,95,99,9,10,12,16,19,20,22,26,171,174,268,269,271,274,277,278,158,116,117,119,123,125,126,128,132,134,106,107,109,113,100,101,105,159,163,164,165,166,167,169,170,160,136,137,139,143,147,148,150,154,39,40,42,46,187,177,178,180,184,281,161,49,50,52,56,69,70,72,76,59,60,62,66,79,80,82,86,162,1,2,4,8,29,30,32,36,188,189,190,192,196,199,200,202,206,209,210,212,216,219,220,222,226,229,230,232,236,239,240,242,246,249,252,256,258,260,261,262,263,264,265,266,267,');
 
 -- ----------------------------
 -- Table structure for tp_auth_group_access
@@ -187,7 +187,7 @@ CREATE TABLE `tp_auth_group_access` (
   UNIQUE KEY `uid_group_id` (`uid`,`group_id`),
   KEY `uid` (`uid`),
   KEY `group_id` (`group_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tp_auth_group_access
@@ -215,7 +215,7 @@ CREATE TABLE `tp_auth_rule` (
   `param` varchar(50) NOT NULL DEFAULT '' COMMENT '参数',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=281 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=283 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tp_auth_rule
@@ -308,8 +308,6 @@ INSERT INTO `tp_auth_rule` VALUES ('85', '79', 'Debris/selectDel', '操作-批�
 INSERT INTO `tp_auth_rule` VALUES ('86', '79', 'Debris/export', '操作-导出', '1', '0', '', '7', '1', '', '1580861113', '1580861113', '');
 INSERT INTO `tp_auth_rule` VALUES ('87', '79', 'Debris/sort', '操作-排序', '1', '0', '', '8', '1', '', '1580861113', '1580861113', '');
 INSERT INTO `tp_auth_rule` VALUES ('88', '79', 'Debris/state', '操作-状态', '1', '0', '', '9', '1', '', '1580861113', '1580861113', '');
-INSERT INTO `tp_auth_rule` VALUES ('268', '157', 'Template/index', '模板管理', '1', '1', '', '16', '1', 'fa fa-code', '1581385089', '1581385089', '');
-INSERT INTO `tp_auth_rule` VALUES ('269', '268', 'Template/add', '操作-添加', '1', '0', '', '1', '1', '', '1581385125', '1581385125', '');
 INSERT INTO `tp_auth_rule` VALUES ('92', '157', 'System/index', '系统设置', '1', '1', '', '11', '1', 'fa fa-cog', '1580861127', '1580874204', '');
 INSERT INTO `tp_auth_rule` VALUES ('93', '92', 'System/add', '操作-添加', '1', '0', '', '1', '1', '', '1580861127', '1580861127', '');
 INSERT INTO `tp_auth_rule` VALUES ('94', '92', 'System/addPost', '操作-添加保存', '1', '0', '', '2', '1', '', '1580861127', '1580861127', '');
@@ -477,14 +475,16 @@ INSERT INTO `tp_auth_rule` VALUES ('255', '249', 'Message/selectDel', '操作-�
 INSERT INTO `tp_auth_rule` VALUES ('256', '249', 'Message/export', '操作-导出', '1', '0', '', '7', '1', '', '1581080655', '1581080655', '');
 INSERT INTO `tp_auth_rule` VALUES ('257', '249', 'Message/state', '操作-状态', '1', '0', '', '9', '1', '', '1581080655', '1581214069', '');
 INSERT INTO `tp_auth_rule` VALUES ('258', '0', 'Demo', '实例演示', '1', '1', '', '9', '1', 'fa fa-desktop', '1581210913', '1581210922', '');
-INSERT INTO `tp_auth_rule` VALUES ('261', '258', 'Demo/icons', '图标', '1', '1', '', '92', '1', '', '1581217423', '1581217753', '');
 INSERT INTO `tp_auth_rule` VALUES ('260', '258', 'Demo/button', '按钮', '1', '1', '', '91', '1', '', '1581212447', '1581212473', '');
+INSERT INTO `tp_auth_rule` VALUES ('261', '258', 'Demo/icons', '图标', '1', '1', '', '92', '1', '', '1581217423', '1581217753', '');
 INSERT INTO `tp_auth_rule` VALUES ('262', '258', 'Demo/general', '常规', '1', '1', '', '93', '1', '', '1581217729', '1581217756', '');
 INSERT INTO `tp_auth_rule` VALUES ('263', '258', 'Demo/modals', '模态框', '1', '1', '', '94', '1', '', '1581218146', '1581218146', '');
 INSERT INTO `tp_auth_rule` VALUES ('264', '258', 'Demo/timeline', '时间轴', '1', '1', '', '95', '1', '', '1581218342', '1581218342', '');
 INSERT INTO `tp_auth_rule` VALUES ('265', '258', 'Demo/layer', '弹层', '1', '1', '', '96', '1', '', '1581223849', '1581223863', '');
 INSERT INTO `tp_auth_rule` VALUES ('266', '258', 'Demo/layerForm', 'layer表单', '1', '1', '', '97', '1', '', '1581297357', '1581297367', '');
 INSERT INTO `tp_auth_rule` VALUES ('267', '258', 'Demo/addPost', '提交演示', '1', '0', '', '98', '0', '', '1581299002', '1581299009', '');
+INSERT INTO `tp_auth_rule` VALUES ('268', '157', 'Template/index', '模板管理', '1', '1', '', '16', '1', 'fa fa-code', '1581385089', '1581385089', '');
+INSERT INTO `tp_auth_rule` VALUES ('269', '268', 'Template/add', '操作-添加', '1', '0', '', '1', '1', '', '1581385125', '1581385125', '');
 INSERT INTO `tp_auth_rule` VALUES ('270', '268', 'Template/addPost', '操作-添加保存', '1', '0', '', '2', '1', '', '1581385157', '1581385157', '');
 INSERT INTO `tp_auth_rule` VALUES ('271', '268', 'Template/edit', '操作-修改', '1', '0', '', '3', '1', '', '1581385175', '1581385175', '');
 INSERT INTO `tp_auth_rule` VALUES ('272', '268', 'Template/editPost', '操作-修改保存', '1', '0', '', '4', '1', '', '1581385230', '1581385230', '');
@@ -496,6 +496,8 @@ INSERT INTO `tp_auth_rule` VALUES ('277', '157', 'Plugin/index', '插件管理',
 INSERT INTO `tp_auth_rule` VALUES ('278', '277', 'Plugin/config', '操作-配置', '1', '0', '', '1', '1', '', '1583976343', '1583976343', '');
 INSERT INTO `tp_auth_rule` VALUES ('279', '277', 'Plugin/configSave', '操作-配置保存', '1', '0', '', '2', '1', '', '1583976405', '1583976405', '');
 INSERT INTO `tp_auth_rule` VALUES ('280', '277', 'Plugin/state', '操作-安装/卸载', '1', '0', '', '3', '1', '', '1583976450', '1583976450', '');
+INSERT INTO `tp_auth_rule` VALUES ('281', '177', 'Cate/batchAdd', '操作-批量添加', '1', '0', '', '10', '1', '', '1613634680', '1613634680', '');
+INSERT INTO `tp_auth_rule` VALUES ('282', '177', 'Cate/batchAddPost', '操作-批量添加保存', '1', '0', '', '11', '1', '', '1613634757', '1613634784', '');
 
 -- ----------------------------
 -- Table structure for tp_cate
@@ -556,7 +558,7 @@ CREATE TABLE `tp_config` (
   `inc_type` varchar(64) DEFAULT NULL COMMENT '配置分组',
   `desc` varchar(50) DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=95 DEFAULT CHARSET=utf8 COMMENT='配置表';
+) ENGINE=InnoDB AUTO_INCREMENT=95 DEFAULT CHARSET=utf8 COMMENT='配置表';
 
 -- ----------------------------
 -- Records of tp_config
@@ -567,13 +569,13 @@ INSERT INTO `tp_config` VALUES ('62', 'smtp_user', '407593529@qq.com', 'smtp', '
 INSERT INTO `tp_config` VALUES ('63', 'smtp_pwd', '发ff', 'smtp', '0');
 INSERT INTO `tp_config` VALUES ('64', 'regis_smtp_enable', '测试', 'smtp', '0');
 INSERT INTO `tp_config` VALUES ('65', 'test_eamil', '123@qq.com', 'smtp', '0');
-INSERT INTO `tp_config` VALUES ('94', 'test_mobile', '', 'sms', null);
-INSERT INTO `tp_config` VALUES ('93', 'signName', '', 'sms', null);
-INSERT INTO `tp_config` VALUES ('92', 'templateCode', '', 'sms', null);
-INSERT INTO `tp_config` VALUES ('91', 'accessKeySecret', '', 'sms', null);
-INSERT INTO `tp_config` VALUES ('90', 'accessKeyId', 'LTAIqinwPNwEawUK', 'sms', null);
 INSERT INTO `tp_config` VALUES ('88', 'email_id', 'SIYUCMS', 'smtp', '0');
 INSERT INTO `tp_config` VALUES ('89', 'test_eamil_info', '<p>您好！这是一封来自SIYUCMS的测试邮件！</p>\n', 'smtp', '0');
+INSERT INTO `tp_config` VALUES ('90', 'accessKeyId', 'LTAIqinwPNwEawUK', 'sms', null);
+INSERT INTO `tp_config` VALUES ('91', 'accessKeySecret', '', 'sms', null);
+INSERT INTO `tp_config` VALUES ('92', 'templateCode', '', 'sms', null);
+INSERT INTO `tp_config` VALUES ('93', 'signName', '', 'sms', null);
+INSERT INTO `tp_config` VALUES ('94', 'test_mobile', '', 'sms', null);
 
 -- ----------------------------
 -- Table structure for tp_debris
@@ -592,7 +594,7 @@ CREATE TABLE `tp_debris` (
   `image` varchar(80) NOT NULL DEFAULT '' COMMENT '图片',
   `description` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='碎片列表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='碎片列表';
 
 -- ----------------------------
 -- Records of tp_debris
@@ -743,7 +745,7 @@ CREATE TABLE `tp_field` (
   `setup` text COMMENT '其他设置',
   `group_id` char(8) NOT NULL DEFAULT '0' COMMENT '字段分组',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=350 DEFAULT CHARSET=utf8 COMMENT='模型字段表';
+) ENGINE=InnoDB AUTO_INCREMENT=350 DEFAULT CHARSET=utf8 COMMENT='模型字段表';
 
 -- ----------------------------
 -- Records of tp_field
@@ -753,7 +755,6 @@ INSERT INTO `tp_field` VALUES ('2', '1', 'email', '邮箱', '', '1', '0', '100',
 INSERT INTO `tp_field` VALUES ('4', '3', 'id', '编号', '', '0', '0', '0', 'hidden', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '1', '自增ID', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'int\',\n)', '');
 INSERT INTO `tp_field` VALUES ('6', '4', 'id', '编号', '', '0', '0', '0', 'hidden', '0', '', '', '', '0', '0', '1', '1', '0', '=', '1', '1', '自增ID', 'array (\r\n  \'default\' => \'0\',\r\n  \'extra_attr\' => \'\',\r\n  \'extra_class\' => \'\',\r\n  \'step\' => \'1\',\r\n  \'fieldtype\' => \'int\',\r\n  \'group\' => \'\',\r\n)', '0');
 INSERT INTO `tp_field` VALUES ('7', '4', 'dict_name', '字典名称', '', '1', '0', '100', 'text', '0', '', '', '', '1', '1', '1', '1', '0', '=', '1', '2', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'char\',\n  \'group\' => \'\',\n)', '0');
-INSERT INTO `tp_field` VALUES ('41', '2', 'module_id', '所属模块', '', '1', '0', '3', 'select', '2', 'Module', 'module_name', '', '1', '1', '1', '1', '1', '=', '1', '2', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('9', '4', 'status', '状态', '', '1', '0', '0', 'radio', '1', '', '', '2', '1', '1', '1', '1', '0', '=', '1', '3', '', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('10', '4', 'create_time', '创建时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '5', '', 'array (\n  \'default\' => \'0\',\n  \'format\' => \'Y-m-d H:i:s\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'int\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('11', '4', 'update_time', '更新时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '6', '', 'array (\n  \'default\' => \'0\',\n  \'format\' => \'Y-m-d H:i:s\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'int\',\n)', '0');
@@ -786,6 +787,7 @@ INSERT INTO `tp_field` VALUES ('37', '6', 'name', '分组名称', '', '1', '0', 
 INSERT INTO `tp_field` VALUES ('38', '6', 'remark', '描述', '', '0', '0', '0', 'textarea', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '3', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'text\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('39', '6', 'sort', '排序', '', '1', '0', '5', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '4', '', 'array (\n  \'default\' => \'50\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'step\' => \'1\',\n  \'fieldtype\' => \'int\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('40', '6', 'status', '状态', '', '1', '0', '0', 'radio', '1', '', '', '1', '1', '1', '1', '1', '0', '=', '1', '5', '', 'array (\n  \'default\' => \'1\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('41', '2', 'module_id', '所属模块', '', '1', '0', '3', 'select', '2', 'Module', 'module_name', '', '1', '1', '1', '1', '1', '=', '1', '2', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('42', '2', 'field', '字段名', '', '1', '0', '100', 'text', '0', '', '', '', '1', '1', '1', '1', '0', '=', '1', '3', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('43', '2', 'name', '字段别名', '', '1', '0', '100', 'text', '0', '', '', '', '1', '1', '1', '1', '0', '=', '1', '4', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('44', '2', 'tips', '提示信息', '', '0', '0', '200', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '5', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
@@ -984,8 +986,8 @@ INSERT INTO `tp_field` VALUES ('245', '19', 'tags', 'TAG', '', '0', '0', '0', 't
 INSERT INTO `tp_field` VALUES ('246', '19', 'hits', '点击次数', '', '0', '0', '0', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '12', '点击次数', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'step\' => \'1\',\n  \'fieldtype\' => \'int\',\n)', '');
 INSERT INTO `tp_field` VALUES ('247', '19', 'keywords', '关键词', '', '0', '0', '0', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '13', '关键词', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('248', '19', 'description', '描述', '', '0', '0', '0', 'textarea', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '14', '描述', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');
-INSERT INTO `tp_field` VALUES ('250', '3', 'add_param', '添加参数', '列表页面顶部按钮组中添加按钮的参数，如 cate_id,多个用`,`分割', '0', '0', '100', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '17', '列表页面顶部按钮组中添加按钮的参数，如 cate_id,多个用`,`分割', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('249', '19', 'template', '模板', '单独设置此条记录的模板，如：article_show.html 或 article_show', '0', '0', '30', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '15', '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('250', '3', 'add_param', '添加参数', '列表页面顶部按钮组中添加按钮的参数，如 cate_id,多个用`,`分割', '0', '0', '100', 'text', '0', '', '', '', '1', '1', '0', '0', '0', '=', '1', '17', '列表页面顶部按钮组中添加按钮的参数，如 cate_id,多个用`,`分割', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('251', '21', 'id', '编号', '', '0', '0', '0', 'hidden', '0', '', '', '', '0', '0', '1', '0', '0', '', '1', '1', '自增ID', 'array (\'default\' => \'0\',\'extra_attr\' => \'\',\'extra_class\' => \'\',\'step\' => \'1\',\'fieldtype\' => \'int\',\'group\' => \'\')', '0');
 INSERT INTO `tp_field` VALUES ('252', '21', 'create_time', '添加时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\'default\' => \'0\', \'format\' => \'Y-m-d H:i:s\', \'extra_attr\' => \'\', \'extra_class\' => \'\', \'placeholder\' => \'\', \'fieldtype\' => \'int\',)', '0');
 INSERT INTO `tp_field` VALUES ('253', '21', 'update_time', '更新时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '自增ID', 'array (\n  \'default\' => \'0\',\n  \'format\' => \'Y-m-d H:i:s\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'int\',\n)', '');
@@ -1099,7 +1101,7 @@ CREATE TABLE `tp_field_group` (
   `status` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
   `sort` int(5) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='字段分组';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='字段分组';
 
 -- ----------------------------
 -- Records of tp_field_group
@@ -1129,7 +1131,7 @@ CREATE TABLE `tp_link` (
   `sort` int(10) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
   `status` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='友情链接';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='友情链接';
 
 -- ----------------------------
 -- Records of tp_link
@@ -1183,7 +1185,7 @@ CREATE TABLE `tp_module` (
   `show_all` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '查看全部',
   `add_param` varchar(100) NOT NULL DEFAULT '' COMMENT '添加参数',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COMMENT='模型表';
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COMMENT='模型表';
 
 -- ----------------------------
 -- Records of tp_module
@@ -1455,7 +1457,7 @@ CREATE TABLE `tp_users` (
   `update_time` int(10) DEFAULT '0' COMMENT '修改时间',
   `create_time` int(10) DEFAULT '0' COMMENT '注册时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='会员表';
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='会员表';
 
 -- ----------------------------
 -- Records of tp_users
@@ -1482,7 +1484,7 @@ CREATE TABLE `tp_users_type` (
   `sort` int(5) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
   `status` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='用户组';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='用户组';
 
 -- ----------------------------
 -- Records of tp_users_type
