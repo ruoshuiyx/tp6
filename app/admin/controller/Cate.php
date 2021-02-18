@@ -79,11 +79,18 @@ class Cate extends Base
             ->addRightButtons($module->right_button)        // 设置右侧操作列
             ->addTopButtons($module->top_button)            // 设置顶部按钮组
             ->addTopButton('default', [
-                'title'       => '展开/折叠',
-                'icon'        => 'fas fa-exchange-alt',
-                'class'       => 'btn btn-info treeStatus',
-                'href'        => '',
-                'onclick'     => '$.operate.treeStatus()'
+                'title'   => '展开/折叠',
+                'icon'    => 'fas fa-exchange-alt',
+                'class'   => 'btn btn-info treeStatus',
+                'href'    => '',
+                'onclick' => '$.operate.treeStatus()'
+            ]) // 自定义按钮
+            ->addTopButton('default', [
+                'title'   => '批量新增',
+                'icon'    => 'fa fa-plus',
+                'class'   => 'btn btn-success',
+                'href'    => '',
+                'onclick' => '$.operate.batchAdd(\'' . url('batchAdd') . '\')'
             ]) // 自定义按钮
             ->setPagination('false')                        // 关闭分页显示
             ->setParentIdField('parent_id')                 // 设置列表树父id
@@ -243,6 +250,152 @@ class Cate extends Base
     public function export()
     {
         \app\common\model\Base::export($this->tableName, $this->modelName);
+    }
+
+    // 批量添加
+    public function batchAdd()
+    {
+        // 额外CSS
+        $css = '<style>
+                    .form_builder .form-group{margin-bottom: 0}
+                    .form_builder .col-form-label{padding-right: 5px;}
+                    .form_builder .form-control{padding-left: 0.5rem; padding-right: 0.5rem}
+                    .form_builder .js_cates_content .col-form-label{display: none}
+                    .form_builder .js_cates button{display: none}
+                </style>';
+
+        // 额外js
+        $js = '<script type="text/javascript">
+                // 增加一行
+                $(document).on("click", \'.js_add_row\', function () {
+                    var html = $(\'.js_cates\').html();
+                    $(\'.js_cates_content\').append(html);
+                })
+                // 刪除一行
+                $(document).on("click", \'.js_del_row\', function () {
+                    $(this).parent().parent().remove();
+                })
+                
+            </script>';
+
+        // 添加按钮
+        $html = '<div class="row dd_input_group"><button type="button" class="btn btn-success btn-sm js_add_row"><i class="fa fa-plus"></i> 增加一行</button></div>';
+
+        // 所属模块
+        $modules    = $this->getModuleIds();
+        $modulesStr = '';
+        foreach ($modules as $k => $v) {
+            $modulesStr .= '<option value="' . $k . '">' . $v . '</option>';
+        }
+        $html .= '<div class="js_cates">
+                    <div class="row dd_input_group">
+                        <div class="col-2">
+                            <div class="form-group">
+                                <label class="col-form-label is-required">所属模块</label>
+                                <select class="form-control" name="module_id[]"><option value="">请选择</option>' . $modulesStr . '</select>
+                            </div>
+                        </div>';
+        // 上级栏目
+        $model         = '\app\common\model\\' . $this->modelName;
+        $pidOptions    = $model::getPidOptions();
+        $pidOptionsStr = '';
+        foreach ($pidOptions as $k => $v) {
+            $pidOptionsStr .= '<option value="' . $k . '">' . $v . '</option>';
+        }
+        $html .= '<div class="col-2">
+                     <div class="form-group">
+                        <label class="col-form-label">上级栏目</label>
+                        <select class="form-control" name="parent_id[]"><option value="">请选择</option>' . $pidOptionsStr . '</select>
+                     </div>    
+                  </div>';
+
+        // 栏目名称
+        $html .= '<div class="col-2">
+                    <div class="form-group">
+                        <label class="col-form-label is-required">栏目名称</label>
+                        <input class="form-control" type="text" name="cate_name[]" placeholder="请输入栏目名称">
+                    </div>
+                  </div>';
+
+        // 英文名称
+        $html .= '<div class="col-2">
+                    <div class="form-group">
+                        <label class="col-form-label">英文名称</label>
+                        <input class="form-control" type="text" name="en_name[]" placeholder="请输入英文名称">
+                    </div>
+                  </div>';
+
+        // 栏目目录
+        $html .= '<div class="col-2">
+                    <div class="form-group">
+                        <label class="col-form-label">栏目目录</label>
+                        <input class="form-control" type="text" name="cate_folder[]" placeholder="请输入栏目目录">
+                    </div>
+                  </div>';
+
+        // 排序
+        $html .= '<div class="col-1">
+                    <div class="form-group">
+                        <label class="col-form-label is-required">排序</label>
+                        <input class="form-control" type="number" name="sort[]" value="50" step="1">
+                    </div>
+                  </div>';
+
+        // 删除行
+        $html .= '<div class="col-1">
+                    <button type="button" class="btn btn-success btn-sm js_del_row"><i class="fa fa-times"></i></button>
+                  </div>';
+
+        $html .= '</div></div><div class="js_cates_content"></div>';
+
+        // 构建页面
+        $builder = FormBuilder::getInstance();
+        $builder->setExtraCss($css)
+            ->setExtraJs($js)
+            ->addHtml($html);
+        return $builder->fetch();
+    }
+
+    // 批量添加保存
+    public function batchAddPost()
+    {
+        if (Request::isPost()) {
+            $data = Request::except(['file'], 'post');
+            if ($data) {
+                $dataNew = [];
+                for ($i = 0; $i < count($data['module_id']); $i++) {
+                    if (empty($data['module_id'][$i]) || empty($data['cate_name'][$i]) || empty($data['sort'][$i])) {
+                        $this->error('所属模块、栏目名称和排序不可为空');
+                    }
+                    $dataNew[] = [
+                        'module_id'   => $data['module_id'][$i],
+                        'parent_id'   => $data['parent_id'][$i],
+                        'cate_name'   => $data['cate_name'][$i],
+                        'en_name'     => $data['en_name'][$i],
+                        'cate_folder' => $data['cate_folder'][$i],
+                        'sort'        => $data['sort'][$i],
+                        'status'      => 1,
+                        'summary'     => '',
+                    ];
+                }
+                foreach ($dataNew as $k => $v) {
+                    $result = $this->validate($v, $this->validate);
+                    if (true !== $result) {
+                        // 验证失败 输出错误信息
+                        $this->error($result);
+                    } else {
+                        $model  = '\app\common\model\\' . $this->modelName;
+                        $result = $model::addPost($v);
+                        if ($result['error']) {
+                            $this->error($result['msg']);
+                        } else {
+                            $this->singleCateInit($v);
+                        }
+                    }
+                }
+                $this->success($result['msg'], 'index');
+            }
+        }
     }
 
     // =====================

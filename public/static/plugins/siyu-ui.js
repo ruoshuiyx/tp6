@@ -758,6 +758,23 @@
 				}
 			},
 
+			// 批量添加栏目
+			batchAdd: function(url) {
+				if ($.table._option.layerOpen == "1") {
+					// 通过参数隐藏左侧和顶部等数据
+					if (url.indexOf('?') != -1) {
+						url = url + '&_layer=1'
+					} else {
+						url = url + '?_layer=1'
+					}
+					// 弹窗打开要添加的地址
+					$.modal.open("批量添加", url);
+				} else {
+					// 当前窗口打开要添加的地址
+					$.common.jump(url);
+				}
+			},
+
 		},
 
 		// 通用方法封装处理
