@@ -956,9 +956,16 @@ class MakeBuilder
             }';
         }
 
-        $content = str_replace('{$relations}'   , $relations , $content);
-        $content = str_replace('{$listInfo}'    , $listInfo  , $content);
-        $content = str_replace('{$moduleTable}' , $this->checkModuleTable($module->table_name, $module->model_name), $content);
+        // 主键
+        $pk = '';
+        if ($module['pk'] !== 'id') {
+            $pk = 'protected $pk = \'' . $module['pk'] . '\';';
+        }
+
+        $content = str_replace('{$relations}', $relations, $content);
+        $content = str_replace('{$listInfo}', $listInfo, $content);
+        $content = str_replace('{$modulePk}', $pk, $content);
+        $content = str_replace('{$moduleTable}', $this->checkModuleTable($module->table_name, $module->model_name), $content);
         return $content;
     }
 

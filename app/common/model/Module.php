@@ -68,7 +68,7 @@ class Module extends Base
     }
 
     // 添加模块时创建表，并初始化主键字段、添加时间、修改时间等字段
-    public static function makeModule(string $tableName, int $tableType = 2)
+    public static function makeModule(string $tableName, int $tableType = 2, string $pk = 'id')
     {
         // 获取模块信息
         $module = self::where('table_name', $tableName)->find();
@@ -80,7 +80,7 @@ class Module extends Base
         if (in_array($tableName, $tables)) {
             return '表已存在，请先手动删除[' . $tableName.']';
         } else {
-            $sqlStr = '`id` int(8) unsigned NOT NULL AUTO_INCREMENT,
+            $sqlStr = '`' . $pk . '` int(8) unsigned NOT NULL AUTO_INCREMENT,
               `create_time` int(11) NOT NULL,
               `update_time` int(11) NOT NULL,';
             // 自动添加排序字段
@@ -89,7 +89,7 @@ class Module extends Base
             }
             // 自动添加状态字段
             if ($module->is_status) {
-                $sqlStr .= '`status` tinyint(1) DEFAULT NULL COMMENT \'状态\',';
+                $sqlStr .= '`status` tinyint(1) DEFAULT 1 COMMENT \'状态\',';
             }
             // 添加CMS模块时自动增加[栏目ID、点击数、关键词、描述、模板、跳转地址]字段
             if ($tableType == 1 && Config::get('builder.add_cate_id')) {
@@ -103,12 +103,16 @@ class Module extends Base
 
             $sql = "CREATE TABLE `{$tableName}` (
               {$sqlStr}
-              PRIMARY KEY (`id`)
+              PRIMARY KEY (`{$pk}`)
             ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='{$module->table_comment}'";
-            \think\facade\Db::execute($sql);
+            try {
+                \think\facade\Db::execute($sql);
+            } catch (\Exception $e) {
+                return $e->getMessage();
+            }
             // 插入表记录
             $data = [
-                ['module_id' => $module->id, 'field' => 'id', 'name' => '编号', 'type' => 'hidden', 'is_list' => '1', 'status' => '1', 'sort' => '1', 'remark' => '自增ID', 'setup' => "array ('default' => '0','extra_attr' => '','extra_class' => '','step' => '1','fieldtype' => 'int','group' => '')"],
+                ['module_id' => $module->id, 'field' => $pk, 'name' => '编号', 'type' => 'hidden', 'is_list' => '1', 'status' => '1', 'sort' => '1', 'remark' => '自增ID', 'setup' => "array ('default' => '0','extra_attr' => '','extra_class' => '','step' => '1','fieldtype' => 'int','group' => '')"],
                 ['module_id' => $module->id, 'field' => 'create_time', 'name' => '添加时间', 'maxlength' => '11', 'type' => 'datetime', 'is_list' => '1', 'search_type' => '=', 'status' => '1', 'sort' => '50', 'remark' => '添加时间', 'setup' => "array ('default' => '0', 'format' => 'Y-m-d H:i:s', 'extra_attr' => '', 'extra_class' => '', 'placeholder' => '', 'fieldtype' => 'int',)"],
                 ['module_id' => $module->id, 'field' => 'update_time', 'name' => '更新时间', 'maxlength' => '11', 'type' => 'datetime', 'is_list' => '1', 'search_type' => '=', 'status' => '1', 'sort' => '50', 'remark' => '更新时间', 'setup' => "array ('default' => '0', 'format' => 'Y-m-d H:i:s', 'extra_attr' => '', 'extra_class' => '', 'placeholder' => '', 'fieldtype' => 'int',)"],
             ];
@@ -260,4 +264,41 @@ class Module extends Base
         }
     }
 
+    // 编辑模块时修改表名称和主键
+    public static function changeModule(array $data)
+    {
+        if ($data) {
+            // 获取模块信息
+            $module = self::find($data['id']);
+            // 获取表前缀
+            $prefix = \think\facade\Config::get('database.connections.mysql.prefix');
+            if ($module['pk'] !== $data['pk']) {
+                // 更改主键
+                $sql = 'ALTER TABLE `' . $prefix . $module->table_name . '` CHANGE `' . $module['pk'] . '` `' . $data['pk'] . '` INT(8) UNSIGNED NOT NULL AUTO_INCREMENT;';
+                try {
+                    \think\facade\Db::execute($sql);
+                } catch (\Exception $e) {
+                    return $e->getMessage();
+                }
+                // 更改字段信息
+                $fieldInfo = \app\common\model\Field::where('module_id', $module['id'])
+                    ->where('field', '=', $module['pk'])
+                    ->find();
+                if ($fieldInfo) {
+                    $fieldInfo->setAttr('field', $data['pk']);
+                    $fieldInfo->save();
+                }
+            }
+            if ($module->table_name !== $data['table_name']) {
+                // 更改表名称
+                $sql = 'RENAME TABLE `' . $prefix . $module->table_name . '` TO `' . $prefix . $data['table_name'] . '`';
+                try {
+                    \think\facade\Db::execute($sql);
+                } catch (\Exception $e) {
+                    return $e->getMessage();
+                }
+            }
+        }
+        return true;
+    }
 }

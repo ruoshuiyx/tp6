@@ -105,7 +105,7 @@ class Module extends Base
                 if ($result['error']) {
                     $this->error($result['msg']);
                 } else {
-                    $makeModule = \app\common\model\Module::makeModule($data['table_name'], $data['table_type']);
+                    $makeModule = \app\common\model\Module::makeModule($data['table_name'], $data['table_type'], $data['pk']);
                     if($makeModule === true){
                         $this->success($result['msg'], 'index');
                     } else {
@@ -140,7 +140,13 @@ class Module extends Base
                 // 验证失败 输出错误信息
                 $this->error($result);
             } else {
-                $model = '\app\common\model\\' . $this->moduleName;
+                // 尝试修改表名称和主键
+                $result = \app\common\model\Module::changeModule($data);
+                if ($result !== true) {
+                    $this->error($result);
+                }
+                // 修改表记录信息
+                $model  = '\app\common\model\\' . $this->moduleName;
                 $result = $model::editPost($data);
                 if ($result['error']) {
                     $this->error($result['msg']);
@@ -320,5 +326,4 @@ class Module extends Base
             </script>';
         return $js;
     }
-
 }
