@@ -96,7 +96,7 @@ CREATE TABLE `tp_ad_type` (
   `name` varchar(255) NOT NULL DEFAULT '' COMMENT '分组名称',
   `description` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
   `sort` int(10) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
-  `status` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
+  `status` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='广告分组';
 
@@ -116,7 +116,7 @@ CREATE TABLE `tp_article` (
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
   `status` tinyint(1) DEFAULT NULL COMMENT '状态',
-  `cate_id` tinyint(10) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
+  `cate_id` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
   `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
   `author` varchar(255) NOT NULL DEFAULT '' COMMENT '作者',
   `source` varchar(255) NOT NULL DEFAULT '' COMMENT '来源',
@@ -513,7 +513,7 @@ CREATE TABLE `tp_cate` (
   `en_name` varchar(255) NOT NULL DEFAULT '' COMMENT '英文名称',
   `cate_folder` varchar(255) NOT NULL DEFAULT '' COMMENT '栏目目录',
   `parent_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '上级栏目',
-  `module_id` tinyint(10) unsigned NOT NULL DEFAULT '0' COMMENT '所属模块',
+  `module_id` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '所属模块',
   `url` varchar(255) NOT NULL DEFAULT '' COMMENT '外部链接',
   `image` varchar(255) NOT NULL DEFAULT '' COMMENT '栏目图片',
   `ico_image` varchar(255) NOT NULL DEFAULT '' COMMENT 'ICO图片',
@@ -524,9 +524,9 @@ CREATE TABLE `tp_cate` (
   `template_list` varchar(255) NOT NULL DEFAULT '' COMMENT '列表模板',
   `template_show` varchar(255) NOT NULL DEFAULT '' COMMENT '详情模版',
   `page_size` char(5) NOT NULL DEFAULT '0' COMMENT '分页条数',
-  `is_menu` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '导航状态',
-  `is_next` tinyint(10) unsigned NOT NULL DEFAULT '0' COMMENT '跳转下级',
-  `is_blank` tinyint(10) unsigned NOT NULL DEFAULT '0' COMMENT '新窗口打开',
+  `is_menu` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '导航状态',
+  `is_next` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '跳转下级',
+  `is_blank` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '新窗口打开',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='栏目管理';
 
@@ -614,7 +614,7 @@ CREATE TABLE `tp_dictionary` (
   `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
   `sort` int(5) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
-  `status` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
+  `status` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 
@@ -656,7 +656,7 @@ DROP TABLE IF EXISTS `tp_dictionary_type`;
 CREATE TABLE `tp_dictionary_type` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `dict_name` char(100) NOT NULL DEFAULT '' COMMENT '字典名称',
-  `status` tinyint(10) unsigned NOT NULL DEFAULT '0' COMMENT '状态',
+  `status` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '状态',
   `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
   `remark` varchar(200) NOT NULL DEFAULT '' COMMENT '备注',
@@ -690,7 +690,7 @@ CREATE TABLE `tp_download` (
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
   `status` tinyint(1) DEFAULT NULL COMMENT '状态',
-  `cate_id` tinyint(10) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
+  `cate_id` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
   `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
   `author` varchar(255) NOT NULL DEFAULT '' COMMENT '作者',
   `source` varchar(255) NOT NULL DEFAULT '' COMMENT '来源',
@@ -1098,7 +1098,7 @@ CREATE TABLE `tp_field_group` (
   `update_time` int(11) NOT NULL,
   `module_id` text NOT NULL COMMENT '所属模块',
   `group_name` varchar(255) NOT NULL DEFAULT '' COMMENT '分组名称',
-  `status` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
+  `status` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
   `sort` int(5) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='字段分组';
@@ -1129,7 +1129,7 @@ CREATE TABLE `tp_link` (
   `logo` varchar(80) NOT NULL DEFAULT '' COMMENT '网站logo',
   `description` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
   `sort` int(10) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
-  `status` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
+  `status` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='友情链接';
 
@@ -1147,7 +1147,7 @@ CREATE TABLE `tp_message` (
   `create_time` int(11) NOT NULL,
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `status` tinyint(1) DEFAULT NULL COMMENT '状态',
-  `cate_id` tinyint(10) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
+  `cate_id` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
   `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
   `content` text NOT NULL COMMENT '内容',
   `name` varchar(255) NOT NULL DEFAULT '' COMMENT '姓名',
@@ -1177,12 +1177,12 @@ CREATE TABLE `tp_module` (
   `sort` smallint(3) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
   `create_time` int(11) NOT NULL,
   `update_time` int(11) NOT NULL,
-  `is_sort` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '排序字段',
-  `is_status` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '状态字段',
+  `is_sort` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '排序字段',
+  `is_status` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '状态字段',
   `top_button` varchar(255) NOT NULL DEFAULT 'add,edit,del,export' COMMENT '顶部按钮',
   `right_button` varchar(255) NOT NULL DEFAULT 'edit,delete' COMMENT '右侧按钮',
-  `is_single` tinyint(10) unsigned NOT NULL DEFAULT '0' COMMENT '单页模式',
-  `show_all` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '查看全部',
+  `is_single` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '单页模式',
+  `show_all` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '查看全部',
   `add_param` varchar(100) NOT NULL DEFAULT '' COMMENT '添加参数',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COMMENT='模型表';
@@ -1225,7 +1225,7 @@ CREATE TABLE `tp_page` (
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
   `status` tinyint(1) DEFAULT NULL COMMENT '状态',
-  `cate_id` tinyint(10) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
+  `cate_id` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
   `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
   `content` text NOT NULL COMMENT '内容',
   PRIMARY KEY (`id`)
@@ -1248,7 +1248,7 @@ CREATE TABLE `tp_picture` (
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
   `status` tinyint(1) DEFAULT NULL COMMENT '状态',
-  `cate_id` tinyint(10) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
+  `cate_id` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
   `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
   `author` varchar(255) NOT NULL DEFAULT '' COMMENT '作者',
   `source` varchar(255) NOT NULL DEFAULT '' COMMENT '来源',
@@ -1286,7 +1286,7 @@ CREATE TABLE `tp_product` (
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
   `status` tinyint(1) DEFAULT NULL COMMENT '状态',
-  `cate_id` tinyint(10) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
+  `cate_id` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
   `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
   `author` varchar(255) NOT NULL DEFAULT '' COMMENT '作者',
   `source` varchar(255) NOT NULL DEFAULT '' COMMENT '来源',
@@ -1340,20 +1340,20 @@ CREATE TABLE `tp_system` (
   `title` varchar(255) NOT NULL DEFAULT '' COMMENT 'SEO标题',
   `key` varchar(255) NOT NULL DEFAULT '' COMMENT 'SEO关键字',
   `des` varchar(255) NOT NULL DEFAULT '' COMMENT 'SEO描述',
-  `mobile` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '手机端',
-  `code` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '后台验证码',
-  `message_code` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '前台验证码',
-  `message_send_mail` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '留言邮件提醒',
-  `template_opening` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '模板修改备份',
+  `mobile` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '手机端',
+  `code` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '后台验证码',
+  `message_code` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '前台验证码',
+  `message_send_mail` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '留言邮件提醒',
+  `template_opening` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '模板修改备份',
   `template` varchar(255) NOT NULL DEFAULT '' COMMENT '模板目录',
   `html` varchar(255) NOT NULL DEFAULT '' COMMENT 'Html目录',
   `other` varchar(255) NOT NULL DEFAULT '' COMMENT '其他',
-  `upload_driver` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '上传驱动',
+  `upload_driver` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '上传驱动',
   `upload_file_size` varchar(50) NOT NULL DEFAULT '' COMMENT '文件限制',
   `upload_file_ext` varchar(255) NOT NULL DEFAULT '' COMMENT '文件格式',
   `upload_image_size` varchar(50) NOT NULL DEFAULT '' COMMENT '图片限制',
   `upload_image_ext` varchar(255) NOT NULL DEFAULT '' COMMENT '图片格式',
-  `editor` tinyint(10) unsigned NOT NULL DEFAULT '0' COMMENT '编辑器',
+  `editor` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '编辑器',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='系统设置';
 
@@ -1396,7 +1396,7 @@ CREATE TABLE `tp_team` (
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
   `status` tinyint(1) DEFAULT NULL COMMENT '状态',
-  `cate_id` tinyint(10) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
+  `cate_id` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
   `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
   `author` varchar(255) NOT NULL DEFAULT '' COMMENT '作者',
   `source` varchar(255) NOT NULL DEFAULT '' COMMENT '来源',
@@ -1482,7 +1482,7 @@ CREATE TABLE `tp_users_type` (
   `name` varchar(100) NOT NULL DEFAULT '' COMMENT '分组名称',
   `remark` text NOT NULL COMMENT '描述',
   `sort` int(5) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
-  `status` tinyint(10) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
+  `status` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='用户组';
 

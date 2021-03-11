@@ -567,7 +567,7 @@ class Field extends Base
                 } elseif ($fieldtype == 'INT' || $fieldtype == 'TINYINT') {
                     $default = $default ?? intval($default);
                     if (!$maxlength)
-                        $maxlength = 10;
+                        $maxlength = $fieldtype == 'INT' ? 10 : 4;
                     $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) " . ($numbertype == 1 ? 'UNSIGNED' : '') . " NOT NULL DEFAULT {$default} COMMENT '$comment'";
                 } else {
                     $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NULL COMMENT '$comment'";
@@ -584,7 +584,7 @@ class Field extends Base
                 } elseif ($fieldtype == 'INT' || $fieldtype == 'TINYINT') {
                     $default = $default ?? intval($default);
                     if (!$maxlength)
-                        $maxlength = 10;
+                        $maxlength = $fieldtype == 'INT' ? 10 : 4;
                     $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) " . ($numbertype == 1 ? 'UNSIGNED' : '') . " NOT NULL DEFAULT {$default} COMMENT '$comment'";
                 } else {
                     $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NULL COMMENT '$comment'";
