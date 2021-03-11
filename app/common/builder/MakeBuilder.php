@@ -422,6 +422,13 @@ class MakeBuilder
                     $option = '=';
                 }
 
+                // 栏目字段需考虑子栏目
+                if ($v[1] == 'cate_id') {
+                    $option        = 'in';
+                    $cates         = \app\common\model\Cate::field('id,parent_id')->select()->toArray();
+                    $searhKeywords = getChildsIdStr(getChildsId($cates, $searhKeywords), $searhKeywords);
+                }
+
                 // 模型关联的数据需要考虑转化
                 if ($v[6] == 2) {
                     // 需要转化的字段类型
