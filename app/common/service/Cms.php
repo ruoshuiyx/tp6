@@ -29,6 +29,7 @@ use app\common\facade\MakeBuilder;
 use app\common\model\Cate;
 use think\facade\Config;
 use think\facade\Db;
+use think\facade\Session;
 
 class Cms
 {
@@ -142,6 +143,42 @@ class Cms
         return $cate['template_list'] ? str_replace('.html', '', $cate['template_list']) : $tableName . '_list';
     }
 
+    /**
+     * * 详情页检查用户阅读权限
+     * @param array  $info  单篇文章信息，字段
+     * @param string $field 需要验证权限的字段名称
+     * @return array|bool
+     */
+    public function checkViewAuth(array $info, string $field = 'view_auth')
+    {
+        if ($info) {
+            if (isset($info[$field]) && !empty($info[$field])) {
+                if (!Session::has('user')) {
+                    return [
+                        'code' => 1,
+                        'msg'  => '请先登录',
+                        'url'  => url('user/login')
+                    ];
+                } else {
+                    $userType = 0;
+                    foreach ($info[$field . '_array'] as $k => $v) {
+                        if ($v['value'] == $info[$field]) {
+                            $userType = $v['key'];
+                            break;
+                        }
+                    }
+                    if (Session::get('user.type_id') < $userType) {
+                        return [
+                            'code' => 2,
+                            'msg'  => $info[$field] . ' 才可浏览',
+                            'url'  => url('user/index')
+                        ];
+                    }
+                }
+            }
+        }
+        return true;
+    }
     // ===================================================
 
     /**

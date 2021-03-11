@@ -74,6 +74,12 @@ class Error extends Base
             $info = Db::name($this->tableName)
                 ->where('cate_id', '=', $cate['id'])
                 ->find();
+            $info = Cms::getInfo($info['id'], $this->tableName);
+            // 阅读权限
+            $viewAuth = Cms::checkViewAuth($info);
+            if ($viewAuth !== true) {
+                $this->error($viewAuth['msg'], $viewAuth['url']);
+            }
             View::assign(['info' => $info]);//单页内容
         }
 
@@ -92,7 +98,8 @@ class Error extends Base
     }
 
     // 详情
-    public function info(string $id){
+    public function info(string $id)
+    {
         // 获取栏目ID
         $catId = getCateId();
         if (empty($catId)) {
@@ -104,6 +111,11 @@ class Error extends Base
         Cms::addHits($id, $this->tableName);
         // 查找内容详情
         $info = Cms::getInfo($id, $this->tableName);
+        // 阅读权限
+        $viewAuth = Cms::checkViewAuth($info);
+        if ($viewAuth !== true) {
+            $this->error($viewAuth['msg'], $viewAuth['url']);
+        }
         // 跳转
         if (isset($info['url']) && !empty($info['url'])) {
             return redirect($info['url']);
