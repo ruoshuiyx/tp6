@@ -186,6 +186,7 @@ class Template extends Base
     // 修改
     public function edit(string $id)
     {
+        $id = $this->checkFilename($id);
         // 默认文件类型
         $type = Request::param('type', 'html');
         // 文件类型数组
