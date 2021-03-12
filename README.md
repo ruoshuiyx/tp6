@@ -1,15 +1,13 @@
 SIYUCMS V6.1 快速开发内容管理系统
 ===============
+SIYUCMS 基于 ThinkPHP6.0 + AdminLTE 开发，简单 / 易用 / 响应式 / 低门槛。
 
-> 运行环境要求PHP7.1+。
+系统内置了表单构建器和表格构建器，配合后台模块管理和字段管理能快速方便的构建Web应用程序。
+> 运行环境要求PHP7.1+
 
-> SIYUCMS 运行目录: public/
+> SIYUCMS 运行目录: public
 
-## 在线手册
-
-+ [完全开发手册](https://www.kancloud.cn/ruoshuiyx/siyucms/)
-
-## 安装
+## 安装使用
 
 > 下载SIYUCMS完整包解压到你本地（建议采用git方式拉取）
 
@@ -23,19 +21,57 @@ SIYUCMS V6.1 快速开发内容管理系统
 
 > 默认后台用户名：admin 密码：admin
 
-## 演示
+## 在线体验
+- 用户名：test 密码：123456
+- 陆续收到一些捐赠、授权和打赏，谢谢各位小伙伴的支持。
 
-> [演示地址](http://v6.siyucms.com/admin)
+演示地址：
+[http://v6.siyucms.com/admin](http://v6.siyucms.com/admin)
 
-> 演示账户：test 密码：123456
+文档地址：[https://www.kancloud.cn/ruoshuiyx/siyucms/](https://www.kancloud.cn/ruoshuiyx/siyucms/)
+
+## 演示图
+
+<table>
+    <tr>
+        <td><img src="https://oscimg.oschina.net/oscnet/up-b4b04b9033593ade89b42a20c7dbc4cdbd1.JPEG"/></td>
+        <td><img src="https://oscimg.oschina.net/oscnet/up-f3d19bd061ed7046fb1d648ee4daaba3ab9.JPEG"/></td>
+    </tr>
+    <tr>
+        <td><img src="https://oscimg.oschina.net/oscnet/up-1145a21c76fdc552d80010e299431c0a857.JPEG"/></td>
+        <td><img src="https://oscimg.oschina.net/oscnet/up-96e50291450aed07bcd37362cc9d84e80a9.JPEG"/></td>
+    </tr>
+    <tr>
+        <td><img src="https://oscimg.oschina.net/oscnet/up-cc975637268ec7c56f8f53d47ba4c8f53ca.JPEG"/></td>
+        <td><img src="https://oscimg.oschina.net/oscnet/up-0fae3534357c5f4fe38c38520b38ec28e7a.JPEG"/></td>
+    </tr>
+	<tr>
+        <td><img src="https://oscimg.oschina.net/oscnet/up-37dfb84b8a047cb5dd8b3153e7bfc688f4e.JPEG"/></td>
+        <td><img src="https://oscimg.oschina.net/oscnet/up-b4b0d3c405f86527555b86c2f7a94bd2bbf.JPEG"/></td>
+    </tr>	 
+    <tr>
+        <td><img src="https://oscimg.oschina.net/oscnet/up-7f917fb75032f0eedd7ab4b8944cdf55b6c.JPEG"/></td>
+        <td><img src="https://oscimg.oschina.net/oscnet/up-afe8a9ec02ecb9299c30be835fea4fbee42.JPEG"/></td>
+    </tr>
+	<tr>
+        <td><img src="https://oscimg.oschina.net/oscnet/up-b28d0574a8984e016ecab0d54d8c5ae43d5.JPEG"/></td>
+        <td><img src="https://oscimg.oschina.net/oscnet/up-1fb975c7931d5f946054b6ab5ffe1ff190f.JPEG"/></td>
+    </tr>
+	<tr>
+        <td><img src="https://oscimg.oschina.net/oscnet/up-b6a8f7507b23b414b61bef796ab213f2b78.JPEG"/></td>
+        <td><img src="https://oscimg.oschina.net/oscnet/up-7f9fb85d0727aa87b717d95ef0e6f7e30d1.JPEG"/></td>
+    </tr>
+	<tr>
+        <td><img src="https://oscimg.oschina.net/oscnet/up-bc84053e8b6250e57d42f3c0b03980a799d.JPEG"/></td>
+        <td><img src="https://oscimg.oschina.net/oscnet/up-85a769ccbb17fb074053296094e3e3e4ac9.JPEG"/></td>
+    </tr>
+</table>
 
 ## 交流群
 
-> QQ群：883855822
+QQ群： 
+[883855822](https://qm.qq.com/cgi-bin/qm/qr?k=yPFJoUxXBYhHoGxh5lLSp3mpAdgw1v8x&jump_from=webapi)
 
 ## 版权信息
 
-> 请尊重SIYUCMS开发者的劳动成果，SIYUCMS提供免费使用，但未授权前请保留前台 Powered by SIYUCMS ，并不得修改后台版权信息。
-
-> 版权所有Copyright © 2019-2020 by SIYUCMS (http://siyucms.com)
-All rights reserved。
+请尊重SIYUCMS开发者的劳动成果，SIYUCMS提供免费使用，但未授权前请保留前台 Powered by SIYUCMS ，并不得修改后台版权信息。
