@@ -96,6 +96,8 @@ label{margin-bottom: 0;}
 .juanzeng{cursor: pointer}
 /* 控制台手册 */
 .study a{display:block; width:48%; float:left; margin:0 1%}
+/* 控制台提示 */
+.alert-dismissible .close, .alert-dismissible .mailbox-attachment-close{padding: .5875rem 1rem;}
 
 /*---------------------------左侧工具栏---------------------------*/
 /*.nav-pills .nav-link ,.nav-sidebar .nav-item>.nav-link{border-radius: 0;} !*移除圆角*!*/

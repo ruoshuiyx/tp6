@@ -37,9 +37,9 @@ class Index extends Base
     // 首页
     public function index()
     {
-        //系统信息
+        // 系统信息
         $mysqlVersion = Db::query('SELECT VERSION() AS ver');
-        $config = [
+        $config       = [
             'url'             => $_SERVER['HTTP_HOST'],
             'document_root'   => $_SERVER['DOCUMENT_ROOT'],
             'server_os'       => PHP_OS,
@@ -61,7 +61,7 @@ class Index extends Base
 
         // 查找是否有在线留言的模型id
         $messageModuleId = \app\common\model\Module::where('table_name', 'message')->value('id');
-        $messageCatUrl = url('Message/index');
+        $messageCatUrl   = url('Message/index');
         if ($messageModuleId) {
             // 查询留言模块第一个栏目ID
             $messageCatId = \app\common\model\Cate::where('module_id', $messageModuleId)->value('id');
@@ -70,11 +70,13 @@ class Index extends Base
                 $messageCatUrl = url('Message/index', ['cate_id' => $messageCatId]);
             }
         }
+
         $view = [
             'config'        => $config,
             'user'          => $user,
             'message'       => $message,
             'messageCatUrl' => $messageCatUrl,
+            'indexTips'     => $this->getIndexTips(),
         ];
         View::assign($view);
         return View::fetch();
@@ -85,10 +87,10 @@ class Index extends Base
     {
         $path = App::getRootPath() . 'runtime';
         if ($this->_deleteDir($path)) {
-            $result['msg'] = '清除缓存成功!';
+            $result['msg']   = '清除缓存成功!';
             $result['error'] = 0;
         } else {
-            $result['msg'] = '清除缓存失败!';
+            $result['msg']   = '清除缓存失败!';
             $result['error'] = 1;
         }
         $result['url'] = (string)url('login/index');
@@ -105,7 +107,7 @@ class Index extends Base
     {
         // 查询当前模块信息
         $model = '\app\common\model\\' . $module;
-        $info = $model::find($id);
+        $info  = $model::find($id);
         if ($info) {
             // 查询所在栏目信息
             $cate = \app\common\model\Cate::find($info['cate_id']);
@@ -136,10 +138,10 @@ class Index extends Base
 
     /**
      * select 2 ajax分页获取数据
-     * @param  int $id  字段id
-     * @param  string $keyWord 搜索词
-     * @param  string $rows    显示数量
-     * @param  string $value   默认值
+     * @param int    $id      字段id
+     * @param string $keyWord 搜索词
+     * @param string $rows    显示数量
+     * @param string $value   默认值
      * @return array
      */
     public function select2(int $id, string $keyWord = '', string $rows = '10', string $value = '')
@@ -157,7 +159,7 @@ class Index extends Base
             $valueText = $model::where($pk, $value)->value($field['relation_field']);
             if ($valueText) {
                 return [
-                    'key' => $value,
+                    'key'   => $value,
                     'value' => $valueText
                 ];
             }
@@ -173,7 +175,7 @@ class Index extends Base
             ->where($where)
             ->order($pk . ' desc')
             ->paginate([
-                'query' => Request::get(),
+                'query'     => Request::get(),
                 'list_rows' => $rows,
             ]);
         foreach ($list as $k => $v) {
@@ -204,5 +206,15 @@ class Index extends Base
         closedir($handle);
         return true;
         //return rmdir($R); // 删除空的目录
+    }
+
+    // 检查提示信息
+    private function getIndexTips()
+    {
+        $password = \app\common\model\Admin::where('id', session('admin.id'))->value('password');
+        if ($password == md5('admin')) {
+            return '<h6 class="mb-0"><i class="icon fas fa-fw fa-exclamation-triangle"></i> 请尽快修改后台初始密码！</h6>';
+        }
+        return '';
     }
 }
