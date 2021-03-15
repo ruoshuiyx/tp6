@@ -126,8 +126,11 @@ class Index extends Base
             }
             if (isset($url) && !empty($url)) {
                 // 检测是否开启了域名绑定
-                if (Config::get('app.domain_bind')) {
-                    $url = Request::rootDomain() . '/' . $url;
+                $domainBind = Config::get('app.domain_bind');
+                if ($domainBind) {
+                    $domainBindKey = array_search('index', $domainBind);
+                    $domainBindKey = $domainBindKey == '*' ? 'www.' : ($domainBindKey ? $domainBindKey . '.' : '');
+                    $url           = Request::scheme() . '://' . $domainBindKey . Request::rootDomain() . '/' . $url;
                 } else {
                     $url = '/index/' . $url;
                 }
