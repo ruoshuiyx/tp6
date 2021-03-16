@@ -125,6 +125,15 @@ abstract class Base
         $cates = \app\common\model\Cate::getList();
         View::assign(['cates' => unlimitedForLayer($cates['data'])]);
 
+        // index应用地址
+        $domainBind = Config::get('app.domain_bind');
+        if ($domainBind) {
+            $domainBindKey = array_search('index', $domainBind);
+            $domainBindKey = $domainBindKey == '*' ? 'www.' : ($domainBindKey ? $domainBindKey . '.' : '');
+            $indexUrl      = Request::scheme() . '://' . $domainBindKey . Request::rootDomain() . '/';
+        }
+        View::assign(['indexUrl' => $indexUrl ?? '/']);
+
         // 查询系统设置
         $system = \app\common\model\System::find(1);
         $this->system = $system;
