@@ -287,3 +287,13 @@ function changeWebTitle() {
         $(document).attr('title', title[0] + ' | ' + _title);
     }
 }
+
+// 拆分字符串为数组并判断是否包含某个元素
+function checkValInStr(val, str) {
+    var strArr = str.split(',');
+    if ($.inArray(val, strArr) >= 0) {
+        return true;
+    } else {
+        return false;
+    }
+}

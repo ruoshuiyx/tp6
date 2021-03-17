@@ -89,16 +89,18 @@
                                     } else if (value == 1) {
                                         return '<span class="badge badge-{$column.param.1.class|default='primary'}">{$column.param.1|default='启用'}</span>';
                                     }else if (value == 2) {
-                                        return '<span class="badge badge-{$column.param.1.class|default='default'}">{$column.param.2|default='状态2'}</span>';
+                                        return '<span class="badge badge-{$column.param.1.class|default='info'}">{$column.param.2|default='状态2'}</span>';
                                     }else if (value == 3) {
                                         return '<span class="badge badge-{$column.param.1.class|default='success'}">{$column.param.3|default='状态3'}</span>';
                                     }else {
+                                        var str = '';
                                         {foreach $column.param as $key=>$vo }
                                             var kk = '{$key}';
-                                            if(value == kk){
-                                                return '<span class="badge badge-info">{$vo}</span>';
+                                            if (value == kk || checkValInStr(kk, value)) {
+                                                str += '<span class="badge badge-info">{$vo}</span> ';
                                             }
                                         {/foreach}
+                                        return str;
                                     }
                                 }
 								{/if}
