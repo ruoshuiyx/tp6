@@ -290,7 +290,7 @@ function changeWebTitle() {
 
 // 拆分字符串为数组并判断是否包含某个元素
 function checkValInStr(val, str) {
-    var strArr = str.split(',');
+    var strArr = str.toString().split(',');
     if ($.inArray(val, strArr) >= 0) {
         return true;
     } else {
