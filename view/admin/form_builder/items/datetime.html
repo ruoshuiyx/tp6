@@ -3,9 +3,9 @@
     <div class="col-9 col-sm-9 col-md-9 col-lg-6 col-xl-4">
         <div class="input-group date" id="reservationdate_{$form[type].name}"
              data-date-format="{$form[type].format|convert_php_to_moment_format}" data-target-input="nearest">
-            <input class="form-control" type="text" id="{$form[type].name}" name="{$form[type].name}"
+            <input class="form-control datetimepicker-input" type="text" id="{$form[type].name}" name="{$form[type].name}"
                    value="{$form[type].value|default=''}" placeholder="{$form[type].placeholder}"
-                   autocomplete="off" {$form[type].extra_attr|raw}>
+                   autocomplete="off" data-target="#reservationdate_{$form[type].name}" {$form[type].extra_attr|raw}>
             <div class="input-group-append" data-target="#reservationdate_{$form[type].name}"
                  data-toggle="datetimepicker">
                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -20,8 +20,9 @@
     </div>
     {/notempty}
 </div>
+
 <script>
     $(function () {
-        $('#reservationdate_{$form[type].name}').datetimepicker();
+        $('#reservationdate_{$form[type].name}').datetimepicker({icons: {time: 'far fa-clock'}});
     })
 </script>

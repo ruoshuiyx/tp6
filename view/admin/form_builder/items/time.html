@@ -5,7 +5,7 @@
              data-date-format="{$form[type].format|convert_php_to_moment_format}" data-target-input="nearest">
             <input class="form-control datetimepicker-input" type="text" id="{$form[type].name}"
                    name="{$form[type].name}" value="{$form[type].value|default=''}"
-                   placeholder="{$form[type].placeholder}" autocomplete="off" {$form[type].extra_attr|raw}>
+                   placeholder="{$form[type].placeholder}" autocomplete="off" data-target="#timepicker_{$form[type].name}" {$form[type].extra_attr|raw}>
             <div class="input-group-append" data-target="#timepicker_{$form[type].name}" data-toggle="datetimepicker">
                 <div class="input-group-text"><i class="far fa-clock"></i></div>
             </div>
@@ -21,6 +21,6 @@
 </div>
 <script>
     $(function () {
-        //$('#timepicker_{$form[type].name}').datetimepicker()
+        $('#timepicker_{$form[type].name}').datetimepicker()
     })
 </script>
