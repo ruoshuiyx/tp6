@@ -188,7 +188,7 @@ class Template extends Base
     {
         $id = $this->checkFilename($id);
         // 默认文件类型
-        $type = Request::param('type', 'html');
+        $type = $this->checkFiletype(Request::param('type', 'html'));
         // 文件类型数组
         $fileType = ['html' => 'HTML', 'css' => 'CSS', 'js' => 'JS'];
         if ($type == 'html') {
@@ -264,7 +264,8 @@ class Template extends Base
     // 删除
     public function del(string $id, string $type)
     {
-        $id = $this->checkFilename($id);
+        $id   = $this->checkFilename($id);
+        $type = $this->checkFiletype($type);
         if (strpos($id, ',') !== false) {
             return $this->selectDel($id, $type);
         }
@@ -286,7 +287,7 @@ class Template extends Base
     // 批量删除
     public function selectDel(string $id, string $type)
     {
-        $type = $this->checkFilename($type);
+        $type = $this->checkFiletype($type);
         if (Request::isPost()) {
             $ids = explode(',', $id);
             if ($type == 'html') {
@@ -407,7 +408,7 @@ class Template extends Base
     private function checkFiletype(string $fileType)
     {
         $arr = ['html', 'css', 'js'];
-        if (!in_array($fileType, $arr)) {
+        if (!in_array(strtolower($fileType), $arr)) {
             return 'html';
         } else {
             return $fileType;
