@@ -164,7 +164,8 @@ label{margin-bottom: 0;}
 /* 列表搜索区域 */
 .search-collapse, .select-table{width: 100%;background: #fff;border-radius: .25rem;margin-bottom: 1rem;padding-top: 5px;padding-bottom: 5px;box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);}
 .text-sm .search-collapse, .text-sm .select-table, .text-sm .form_builder, .text-sm .form_builder .form-control{font-size: .8125rem;}
-.text-sm .select-table .btn, .text-sm .search-collapse .btn{font-size: .75rem !important}
+.select-table .btn, .text-sm .search-collapse .btn{font-size: .875rem !important; padding: .25rem .5rem;}
+.text-sm .select-table .btn, .text-sm .search-collapse .btn{font-size: .75rem !important; padding: .25rem .5rem;}
 .search-collapse{position: relative}
 .search-collapse .col-sm-6 .control-label{color: #333}
 .search-collapse label{font-weight: normal !important;}

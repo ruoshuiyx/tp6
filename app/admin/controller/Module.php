@@ -6,8 +6,8 @@
  *                      .::::.
  *                    .::::::::.            | AUTHOR: siyu
  *                    :::::::::::           | EMAIL: 407593529@qq.com
- *                 ..:::::::::::'           | QQ: 407593529
- *             '::::::::::::'               | DATETIME: 2020/01/16
+ *                 ..:::::::::::'           | DATETIME: 2021/04/16
+ *             '::::::::::::'
  *                .::::::::::
  *           '::::::::::::::..
  *                ..::::::::::::.
@@ -214,9 +214,9 @@ class Module extends Base
     // ==========================
 
     // 生成代码
-    public function build(string $id)
+    public function build(string $id, string $file = '')
     {
-        return MakeBuilder::makeModule($id);
+        return MakeBuilder::makeModule($id, $file);
     }
 
     // 生成菜单

@@ -778,10 +778,11 @@ class MakeBuilder
 
     /**
      * 生成模块文件
-     * @param string $id 模块ID
-     * @return bool
+     * @param string $id   模块ID
+     * @param string $file 生成的文件[controller,model,validate]
+     * @return array
      */
-    public function makeModule(string $id)
+    public function makeModule(string $id, string $file = '')
     {
         // 不可生成的模块[内置模块][模型名称]
         $unMakeModule = $this->unMakeModule();
@@ -791,19 +792,38 @@ class MakeBuilder
         if (!$module) {
             return ['error' => 1, 'msg' => '模块查找有误'];
         }
+
         // 是否可生成
         if (in_array($module->model_name, $unMakeModule)) {
             return ['error' => 1, 'msg' => '系统内置模块不可以生成'];
         }
 
-        // 生成控制器
-        $this->makeController($module->model_name, $module->table_name);
-        // 生成模型
-        $this->makeModel($module->model_name, $module->table_name);
-        // 生成验证器
-        $this->makeValidate($module->model_name, $module->table_name);
+        // 生成文件
+        if (!empty($file)) {
+            if ($file == 'controller') {
+                // 生成控制器
+                $this->makeController($module->model_name, $module->table_name);
+                $msg = '生成控制器完毕';
+            } else if ($file == 'model') {
+                // 生成模型
+                $this->makeModel($module->model_name, $module->table_name);
+                $msg = '生成模型完毕';
+            } else if ($file == 'validate') {
+                // 生成验证器
+                $this->makeValidate($module->model_name, $module->table_name);
+                $msg = '生成验证器完毕';
+            }
+        } else {
+            // 生成控制器
+            $this->makeController($module->model_name, $module->table_name);
+            // 生成模型
+            $this->makeModel($module->model_name, $module->table_name);
+            // 生成验证器
+            $this->makeValidate($module->model_name, $module->table_name);
+            $msg = '生成完毕';
+        }
 
-        return ['error' => 0, 'msg' => '生成完毕'];
+        return ['error' => 0, 'msg' => $msg];
     }
 
     /**

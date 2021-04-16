@@ -1,0 +1,23 @@
+<div class="btn-group-sm" id="toolbar" role="group">
+    {volist name="top_buttons" id="top_button"}
+    {notempty name="top_button.group"}
+    <div class="btn-group">
+    {/notempty}
+        <a class="{$top_button.class|default=''}" {notempty name="top_button.href"}href="{$top_button.href|default=''}"{/notempty}{notempty name="top_button.target"} target="{$top_button.target|default=''}"{/notempty}{notempty name="top_button.onclick"} onclick="{$top_button.onclick|default=''}"{/notempty}>
+            <i class="{$top_button.icon|default=''}"></i> {$top_button.title|default=''}
+        </a>
+        {notempty name="top_button.group"}
+        <button type="button" class="btn {$top_button.group.class|default='btn-info'} dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <div class="dropdown-menu">
+            {foreach $top_button.group.menus as $key=>$vo }
+            <a class="dropdown-item {$vo.class|default=''}" {notempty name="vo.href"}href="{$vo.href|default=''}"{/notempty}{notempty name="vo.target"} target="{$vo.target|default=''}"{/notempty}{notempty name="$vo.onclick"} onclick="{$vo.onclick|default=''}"{/notempty}>
+                <i class="{$vo.icon|default=''}"></i> {$vo.title|default=''}
+            </a>
+            {/foreach}
+        </div>
+    </div>
+    {/notempty}
+    {/volist}
+</div>

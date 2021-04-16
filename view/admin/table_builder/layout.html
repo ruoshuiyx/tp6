@@ -18,13 +18,7 @@
             {include file="table_builder/search" /}
             <!--列表区域开始-->
             <div class="col-sm-12 select-table table-striped">
-                <div class="btn-group-sm" id="toolbar" role="group">
-                {volist name="top_buttons" id="top_button"}
-                <a class="{$top_button.class|default=''}" {notempty name="top_button.href"}href="{$top_button.href|default=''}"{/notempty}{notempty name="top_button.target"} target="{$top_button.target|default=''}"{/notempty}{notempty name="top_button.onclick"} onclick="{$top_button.onclick|default=''}"{/notempty}>
-                    <i class="{$top_button.icon|default=''}"></i> {$top_button.title|default=''}
-                </a>
-                {/volist}
-                </div>
+                {include file="table_builder/toolbar" /}
                 <table id="bootstrap-table" data-mobile-responsive="true"></table>
             </div>
         </div>

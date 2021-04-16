@@ -23,6 +23,7 @@
  *                      '.:::::'                    ':'````..
  * +----------------------------------------------------------------------
  */
+
 namespace app\common\builder;
 
 use think\facade\Request;
@@ -104,7 +105,7 @@ class TableBuilder
     protected function initialize()
     {
         // 每页显示的行数
-        $this->_vars['page_size']  = \think\facade\Config::get('app.page_size', '10');
+        $this->_vars['page_size'] = \think\facade\Config::get('app.page_size', '10');
         // layer弹层
         $this->_vars['layer_open'] = \think\facade\Config::get('builder.layer_open', false);
 
@@ -130,8 +131,8 @@ class TableBuilder
 
     /**
      * 渲染模版
-     * @param string $template       模板文件名或者内容
-     * @param bool   $renderContent  是否渲染内容
+     * @param string $template      模板文件名或者内容
+     * @param bool   $renderContent 是否渲染内容
      * @return string
      * @throws \Exception
      */
@@ -322,9 +323,9 @@ class TableBuilder
 
     /**
      * 添加一个右侧按钮
-     * @param string $type       按钮类型：edit/delete/default
-     * @param array $attribute   按钮属性
-     * @param array $extra       扩展参数(待用)
+     * @param string $type      按钮类型：edit/delete/default
+     * @param array  $attribute 按钮属性
+     * @param array  $extra     扩展参数(待用)
      * @return $this
      */
     public function addRightButton($type = '', $attribute = [])
@@ -346,10 +347,10 @@ class TableBuilder
             case 'edit':
                 // 默认属性
                 $btn_attribute = [
-                    'type'   => 'edit',
-                    'title'  => '编辑',
-                    'icon'   => 'fa fa-edit',
-                    'class'  => 'btn btn-primary btn-xs',
+                    'type'  => 'edit',
+                    'title' => '编辑',
+                    'icon'  => 'fa fa-edit',
+                    'class' => 'btn btn-primary btn-xs',
                 ];
                 break;
 
@@ -387,11 +388,11 @@ class TableBuilder
     /**
      * 添加多个右侧按钮
      * @param array|string $buttons 按钮类型
-     * 例如：
-     * $builder->addRightButtons('edit');
-     * $builder->addRightButtons('edit,delete');
-     * $builder->addRightButtons(['edit', 'delete']);
-     * $builder->addRightButtons(['edit' => ['title' => '查看'], 'delete']);
+     *                              例如：
+     *                              $builder->addRightButtons('edit');
+     *                              $builder->addRightButtons('edit,delete');
+     *                              $builder->addRightButtons(['edit', 'delete']);
+     *                              $builder->addRightButtons(['edit' => ['title' => '查看'], 'delete']);
      * @return $this
      */
     public function addRightButtons($buttons = [])
@@ -581,10 +582,36 @@ class TableBuilder
                 // 默认属性
                 $btn_attribute = [
                     'title'   => '代码生成',
-                    'icon'    => 'fa fa-file-code-o',
+                    'icon'    => 'fa fa-code',
                     'class'   => 'btn btn-info single disabled',
                     'href'    => '',
-                    'onclick' => '$.operate.build(\'\', \'' . url('module/build') . '\')'
+                    'onclick' => '$.operate.build(\'\', \'' . url('module/build') . '\')',
+                    'group'   => [
+                        'class' => 'btn-info single disabled', // 下拉分组组样式
+                        'menus' => [                           // 下拉分组数据（内容同按钮一样）
+                            [
+                                'title'   => '生成验证器',
+                                'icon'    => '',
+                                'class'   => 'btn btn-info',
+                                'href'    => '',
+                                'onclick' => '$.operate.build(\'\', \'' . url('module/build', ['file' => 'validate']) . '\')',
+                            ],
+                            [
+                                'title'   => '生成模型',
+                                'icon'    => '',
+                                'class'   => 'btn btn-info',
+                                'href'    => '',
+                                'onclick' => '$.operate.build(\'\', \'' . url('module/build', ['file' => 'model']) . '\')',
+                            ],
+                            [
+                                'title'   => '生成控制器',
+                                'icon'    => '',
+                                'class'   => 'btn btn-info',
+                                'href'    => '',
+                                'onclick' => '$.operate.build(\'\', \'' . url('module/build', ['file' => 'controller']) . '\')',
+                            ],
+                        ],
+                    ]
                 ];
                 break;
 
