@@ -5,9 +5,9 @@
  * +----------------------------------------------------------------------
  *                      .::::.
  *                    .::::::::.            | AUTHOR: siyu
- *                    :::::::::::           | EMAIL: 407593529@qq.com
- *                 ..:::::::::::'           | QQ: 407593529
- *             '::::::::::::'               | DATETIME: 2019/03/28
+ *                    :::::::::::           | DATETIME: 2019/03/28
+ *                 ..:::::::::::'
+ *             '::::::::::::'
  *                .::::::::::
  *           '::::::::::::::..
  *                ..::::::::::::.
@@ -23,6 +23,7 @@
  *                      '.:::::'                    ':'````..
  * +----------------------------------------------------------------------
  */
+
 namespace app\mobile\controller;
 
 use app\common\facade\Cms;
@@ -38,6 +39,7 @@ class Error extends Base
 {
     protected $moduleId;  // 当前模型ID
     protected $tableName; // 当前模型对应的数据表
+    protected $fields;    // 字段列表
 
     public function initialize()
     {
@@ -80,17 +82,18 @@ class Error extends Base
             if ($viewAuth !== true) {
                 $this->error($viewAuth['msg'], $viewAuth['url']);
             }
-            View::assign(['info' => $info]);//单页内容
+            // 单页内容
+            View::assign(['info' => $info]);
         }
 
         $view = [
-            'cate'        => $cate,         // 栏目信息
-            'fields'      => $this->fields, // 字段列表
-            'system'      => $this->system, // 系统信息
-            'public'      => $this->public, // 公共目录
-            'title'       => $tdk['title'],
-            'keywords'    => $tdk['keywords'],
-            'description' => $tdk['description'],
+            'cate'        => $cate,               // 栏目信息
+            'fields'      => $this->fields,       // 字段列表
+            'system'      => $this->system,       // 系统信息
+            'public'      => $this->public,       // 公共目录
+            'title'       => $tdk['title'],       // 网站标题
+            'keywords'    => $tdk['keywords'],    // 网站关键字
+            'description' => $tdk['description'], // 网站描述
         ];
 
         View::assign($view);
