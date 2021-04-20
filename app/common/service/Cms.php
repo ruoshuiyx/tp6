@@ -23,12 +23,14 @@
  *                      '.:::::'                    ':'````..
  * +----------------------------------------------------------------------
  */
+
 namespace app\common\service;
 
 use app\common\facade\MakeBuilder;
 use app\common\model\Cate;
 use think\facade\Config;
 use think\facade\Db;
+use think\facade\Request;
 use think\facade\Session;
 
 class Cms
@@ -43,7 +45,7 @@ class Cms
         $cate = Cate::where('id', '=', $cateId)->find();
         // 设置顶级栏目，当顶级栏目不存在的时候顶级栏目为本身
         if ($cate) {
-            $cate->topid = getTopId($cateId);
+            $cate->topid  = getTopId($cateId);
             $cate->top_id = $cate->topid;
         }
         return $cate;
@@ -51,17 +53,18 @@ class Cms
 
     /**
      * 更新内容的点击数
-     * @param string $id         内容id
-     * @param string $tableName  表名称(含前缀)
+     * @param string $id        内容id
+     * @param string $tableName 表名称(含前缀)
+     * @param string $file      点击数字段
      * @return bool
      */
-    public function addHits(string $id, string $tableName)
+    public function addHits(string $id, string $tableName, string $file = 'hits')
     {
-        // 判断当前表是否存在hits字段
-        if ($this->_iset_field(Config::get('database.connections.mysql.prefix') . $tableName, 'hits')) {
+        // 判断当前表是否存在要更新的字段
+        if ($this->_iset_field(Config::get('database.connections.mysql.prefix') . $tableName, $file)) {
             Db::name($tableName)
                 ->where('id', $id)
-                ->inc('hits')
+                ->inc($file)
                 ->update();
             return true;
         }
@@ -80,8 +83,8 @@ class Cms
             return false;
         }
         $model = '\app\common\model\\' . $modelName;
-        $info = $model::edit($id)->toArray();
-        // 获取字段信息
+        $info  = $model::edit($id)->toArray();
+        // 格式化详情页面的内容
         $info = $this->changeInfo($tableName, $info);
         return $info;
     }
@@ -95,10 +98,10 @@ class Cms
      */
     public function getInfoTdk($info, $cate, $system)
     {
-        $result = [];
-        $result['title']       = $cate['cate_name']   ?: $cate['catname'];                                                    // 标题
-        $result['keywords']    = $info['keywords']    ?: ($cate['keywords']    ?: $system['key']);                            // 关键词
-        $result['description'] = $info['description'] ? $info['description'] : ($cate['description'] ?: $system['des']);      // 描述
+        $result                = [];
+        $result['title']       = $cate['cate_name'] ?: $cate['catname'];                           // 标题
+        $result['keywords']    = $info['keywords'] ?: ($cate['keywords'] ?: $system['key']);       // 关键词
+        $result['description'] = $info['description'] ?: ($cate['description'] ?: $system['des']); // 描述
         return $result;
     }
 
@@ -124,10 +127,10 @@ class Cms
      */
     public function getListTdk($cate, $system)
     {
-        $result = [];
-        $result['title']       = $cate['title']       ?: $cate['cate_name'];   // 标题
-        $result['keywords']    = $cate['keywords']    ?: $system['key'];       // 关键词
-        $result['description'] = $cate['description'] ?: $system['des'];       // 描述
+        $result                = [];
+        $result['title']       = $cate['title'] ?: $cate['cate_name'];   // 标题
+        $result['keywords']    = $cate['keywords'] ?: $system['key'];    // 关键词
+        $result['description'] = $cate['description'] ?: $system['des']; // 描述
         return $result;
     }
 
@@ -179,6 +182,116 @@ class Cms
         }
         return true;
     }
+
+    /**
+     * 检测是否需要跳转mobile
+     * @param int    $status  状态
+     * @param string $appName 当前应用名称
+     * @return bool|string
+     */
+    public function goToMobile(int $status = 0, string $appName = '')
+    {
+        if ($status == 1 && $appName == 'index' && Request::isMobile() === true) {
+            // 判断mobile应用是否绑定了域名
+            $domainBind = Config::get('app.domain_bind');
+            if ($domainBind) {
+                $domainBindKey = array_search('mobile', $domainBind);
+                $mobileUrl     = Request::scheme() . '://' . $domainBindKey . '.' . Request::rootDomain() . '/';
+            } else {
+                $mobileUrl = 'mobile/index/index';
+            }
+            return $mobileUrl;
+        }
+        return false;
+    }
+
+    /**
+     * 留言/投稿
+     * @param $system
+     * @return array
+     */
+    public function addMessage($system)
+    {
+        $result = ['error' => '', 'msg' => ''];
+        if (Request::isPost()) {
+            $data                = Request::post('', '', 'htmlspecialchars');
+            $data['create_time'] = time();
+            $data['status']      = 0;
+
+            // 验证码判断
+            if ($system['message_code'] == 1) {
+                if (!captcha_check($data['message_code'])) {
+                    $result['error'] = '1';
+                    $result['msg']   = '验证码错误;';
+                    return $result;
+                } else {
+                    unset($data['message_code']);
+                }
+            }
+
+            // 查询模型id
+            $moduleId = \app\common\model\Cate::where('id', Request::param('cate_id'))->value('module_id');
+
+            // 查询该模型所有必填字段
+            $fields = \app\common\model\Field::where('module_id', $moduleId)->select()->toArray();
+            foreach ($fields as $k => $v) {
+                // 必填项判断
+                if (isset($data[$v['field']]) && $v['required'] == 1 && $data[$v['field']] === '') {
+                    $result['error'] = '1';
+                    $result['msg']   = $v['name'] . '为必填项';
+                }
+                // 多选转换
+                if ($v['type'] == 'checkbox') {
+                    // 如填写则进行转换
+                    if (isset($data[$v['field']])) {
+                        $data[$v['field']] = implode(",", $data[$v['field']]);
+                    }
+                    // 多选必填项单独判断
+                    if ($v['required'] == 1 && !isset($data[$v['field']])) {
+                        $result['error'] = '1';
+                        $result['msg']   = $v['name'] . '为必选项';
+                    }
+                }
+            }
+
+            if ($result['error'] !== '1') {
+                $tableName = \app\common\model\Module::where('id', '=', $moduleId)->value('table_name');
+                $id        = Db::name($tableName)->insertGetId($data);
+                if ($id) {
+                    $result['error'] = '0';
+                    $result['msg']   = '留言成功';
+                    // 邮件通知开始
+                    if ($system['message_send_mail']) {
+                        // 去除无用字段
+                        unset($data['cate_id']);
+                        unset($data['status']);
+                        // 默认收件人为系统设置中的邮件
+                        $email = $system['email'];
+                        $title = 'SIYUCMS提醒：您的网站有新的留言';
+                        // 拼接内容
+                        $fields  = \app\common\model\Field::where('module_id', $moduleId)->select();
+                        $content = '';
+                        foreach ($fields as $k => $v) {
+                            if (isset($data[$v['field']])) {
+                                if ($v['type'] == 'datetime') {
+                                    $data[$v['field']] = date("Y-m-d H:i", $data[$v['field']]);
+                                }
+                                $content .= '<br>' . $v['name'] . ' : ' . $data[$v['field']];
+                            }
+                        }
+                        $this->trySend($email, $title, $content);
+                    }
+                    // 邮件通知结束
+                } else {
+                    $result['error'] = '1';
+                    $result['msg']   .= '留言失败;';
+                }
+            }
+
+        }
+        return $result;
+    }
+
     // ===================================================
 
     /**
@@ -210,7 +323,7 @@ class Cms
         } else {
             // 查询不到模块信息，直接尝试转换[需遵循ThinkPHP命名规范]
             $tableName = explode('_', $tableName);
-            $result = '';
+            $result    = '';
             foreach ($tableName as $k => $v) {
                 $result .= ucfirst($v);
             }
@@ -234,9 +347,9 @@ class Cms
     }
 
     /**
-     * 格式化详情页面的内容输出
+     * 格式化详情页面的内容
      * @param string $tableName
-     * @param array $info
+     * @param array  $info
      * @return array
      */
     private function changeInfo(string $tableName, array $info)
@@ -262,7 +375,6 @@ class Cms
             } elseif ($field['type'] == 'number') {
             } elseif ($field['type'] == 'hidden') {
             } elseif ($field['type'] == 'date' || $field['type'] == 'time' || $field['type'] == 'datetime') {
-
             } elseif ($field['type'] == 'daterange') {
             } elseif ($field['type'] == 'tag') {
                 if (!empty($info[$field['field']])) {
@@ -270,7 +382,7 @@ class Cms
                     foreach ($tags as $k => $tag) {
                         $tags[$k] = [
                             'name' => $tag,
-                            'url' => \think\facade\Route::buildUrl('index/tag', ['module' => $this->getModelId($tableName), 't' => $tag])->__toString(),
+                            'url'  => \think\facade\Route::buildUrl('index/tag', ['module' => $this->getModelId($tableName), 't' => $tag])->__toString(),
                         ];
                     }
                     $info[$field['field']] = $tags;
@@ -278,9 +390,7 @@ class Cms
             } elseif ($field['type'] == 'images' || $field['type'] == 'files') {
                 $info[$field['field']] = json_decode($info[$field['field']], true);
             } elseif ($field['type'] == 'editor') {
-
             } elseif ($field['type'] == 'color') {
-
             }
             // Button
         }
@@ -298,15 +408,17 @@ class Cms
     {
         $result = [];
         if ($type === false) {
-            if ($value) {
+            if (isset($value)) {
                 $value = explode(',', $value);
                 foreach ($value as $k => $v) {
-                    $result[] = $options[$v];
+                    if (isset($options[$v])) {
+                        $result[] = $options[$v];
+                    }
                 }
             }
             $result = implode(" ", $result);
         } else {
-            if ($value) {
+            if (isset($value)) {
                 $value = explode(',', $value);
             }
             foreach ($options as $k => $v) {
@@ -323,4 +435,20 @@ class Cms
         }
         return $result;
     }
+
+    // 邮件发送
+    private function trySend($email, $title, $content)
+    {
+        // 检查是否邮箱格式
+        if (!is_email($email)) {
+            return ['error' => 1, 'msg' => '邮箱码格式有误'];
+        }
+        $send = send_email($email, $title, $content);
+        if ($send) {
+            return ['error' => 0, 'msg' => '邮件发送成功！'];
+        } else {
+            return ['error' => 1, 'msg' => '邮件发送失败！'];
+        }
+    }
+
 }

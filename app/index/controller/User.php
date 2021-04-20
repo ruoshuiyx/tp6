@@ -5,8 +5,8 @@
  * +----------------------------------------------------------------------
  *                      .::::.
  *                    .::::::::.            | AUTHOR: siyu
- *                    :::::::::::           | EMAIL: 407593529@qq.com
- *                 ..:::::::::::'           | DATETIME: 2019/03/28
+ *                    :::::::::::           | DATETIME: 2019/03/28
+ *                 ..:::::::::::'
  *             '::::::::::::'
  *                .::::::::::
  *           '::::::::::::::..
@@ -23,6 +23,7 @@
  *                      '.:::::'                    ':'````..
  * +----------------------------------------------------------------------
  */
+
 namespace app\index\controller;
 
 use think\facade\Request;
@@ -40,12 +41,12 @@ class User extends Base
         parent::initialize();
         $this->userId = Session::get('user.id');
         View::assign([
-            'cate'        => null,
-            'system'      => $this->system, //系统信息
-            'public'      => $this->public, //公共目录
-            'title'       => $this->system['title'] ? $this->system['title'] : $this->system['name'], //seo信息
-            'keywords'    => $this->system['key'],   //seo信息
-            'description' => $this->system['des'],   //seo信息
+            'cate'        => ['topid' => 0],                                  // 栏目信息
+            'system'      => $this->system,                                   // 系统信息
+            'public'      => $this->public,                                   // 公共目录
+            'title'       => $this->system['title'] ?: $this->system['name'], // 网站标题
+            'keywords'    => $this->system['key'],                            // 网站关键字
+            'description' => $this->system['des'],                            // 网站描述
         ]);
     }
 
@@ -64,7 +65,8 @@ class User extends Base
     }
 
     // 登录
-    public function login(){
+    public function login()
+    {
         if (Session::has('user.id')) {
             return redirect('index');
         }
@@ -76,7 +78,8 @@ class User extends Base
     }
 
     // 注册
-    public function register(){
+    public function register()
+    {
         if (Session::has('user.id')) {
             return redirect('index');
         }
@@ -87,7 +90,8 @@ class User extends Base
     }
 
     // 用户中心设置页
-    public function set(){
+    public function set()
+    {
         if (!Session::has('user.id')) {
             return redirect('login');
         }
@@ -95,14 +99,14 @@ class User extends Base
             if (Request::post("password") && Request::post("password2")) {
                 // 修改密码
                 return $this->changePassword();
-            }else{
+            } else {
                 // 修改信息
                 return $this->changeInfo();
             }
         } else {
             $user = \app\common\facade\User::getUser($this->userId);
             $view = [
-                'user'=>$user,
+                'user' => $user,
             ];
             View::assign($view);
             return View::fetch();
@@ -111,7 +115,8 @@ class User extends Base
     }
 
     // 退出
-    public function logout(){
+    public function logout()
+    {
         Session::delete('user');
         return redirect('login');
     }
@@ -121,8 +126,8 @@ class User extends Base
     // 校验登录
     private function checkLogin()
     {
-        $username = trim(Request::post('username'));
-        $password = trim(Request::post('password'));
+        $username = trim(Request::post('username', '', 'htmlspecialchars'));
+        $password = trim(Request::post('password', '', 'htmlspecialchars'));
         // 检查是否开启了验证码
         $message_code = $this->system['message_code'];
         if ($message_code) {
@@ -134,7 +139,7 @@ class User extends Base
         $result = \app\common\facade\User::login($username, $password);
         if ($result['error'] == 1) {
             $this->error($result['msg']);
-        }else{
+        } else {
             $this->success($result['msg'], 'index');
         }
     }
@@ -142,9 +147,9 @@ class User extends Base
     // 校验注册
     private function checkRegister()
     {
-        $email     = trim(Request::post("email"));
-        $password  = trim(Request::post("password"));
-        $password2 = trim(Request::post("password2"));
+        $email     = trim(Request::post("email", '', 'htmlspecialchars'));
+        $password  = trim(Request::post("password", '', 'htmlspecialchars'));
+        $password2 = trim(Request::post("password2", '', 'htmlspecialchars'));
 
         // 非空判断
         if (empty($email) || empty($password) || empty($password2)) {
@@ -169,10 +174,10 @@ class User extends Base
     // 修改密码
     private function changePassword()
     {
-        $oldPassword = trim(Request::post('nowpassword'));
-        $newPassword = trim(Request::post('password'));
-        $confirmPassword = trim(Request::post('password2'));
-        $result = \app\common\facade\User::changePassword($this->userId, $oldPassword, $newPassword, $confirmPassword);
+        $oldPassword     = trim(Request::post('nowpassword', '', 'htmlspecialchars'));
+        $newPassword     = trim(Request::post('password', '', 'htmlspecialchars'));
+        $confirmPassword = trim(Request::post('password2', '', 'htmlspecialchars'));
+        $result          = \app\common\facade\User::changePassword($this->userId, $oldPassword, $newPassword, $confirmPassword);
         if ($result['error'] == 1) {
             $this->error($result['msg']);
         } else {
@@ -181,7 +186,8 @@ class User extends Base
     }
 
     // 修改信息
-    private function changeInfo(){
+    private function changeInfo()
+    {
         $result = \app\common\facade\User::changeInfo($this->userId);
         if ($result['error'] == 1) {
             $this->error($result['msg']);

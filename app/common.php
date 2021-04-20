@@ -20,7 +20,7 @@ function getUrl($v)
             } else {
                 $moduleName = \app\common\model\Module::where('id', $v['module_id'])
                     ->value('model_name');
-                $v['url'] = (string)\think\facade\Route::buildUrl($moduleName . '/index', ['cate' => $v['id']])->domain('');
+                $v['url']   = (string)\think\facade\Route::buildUrl($moduleName . '/index', ['cate' => $v['id']])->domain('');
             }
         }
     }
@@ -60,9 +60,9 @@ function changeFields($list, $moduleid)
 {
     $info = [];
     foreach ($list as $k => $v) {
-        $url = getShowUrl($v);
-        $list[$k] = changeField($v, $moduleid);
-        $info[$k] = $list[$k];//定义中间变量防止报错
+        $url             = getShowUrl($v);
+        $list[$k]        = changeField($v, $moduleid);
+        $info[$k]        = $list[$k];//定义中间变量防止报错
         $info[$k]['url'] = $url;
     }
     return $info;
@@ -126,7 +126,7 @@ function changefield($info, $moduleId)
 
 /**
  * 邮件发送
- * @param $to    接收人
+ * @param        $to      接收人
  * @param string $subject 邮件标题
  * @param string $content 邮件内容(html模板渲染后的内容)
  * @throws Exception
@@ -134,8 +134,8 @@ function changefield($info, $moduleId)
  */
 function send_email($to, $subject = '', $content = '')
 {
-    $mail = new PHPMailer\PHPMailer\PHPMailer();
-    $arr = \think\facade\Db::name('config')
+    $mail   = new PHPMailer\PHPMailer\PHPMailer();
+    $arr    = \think\facade\Db::name('config')
         ->where('inc_type', 'smtp')
         ->select();
     $config = convert_arr_kv($arr, 'name', 'value');
@@ -282,10 +282,10 @@ function textareaBr($info)
 
 /**
  * 无限分类-栏目
- * @param $cate
+ * @param        $cate
  * @param string $lefthtml
- * @param int $pid
- * @param int $lvl
+ * @param int    $pid
+ * @param int    $lvl
  * @return array
  */
 function tree_cate($cate, $leftHtml = '|— ', $pid = 0, $lvl = 0)
@@ -293,11 +293,11 @@ function tree_cate($cate, $leftHtml = '|— ', $pid = 0, $lvl = 0)
     $arr = array();
     foreach ($cate as $v) {
         if ($v['parent_id'] == $pid) {
-            $v['lvl'] = $lvl + 1;
-            $v['left_html'] = str_repeat($leftHtml, $lvl);
+            $v['lvl']         = $lvl + 1;
+            $v['left_html']   = str_repeat($leftHtml, $lvl);
             $v['l_cate_name'] = $v['left_html'] . $v['cate_name'];
-            $arr[] = $v;
-            $arr = array_merge($arr, tree_cate($cate, $leftHtml, $v['id'], $lvl + 1));
+            $arr[]            = $v;
+            $arr              = array_merge($arr, tree_cate($cate, $leftHtml, $v['id'], $lvl + 1));
         }
     }
     return $arr;
@@ -305,9 +305,9 @@ function tree_cate($cate, $leftHtml = '|— ', $pid = 0, $lvl = 0)
 
 /**
  * 组合多维数组
- * @param $cate
+ * @param        $cate
  * @param string $name
- * @param int $pid
+ * @param int    $pid
  * @return array
  */
 function unlimitedForLayer($cate, $name = 'sub', $pid = 0)
@@ -317,7 +317,7 @@ function unlimitedForLayer($cate, $name = 'sub', $pid = 0)
         if ($v['parent_id'] == $pid) {
             $v[$name] = unlimitedForLayer($cate, $name, $v['id']);
             $v['url'] = getUrl($v);
-            $arr[] = $v;
+            $arr[]    = $v;
         }
     }
     return $arr;
@@ -336,7 +336,7 @@ function getChildsOn($cate, $pid)
         if ($v['parent_id'] == $pid) {
             $v['sub'] = getChilds($cate, $v['id']);
             $v['url'] = getUrl($v);
-            $arr[] = $v;
+            $arr[]    = $v;
         }
     }
     return $arr;
@@ -354,8 +354,8 @@ function getChilds($cate, $pid)
     foreach ($cate as $v) {
         if ($v['parent_id'] == $pid) {
             $v['url'] = getUrl($v);
-            $arr[] = $v;
-            $arr = array_merge($arr, getChilds($cate, $v['id']));
+            $arr[]    = $v;
+            $arr      = array_merge($arr, getChilds($cate, $v['id']));
         }
     }
     return $arr;
@@ -373,7 +373,7 @@ function getChildsId($cate, $pid)
     foreach ($cate as $v) {
         if ($v['parent_id'] == $pid) {
             $arr[] = $v;
-            $arr = array_merge($arr, getChildsId($cate, $v['id']));
+            $arr   = array_merge($arr, getChildsId($cate, $v['id']));
         }
     }
     return $arr;
@@ -381,7 +381,7 @@ function getChildsId($cate, $pid)
 
 /**
  * 格式化分类数组为字符串
- * @param $ids
+ * @param        $ids
  * @param string $pid
  * @return string
  */
@@ -410,7 +410,7 @@ function getParents($cate, $id)
     foreach ($cate as $v) {
         if ($v['id'] == $id) {
             $arr[] = $v;
-            $arr = array_merge(getParents($cate, $v['parent_id']), $arr);
+            $arr   = array_merge(getParents($cate, $v['parent_id']), $arr);
         }
     }
     return $arr;
@@ -423,7 +423,7 @@ function getParents($cate, $id)
  */
 function getTopId($id)
 {
-    $cate = \app\common\model\Cate::field('id,parent_id')->select()->toArray();
+    $cate    = \app\common\model\Cate::field('id,parent_id')->select()->toArray();
     $cateArr = [];
     if ($cate) {
         foreach ($cate as $k => $v) {
@@ -438,16 +438,16 @@ function getTopId($id)
 
 /**
  * 获取文件目录列表
- * @param string $pathname 路径
+ * @param string  $pathname 路径
  * @param integer $fileFlag 文件列表 0所有文件列表,1只读文件夹,2是只读文件(不包含文件夹)
- * @param string $pathname 路径
+ * @param string  $pathname 路径
  * @return array
  */
 function get_file_folder_List($pathname, $fileFlag = 0, $pattern = '*')
 {
     $fileArray = array();
-    $pathname = rtrim($pathname, '/') . '/';
-    $list = glob($pathname . $pattern);
+    $pathname  = rtrim($pathname, '/') . '/';
+    $list      = glob($pathname . $pattern);
     foreach ($list as $i => $file) {
         switch ($fileFlag) {
             case 0:
@@ -483,7 +483,7 @@ function getTemplate()
     // 查找所有系统设置表数据
     $system = \app\common\model\System::find(1);
 
-    $path = './template/' . $system['template'] . '/index/' . $system['html'] . '/';
+    $path        = './template/' . $system['template'] . '/index/' . $system['html'] . '/';
     $tpl['list'] = get_file_folder_List($path, 2, '*_list*');
     $tpl['show'] = get_file_folder_List($path, 2, '*_show*');
     return $tpl;
@@ -501,7 +501,7 @@ function getChildsRule($rules, $pid)
     foreach ($rules as $v) {
         if ($v['pid'] == $pid) {
             $arr[] = $v;
-            $arr = array_merge($arr, getChildsRule($rules, $v['id']));
+            $arr   = array_merge($arr, getChildsRule($rules, $v['id']));
         }
     }
     return $arr;
@@ -545,14 +545,14 @@ function getCateId()
  * @param array $list
  * @return array
  */
-function changeDict(array $list, string $field, string $all="全部")
+function changeDict(array $list, string $field, string $all = "全部")
 {
     $get = \think\facade\Request::except(['page'], 'get');
     foreach ($list as $k => $v) {
-        $url = $get;
-        $url[$field] = $v['dict_value'];
+        $url             = $get;
+        $url[$field]     = $v['dict_value'];
         $list[$k]['url'] = (string)url(\think\facade\Request::controller() . '/' . \think\facade\Request::action(), $url);
-        $param = \think\facade\Request::param('', '', 'htmlspecialchars');
+        $param           = \think\facade\Request::param('', '', 'htmlspecialchars');
         // 高亮显示
         $list[$k]['current'] = 0;
         if (!empty($param)) {
@@ -607,7 +607,7 @@ function getSearchField(string $field)
 {
     $sql = '';
     if ($field) {
-        $field = str_replace('|', ',', $field);
+        $field    = str_replace('|', ',', $field);
         $fieldArr = explode(',', $field);
         foreach ($fieldArr as $k => $v) {
             if (!empty($v)) {
@@ -615,7 +615,7 @@ function getSearchField(string $field)
                 if (\think\facade\Request::has($v, 'get')) {
                     $str = \think\facade\Request::get($v, '', 'htmlspecialchars');
                     if (strpos($str, '|') !== false) {
-                        $sql = ' AND (';
+                        $sql    = ' AND (';
                         $strArr = explode("|", $str);
                         foreach ($strArr as &$strAr) {
                             // 检测是否存在
@@ -643,21 +643,22 @@ function getSearchField(string $field)
 
 /**
  * 无限分类-权限
- * @param $cate            栏目
- * @param string $lefthtml 分隔符
- * @param int $pid         父ID
- * @param int $lvl         层级
+ * @param        $cate            栏目
+ * @param string $lefthtml        分隔符
+ * @param int    $pid             父ID
+ * @param int    $lvl             层级
  * @return array
  */
-function tree($cate , $lefthtml = '|— ' , $pid = 0 , $lvl = 0 ){
+function tree($cate, $lefthtml = '|— ', $pid = 0, $lvl = 0)
+{
     $arr = array();
-    foreach ($cate as $v){
+    foreach ($cate as $v) {
         if ($v['pid'] == $pid) {
             $v['lvl']      = $lvl + 1;
-            $v['lefthtml'] = str_repeat($lefthtml,$lvl);
-            $v['ltitle']   = $v['lefthtml'].$v['title'];
-            $arr[] = $v;
-            $arr = array_merge($arr, tree($cate, $lefthtml, $v['id'], $lvl+1));
+            $v['lefthtml'] = str_repeat($lefthtml, $lvl);
+            $v['ltitle']   = $v['lefthtml'] . $v['title'];
+            $arr[]         = $v;
+            $arr           = array_merge($arr, tree($cate, $lefthtml, $v['id'], $lvl + 1));
         }
     }
     return $arr;
@@ -665,22 +666,23 @@ function tree($cate , $lefthtml = '|— ' , $pid = 0 , $lvl = 0 ){
 
 /**
  * 无限分类-权限
- * @param $cate            栏目
- * @param string $lefthtml 分隔符
- * @param int $pid         父ID
- * @param int $lvl         层级
+ * @param        $cate            栏目
+ * @param string $lefthtml        分隔符
+ * @param int    $pid             父ID
+ * @param int    $lvl             层级
  * @return array
  */
-function tree_three($cate , $lefthtml = '|— ' , $pid = 0 , $lvl = 0 ){
+function tree_three($cate, $lefthtml = '|— ', $pid = 0, $lvl = 0)
+{
     $arr = array();
-    foreach ($cate as $v){
+    foreach ($cate as $v) {
         $keys = array_keys($v);
         if (end($v) == $pid) {
             $v['lvl']      = $lvl + 1;
-            $v['lefthtml'] = str_repeat($lefthtml,$lvl);
-            $v[$keys[1]] = $v['lefthtml'] . $v[$keys[1]];
-            $arr[] = $v;
-            $arr = array_merge($arr, tree_three($cate, $lefthtml, $v[$keys[0]], $lvl+1));
+            $v['lefthtml'] = str_repeat($lefthtml, $lvl);
+            $v[$keys[1]]   = $v['lefthtml'] . $v[$keys[1]];
+            $arr[]         = $v;
+            $arr           = array_merge($arr, tree_three($cate, $lefthtml, $v[$keys[0]], $lvl + 1));
         }
     }
     return $arr;
@@ -710,7 +712,7 @@ function get_tagcloud($list, $moduleId, $limit = 10)
     if ($result) {
         $arr = array_count_values($result); // 统计数组中所有的值出现的次数
         arsort($arr); // 降序排序
-        $arr = array_slice($arr, 0, $limit); // 截取前N条数据
+        $arr    = array_slice($arr, 0, $limit); // 截取前N条数据
         $result = [];
         foreach ($arr as $k => $v) {
             $result[] = [
@@ -782,7 +784,7 @@ function convert_moment_format_to_php(string $format = '')
         'zz'   => 'e',
         'X'    => 'U',
     ];
-    $phpFormat = strtr($format, $replacements);
+    $phpFormat    = strtr($format, $replacements);
     return $phpFormat;
 }
 
