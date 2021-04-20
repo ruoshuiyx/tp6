@@ -90,7 +90,7 @@ abstract class Base
         $system = \app\common\model\System::find(1);
 
         $this->appName        = app('http')->getName();
-        $this->controllerName = strtolower(Request::controller());
+        $this->controllerName = $this->request->controller();
         $this->system         = $system;
         $this->public         = '/template/' . $this->system['template'] . '/' . $this->appName . '/';
         $this->template       = '.' . $this->public . $this->system['html'] . '/';
