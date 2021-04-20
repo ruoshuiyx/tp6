@@ -534,10 +534,12 @@ function getCateId()
     if (\think\facade\Request::has('cate')) {
         $result = (int)\think\facade\Request::param('cate');
     } else {
-        $result = \app\common\model\Cate::where('cate_folder', '=', get_cate_folder())
-            ->value('id');
+        $cateFolder = get_cate_folder();
+        if ($cateFolder) {
+            $result = \app\common\model\Cate::where('cate_folder', '=', get_cate_folder())->value('id');
+        }
     }
-    return $result;
+    return $result ?? '';
 }
 
 /**
