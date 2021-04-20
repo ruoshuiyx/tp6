@@ -46,10 +46,10 @@ class Error extends Base
         parent::initialize();
         if (Request::param('cate')) {
             // 当前模型ID
-            $this->moduleId = Cate::where('id', '=', Request::param('cate'))->value('module_id');
+            $this->moduleId = Cate::where('id', '=', $this->request->param('cate'))->value('module_id');
         } else {
             // 当前模型ID
-            $this->moduleId = Cate::where('cate_folder', '=', Request::controller())->value('module_id');
+            $this->moduleId = Cate::where('cate_folder', '=', get_cate_folder())->value('module_id');
         }
         // 当前表名称
         $this->tableName = Module::where('id', '=', $this->moduleId)->value('table_name');

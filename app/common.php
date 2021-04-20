@@ -534,7 +534,7 @@ function getCateId()
     if (\think\facade\Request::has('cate')) {
         $result = (int)\think\facade\Request::param('cate');
     } else {
-        $result = \app\common\model\Cate::where('cate_folder', '=', \think\facade\Request::controller())
+        $result = \app\common\model\Cate::where('cate_folder', '=', get_cate_folder())
             ->value('id');
     }
     return $result;
@@ -551,7 +551,7 @@ function changeDict(array $list, string $field, string $all = "全部")
     foreach ($list as $k => $v) {
         $url             = $get;
         $url[$field]     = $v['dict_value'];
-        $list[$k]['url'] = (string)url(\think\facade\Request::controller() . '/' . \think\facade\Request::action(), $url);
+        $list[$k]['url'] = (string)url(get_cate_folder() . '/' . \think\facade\Request::action(), $url);
         $param           = \think\facade\Request::param('', '', 'htmlspecialchars');
         // 高亮显示
         $list[$k]['current'] = 0;
@@ -585,7 +585,7 @@ function changeDict(array $list, string $field, string $all = "全部")
     } else {
         $hover = 1;
     }
-    $url = (string)url(\think\facade\Request::controller() . '/' . \think\facade\Request::action(), $get);
+    $url = (string)url(get_cate_folder() . '/' . \think\facade\Request::action(), $get);
 
     $all = [
         'dict_label' => $all,
@@ -836,4 +836,16 @@ function convert_php_to_moment_format(string $format = '')
     ];
     $momentFormat = strtr($format, $replacements);
     return $momentFormat;
+}
+
+/**
+ * 根据url获取栏目目录
+ */
+function get_cate_folder()
+{
+    //return \think\facade\Request::controller();                    // 控制器的方式无法使用'-','_','/'连接符
+    $careFolder = \think\facade\Request::rule()->getRule();          // 获取当前路由规则
+    $careFolder = str_replace('<id>', '', $careFolder); // 移除路由规则多余的字符
+    $careFolder = trim($careFolder, '/');                     // 移除两侧的/
+    return $careFolder;
 }
