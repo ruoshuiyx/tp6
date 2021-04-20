@@ -63,7 +63,7 @@ class Error extends Base
         // 获取栏目ID
         $catId = getCateId();
         if (empty($catId)) {
-            $this->error('未找到对应栏目');
+            $this->error(lang('category not found'));
         }
         // 获取栏目信息
         $cate = Cms::getCateInfo($catId);
@@ -106,7 +106,7 @@ class Error extends Base
         // 获取栏目ID
         $catId = getCateId();
         if (empty($catId)) {
-            $this->error('未找到对应栏目');
+            $this->error(lang('category not found'));
         }
         // 获取栏目信息
         $cate = Cms::getCateInfo($catId);

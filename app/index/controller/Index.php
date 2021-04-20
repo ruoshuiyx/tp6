@@ -61,7 +61,7 @@ class Index extends Base
     {
         $search = Request::param('search'); // 关键字
         if (empty($search)) {
-            $this->error('请输入关键词');
+            $this->error(lang('please input keywords'));
         }
 
         $view = [
@@ -84,7 +84,7 @@ class Index extends Base
     {
         $tag = Request::param('t', '', 'htmlspecialchars');
         if (empty($tag)) {
-            $this->error('请输入关键词');
+            $this->error(lang('please input keywords'));
         }
 
         $view = [

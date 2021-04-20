@@ -132,7 +132,7 @@ class User extends Base
         $message_code = $this->system['message_code'];
         if ($message_code) {
             if (!captcha_check(Request::post("message_code"))) {
-                $this->error('验证码错误');
+                $this->error(lang('captcha error'));
             }
         }
         // 校验用户名密码
@@ -153,16 +153,17 @@ class User extends Base
 
         // 非空判断
         if (empty($email) || empty($password) || empty($password2)) {
-            $this->error('请输入邮箱、密码和确认密码');
+            $this->error(lang('register empty'));
         }
 
         // 验证码
         $message_code = $this->system['message_code'];
         if ($message_code) {
             if (!captcha_check(input("post.message_code"))) {
-                $this->error('验证码错误');
+                $this->error(lang('captcha error'));
             }
         }
+
         $result = \app\common\facade\User::register($email, $password, $password2);
         if ($result['error'] == 1) {
             $this->error($result['msg']);

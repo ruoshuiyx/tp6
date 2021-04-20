@@ -159,7 +159,7 @@ class Cms
                 if (!Session::has('user')) {
                     return [
                         'code' => 1,
-                        'msg'  => '请先登录',
+                        'msg'  => lang('need login'),
                         'url'  => url('user/login')
                     ];
                 } else {
@@ -173,7 +173,7 @@ class Cms
                     if (Session::get('user.type_id') < $userType) {
                         return [
                             'code' => 2,
-                            'msg'  => $info[$field] . ' 才可浏览',
+                            'msg'  => lang('user type not enough', [$info[$field]]),
                             'url'  => url('user/index')
                         ];
                     }
@@ -222,7 +222,7 @@ class Cms
             if ($system['message_code'] == 1) {
                 if (!captcha_check($data['message_code'])) {
                     $result['error'] = '1';
-                    $result['msg']   = '验证码错误;';
+                    $result['msg']   = lang('captcha error');
                     return $result;
                 } else {
                     unset($data['message_code']);
@@ -238,7 +238,7 @@ class Cms
                 // 必填项判断
                 if (isset($data[$v['field']]) && $v['required'] == 1 && $data[$v['field']] === '') {
                     $result['error'] = '1';
-                    $result['msg']   = $v['name'] . '为必填项';
+                    $result['msg']   = lang('input required', [$v['name']]);
                 }
                 // 多选转换
                 if ($v['type'] == 'checkbox') {
@@ -249,7 +249,7 @@ class Cms
                     // 多选必填项单独判断
                     if ($v['required'] == 1 && !isset($data[$v['field']])) {
                         $result['error'] = '1';
-                        $result['msg']   = $v['name'] . '为必选项';
+                        $result['msg']   = lang('need to check', [$v['name']]);
                     }
                 }
             }
@@ -259,7 +259,7 @@ class Cms
                 $id        = Db::name($tableName)->insertGetId($data);
                 if ($id) {
                     $result['error'] = '0';
-                    $result['msg']   = '留言成功';
+                    $result['msg']   = lang('message success');
                     // 邮件通知开始
                     if ($system['message_send_mail']) {
                         // 去除无用字段
@@ -267,7 +267,7 @@ class Cms
                         unset($data['status']);
                         // 默认收件人为系统设置中的邮件
                         $email = $system['email'];
-                        $title = 'SIYUCMS提醒：您的网站有新的留言';
+                        $title = lang('email title');
                         // 拼接内容
                         $fields  = \app\common\model\Field::where('module_id', $moduleId)->select();
                         $content = '';
@@ -284,7 +284,7 @@ class Cms
                     // 邮件通知结束
                 } else {
                     $result['error'] = '1';
-                    $result['msg']   .= '留言失败;';
+                    $result['msg']   .= lang('message error');
                 }
             }
 
@@ -441,13 +441,13 @@ class Cms
     {
         // 检查是否邮箱格式
         if (!is_email($email)) {
-            return ['error' => 1, 'msg' => '邮箱码格式有误'];
+            return ['error' => 1, 'msg' => lang('email format error')];
         }
         $send = send_email($email, $title, $content);
         if ($send) {
-            return ['error' => 0, 'msg' => '邮件发送成功！'];
+            return ['error' => 0, 'msg' => lang('email send success')];
         } else {
-            return ['error' => 1, 'msg' => '邮件发送失败！'];
+            return ['error' => 1, 'msg' => lang('email send error')];
         }
     }
 

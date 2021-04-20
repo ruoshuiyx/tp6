@@ -62,7 +62,7 @@ function changeFields($list, $moduleid)
     foreach ($list as $k => $v) {
         $url             = getShowUrl($v);
         $list[$k]        = changeField($v, $moduleid);
-        $info[$k]        = $list[$k];//定义中间变量防止报错
+        $info[$k]        = $list[$k]; // 定义中间变量防止报错
         $info[$k]['url'] = $url;
     }
     return $info;

@@ -23,6 +23,7 @@
  *                      '.:::::'                    ':'````..
  * +----------------------------------------------------------------------
  */
+
 namespace app\common\service;
 
 use think\facade\Request;
@@ -52,34 +53,34 @@ class User
      */
     public function login(string $username, string $password)
     {
-        $user = \app\common\model\Users::where('email|mobile',$username)
-            ->where('password',md5($password))
+        $user = \app\common\model\Users::where('email|mobile', $username)
+            ->where('password', md5($password))
             ->find();
         if (empty($user)) {
             return [
                 'error' => 1,
-                'msg'   => '帐号或密码错误',
+                'msg'   => lang('password error'),
             ];
         } else {
             if ($user['status'] == 1) {
-                Session::set('user',[
-                    'id'      =>$user['id'],
+                Session::set('user', [
+                    'id'      => $user['id'],
                     'email'   => $user['email'],
                     'type_id' => $user['type_id'],
                     'status'  => $user['status'],
                 ]);
                 // 更新信息
                 $user->last_login_time = time();
-                $user->last_login_ip = Request::ip();
+                $user->last_login_ip   = Request::ip();
                 $user->save();
                 return [
                     'error' => 0,
-                    'msg'   => '登录成功',
+                    'msg'   => lang('login success'),
                 ];
             } else {
                 return [
                     'error' => 1,
-                    'msg'   => '用户已被禁用',
+                    'msg'   => lang('user disabled'),
                 ];
             }
         }
@@ -87,8 +88,8 @@ class User
 
     /**
      * 注册用户
-     * @param string $username 邮箱
-     * @param string $password 密码
+     * @param string $username  邮箱
+     * @param string $password  密码
      * @param string $password2 确认密码
      * @return array
      */
@@ -98,7 +99,7 @@ class User
         if (strlen($password) < 6) {
             return [
                 'error' => 1,
-                'msg'   => '密码长度不能低于6位',
+                'msg'   => lang('password length error', [6]),
             ];
         }
 
@@ -106,7 +107,7 @@ class User
         if (!is_email($username)) {
             return [
                 'error' => 1,
-                'msg'   => '邮箱格式错误',
+                'msg'   => lang('email format error'),
             ];
         }
 
@@ -114,21 +115,21 @@ class User
         if ($password != $password2) {
             return [
                 'error' => 1,
-                'msg'   => '两次密码输入不一致',
+                'msg'   => lang('password disaccord'),
             ];
         }
 
         // 防止重复
-        $count = \app\common\model\Users::where('email|mobile','=',$username)->count();
+        $count = \app\common\model\Users::where('email|mobile', '=', $username)->count();
         if ($count) {
             return [
                 'error' => 1,
-                'msg'   => '邮箱已被注册',
+                'msg'   => lang('email registered'),
             ];
         }
 
         // 注册
-        $data = [];
+        $data                    = [];
         $data['email']           = $username;
         $data['password']        = md5($password);
         $data['last_login_time'] = $data['create_time'] = time();
@@ -136,23 +137,23 @@ class User
         $data['status']          = 1;
         $data['type_id']         = 1;
         $data['sex']             = Request::post('sex') ? Request::post('sex') : 0;
-        $user = \app\common\model\Users::create($data);
+        $user                    = \app\common\model\Users::create($data);
         if ($user->id) {
             return [
                 'error' => 0,
-                'msg'   => '注册成功',
+                'msg'   => lang('register success'),
             ];
         } else {
             return [
                 'error' => 1,
-                'msg'   => '注册失败',
+                'msg'   => lang('register error'),
             ];
         }
     }
 
     /**
      * 修改密码
-     * @param int $userId             用户ID
+     * @param int    $userId          用户ID
      * @param string $oldPassword     原密码
      * @param string $newPassword     新密码
      * @param string $confirmPassword 确认密码
@@ -161,10 +162,10 @@ class User
     public function changePassword(int $userId, string $oldPassword, string $newPassword, string $confirmPassword)
     {
         // 密码长度不能低于6位
-        if (strlen($newPassword)<6) {
+        if (strlen($newPassword) < 6) {
             return [
                 'error' => 1,
-                'msg'   => '密码长度不能低于6位',
+                'msg'   => lang('password length error', [6]),
             ];
         }
 
@@ -175,7 +176,7 @@ class User
         if (!$user) {
             return [
                 'error' => 1,
-                'msg'   => '原密码输入有误',
+                'msg'   => lang('old password error'),
             ];
         }
 
@@ -183,7 +184,7 @@ class User
         if ($newPassword != $confirmPassword) {
             return [
                 'error' => 1,
-                'msg'   => '两次输入的密码不一致',
+                'msg'   => lang('password disaccord'),
             ];
         }
 
@@ -192,7 +193,7 @@ class User
         $user->save();
         return [
             'error' => 0,
-            'msg'   => '密码修改成功',
+            'msg'   => lang('password change success'),
         ];
 
     }
@@ -204,8 +205,8 @@ class User
     public function changeInfo(int $userId)
     {
         $data = [
-            'sex' => Request::param('sex'),
-            'qq'  => Request::param('qq'),
+            'sex'    => Request::param('sex'),
+            'qq'     => Request::param('qq'),
             'mobile' => Request::param('mobile'),
         ];
         // 手机唯一性校验
@@ -216,14 +217,14 @@ class User
             if ($count) {
                 return [
                     'error' => 1,
-                    'msg'   => '手机号已存在',
+                    'msg'   => lang('mobile number exists'),
                 ];
             }
         }
         \app\common\model\Users::update($data, ['id' => $userId]);
         return [
             'error' => 0,
-            'msg'   => '修改成功',
+            'msg'   => lang('edit success'),
         ];
     }
 }
