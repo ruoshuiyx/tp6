@@ -154,13 +154,14 @@ class Cms
      */
     public function checkViewAuth(array $info, string $field = 'view_auth')
     {
+        $callBack = urlencode(Request::url());
         if ($info) {
             if (isset($info[$field]) && !empty($info[$field])) {
                 if (!Session::has('user')) {
                     return [
                         'code' => 1,
                         'msg'  => lang('need login'),
-                        'url'  => url('user/login')
+                        'url'  => url('user/login', ['callback' => $callBack])
                     ];
                 } else {
                     $userType = 0;

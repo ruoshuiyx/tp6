@@ -70,6 +70,11 @@ class User extends Base
         if (Session::has('user.id')) {
             return redirect('index');
         }
+        // 返回的地址
+        $callBack = urldecode($this->request->param('callback'));
+        if (Session::has('callback') === false && !empty($callBack)) {
+            Session::set('callback', $callBack);
+        }
         // 登录提交
         if (Request::isPost()) {
             return $this->checkLogin();
@@ -140,7 +145,13 @@ class User extends Base
         if ($result['error'] == 1) {
             $this->error($result['msg']);
         } else {
-            $this->success($result['msg'], 'index');
+            if (Session::has('callback')) {
+                $callBack = Session::get('callback');
+                Session::delete('callback');
+            } else {
+                $callBack = 'index';
+            }
+            $this->success($result['msg'], $callBack);
         }
     }
 
