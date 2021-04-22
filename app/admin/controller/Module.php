@@ -23,6 +23,7 @@
  *                      '.:::::'                    ':'````..
  * +----------------------------------------------------------------------
  */
+
 namespace app\admin\controller;
 
 // 引入框架内置类
@@ -45,7 +46,8 @@ class Module extends Base
     protected $moduleName = 'Module';
 
     // 列表
-    public function index(){
+    public function index()
+    {
         // 获取主键
         $pk = MakeBuilder::getPrimarykey($this->tableName);
         // 获取列表数据
@@ -54,10 +56,10 @@ class Module extends Base
         $search = MakeBuilder::getListSearch($this->tableName);
         // 搜索
         if (Request::param('getList') == 1) {
-            $where = MakeBuilder::getListWhere($this->tableName);
+            $where         = MakeBuilder::getListWhere($this->tableName);
             $orderByColumn = Request::param('orderByColumn') ?? $pk;
-            $isAsc = Request::param('isAsc') ?? 'desc';
-            $model = '\app\common\model\\' . $this->moduleName;
+            $isAsc         = Request::param('isAsc') ?? 'desc';
+            $model         = '\app\common\model\\' . $this->moduleName;
             return $model::getList($where, $this->pageSize, [$orderByColumn => $isAsc]);
         }
         // 构建页面
@@ -69,11 +71,11 @@ class Module extends Base
             ->addRightButtons(['edit', 'delete'])                      // 设置右侧操作列
             ->addTopButtons(['add', 'edit', 'del', 'export', 'build']) // 设置顶部按钮组
             ->addTopButton('default', [
-                'title'       => '生成菜单规则',
-                'icon'        => 'fa fa-bars',
-                'class'       => 'btn btn-danger single disabled',
-                'href'        => '',
-                'onclick'     => '$.operate.makeRule(\'' . url('makeRule') . '\')'
+                'title'   => '生成菜单规则',
+                'icon'    => 'fa fa-bars',
+                'class'   => 'btn btn-danger single disabled',
+                'href'    => '',
+                'onclick' => '$.operate.makeRule(\'' . url('makeRule') . '\')'
             ]) // 自定义按钮
             ->fetch();
     }
@@ -94,19 +96,19 @@ class Module extends Base
     public function addPost()
     {
         if (Request::isPost()) {
-            $data = MakeBuilder::changeFormData(Request::except(['file'], 'post'), $this->tableName);
+            $data   = MakeBuilder::changeFormData(Request::except(['file'], 'post'), $this->tableName);
             $result = $this->validate($data, $this->validate);
             if (true !== $result) {
                 // 验证失败 输出错误信息
                 $this->error($result);
             } else {
-                $model = '\app\common\model\\' . $this->moduleName;
+                $model  = '\app\common\model\\' . $this->moduleName;
                 $result = $model::addPost($data);
                 if ($result['error']) {
                     $this->error($result['msg']);
                 } else {
                     $makeModule = \app\common\model\Module::makeModule($data['table_name'], $data['table_type'], $data['pk']);
-                    if($makeModule === true){
+                    if ($makeModule === true) {
                         $this->success($result['msg'], 'index');
                     } else {
                         $this->error($makeModule);
@@ -120,7 +122,7 @@ class Module extends Base
     public function edit(string $id)
     {
         $model = '\app\common\model\\' . $this->moduleName;
-        $info = $model::edit($id)->toArray();
+        $info  = $model::edit($id)->toArray();
         // 获取字段信息
         $coloumns = MakeBuilder::getAddColumns($this->tableName, $info);
         // 构建页面
@@ -134,7 +136,7 @@ class Module extends Base
     public function editPost()
     {
         if (Request::isPost()) {
-            $data = MakeBuilder::changeFormData(Request::except(['file'], 'post'), $this->tableName);
+            $data   = MakeBuilder::changeFormData(Request::except(['file'], 'post'), $this->tableName);
             $result = $this->validate($data, $this->validate);
             if (true !== $result) {
                 // 验证失败 输出错误信息
@@ -179,7 +181,8 @@ class Module extends Base
     }
 
     // 批量删除
-    public function selectDel(string $id){
+    public function selectDel(string $id)
+    {
         if (Request::isPost()) {
             $model = '\app\common\model\\' . $this->moduleName;
             return $model::selectDel($id);
@@ -190,7 +193,7 @@ class Module extends Base
     public function sort()
     {
         if (Request::isPost()) {
-            $data = Request::post();
+            $data  = Request::post();
             $model = '\app\common\model\\' . $this->moduleName;
             return $model::sort($data);
         }

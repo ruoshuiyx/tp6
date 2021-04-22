@@ -23,6 +23,7 @@
  *                      '.:::::'                    ':'````..
  * +----------------------------------------------------------------------
  */
+
 namespace app\common\model;
 
 // 引入框架内置类
@@ -67,7 +68,13 @@ class Module extends Base
         return $list;
     }
 
-    // 添加模块时创建表，并初始化主键字段、添加时间、修改时间等字段
+    /**
+     * 添加模块时创建表，并初始化主键字段、添加时间、修改时间等字段
+     * @param string $tableName 表名称
+     * @param int    $tableType 表类型 1 cms 2 后台
+     * @param string $pk        主键字段名称
+     * @return bool|string
+     */
     public static function makeModule(string $tableName, int $tableType = 2, string $pk = 'id')
     {
         // 获取模块信息
@@ -78,7 +85,7 @@ class Module extends Base
         $tables = \think\facade\Db::getTables();
         // 已有表则不再创建
         if (in_array($tableName, $tables)) {
-            return '表已存在，请先手动删除[' . $tableName.']';
+            return '表已存在，请先手动删除[' . $tableName . ']';
         } else {
             $sqlStr = '`' . $pk . '` int(8) unsigned NOT NULL AUTO_INCREMENT,
               `create_time` int(11) NOT NULL,
@@ -264,7 +271,11 @@ class Module extends Base
         }
     }
 
-    // 编辑模块时修改表名称和主键
+    /**
+     * 编辑模块时修改表名称和主键
+     * @param array $data
+     * @return bool|string
+     */
     public static function changeModule(array $data)
     {
         if ($data) {

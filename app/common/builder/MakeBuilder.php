@@ -23,6 +23,7 @@
  *                      '.:::::'                    ':'````..
  * +----------------------------------------------------------------------
  */
+
 namespace app\common\builder;
 
 use app\common\model\Field;
@@ -121,11 +122,11 @@ class MakeBuilder
     {
         // 查询模型的主键
         $module = \app\common\model\Module::where('table_name', $tableName)->find();
-        $model = '\app\common\model\\' . $module->model_name;
-        $user = new $model;
-        $pk = $user->getPk();
+        $model  = '\app\common\model\\' . $module->model_name;
+        $user   = new $model;
+        $pk     = $user->getPk();
 
-        $fields = $this->getFields($tableName);
+        $fields  = $this->getFields($tableName);
         $columns = [];
         foreach ($fields as &$field) {
             // 主键不可新增，当方法名中包含add时系统认为是新增页面，应跳过主键字段
@@ -187,8 +188,7 @@ class MakeBuilder
                     $field['setup']['placeholder'],// 占位符
                     $field['required'],            // 是否必填
                 ];
-            }
-            elseif ($field['type'] == 'textarea' || $field['type'] == 'password') {
+            } elseif ($field['type'] == 'textarea' || $field['type'] == 'password') {
                 $columns[] = [
                     $field['type'],                       // 类型
                     $field['field'],                      // 字段名称
@@ -200,8 +200,7 @@ class MakeBuilder
                     $field['setup']['placeholder'] ?? '', // 占位符
                     $field['required'],                   // 是否必填
                 ];
-            }
-            elseif ($field['type'] == 'radio' || $field['type'] == 'checkbox') {
+            } elseif ($field['type'] == 'radio' || $field['type'] == 'checkbox') {
                 $columns[] = [
                     $field['type'],                // 类型
                     $field['field'],               // 字段名称
@@ -213,8 +212,7 @@ class MakeBuilder
                     '',                            // 额外CSS extra_class
                     $field['required'],            // 是否必填
                 ];
-            }
-            elseif ($field['type'] == 'select') {
+            } elseif ($field['type'] == 'select') {
                 $columns[] = [
                     $field['type'],                       // 类型
                     $field['field'],                      // 字段名称
@@ -227,9 +225,8 @@ class MakeBuilder
                     $field['setup']['placeholder'] ?? '', // 占位符
                     $field['required'],                   // 是否必填
                 ];
-            }
-            elseif ($field['type'] == 'select2' ) {
-                $ajaxUrl = (string)url('Index/select2', ['id' => $field['id']]);
+            } elseif ($field['type'] == 'select2') {
+                $ajaxUrl   = (string)url('Index/select2', ['id' => $field['id']]);
                 $columns[] = [
                     $field['type'],                       // 类型
                     $field['field'],                      // 字段名称
@@ -243,8 +240,7 @@ class MakeBuilder
                     $field['required'],                   // 是否必填
                     $ajaxUrl,                             // ajax请求地址
                 ];
-            }
-            elseif ($field['type'] == 'number') {
+            } elseif ($field['type'] == 'number') {
                 $columns[] = [
                     $field['type'],                       // 类型
                     $field['field'],                      // 字段名称
@@ -259,16 +255,14 @@ class MakeBuilder
                     $field['setup']['placeholder'] ?? '', // 占位符
                     $field['required'],                   // 是否必填
                 ];
-            }
-            elseif ($field['type'] == 'hidden') {
+            } elseif ($field['type'] == 'hidden') {
                 $columns[] = [
                     $field['type'],                      // 类型
                     $field['field'],                     // 字段名称
                     $field['setup']['default'] ?? '',    // 默认值
                     $field['setup']['extra_attr'] ?? '', // 额外属性 extra_attr
                 ];
-            }
-            elseif ($field['type'] == 'date' || $field['type'] == 'time' || $field['type'] == 'datetime') {
+            } elseif ($field['type'] == 'date' || $field['type'] == 'time' || $field['type'] == 'datetime') {
                 // 使用每个字段设定的格式
                 if ($field['type'] == 'time') {
                     $format = $field['setup']['format'] ?: 'H:i:s';
@@ -276,7 +270,7 @@ class MakeBuilder
                     $format = $field['setup']['format'] ?: 'Y-m-d H:i:s';
                 }
                 $field['setup']['default'] = (int)$field['setup']['default'] > 0 && is_int($field['setup']['default']) ? date($format, $field['setup']['default']) : $field['setup']['default'];
-                $columns[] = [
+                $columns[]                 = [
                     $field['type'],                // 类型
                     $field['field'],               // 字段名称
                     $field['name'],                // 字段别名
@@ -288,8 +282,7 @@ class MakeBuilder
                     $field['setup']['placeholder'],// 占位符
                     $field['required'],            // 是否必填
                 ];
-            }
-            elseif ($field['type'] == 'daterange') {
+            } elseif ($field['type'] == 'daterange') {
                 $columns[] = [
                     $field['type'],                       // 类型
                     $field['field'],                      // 字段名称
@@ -301,8 +294,7 @@ class MakeBuilder
                     $field['setup']['extra_class'] ?? '', // 额外CSS
                     $field['required'],                   // 是否必填
                 ];
-            }
-            elseif ($field['type'] == 'tag') {
+            } elseif ($field['type'] == 'tag') {
                 $columns[] = [
                     $field['type'],                       // 类型
                     $field['field'],                      // 字段名称
@@ -313,8 +305,7 @@ class MakeBuilder
                     $field['setup']['extra_class'] ?? '', // 额外CSS
                     $field['required'],                   // 是否必填
                 ];
-            }
-            elseif ($field['type'] == 'image' || $field['type'] == 'images' || $field['type'] == 'file' || $field['type'] == 'files') {
+            } elseif ($field['type'] == 'image' || $field['type'] == 'images' || $field['type'] == 'file' || $field['type'] == 'files') {
 
                 // 多(图/文件)上传执行解析操作
                 if ($field['type'] == 'images' || $field['type'] == 'files') {
@@ -332,8 +323,7 @@ class MakeBuilder
                     $field['setup']['placeholder'] ?? '', // 占位符
                     $field['required'],                   // 是否必填
                 ];
-            }
-            elseif ($field['type'] == 'editor') {
+            } elseif ($field['type'] == 'editor') {
                 $columns[] = [
                     $field['type'],                       // 类型
                     $field['field'],                      // 字段名称
@@ -345,8 +335,7 @@ class MakeBuilder
                     $field['setup']['extra_class'] ?? '', // 额外CSS
                     $field['required'],                   // 是否必填
                 ];
-            }
-            elseif ($field['type'] == 'color') {
+            } elseif ($field['type'] == 'color') {
                 $columns[] = [
                     $field['type'],                       // 类型
                     $field['field'],                      // 字段名称
@@ -372,7 +361,7 @@ class MakeBuilder
     public function getListSearch(string $tableName = '')
     {
         $fields = $this->getFields($tableName);
-        $items = [];
+        $items  = [];
         foreach ($fields as &$field) {
             // 筛选可搜索字段
             if ($field['is_search'] != 1) {
@@ -468,15 +457,15 @@ class MakeBuilder
                         break;
                     case 'date':
                         $getDateran = get_dateran($searhKeywords);
-                        $where[] = [$v[1], 'between', $getDateran];
+                        $where[]    = [$v[1], 'between', $getDateran];
                         break;
                     case 'time':
                         $getDateran = get_dateran($searhKeywords);
-                        $where[] = [$v[1], 'between', $getDateran];
+                        $where[]    = [$v[1], 'between', $getDateran];
                         break;
                     case 'datetime':
                         $getDateran = get_dateran($searhKeywords);
-                        $where[] = [$v[1], 'between', $getDateran];
+                        $where[]    = [$v[1], 'between', $getDateran];
                         break;
                     // 默认都当作文本框
                     default:
@@ -595,7 +584,7 @@ class MakeBuilder
             if (count($arr) == 2) {
                 $result[current($arr)] = end($arr);
             } else {
-                $keys = array_keys($arr);
+                $keys                   = array_keys($arr);
                 $result[$arr[$keys[0]]] = $arr[$keys[1]];
             }
 
@@ -610,9 +599,9 @@ class MakeBuilder
      */
     public function checkSingle(string $modelName)
     {
-        $model = '\app\common\model\\' . $modelName;
+        $model  = '\app\common\model\\' . $modelName;
         $module = \app\common\model\Module::where('model_name', $modelName)->find();
-        $where = self::getListWhere($module['table_name']);
+        $where  = self::getListWhere($module['table_name']);
         if ($module && $module['is_single'] == 1) {
             $info = $model::where($where)->select()->toArray();
             if (count($info) == 1) {
@@ -632,7 +621,7 @@ class MakeBuilder
     /**
      * 添加/修改页面获取字段分组，用于FormBuilder
      * @param string $modelName 模型名称
-     * @param array $coloumns   字段数据
+     * @param array  $coloumns  字段数据
      * @return array
      */
     public function getgetAddGroups(string $modelName, string $tableName, array $coloumns)
@@ -668,14 +657,14 @@ class MakeBuilder
 
     /**
      * 新增、修改保存时改变提交的信息为需要的格式[日期、时间、日期时间]
-     * @param array $formData
+     * @param array  $formData
      * @param string $tableName
      * @return array
      */
     public function changeFormData(array $formData, string $tableName)
     {
         // 查询所有字段信息
-        $fields = self::getFields($tableName);
+        $fields    = self::getFields($tableName);
         $fieldsNew = [];
         foreach ($fields as $k => $v) {
             $fieldsNew[$v['field']] = $v;
@@ -718,7 +707,7 @@ class MakeBuilder
 
     /**
      * 列表展示时改变为需要的格式[日期、时间、日期时间]
-     * @param $tableData
+     * @param        $tableData
      * @param string $modelName
      * @return mixed
      */
@@ -838,7 +827,7 @@ class MakeBuilder
 
         // 取得模版文件
         $fileBase = base_path() . 'common' . DIRECTORY_SEPARATOR . 'builder' . DIRECTORY_SEPARATOR . 'build' . DIRECTORY_SEPARATOR . 'Controller.php';
-        $fh = fopen($fileBase, "r");
+        $fh       = fopen($fileBase, "r");
         $contents = fread($fh, filesize($fileBase));
         $contents = $this->makeReplace($contents, $tableName);
         if ($contents) {
@@ -864,7 +853,7 @@ class MakeBuilder
 
         // 取得模版文件
         $fileBase = base_path() . 'common' . DIRECTORY_SEPARATOR . 'builder' . DIRECTORY_SEPARATOR . 'build' . DIRECTORY_SEPARATOR . 'Model.php';
-        $fh = fopen($fileBase, "r");
+        $fh       = fopen($fileBase, "r");
         $contents = fread($fh, filesize($fileBase));
         $contents = $this->makeModelReplace($contents, $tableName);
 
@@ -891,7 +880,7 @@ class MakeBuilder
 
         // 取得模版文件
         $fileBase = base_path() . 'common' . DIRECTORY_SEPARATOR . 'builder' . DIRECTORY_SEPARATOR . 'build' . DIRECTORY_SEPARATOR . 'Validate.php';
-        $fh = fopen($fileBase, "r");
+        $fh       = fopen($fileBase, "r");
         $contents = fread($fh, filesize($fileBase));
         $contents = $this->makeValidateReplace($contents, $tableName);
         if ($contents) {
@@ -907,7 +896,7 @@ class MakeBuilder
 
     /**
      * 替换模版中指定的公共字符
-     * @param string $content 内容
+     * @param string $content   内容
      * @param string $tableName 表名称
      * @return mixed|string
      */
@@ -916,13 +905,13 @@ class MakeBuilder
         // 查询模块信息
         $module = \app\common\model\Module::where('table_name', $tableName)->find();
         // 替换
-        $content = str_replace('{$comment}'   , $module->table_comment , $content);
-        $content = str_replace('{$author}'    , 'siyu'                 , $content);
-        $content = str_replace('{$email}'     , '407593529@qq.com'     , $content);
-        $content = str_replace('{$dateTime}'  , date("Y/m/d")          , $content);
-        $content = str_replace('{$tableName}' , $module->table_name    , $content);
-        $content = str_replace('{$modelName}' , $module->model_name    , $content);
-        $content = str_replace('{$validate}'  , $module->model_name    , $content);
+        $content = str_replace('{$comment}', $module->table_comment, $content);
+        $content = str_replace('{$author}', 'siyu', $content);
+        $content = str_replace('{$email}', '407593529@qq.com', $content);
+        $content = str_replace('{$dateTime}', date("Y/m/d"), $content);
+        $content = str_replace('{$tableName}', $module->table_name, $content);
+        $content = str_replace('{$modelName}', $module->model_name, $content);
+        $content = str_replace('{$validate}', $module->model_name, $content);
         // 替换控制器添加和修改时`显示全部`按钮
         if ($module->show_all == 0) {
             $content = str_replace('{$showAll}', '$builder->hideShowAll();
@@ -932,14 +921,14 @@ class MakeBuilder
         }
         // 替换控制器列表页面顶部按钮组中添加按钮的参数，如 cate_id,多个用`,`分割
         if ($module->add_param) {
-            $arrUrl = explode(",", $module->add_param);
+            $arrUrl    = explode(",", $module->add_param);
             $arrUrlStr = '';
             foreach ($arrUrl as $k => $v) {
                 $arrUrlStr .= '\'' . $v . '\'=>Request::param(\'' . $v . '\'),';
             }
             $arrUrlStr = rtrim($arrUrlStr, ',');
             $arrUrlStr = "url('add',[{$arrUrlStr}])->__toString()";
-            $content = str_replace('{$setAddUrl}', '->setAddUrl(' . $arrUrlStr . ')
+            $content   = str_replace('{$setAddUrl}', '->setAddUrl(' . $arrUrlStr . ')
             ', $content);
         } else {
             $content = str_replace('{$setAddUrl}', '', $content);
@@ -950,7 +939,7 @@ class MakeBuilder
 
     /**
      * 替换模版中的字符
-     * @param string $content 内容
+     * @param string $content   内容
      * @param string $tableName 表名称
      * @return mixed|string
      */
@@ -976,10 +965,10 @@ class MakeBuilder
     {
         return $this->belongsTo(\'' . $filed['relation_model'] . '\', \'' . $filed['field'] . '\');
     }';
-            $listInfo .= 'if ($list[$k][\'' . $filed['field'] . '\']) {
+            $listInfo  .= 'if ($list[$k][\'' . $filed['field'] . '\']) {
             ';
-            $listInfo .= '    $v[\'' . $filed['field'] . '\'] = $v->' . lcfirst($filed['relation_model']) . '->getData(\'' . $filed['relation_field'] . '\');';
-            $listInfo .= '
+            $listInfo  .= '    $v[\'' . $filed['field'] . '\'] = $v->' . lcfirst($filed['relation_model']) . '->getData(\'' . $filed['relation_field'] . '\');';
+            $listInfo  .= '
             }';
         }
 
@@ -998,7 +987,7 @@ class MakeBuilder
 
     /**
      * 替换验证器中的字符
-     * @param string $content 内容
+     * @param string $content   内容
      * @param string $tableName 表名称
      * @return mixed|string
      */
@@ -1014,7 +1003,7 @@ class MakeBuilder
         $fileds = \app\common\model\Field::where('module_id', $module->id)
             ->select()
             ->toArray();
-        $rules = [];
+        $rules  = [];
         foreach ($fileds as &$filed) {
             if (in_array($filed['field'], ['create_time', 'update_time'])) {
                 continue;
@@ -1056,7 +1045,7 @@ class MakeBuilder
         ' . $rulesStr . '
     ];';
         }
-        $content = str_replace('{$rules}'   , $rulesStr , $content);
+        $content = str_replace('{$rules}', $rulesStr, $content);
         return $content;
     }
 
@@ -1081,7 +1070,7 @@ class MakeBuilder
     {
         // ThinkPHP规范的模型名称
         $moduleNameNew = '';
-        $tableNameArr = explode('_', $tableName);
+        $tableNameArr  = explode('_', $tableName);
         foreach ($tableNameArr as $k => $v) {
             $moduleNameNew .= ucfirst($v);
         }
@@ -1123,82 +1112,82 @@ class MakeBuilder
                 // 添加规则
                 if (strpos($module->top_button, 'add') !== false) {
                     $data[] = [
-                        'pid'   => $rule->id,
-                        'name'  => $module->model_name . '/add',
-                        'title' => '操作-添加',
-                        'sort'  => 1,
-                        'status'=> 0,
+                        'pid'    => $rule->id,
+                        'name'   => $module->model_name . '/add',
+                        'title'  => '操作-添加',
+                        'sort'   => 1,
+                        'status' => 0,
                     ];
                     $data[] = [
-                        'pid'   => $rule->id,
-                        'name'  => $module->model_name . '/addPost',
-                        'title' => '操作-添加保存',
-                        'sort'  => 2,
-                        'status'=> 0,
+                        'pid'    => $rule->id,
+                        'name'   => $module->model_name . '/addPost',
+                        'title'  => '操作-添加保存',
+                        'sort'   => 2,
+                        'status' => 0,
                     ];
                 }
                 // 修改规则
                 if (strpos($module->top_button, 'edit') !== false) {
                     $data[] = [
-                        'pid'   => $rule->id,
-                        'name'  => $module->model_name . '/edit',
-                        'title' => '操作-修改',
-                        'sort'  => 3,
-                        'status'=> 0,
+                        'pid'    => $rule->id,
+                        'name'   => $module->model_name . '/edit',
+                        'title'  => '操作-修改',
+                        'sort'   => 3,
+                        'status' => 0,
                     ];
                     $data[] = [
-                        'pid'   => $rule->id,
-                        'name'  => $module->model_name . '/editPost',
-                        'title' => '操作-修改保存',
-                        'sort'  => 4,
-                        'status'=> 0,
+                        'pid'    => $rule->id,
+                        'name'   => $module->model_name . '/editPost',
+                        'title'  => '操作-修改保存',
+                        'sort'   => 4,
+                        'status' => 0,
                     ];
                 }
                 // 删除规则
                 if (strpos($module->top_button, 'del') !== false) {
                     $data[] = [
-                        'pid'   => $rule->id,
-                        'name'  => $module->model_name . '/del',
-                        'title' => '操作-删除',
-                        'sort'  => 5,
-                        'status'=> 0,
+                        'pid'    => $rule->id,
+                        'name'   => $module->model_name . '/del',
+                        'title'  => '操作-删除',
+                        'sort'   => 5,
+                        'status' => 0,
                     ];
                     $data[] = [
-                        'pid'   => $rule->id,
-                        'name'  => $module->model_name . '/selectDel',
-                        'title' => '操作-批量删除',
-                        'sort'  => 6,
-                        'status'=> 0,
+                        'pid'    => $rule->id,
+                        'name'   => $module->model_name . '/selectDel',
+                        'title'  => '操作-批量删除',
+                        'sort'   => 6,
+                        'status' => 0,
                     ];
                 }
                 // 导出规则
                 if (strpos($module->top_button, 'export') !== false) {
                     $data[] = [
-                        'pid'   => $rule->id,
-                        'name'  => $module->model_name . '/export',
-                        'title' => '操作-导出',
-                        'sort'  => 7,
-                        'status'=> 0,
+                        'pid'    => $rule->id,
+                        'name'   => $module->model_name . '/export',
+                        'title'  => '操作-导出',
+                        'sort'   => 7,
+                        'status' => 0,
                     ];
                 }
                 // 排序规则
                 if ($module->is_sort) {
                     $data[] = [
-                        'pid'   => $rule->id,
-                        'name'  => $module->model_name . '/sort',
-                        'title' => '操作-排序',
-                        'sort'  => 8,
-                        'status'=> 0,
+                        'pid'    => $rule->id,
+                        'name'   => $module->model_name . '/sort',
+                        'title'  => '操作-排序',
+                        'sort'   => 8,
+                        'status' => 0,
                     ];
                 }
                 // 状态规则
                 if ($module->is_status) {
                     $data[] = [
-                        'pid'   => $rule->id,
-                        'name'  => $module->model_name . '/state',
-                        'title' => '操作-状态',
-                        'sort'  => 9,
-                        'status'=> 0,
+                        'pid'    => $rule->id,
+                        'name'   => $module->model_name . '/state',
+                        'title'  => '操作-状态',
+                        'sort'   => 9,
+                        'status' => 0,
                     ];
                 }
                 $authRule = new \app\common\model\AuthRule();
