@@ -1,19 +1,51 @@
 
+## 最佳数据备份还原- shell脚本方式
+~~~
+
+//备份整个数据库
+mysqldump -uroot -hhost -ppassword dbname > backdb.sql
+//备份数据库中的某个表
+mysqldump -uroot -hhost -ppassword dbname tbname1, tbname2 > backdb.sql
+//备份多个数据库
+mysqldump -uroot -hhost -ppassword --databases dbname1, dbname2 > backdb.sql
+//备份系统中所有数据库
+mysqldump -uroot -hhost -ppassword --all-databases > backdb.sql
+
+
+//恢复
+mysql -uroot -p'123456' dbname < backdb.sql 
+
+~~~
+
+
+## 使用本类进行数据库备份
+
+> demo 下载地址
+> https://github.com/tp5er/tp5-databackup/tree/master/test
+
+
 ### 使用composer进行安装
 ~~~
-     composer require tp5er/tp5-databackup dev-master
+composer require tp5er/tp5-databackup 2.0
 ~~~
 
 ### 使用composer update进行安装
 ~~~
     "require": {
-        "tp5er/tp5-databackup": "dev-master"
+        "tp5er/tp5-databackup": "2.0"
     },
+
 ~~~
 
 ### 引入类文件
 ~~~
 use \tp5er\Backup;
+~~~
+
+### 参数说明
+~~~
+$start：无论是备份还是还原只要一张表备份完成$start就是返回的0
+$file ：sql文件的名字，下面有名字命名规范，如果名字命令不规范，在展示列表中就会出现错误
 ~~~
 
 ### 配置文件
@@ -50,7 +82,7 @@ return $this->fetch('index',['list'=>$db->dataList()]);
 ~~~
  $tables="数据库表1";
  $start= $db->setFile($file)->backup($tables[$id], 0);
- 当$start返回0的时候就表示备份成功
+
 ~~~
 
 ### 导入表
@@ -102,5 +134,4 @@ max_execution_time =1000
 ~~~
 
 
-无论您是大神，还是小白都希望您们加群进行交流，共同学习共同进步。
-# 技术交流与bug提交QQ群：368683534!!!!
+
