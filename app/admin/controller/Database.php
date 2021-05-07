@@ -201,7 +201,7 @@ class Database extends Base
         $total = 0;
         $listNew = [];
         foreach ($list as $k => $v) {
-            $total += substr($v['size'], 0, strlen($v['size']) - 2);
+            $total += $v['size_num'];
             $listNew[] = $list[$k];
         }
         $list = $listNew;
@@ -223,7 +223,7 @@ class Database extends Base
            // ['text', 'name', '文件名称', 'LIKE'],
         ];
         // 提示信息
-        $pageTips = '备份文件列表中共有 ' . count($list) . ' 个文件，共计 ' . format_bytes($total * 1024);
+        $pageTips = '备份文件列表中共有 ' . count($list) . ' 个文件，共计 ' . format_bytes($total);
 
         // 搜索
         if (Request::param('getList') == 1) {

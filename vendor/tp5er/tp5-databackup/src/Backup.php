@@ -145,9 +145,11 @@ class Backup
                     $info = $list["{$date} {$time}"];
                     $info['part'] = max($info['part'], $part);
                     $info['size'] = format_bytes($info['size'] + $file->getSize());
+                    $info['size_num'] = $info['size'] + $file->getSize();
                 } else {
                     $info['part'] = $part;
                     $info['size'] = format_bytes($file->getSize());
+                    $info['size_num'] = $file->getSize();
                 }
                 $extension = strtoupper(pathinfo($file->getFilename(), PATHINFO_EXTENSION));
                 $info['compress'] = $extension === 'SQL' ? '-' : $extension;
