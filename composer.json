@@ -24,7 +24,7 @@
         "phpoffice/phpspreadsheet": "^1.8",
         "tp5er/tp5-databackup": "^2.0",
         "topthink/think-captcha": "^3.0",
-        "lcobucci/jwt": "^3.3",
+        "lcobucci/jwt": "3.3.3",
         "topthink/think-multi-app": "^1.0",
         "zzstudio/think-addons": "^2.0",
         "alibabacloud/client": "^1.5"

@@ -32,7 +32,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'c3491a7e66946796f7d2cd3a7580934ce6fbc918',
+    'reference' => '0544deefa31c1dff38fa59b43f81ede91ee8c841',
     'name' => 'topthink/think',
   ),
   'versions' => 
@@ -111,12 +111,12 @@ private static $installed = array (
     ),
     'lcobucci/jwt' => 
     array (
-      'pretty_version' => '3.4.5',
-      'version' => '3.4.5.0',
+      'pretty_version' => '3.3.3',
+      'version' => '3.3.3.0',
       'aliases' => 
       array (
       ),
-      'reference' => '511629a54465e89a31d3d7e4cf0935feab8b14c1',
+      'reference' => 'c1123697f6a2ec29162b82f170dd4a491f524773',
     ),
     'league/flysystem' => 
     array (
@@ -346,7 +346,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'c3491a7e66946796f7d2cd3a7580934ce6fbc918',
+      'reference' => '0544deefa31c1dff38fa59b43f81ede91ee8c841',
     ),
     'topthink/think-captcha' => 
     array (

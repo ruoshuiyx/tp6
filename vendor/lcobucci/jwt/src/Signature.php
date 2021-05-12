@@ -24,25 +24,14 @@ class Signature
      */
     protected $hash;
 
-    /** @var string */
-    private $encoded;
-
     /**
      * Initializes the object
      *
      * @param string $hash
-     * @param string $encoded
      */
-    public function __construct($hash, $encoded = '')
+    public function __construct($hash)
     {
-        $this->hash    = $hash;
-        $this->encoded = $encoded;
-    }
-
-    /** @return self */
-    public static function fromEmptyData()
-    {
-        return new self('', '');
+        $this->hash = $hash;
     }
 
     /**
@@ -63,25 +52,10 @@ class Signature
     /**
      * Returns the current hash as a string representation of the signature
      *
-     * @deprecated This method has been removed from the public API in v4
-     * @see Signature::hash()
-     *
      * @return string
      */
     public function __toString()
     {
         return $this->hash;
-    }
-
-    /** @return string */
-    public function hash()
-    {
-        return $this->hash;
-    }
-
-    /** @return string */
-    public function toString()
-    {
-        return $this->encoded;
     }
 }
