@@ -76,7 +76,7 @@ class Module extends Base
                 'class'   => 'btn btn-danger single disabled',
                 'href'    => '',
                 'onclick' => '$.operate.makeRule(\'' . url('makeRule') . '\')'
-            ]) // 自定义按钮
+            ])                                                         // 自定义按钮
             ->fetch();
     }
 
@@ -102,16 +102,23 @@ class Module extends Base
                 // 验证失败 输出错误信息
                 $this->error($result);
             } else {
-                $model  = '\app\common\model\\' . $this->moduleName;
+                $model = '\app\common\model\\' . $this->moduleName;
+                // 唯一判断
+                $count = $model::where('table_name', $data['table_name'])->count();
+                if ($count) {
+                    $this->error('表名称 [' . $data['table_name'] . '] 已存在');
+                }
                 $result = $model::addPost($data);
                 if ($result['error']) {
                     $this->error($result['msg']);
                 } else {
-                    $makeModule = \app\common\model\Module::makeModule($data['table_name'], $data['table_type'], $data['pk']);
-                    if ($makeModule === true) {
+                    $makeTable = \app\common\model\Module::makeTable($data['table_name']);
+                    if ($makeTable === true) {
                         $this->success($result['msg'], 'index');
                     } else {
-                        $this->error($makeModule);
+                        // 删除刚插入的数据
+                        $model::where('table_name', $data['table_name'])->delete();
+                        $this->error($makeTable);
                     }
                 }
             }
@@ -143,7 +150,7 @@ class Module extends Base
                 $this->error($result);
             } else {
                 // 尝试修改表名称和主键
-                $result = \app\common\model\Module::changeModule($data);
+                $result = \app\common\model\Module::changeTable($data);
                 if ($result !== true) {
                     $this->error($result);
                 }
