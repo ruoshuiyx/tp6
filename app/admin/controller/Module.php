@@ -85,9 +85,12 @@ class Module extends Base
     {
         // 获取字段信息
         $coloumns = MakeBuilder::getAddColumns($this->tableName);
+        // 提示信息
+        $pageTips = '1、没有表时会创建表和字段并插入至字段管理中;<br>2、已有表时会检测必要字段后插入至字段管理中;<br>3、已有表需包含的字段：主键、create_time、update_time、[sort 勾选排序字段时]、[status 勾选状态字段时]、[cate_id, hits, keywords, description, template, url 表类型为CMS时];';
         // 构建页面
         return FormBuilder::getInstance()
             ->addFormItems($coloumns)
+            ->setPageTips($pageTips, 'warning')  // 提示信息
             ->setExtraJs($this->getAddExtraJs()) // 设置额外JS
             ->fetch();
     }
@@ -132,9 +135,12 @@ class Module extends Base
         $info  = $model::edit($id)->toArray();
         // 获取字段信息
         $coloumns = MakeBuilder::getAddColumns($this->tableName, $info);
+        // 提示信息
+        $pageTips = '1、主键发生变动时会更改数据库中的表结构，字段管理中的主键字段也会相应改变;<br>2、表名称发生变动时会更改数据库中的表名称，需要重新进行代码生成和菜单生成;';
         // 构建页面
         return FormBuilder::getInstance()
             ->addFormItems($coloumns)
+            ->setPageTips($pageTips, 'warning')   // 提示信息
             ->setExtraJs($this->getEditExtraJs()) // 设置额外JS
             ->fetch();
     }
