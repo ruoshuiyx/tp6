@@ -2,6 +2,19 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row">
+            <!--顶部提示开始-->
+            <div class="col-12 alert alert-warning alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <p>
+                    {if $info}
+                    字段修改时会构建SQL语句来修改数据表的字段，如不想修改可勾选<修改表字段>为[否];
+                    {else /}
+                    1、数据表中不存在要添加的字段时会自动创建该字段并添加到字段管理中;<br>
+                    2、数据表中已存在要添加的字段时仅会插入到字段管理中;
+                    {/if}
+                </p>
+            </div>
+            <!--顶部提示结束-->
             {if $layer == false}
             <div class="col-12 callout search">
                 <form action="">
@@ -314,7 +327,27 @@
                             </small>
                         </div>
                     </div>
-
+                    {if $info}
+                    <!---->
+                    <div class="row dd_input_group no-gutters">
+                        <label class="col-3 col-sm-2 col-md-2 col-lg-2 col-xl-1 dd_input_l col-form-label">修改表字段</label>
+                        <div class="col-9 col-sm-9 col-md-9 col-lg-6 col-xl-4">
+                            <div class="dd_radio_lable_left">
+                                <label class="dd_radio_lable">
+                                    <input type="radio" name="execute_sql" value="1" class="dd_radio" checked><span>是</span>
+                                </label>
+                                <label class="dd_radio_lable">
+                                    <input type="radio" name="execute_sql" value="0" class="dd_radio"><span>否</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-12 offset-sm-2 offset-md-2 offset-lg-0 offset-xl-0 col-sm-10 col-md-10 col-lg-4 col-xl-7 dd_ts">
+                            <small class="text-muted">
+                                <i class="fa fa-info-circle"></i> 选择是会构建SQL语句来修改数据表的字段，选择否则不修改
+                            </small>
+                        </div>
+                    </div>
+                    {/if}
                     <!---->
                     <div class="row dd_input_group form-builder-submit no-gutters {if $layer == true}hide{/if}">
                         <div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-11 offset-sm-2 offset-md-2 offset-lg-2 offset-xl-1">

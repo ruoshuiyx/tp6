@@ -23,6 +23,7 @@
  *                      '.:::::'                    ':'````..
  * +----------------------------------------------------------------------
  */
+
 namespace app\admin\controller;
 
 use think\facade\Config;
@@ -56,12 +57,14 @@ class Field extends Base
         $search = MakeBuilder::getListSearch($this->tableName);
         // 搜索
         if (Request::param('getList') == 1) {
-            $where = MakeBuilder::getListWhere($this->tableName);
+            $where         = MakeBuilder::getListWhere($this->tableName);
             $orderByColumn = Request::param('orderByColumn') ?? $pk;
-            $isAsc = Request::param('isAsc') ?? 'desc';
-            $model = '\app\common\model\\' . $this->moduleName;
+            $isAsc         = Request::param('isAsc') ?? 'desc';
+            $model         = '\app\common\model\\'.$this->moduleName;
+
             return $model::getList($where, $this->pageSize, [$orderByColumn => $isAsc]);
         }
+
         // 构建页面
         return TableBuilder::getInstance()
             ->setUniqueId($pk)                              // 设置主键
@@ -76,7 +79,7 @@ class Field extends Base
 
     /**
      * 添加字段
-     * @param  int    $moduleId 模块（表）ID
+     * @param  int  $moduleId  模块（表）ID
      * @return string
      */
     public function add(int $moduleId = 0)
@@ -98,16 +101,16 @@ class Field extends Base
             'dictTypes' => $dictTypes,
             'groups'    => [],
         ];
-
         View::assign($view);
+
         return View::fetch();
     }
 
     /**
      * 添加/修改时字段变更后重新加载配置信息
-     * @param  int    $moduleId 模块（表）ID
-     * @param  string $type     类型
-     * @param  string $field    字段（编辑字段时需传递该参数）
+     * @param  int     $moduleId  模块（表）ID
+     * @param  string  $type      类型
+     * @param  string  $field     字段（编辑字段时需传递该参数）
      * @return string
      */
     public function changeType(int $moduleId, string $type, string $field = '')
@@ -117,8 +120,8 @@ class Field extends Base
                 // 调用字段设置模版
                 View::assign(Request::param());
                 // 传递field说明是编辑字段,编辑字段需要调取当前字段的配置信息
-                if (!empty($field)) {
-                    $fieldInfo = \app\common\model\Field::where('module_id', $moduleId)
+                if ( ! empty($field)) {
+                    $fieldInfo          = \app\common\model\Field::where('module_id', $moduleId)
                         ->where('field', '=', $field)
                         ->find();
                     $fieldInfo['setup'] = string2array($fieldInfo['setup']);
@@ -129,6 +132,7 @@ class Field extends Base
                     'fieldInfo' => $fieldInfo,
                 ];
                 View::assign($view);
+
                 return View::fetch('changeType');
             }
         }
@@ -147,14 +151,16 @@ class Field extends Base
                 $this->error($result);
             }
             // 查询字段是否已录入
-            $hasIn = \app\common\model\Field::where('field', $data['field'])->where('module_id', $data['module_id'])->count();
+            $hasIn = \app\common\model\Field::where('field', $data['field'])
+                ->where('module_id', $data['module_id'])
+                ->count();
             if ($hasIn) {
-                $this->error('该模块中已存在字段' . $data['field']);
+                $this->error('该模块中已存在字段'.$data['field']);
             }
 
             // 查询字段是否已在表中存在
-            $name = \app\common\model\Module::where('id', '=', $data['module_id'])->value('table_name');
-            $tablename = Config::get('database.connections.mysql.prefix') . $name;
+            $name      = \app\common\model\Module::where('id', '=', $data['module_id'])->value('table_name');
+            $tablename = Config::get('database.connections.mysql.prefix').$name;
             if ($this->_iset_field($tablename, $data['field'])) {
                 //$this->error($tablename . '表已存在[' . $data['field'] . ']字段');
             } else {
@@ -167,20 +173,20 @@ class Field extends Base
             $model = Db::name('field');
             if ($model->insert($data) !== false) {
                 // 数据库已存在字段时不再执行字段操作
-                if (isset($addfieldsql) && !empty($addfieldsql)) {
+                if (isset($addfieldsql) && ! empty($addfieldsql)) {
                     if (is_array($addfieldsql)) {
                         foreach ($addfieldsql as $sql) {
                             try {
                                 Db::execute($sql);
                             } catch (\Exception $e) {
-                                $this->error($e->getMessage() . '<br><br>[SQL]: ' . $sql);
+                                $this->error($e->getMessage().'<br><br>[SQL]: '.$sql);
                             }
                         }
                     } else {
                         try {
                             Db::execute($addfieldsql);
                         } catch (\Exception $e) {
-                            $this->error($e->getMessage() . '<br><br>[SQL]: ' . $addfieldsql);
+                            $this->error($e->getMessage().'<br><br>[SQL]: '.$addfieldsql);
                         }
                     }
                 }
@@ -193,10 +199,11 @@ class Field extends Base
 
     /**
      * 编辑字段
-     * @param int $id id
+     * @param  int  $id  id
      * @return string
      */
-    public function edit(int $id){
+    public function edit(int $id)
+    {
         // 获取所有模块
         $modules = \app\common\model\Module::field('id,module_name,table_name,table_comment')
             ->select()->toArray();
@@ -205,15 +212,14 @@ class Field extends Base
             ->order('sort asc, id desc')
             ->select();
         // 获取所有字段分组
-        $groups = \app\common\model\FieldGroup::where('status',1)
-            ->order('sort asc,id desc')
+        $groups = \app\common\model\FieldGroup::order('sort asc,id desc')
             ->select()
             ->toArray();
         // 格式化字段分组中的分组名称,避免重复展示
         foreach ($groups as $k => $v) {
             foreach ($modules as $kk => $vv) {
                 if ($vv['id'] == $v['module_id']) {
-                    $v['group_name'] = $vv['module_name'] . ' - ' . $v['group_name'];
+                    $v['group_name'] = $vv['module_name'].' - '.$v['group_name'];
                     break;
                 }
             }
@@ -221,8 +227,9 @@ class Field extends Base
         }
 
         $fieldInfo = \app\common\model\Field::where('id', '=', $id)->find();
-        if ($fieldInfo['setup'])
+        if ($fieldInfo['setup']) {
             $fieldInfo['setup'] = string2array($fieldInfo['setup']);
+        }
         $view = [
             'module_id' => $fieldInfo['module_id'],
             'info'      => $fieldInfo,
@@ -231,15 +238,17 @@ class Field extends Base
             'groups'    => $groups,
         ];
         View::assign($view);
+
         return View::fetch('add');
     }
 
     /**
      * 编辑字段保存
      */
-    public function editPost(){
+    public function editPost()
+    {
         if (Request::isPost()) {
-            $data = MakeBuilder::changeFormData(Request::except(['old_field']), $this->tableName);
+            $data     = MakeBuilder::changeFormData(Request::except(['old_field']), $this->tableName);
             $oldfield = Request::param('old_field');
 
             // 验证数据
@@ -255,15 +264,15 @@ class Field extends Base
             $data['is_sort']   = $data['is_sort'] ?? 0;
 
             // 查询字段是否已在表中存在
-            $name = \app\common\model\Module::where('id', '=', $data['module_id'])->value('table_name');
-            $tablename = Config::get('database.connections.mysql.prefix') . $name;
+            $name      = \app\common\model\Module::where('id', '=', $data['module_id'])->value('table_name');
+            $tablename = Config::get('database.connections.mysql.prefix').$name;
             // 新的字段已被存在于表中
             if ($this->_iset_field($tablename, $data['field']) && $oldfield != $data['field']) {
-                $this->error($tablename . '表已存在[' . $data['field'] . ']字段');
+                $this->error($tablename.'表已存在['.$data['field'].']字段');
             }
             // 旧的字段不存在于表中
             if ($this->_iset_field($tablename, $oldfield) == false) {
-                $this->error($tablename . '表不存在[' . $oldfield . ']字段');
+                $this->error($tablename.'表不存在['.$oldfield.']字段');
             }
 
             $editfieldsql = $this->get_tablesql(Request::post(), 'edit');
@@ -274,21 +283,24 @@ class Field extends Base
             $model = Db::name('field');
 
             if (false !== $model->update($data)) {
-                if (is_array($editfieldsql)) {
-                    foreach ($editfieldsql as $sql) {
+                if (Request::param('execute_sql', 0) == 1) {
+                    if (is_array($editfieldsql)) {
+                        foreach ($editfieldsql as $sql) {
+                            try {
+                                Db::execute($sql);
+                            } catch (\Exception $e) {
+                                $this->error($e->getMessage().'<br><br>[SQL]: '.$sql);
+                            }
+                        }
+                    } else {
                         try {
-                            Db::execute($sql);
+                            Db::execute($editfieldsql);
                         } catch (\Exception $e) {
-                            $this->error($e->getMessage() . '<br><br>[SQL]: ' . $sql);
+                            $this->error($e->getMessage().'<br><br>[SQL]: '.$editfieldsql);
                         }
                     }
-                } else {
-                    try {
-                        Db::execute($editfieldsql);
-                    } catch (\Exception $e) {
-                        $this->error($e->getMessage() . '<br><br>[SQL]: ' . $editfieldsql);
-                    }
                 }
+
                 $this->success('修改成功！', 'index');
             } else {
                 $this->error('修改失败！');
@@ -300,8 +312,9 @@ class Field extends Base
     public function sort()
     {
         if (Request::isPost()) {
-            $data = Request::post();
-            $model = '\app\common\model\\' . $this->moduleName;
+            $data  = Request::post();
+            $model = '\app\common\model\\'.$this->moduleName;
+
             return $model::sort($data);
         }
     }
@@ -314,15 +327,17 @@ class Field extends Base
             if ($field) {
                 $alowField = ['is_add', 'is_edit', 'is_list', 'is_search', 'is_sort', 'required'];
                 if (in_array($field, $alowField)) {
-                    $model = '\app\common\model\\' . $this->moduleName;
-                    $info = $model::find($id);
-                    $value = $info[$field] == 1 ? 0 : 1;
+                    $model        = '\app\common\model\\'.$this->moduleName;
+                    $info         = $model::find($id);
+                    $value        = $info[$field] == 1 ? 0 : 1;
                     $info[$field] = $value;
                     $info->save();
+
                     return json(['error' => 0, 'msg' => '修改成功!']);
                 }
             }
-            $model = '\app\common\model\\' . $this->moduleName;
+            $model = '\app\common\model\\'.$this->moduleName;
+
             return $model::state($id);
         }
     }
@@ -341,18 +356,19 @@ class Field extends Base
             }
 
             $moduleId = $r['module_id'];
-            $field = $r['field'];
+            $field    = $r['field'];
 
-            $prefix = Config::get('database.connections.mysql.prefix');
-            $name = Db::name('module')
+            $prefix    = Config::get('database.connections.mysql.prefix');
+            $name      = Db::name('module')
                 ->where('id', '=', $moduleId)
                 ->value('table_name');
-            $tableName = $prefix . $name;
+            $tableName = $prefix.$name;
 
             //实际查询表中是否有该字段
             if ($this->_iset_field($tableName, $field)) {
                 Db::execute("ALTER TABLE `{$tableName}` DROP `$field`");
             }
+
             return json(['error' => 0, 'msg' => '删除成功！']);
         }
     }
@@ -369,19 +385,20 @@ class Field extends Base
             }
 
             $moduleId = $r['module_id'];
-            $field = $r['field'];
+            $field    = $r['field'];
 
-            $prefix = Config::get('database.connections.mysql.prefix');
-            $name = Db::name('module')
+            $prefix    = Config::get('database.connections.mysql.prefix');
+            $name      = Db::name('module')
                 ->where('id', '=', $moduleId)
                 ->value('table_name');
-            $tableName = $prefix . $name;
+            $tableName = $prefix.$name;
 
             // 实际查询表中是否有该字段
             if ($this->_iset_field($tableName, $field)) {
                 Db::execute("ALTER TABLE `{$tableName}` DROP `$field`");
             }
         }
+
         return json(['error' => 0, 'msg' => '删除成功！']);
     }
 
@@ -389,46 +406,46 @@ class Field extends Base
 
     /**
      * 获取要执行的sql
-     * @param array  $info 字段信息
-     * @param string $do   操作类型[add/edit]
+     * @param  array   $info  字段信息
+     * @param  string  $do    操作类型[add/edit]
      * @return array|string
      */
     protected function get_tablesql(array $info, string $do = 'add')
     {
         $comment = $info['name'];
-        $type = $info['type'];
+        $type    = $info['type'];
 
         if (isset($info['setup']['fieldtype'])) {
             $fieldtype = strtoupper($info['setup']['fieldtype']);
         }
         $moduleid = $info['module_id'];
-        $default = $info['setup']['default'] ?? '';
-        $field = $info['field'];
+        $default  = $info['setup']['default'] ?? '';
+        $field    = $info['field'];
 
         $module = \app\common\model\Module::find($moduleid);
-        $name = $module->table_name;
-        $pk = $module->pk ?: 'id';
+        $name   = $module->table_name;
+        $pk     = $module->pk ?: 'id';
 
-        $tablename = Config::get('database.connections.mysql.prefix') . $name;
-        $maxlength = intval($info['maxlength']);
-        $minlength = intval($info['minlength']);
+        $tablename  = Config::get('database.connections.mysql.prefix').$name;
+        $maxlength  = intval($info['maxlength']);
+        $minlength  = intval($info['minlength']);
         $numbertype = $info['setup']['numbertype'] ?? '1'; // 是否包含负数
         if ($do == 'add') {
             $do = ' ADD ';
         } else {
             $oldfield = $info['old_field'];
-            $do = " CHANGE `" . $oldfield . "` ";
+            $do       = " CHANGE `".$oldfield."` ";
         }
         // text,textarea,radio,checkbox,date,time,datetime,daterange,tag,number,password,select,select2,image,images,file,files,editor,hidden,color
         switch ($type) {
             case 'text':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if (!$maxlength) {
+                    if ( ! $maxlength) {
                         $maxlength = 255;
                     }
                     $maxlength = min($maxlength, 255);
-                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
+                    $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
                     $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NULL COMMENT '$comment'";
                 }
@@ -436,11 +453,11 @@ class Field extends Base
             case 'textarea':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if (!$maxlength) {
+                    if ( ! $maxlength) {
                         $maxlength = 255;
                     }
                     $maxlength = min($maxlength, 255);
-                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
+                    $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
                     $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NULL COMMENT '$comment'";
                 }
@@ -448,84 +465,95 @@ class Field extends Base
             case 'radio':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if (!$maxlength)
+                    if ( ! $maxlength) {
                         $maxlength = 255;
+                    }
                     $maxlength = min($maxlength, 255);
-                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
+                    $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
                     $default = $default ?? 0;
-                    if (!$maxlength)
+                    if ( ! $maxlength) {
                         $maxlength = 10;
-                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) ".($numbertype ==1 ? 'UNSIGNED' : '')." NOT NULL DEFAULT '$default' COMMENT '$comment'";
+                    }
+                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) ".($numbertype == 1 ? 'UNSIGNED' : '')." NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 }
                 break;
             case 'checkbox':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if (!$maxlength)
+                    if ( ! $maxlength) {
                         $maxlength = 255;
+                    }
                     $maxlength = min($maxlength, 255);
-                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
+                    $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
-                    if (!$maxlength)
+                    if ( ! $maxlength) {
                         $maxlength = 10;
-                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) ".($numbertype ==1 ? 'UNSIGNED' : '')." NOT NULL DEFAULT '$default' COMMENT '$comment'";
+                    }
+                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) ".($numbertype == 1 ? 'UNSIGNED' : '')." NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 }
                 break;
             case 'date':
                 $fieldtype = $fieldtype ?? 'INT';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if (!$maxlength)
+                    if ( ! $maxlength) {
                         $maxlength = 255;
+                    }
                     $maxlength = min($maxlength, 255);
-                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
+                    $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
-                    if (!$maxlength)
+                    if ( ! $maxlength) {
                         $maxlength = 10;
-                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) ".($numbertype ==1 ? 'UNSIGNED' : '')." NOT NULL DEFAULT '$default' COMMENT '$comment'";
+                    }
+                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) ".($numbertype == 1 ? 'UNSIGNED' : '')." NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 }
                 break;
             case 'time':
                 $fieldtype = $fieldtype ?? 'INT';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if (!$maxlength)
+                    if ( ! $maxlength) {
                         $maxlength = 255;
+                    }
                     $maxlength = min($maxlength, 255);
-                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
+                    $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
-                    if (!$maxlength)
+                    if ( ! $maxlength) {
                         $maxlength = 10;
-                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) ".($numbertype ==1 ? 'UNSIGNED' : '')." NOT NULL DEFAULT '$default' COMMENT '$comment'";
+                    }
+                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) ".($numbertype == 1 ? 'UNSIGNED' : '')." NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 }
                 break;
             case 'datetime':
                 $fieldtype = $fieldtype ?? 'INT';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if (!$maxlength)
+                    if ( ! $maxlength) {
                         $maxlength = 255;
+                    }
                     $maxlength = min($maxlength, 255);
-                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
+                    $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
-                    if (!$maxlength)
+                    if ( ! $maxlength) {
                         $maxlength = 10;
-                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) ".($numbertype ==1 ? 'UNSIGNED' : '')." NOT NULL DEFAULT '$default' COMMENT '$comment'";
+                    }
+                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) ".($numbertype == 1 ? 'UNSIGNED' : '')." NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 }
                 break;
             case 'daterange':
-                if (!$maxlength)
+                if ( ! $maxlength) {
                     $maxlength = 50;
+                }
                 $maxlength = min($maxlength, 255);
                 $fieldtype = $fieldtype ?? 'VARCHAR';
-                $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
+                $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 break;
             case 'tag':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if (!$maxlength) {
+                    if ( ! $maxlength) {
                         $maxlength = 255;
                     }
                     $maxlength = min($maxlength, 255);
-                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
+                    $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
                     $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NULL COMMENT '$comment'";
                 }
@@ -533,25 +561,27 @@ class Field extends Base
             case 'number':
                 $fieldtype = $fieldtype ?? 'INT';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if (!$maxlength)
+                    if ( ! $maxlength) {
                         $maxlength = 255;
+                    }
                     $maxlength = min($maxlength, 255);
-                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
+                    $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
                     $default = $default ?? intval($default);
-                    if (!$maxlength)
+                    if ( ! $maxlength) {
                         $maxlength = 10;
-                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) ".($numbertype ==1 ? 'UNSIGNED' : '')." NOT NULL DEFAULT {$default} COMMENT '$comment'";
+                    }
+                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) ".($numbertype == 1 ? 'UNSIGNED' : '')." NOT NULL DEFAULT {$default} COMMENT '$comment'";
                 }
                 break;
             case 'password':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if (!$maxlength) {
+                    if ( ! $maxlength) {
                         $maxlength = 255;
                     }
                     $maxlength = min($maxlength, 255);
-                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
+                    $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
                     $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NULL COMMENT '$comment'";
                 }
@@ -559,16 +589,17 @@ class Field extends Base
             case 'select':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if (!$maxlength) {
+                    if ( ! $maxlength) {
                         $maxlength = 255;
                     }
                     $maxlength = min($maxlength, 255);
-                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
+                    $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } elseif ($fieldtype == 'INT' || $fieldtype == 'TINYINT') {
                     $default = $default ?? intval($default);
-                    if (!$maxlength)
+                    if ( ! $maxlength) {
                         $maxlength = $fieldtype == 'INT' ? 10 : 4;
-                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) " . ($numbertype == 1 ? 'UNSIGNED' : '') . " NOT NULL DEFAULT {$default} COMMENT '$comment'";
+                    }
+                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) ".($numbertype == 1 ? 'UNSIGNED' : '')." NOT NULL DEFAULT {$default} COMMENT '$comment'";
                 } else {
                     $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NULL COMMENT '$comment'";
                 }
@@ -576,16 +607,17 @@ class Field extends Base
             case 'select2':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if (!$maxlength) {
+                    if ( ! $maxlength) {
                         $maxlength = 255;
                     }
                     $maxlength = min($maxlength, 255);
-                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
+                    $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } elseif ($fieldtype == 'INT' || $fieldtype == 'TINYINT') {
                     $default = $default ?? intval($default);
-                    if (!$maxlength)
+                    if ( ! $maxlength) {
                         $maxlength = $fieldtype == 'INT' ? 10 : 4;
-                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) " . ($numbertype == 1 ? 'UNSIGNED' : '') . " NOT NULL DEFAULT {$default} COMMENT '$comment'";
+                    }
+                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) ".($numbertype == 1 ? 'UNSIGNED' : '')." NOT NULL DEFAULT {$default} COMMENT '$comment'";
                 } else {
                     $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NULL COMMENT '$comment'";
                 }
@@ -593,11 +625,11 @@ class Field extends Base
             case 'image':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if (!$maxlength) {
+                    if ( ! $maxlength) {
                         $maxlength = 80;
                     }
                     $maxlength = min($maxlength, 255);
-                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
+                    $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
                     $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NULL COMMENT '$comment'";
                 }
@@ -605,11 +637,11 @@ class Field extends Base
             case 'images':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if (!$maxlength) {
+                    if ( ! $maxlength) {
                         $maxlength = 255;
                     }
                     $maxlength = min($maxlength, 255);
-                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
+                    $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
                     $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NULL COMMENT '$comment'";
                 }
@@ -617,11 +649,11 @@ class Field extends Base
             case 'file':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if (!$maxlength) {
+                    if ( ! $maxlength) {
                         $maxlength = 80;
                     }
                     $maxlength = min($maxlength, 255);
-                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
+                    $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
                     $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NULL COMMENT '$comment'";
                 }
@@ -629,11 +661,11 @@ class Field extends Base
             case 'files':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if (!$maxlength) {
+                    if ( ! $maxlength) {
                         $maxlength = 255;
                     }
                     $maxlength = min($maxlength, 255);
-                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
+                    $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
                     $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NULL COMMENT '$comment'";
                 }
@@ -641,11 +673,11 @@ class Field extends Base
             case 'editor':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if (!$maxlength) {
+                    if ( ! $maxlength) {
                         $maxlength = 255;
                     }
                     $maxlength = min($maxlength, 255);
-                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
+                    $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
                     $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NULL COMMENT '$comment'";
                 }
@@ -653,34 +685,37 @@ class Field extends Base
             case 'hidden':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if (!$maxlength)
+                    if ( ! $maxlength) {
                         $maxlength = 255;
+                    }
                     $maxlength = min($maxlength, 255);
-                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
+                    $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
-                    if (!$maxlength)
+                    if ( ! $maxlength) {
                         $maxlength = 10;
+                    }
                     // 主键字段自增
                     if ($pk == $field) {
-                        $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) " . ($numbertype == 1 ? 'UNSIGNED' : '') . " NOT NULL AUTO_INCREMENT COMMENT '$comment'";
+                        $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) ".($numbertype == 1 ? 'UNSIGNED' : '')." NOT NULL AUTO_INCREMENT COMMENT '$comment'";
                     } else {
-                        $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) " . ($numbertype == 1 ? 'UNSIGNED' : '') . " NOT NULL DEFAULT '$default' COMMENT '$comment'";
+                        $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) ".($numbertype == 1 ? 'UNSIGNED' : '')." NOT NULL DEFAULT '$default' COMMENT '$comment'";
                     }
                 }
                 break;
             case 'color':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if (!$maxlength) {
+                    if ( ! $maxlength) {
                         $maxlength = 10;
                     }
                     $maxlength = min($maxlength, 255);
-                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
+                    $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
                     $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NULL COMMENT '$comment'";
                 }
                 break;
         }
+
         return $sql;
     }
 
@@ -704,7 +739,7 @@ class Field extends Base
     private function getIndexExtraJs()
     {
         $url = url('state');
-        $js = '<script type="text/javascript">
+        $js  = '<script type="text/javascript">
             $(document).ready(function() {
                 //避免pjax重复加载js导致事件重复绑定
                 if (typeof (fieldIndexExtraJs) != "undefined") {
@@ -713,42 +748,43 @@ class Field extends Base
                 $(document).on("click", \'.js_is_add\', function () {
                     var id = $(this).parent(\'tr\').data(\'uniqueid\');
                     if(id){
-                        $.operate.submit(\'' . $url . '\', "post", "json", {"id": id,"field": \'is_add\'});
+                        $.operate.submit(\''.$url.'\', "post", "json", {"id": id,"field": \'is_add\'});
                     }
                 })
                 $(document).on("click", \'.js_is_edit\', function () {
                     var id = $(this).parent(\'tr\').data(\'uniqueid\');
                     if(id){
-                        $.operate.submit(\'' . $url . '\', "post", "json", {"id": id,"field": \'is_edit\'});
+                        $.operate.submit(\''.$url.'\', "post", "json", {"id": id,"field": \'is_edit\'});
                     }
                 })
                 $(document).on("click", \'.js_is_list\', function () {
                     var id = $(this).parent(\'tr\').data(\'uniqueid\');
                     if(id){
-                        $.operate.submit(\'' . $url . '\', "post", "json", {"id": id,"field": \'is_list\'});
+                        $.operate.submit(\''.$url.'\', "post", "json", {"id": id,"field": \'is_list\'});
                     }
                 })
                 $(document).on("click", \'.js_is_search\', function () {
                     var id = $(this).parent(\'tr\').data(\'uniqueid\');
                     if(id){
-                        $.operate.submit(\'' . $url . '\', "post", "json", {"id": id,"field": \'is_search\'});
+                        $.operate.submit(\''.$url.'\', "post", "json", {"id": id,"field": \'is_search\'});
                     }
                 })
                 $(document).on("click", \'.js_is_sort\', function () {
                     var id = $(this).parent(\'tr\').data(\'uniqueid\');
                     if(id){
-                        $.operate.submit(\'' . $url . '\', "post", "json", {"id": id,"field": \'is_sort\'});
+                        $.operate.submit(\''.$url.'\', "post", "json", {"id": id,"field": \'is_sort\'});
                     }
                 })
                 $(document).on("click", \'.js_required\', function () {
                     var id = $(this).parent(\'tr\').data(\'uniqueid\');
                     if(id){
-                        $.operate.submit(\'' . $url . '\', "post", "json", {"id": id,"field": \'required\'});
+                        $.operate.submit(\''.$url.'\', "post", "json", {"id": id,"field": \'required\'});
                     }
                 })
                 fieldIndexExtraJs = true;
             })
             </script>';
+
         return $js;
     }
 }
