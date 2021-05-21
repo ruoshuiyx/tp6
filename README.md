@@ -29,7 +29,7 @@ SIYUCMS 基于 ThinkPHP6.0 + AdminLTE 开发，简单 / 易用 / 响应式 / 低
 - 陆续收到一些捐赠、授权和打赏，谢谢各位小伙伴的支持。
 
 演示地址：
-[http://v6.siyucms.com/admin](http://v6.siyucms.com/admin)
+[https://v6.siyucms.com/admin](https://v6.siyucms.com/admin)
 
 文档地址：[https://www.kancloud.cn/ruoshuiyx/siyucms/](https://www.kancloud.cn/ruoshuiyx/siyucms/)
 
