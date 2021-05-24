@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '0544deefa31c1dff38fa59b43f81ede91ee8c841',
+    'reference' => '227e874f8ffeb399e9cd941181c36752a47b716e',
     'name' => 'topthink/think',
   ),
   'versions' => 
@@ -22,21 +22,21 @@
     ),
     'alibabacloud/client' => 
     array (
-      'pretty_version' => '1.5.30',
-      'version' => '1.5.30.0',
+      'pretty_version' => '1.5.31',
+      'version' => '1.5.31.0',
       'aliases' => 
       array (
       ),
-      'reference' => '1f497bb79835b84094318a70b672eb88260f2682',
+      'reference' => '19224d92fe27ab8ef501d77d4891e7660bc023c1',
     ),
     'clagiordano/weblibs-configmanager' => 
     array (
-      'pretty_version' => 'v1.1.0',
-      'version' => '1.1.0.0',
+      'pretty_version' => 'v1.2.0',
+      'version' => '1.2.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'ecf584f5b3a27929175ff0abdba52f0131bef795',
+      'reference' => '5c8ebcc62782313b1278afe802b120d18c07a059',
     ),
     'danielstjules/stringy' => 
     array (
@@ -130,12 +130,12 @@
     ),
     'markbaker/complex' => 
     array (
-      'pretty_version' => '2.0.0',
-      'version' => '2.0.0.0',
+      'pretty_version' => '2.0.1',
+      'version' => '2.0.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => '9999f1432fae467bc93c53f357105b4c31bb994c',
+      'reference' => '7351c0b5beef9eb1f683e57107ecba3aac2ebe67',
     ),
     'markbaker/matrix' => 
     array (
@@ -320,7 +320,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '0544deefa31c1dff38fa59b43f81ede91ee8c841',
+      'reference' => '227e874f8ffeb399e9cd941181c36752a47b716e',
     ),
     'topthink/think-captcha' => 
     array (

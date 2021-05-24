@@ -54,17 +54,17 @@
         },
         {
             "name": "alibabacloud/client",
-            "version": "1.5.30",
-            "version_normalized": "1.5.30.0",
+            "version": "1.5.31",
+            "version_normalized": "1.5.31.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aliyun/openapi-sdk-php-client.git",
-                "reference": "1f497bb79835b84094318a70b672eb88260f2682"
+                "reference": "19224d92fe27ab8ef501d77d4891e7660bc023c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aliyun/openapi-sdk-php-client/zipball/1f497bb79835b84094318a70b672eb88260f2682",
-                "reference": "1f497bb79835b84094318a70b672eb88260f2682",
+                "url": "https://api.github.com/repos/aliyun/openapi-sdk-php-client/zipball/19224d92fe27ab8ef501d77d4891e7660bc023c1",
+                "reference": "19224d92fe27ab8ef501d77d4891e7660bc023c1",
                 "shasum": ""
             },
             "require": {
@@ -92,7 +92,7 @@
                 "league/climate": "^3.2.4",
                 "mikey179/vfsstream": "^1.6",
                 "monolog/monolog": "^1.24",
-                "phpunit/phpunit": "^5.7.27",
+                "phpunit/phpunit": "^5.7.27|^6.1",
                 "psr/cache": "^1.0",
                 "symfony/dotenv": "^3.4",
                 "symfony/var-dumper": "^3.4"
@@ -100,7 +100,7 @@
             "suggest": {
                 "ext-sockets": "To use client-side monitoring"
             },
-            "time": "2021-03-22T09:07:59+00:00",
+            "time": "2021-05-13T06:26:38+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -134,21 +134,25 @@
                 "sdk",
                 "tool"
             ],
+            "support": {
+                "issues": "https://github.com/aliyun/openapi-sdk-php-client/issues",
+                "source": "https://github.com/aliyun/openapi-sdk-php-client"
+            },
             "install-path": "../alibabacloud/client"
         },
         {
             "name": "clagiordano/weblibs-configmanager",
-            "version": "v1.1.0",
-            "version_normalized": "1.1.0.0",
+            "version": "v1.2.0",
+            "version_normalized": "1.2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/clagiordano/weblibs-configmanager.git",
-                "reference": "ecf584f5b3a27929175ff0abdba52f0131bef795"
+                "reference": "5c8ebcc62782313b1278afe802b120d18c07a059"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/clagiordano/weblibs-configmanager/zipball/ecf584f5b3a27929175ff0abdba52f0131bef795",
-                "reference": "ecf584f5b3a27929175ff0abdba52f0131bef795",
+                "url": "https://api.github.com/repos/clagiordano/weblibs-configmanager/zipball/5c8ebcc62782313b1278afe802b120d18c07a059",
+                "reference": "5c8ebcc62782313b1278afe802b120d18c07a059",
                 "shasum": ""
             },
             "require": {
@@ -158,7 +162,7 @@
                 "clagiordano/phpunit-result-printer": "^1",
                 "phpunit/phpunit": "^4.8"
             },
-            "time": "2020-07-20T20:39:25+00:00",
+            "time": "2021-05-18T17:55:57+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -185,6 +189,10 @@
                 "tool",
                 "weblibs"
             ],
+            "support": {
+                "issues": "https://github.com/clagiordano/weblibs-configmanager/issues",
+                "source": "https://github.com/clagiordano/weblibs-configmanager/tree/v1.2.0"
+            },
             "install-path": "../clagiordano/weblibs-configmanager"
         },
         {
@@ -836,17 +844,17 @@
         },
         {
             "name": "markbaker/complex",
-            "version": "2.0.0",
-            "version_normalized": "2.0.0.0",
+            "version": "2.0.1",
+            "version_normalized": "2.0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/MarkBaker/PHPComplex.git",
-                "reference": "9999f1432fae467bc93c53f357105b4c31bb994c"
+                "reference": "7351c0b5beef9eb1f683e57107ecba3aac2ebe67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/MarkBaker/PHPComplex/zipball/9999f1432fae467bc93c53f357105b4c31bb994c",
-                "reference": "9999f1432fae467bc93c53f357105b4c31bb994c",
+                "url": "https://api.github.com/repos/MarkBaker/PHPComplex/zipball/7351c0b5beef9eb1f683e57107ecba3aac2ebe67",
+                "reference": "7351c0b5beef9eb1f683e57107ecba3aac2ebe67",
                 "shasum": ""
             },
             "require": {
@@ -855,14 +863,10 @@
             "require-dev": {
                 "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
                 "phpcompatibility/php-compatibility": "^9.0",
-                "phpdocumentor/phpdocumentor": "2.*",
-                "phploc/phploc": "^4.0",
-                "phpmd/phpmd": "2.*",
                 "phpunit/phpunit": "^7.0 || ^8.0 || ^9.3",
-                "sebastian/phpcpd": "^4.0",
                 "squizlabs/php_codesniffer": "^3.4"
             },
-            "time": "2020-08-26T10:42:07+00:00",
+            "time": "2021-05-23T11:48:20+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -930,6 +934,10 @@
                 "complex",
                 "mathematics"
             ],
+            "support": {
+                "issues": "https://github.com/MarkBaker/PHPComplex/issues",
+                "source": "https://github.com/MarkBaker/PHPComplex/tree/2.0.1"
+            },
             "install-path": "../markbaker/complex"
         },
         {
