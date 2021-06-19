@@ -59,7 +59,7 @@ class MakeBuilder
         }
         // 根据模块ID获取所有字段
         $fields = Field::where('module_id', $module['id'])
-            ->order(['sort', 'id' => 'desc'])
+            ->order(['sort' => 'asc', 'id' => 'asc'])
             ->select()
             ->toArray();
 

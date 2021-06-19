@@ -61,10 +61,10 @@
                             {if $column.name==$unique_id}
                                 sortable: true,                  {// 主键必须可以排序}
                             {else}
-                            sortable: {$column.sortable},        {// 是否可排序}
+                                sortable: {$column.sortable},     {// 是否可排序}
                             {/if}
                             {notempty name="column.class"}
-                            class: '{$column.class|default=''}', {// 使用class定义/覆盖列的CSS类}
+                                class: '{$column.class|default=''}', {// 使用class定义/覆盖列的CSS类}
                             {/notempty}
 							
 							{if $column.param }
@@ -178,6 +178,7 @@
 									}
 									{/case}
 									{case btn }
+                                    class : 'text-nowrap',
 									formatter: function(value, row, index) {
 										var actions = [];
 										{volist name="right_buttons" id="right_button"}

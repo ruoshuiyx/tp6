@@ -30,6 +30,7 @@ label{margin-bottom: 0;}
 :-ms-input-placeholder{color: #b3b3b3!important;}
 /* 设置layer样式 */
 .layui-layer-btn {background-color: #F8F8F8; border-top: 1px solid #eee;}
+.layui-layer-border{box-shadow: 1px 1px 50px rgb(0 0 0 / 30%) !important;}
 
 /*---------------------------插件相关---------------------------*/
 /* pace */

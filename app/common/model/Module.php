@@ -45,10 +45,12 @@ class Module extends Base
     {
         $list = self::where($where)
             ->order($order)
-            ->paginate([
-                'query'     => Request::get(),
-                'list_rows' => $pageSize,
-            ])
+            ->paginate(
+                [
+                    'query'     => Request::get(),
+                    'list_rows' => $pageSize,
+                ]
+            )
             ->toArray();
         // 获取不可选中的信息
         $unMakeModule = MakeBuilder::unMakeModule();
@@ -87,7 +89,7 @@ class Module extends Base
         $tableName = \think\facade\Config::get('database.connections.mysql.prefix') . $tableName;
         // 取得所有表名称
         $tables = \think\facade\Db::getTables();
-        // 已有表则不再创建
+        // 已有表则不再创建表，尝试维护字段信息
         if (in_array($tableName, $tables)) {
             // 检测是否包含需要的字段
             $requiredField = [$pk, 'create_time', 'update_time'];
@@ -123,16 +125,16 @@ class Module extends Base
             // 插入表记录
             $data = [
                 ['module_id' => $module->id, 'field' => $pk, 'name' => '编号', 'type' => 'hidden', 'is_list' => '1', 'status' => '1', 'sort' => '1', 'remark' => '自增ID', 'setup' => "array ('default' => '0','extra_attr' => '','extra_class' => '','step' => '1','fieldtype' => 'int','group' => '')"],
-                ['module_id' => $module->id, 'field' => 'create_time', 'name' => '添加时间', 'maxlength' => '11', 'type' => 'datetime', 'is_list' => '1', 'search_type' => '=', 'status' => '1', 'sort' => '50', 'remark' => '添加时间', 'setup' => "array ('default' => '0', 'format' => 'Y-m-d H:i:s', 'extra_attr' => '', 'extra_class' => '', 'placeholder' => '', 'fieldtype' => 'int',)"],
-                ['module_id' => $module->id, 'field' => 'update_time', 'name' => '更新时间', 'maxlength' => '11', 'type' => 'datetime', 'is_list' => '1', 'search_type' => '=', 'status' => '1', 'sort' => '50', 'remark' => '更新时间', 'setup' => "array ('default' => '0', 'format' => 'Y-m-d H:i:s', 'extra_attr' => '', 'extra_class' => '', 'placeholder' => '', 'fieldtype' => 'int',)"],
+                ['module_id' => $module->id, 'field' => 'create_time', 'name' => '添加时间', 'maxlength' => '11', 'type' => 'datetime', 'is_list' => '1', 'search_type' => '=', 'status' => '1', 'sort' => '99', 'remark' => '添加时间', 'setup' => "array ('default' => '0', 'format' => 'Y-m-d H:i:s', 'extra_attr' => '', 'extra_class' => '', 'placeholder' => '', 'fieldtype' => 'int',)"],
+                ['module_id' => $module->id, 'field' => 'update_time', 'name' => '更新时间', 'maxlength' => '11', 'type' => 'datetime', 'is_list' => '1', 'search_type' => '=', 'status' => '1', 'sort' => '100', 'remark' => '更新时间', 'setup' => "array ('default' => '0', 'format' => 'Y-m-d H:i:s', 'extra_attr' => '', 'extra_class' => '', 'placeholder' => '', 'fieldtype' => 'int',)"],
             ];
             // 自动添加排序字段
             if ($module->is_sort) {
-                $data[] = ['module_id' => $module->id, 'field' => 'sort', 'name' => '排序', 'required' => '1', 'maxlength' => '8', 'type' => 'number', 'is_add' => '1', 'is_edit' => '1', 'is_list' => '1', 'is_sort' => '1', 'search_type' => '=', 'status' => '1', 'sort' => '49', 'remark' => '', 'setup' => "array ('default' => '50', 'extra_attr' => '', 'extra_class' => '', 'step' => '1', 'fieldtype' => 'int',)"];
+                $data[] = ['module_id' => $module->id, 'field' => 'sort', 'name' => '排序', 'required' => '1', 'maxlength' => '8', 'type' => 'number', 'is_add' => '1', 'is_edit' => '1', 'is_list' => '1', 'is_sort' => '1', 'search_type' => '=', 'status' => '1', 'sort' => '98', 'remark' => '', 'setup' => "array ('default' => '50', 'extra_attr' => '', 'extra_class' => '', 'step' => '1', 'fieldtype' => 'int',)"];
             }
             // 自动添加状态字段
             if ($module->is_status) {
-                $data[] = ['module_id' => $module->id, 'field' => 'status', 'name' => '状态', 'required' => '1', 'maxlength' => '1', 'type' => 'radio', 'data_source' => '1', 'dict_code' => '1', 'is_add' => '1', 'is_edit' => '1', 'is_list' => '1', 'is_search' => '1', 'is_sort' => '0', 'search_type' => '=', 'status' => '1', 'sort' => '48', 'remark' => '', 'setup' => "array ('default' => '1', 'extra_attr' => '', 'extra_class' => '', 'fieldtype' => 'tinyint',)"];
+                $data[] = ['module_id' => $module->id, 'field' => 'status', 'name' => '状态', 'required' => '1', 'maxlength' => '1', 'type' => 'radio', 'data_source' => '1', 'dict_code' => '1', 'is_add' => '1', 'is_edit' => '1', 'is_list' => '1', 'is_search' => '1', 'is_sort' => '0', 'search_type' => '=', 'status' => '1', 'sort' => '97', 'remark' => '', 'setup' => "array ('default' => '1', 'extra_attr' => '', 'extra_class' => '', 'fieldtype' => 'tinyint',)"];
             }
 
             // 添加CMS模块时自动增加[栏目ID、点击数、关键词、描述、模板、跳转地址]字段
@@ -268,6 +270,213 @@ class Module extends Base
                 ];
             }
 
+            // 尝试构建表中其他字段
+
+            // 从数据库中获取表字段信息
+            $sql        = "SELECT * FROM `information_schema`.`columns` WHERE TABLE_SCHEMA = :table_schema AND table_name = :table_name "
+                . "ORDER BY ORDINAL_POSITION";
+            $columnList = Db::query($sql, ['table_schema' => \think\facade\Config::get('database.connections.mysql.database'), 'table_name' => $tableName]);
+
+            $priKey = ''; // 主键检查
+            foreach ($columnList as $k => $v) {
+                if ($v['COLUMN_KEY'] == 'PRI') {
+                    $priKey = $v['COLUMN_NAME'];
+                    break;
+                }
+            }
+            if (!$priKey) {
+                return '请设置 [' . $tableName . '] 表的主键';
+            }
+            // 循环所有字段,开始构造要入库的字段信息
+            foreach ($columnList as $k => $v) {
+                // 已初始化的字段直接跳过
+                $continue = false;
+                foreach ($data as $kk => $vv) {
+                    if ($vv['field'] == $v['COLUMN_NAME']) {
+                        $continue = true;
+                        break;
+                    }
+                }
+                if ($continue == true) {
+                    continue;
+                }
+
+                // 获取字段类型
+                $inputType = self::getFieldType($v);
+
+                $maxlength = substr(substr($v['COLUMN_TYPE'], strripos($v['COLUMN_TYPE'], "(") + 1), 0, strrpos(substr($v['COLUMN_TYPE'], strripos($v['COLUMN_TYPE'], "(") + 1), ")")); // 字符长度
+                $step      = $inputType == 'number' && $v['NUMERIC_SCALE'] > 0 ? "0." . str_repeat(0, $v['NUMERIC_SCALE'] - 1) . "1" : 1;
+
+                $columnName    = $v['COLUMN_NAME'];                                          // 字段名称
+                $columnComment = explode(':', $v['COLUMN_COMMENT'])[0] ?: $columnName;       // 字段别名
+                $remark        = $columnComment;                                             // 字段备注
+                $default       = $v['COLUMN_DEFAULT'];                                       // 默认值
+                $maxlength     = $maxlength ?: 0;                                            // 字符长度
+                $dataType      = $v['DATA_TYPE'];                                            // 字段类型
+                $isAdd         = 1;                                                          // 添加状态
+                $isEdit        = 1;                                                          // 修改状态
+                $isList        = 1;                                                          // 列表状态
+                $isSearch      = 1;                                                          // 搜索状态
+                $isSort        = 1;                                                          // 排序状态
+                $searchType    = '=';                                                        // 搜索类型
+
+
+                // 部分类型的默认值为0
+                if (in_array($dataType, ['tinyint', 'bigint', 'int', 'mediumint', 'smallint', 'decimal', 'double', 'float'])) {
+                    $default = $default ?: 0;
+                }
+
+                if ($inputType == 'number') {
+                    $isSearch = 0;
+                    $setup    = "array ('default' => '{$default}', 'extra_attr' => '', 'extra_class' => '', 'step' => '{$step}', 'fieldtype' => '{$dataType}',)";
+                    $data[]   = [
+                        'module_id'      => $module->id,
+                        'field'          => $columnName,
+                        'name'           => $columnComment,
+                        'required'       => '0',
+                        'maxlength'      => $maxlength,
+                        'type'           => $inputType,
+                        'data_source'    => '0',
+                        'relation_model' => '',
+                        'relation_field' => '',
+                        'is_add'         => $isAdd,
+                        'is_edit'        => $isEdit,
+                        'is_list'        => $isList,
+                        'is_search'      => $isSearch,
+                        'is_sort'        => $isSort,
+                        'search_type'    => $searchType,
+                        'status'         => '1',
+                        'sort'           => '50',
+                        'remark'         => $remark,
+                        'setup'          => $setup,
+                    ];
+                } elseif ($inputType == 'datetime') {
+                    $isSearch = 0;
+                    $setup    = "array ('default' => '{$default}', 'format' => 'Y-m-d H:i:s', 'extra_attr' => '', 'extra_class' => '', 'placeholder' => '', 'fieldtype' => '{$dataType}',)";
+                    $data[]   = [
+                        'module_id'      => $module->id,
+                        'field'          => $columnName,
+                        'name'           => $columnComment,
+                        'required'       => '0',
+                        'maxlength'      => $maxlength,
+                        'type'           => $inputType,
+                        'data_source'    => '0',
+                        'relation_model' => '',
+                        'relation_field' => '',
+                        'is_add'         => $isAdd,
+                        'is_edit'        => $isEdit,
+                        'is_list'        => $isList,
+                        'is_search'      => $isSearch,
+                        'is_sort'        => $isSort,
+                        'search_type'    => $searchType,
+                        'status'         => '1',
+                        'sort'           => '50',
+                        'remark'         => $remark,
+                        'setup'          => $setup,
+                    ];
+                } elseif (in_array($inputType, ['image', 'images', 'file', 'files'])) {
+                    $isSearch = 0;
+                    $isSort   = 0;
+                    $setup    = "array ('default' => '{$default}', 'extra_attr' => '', 'extra_class' => '', 'placeholder' => '', 'fieldtype' => '{$dataType}',)";
+                    $data[]   = [
+                        'module_id'      => $module->id,
+                        'field'          => $columnName,
+                        'name'           => $columnComment,
+                        'required'       => '0',
+                        'maxlength'      => $maxlength,
+                        'type'           => $inputType,
+                        'data_source'    => '0',
+                        'relation_model' => '',
+                        'relation_field' => '',
+                        'is_add'         => $isAdd,
+                        'is_edit'        => $isEdit,
+                        'is_list'        => $isList,
+                        'is_search'      => $isSearch,
+                        'is_sort'        => $isSort,
+                        'search_type'    => $searchType,
+                        'status'         => '1',
+                        'sort'           => '50',
+                        'remark'         => $remark,
+                        'setup'          => $setup,
+                    ];
+                } elseif ($inputType == 'editor') {
+                    $isList   = 0;
+                    $isSearch = 0;
+                    $isSort   = 0;
+                    $setup    = "array ('default' => '{$default}', 'extra_attr' => '', 'extra_class' => '', 'height' => '', 'fieldtype' => '{$dataType}',)";
+                    $data[]   = [
+                        'module_id'      => $module->id,
+                        'field'          => $columnName,
+                        'name'           => $columnComment,
+                        'required'       => '0',
+                        'maxlength'      => $maxlength,
+                        'type'           => $inputType,
+                        'data_source'    => '0',
+                        'relation_model' => '',
+                        'relation_field' => '',
+                        'is_add'         => $isAdd,
+                        'is_edit'        => $isEdit,
+                        'is_list'        => $isList,
+                        'is_search'      => $isSearch,
+                        'is_sort'        => $isSort,
+                        'search_type'    => $searchType,
+                        'status'         => '1',
+                        'sort'           => '50',
+                        'remark'         => $remark,
+                        'setup'          => $setup,
+                    ];
+                } elseif ($inputType == 'password') {
+                    $isList   = 0;
+                    $isSearch = 0;
+                    $isSort   = 0;
+                    $isEdit   = 0;
+                    $setup    = "array ('default' => '{$default}', 'extra_attr' => '', 'extra_class' => '', 'fieldtype' => '{$dataType}',)";
+                    $data[]   = [
+                        'module_id'      => $module->id,
+                        'field'          => $columnName,
+                        'name'           => $columnComment,
+                        'required'       => '0',
+                        'maxlength'      => $maxlength,
+                        'type'           => $inputType,
+                        'data_source'    => '0',
+                        'relation_model' => '',
+                        'relation_field' => '',
+                        'is_add'         => $isAdd,
+                        'is_edit'        => $isEdit,
+                        'is_list'        => $isList,
+                        'is_search'      => $isSearch,
+                        'is_sort'        => $isSort,
+                        'search_type'    => $searchType,
+                        'status'         => '1',
+                        'sort'           => '50',
+                        'remark'         => $remark,
+                        'setup'          => $setup,
+                    ];
+                } else {
+                    $setup  = "array ('default' => '{$default}', 'extra_attr' => '', 'extra_class' => '', 'placeholder' => '', 'fieldtype' => '{$dataType}', 'group' => '',)";
+                    $data[] = [
+                        'module_id'      => $module->id,
+                        'field'          => $columnName,
+                        'name'           => $columnComment,
+                        'required'       => '0',
+                        'maxlength'      => $maxlength,
+                        'type'           => $inputType,
+                        'data_source'    => '0',
+                        'relation_model' => '',
+                        'relation_field' => '',
+                        'is_add'         => $isAdd,
+                        'is_edit'        => $isEdit,
+                        'is_list'        => $isList,
+                        'is_search'      => $isSearch,
+                        'is_sort'        => $isSort,
+                        'search_type'    => $searchType,
+                        'status'         => '1',
+                        'sort'           => '50',
+                        'remark'         => $remark,
+                        'setup'          => $setup,
+                    ];
+                }
+            }
             $fild = new Field();
             $fild->saveAll($data);
             return true;
@@ -306,16 +515,16 @@ class Module extends Base
             // 插入表记录
             $data = [
                 ['module_id' => $module->id, 'field' => $pk, 'name' => '编号', 'type' => 'hidden', 'is_list' => '1', 'status' => '1', 'sort' => '1', 'remark' => '自增ID', 'setup' => "array ('default' => '0','extra_attr' => '','extra_class' => '','step' => '1','fieldtype' => 'int','group' => '')"],
-                ['module_id' => $module->id, 'field' => 'create_time', 'name' => '添加时间', 'maxlength' => '11', 'type' => 'datetime', 'is_list' => '1', 'search_type' => '=', 'status' => '1', 'sort' => '50', 'remark' => '添加时间', 'setup' => "array ('default' => '0', 'format' => 'Y-m-d H:i:s', 'extra_attr' => '', 'extra_class' => '', 'placeholder' => '', 'fieldtype' => 'int',)"],
-                ['module_id' => $module->id, 'field' => 'update_time', 'name' => '更新时间', 'maxlength' => '11', 'type' => 'datetime', 'is_list' => '1', 'search_type' => '=', 'status' => '1', 'sort' => '50', 'remark' => '更新时间', 'setup' => "array ('default' => '0', 'format' => 'Y-m-d H:i:s', 'extra_attr' => '', 'extra_class' => '', 'placeholder' => '', 'fieldtype' => 'int',)"],
+                ['module_id' => $module->id, 'field' => 'create_time', 'name' => '添加时间', 'maxlength' => '11', 'type' => 'datetime', 'is_list' => '1', 'search_type' => '=', 'status' => '1', 'sort' => '99', 'remark' => '添加时间', 'setup' => "array ('default' => '0', 'format' => 'Y-m-d H:i:s', 'extra_attr' => '', 'extra_class' => '', 'placeholder' => '', 'fieldtype' => 'int',)"],
+                ['module_id' => $module->id, 'field' => 'update_time', 'name' => '更新时间', 'maxlength' => '11', 'type' => 'datetime', 'is_list' => '1', 'search_type' => '=', 'status' => '1', 'sort' => '100', 'remark' => '更新时间', 'setup' => "array ('default' => '0', 'format' => 'Y-m-d H:i:s', 'extra_attr' => '', 'extra_class' => '', 'placeholder' => '', 'fieldtype' => 'int',)"],
             ];
             // 自动添加排序字段
             if ($module->is_sort) {
-                $data[] = ['module_id' => $module->id, 'field' => 'sort', 'name' => '排序', 'required' => '1', 'maxlength' => '8', 'type' => 'number', 'is_add' => '1', 'is_edit' => '1', 'is_list' => '1', 'is_sort' => '1', 'search_type' => '=', 'status' => '1', 'sort' => '49', 'remark' => '', 'setup' => "array ('default' => '50', 'extra_attr' => '', 'extra_class' => '', 'step' => '1', 'fieldtype' => 'int',)"];
+                $data[] = ['module_id' => $module->id, 'field' => 'sort', 'name' => '排序', 'required' => '1', 'maxlength' => '8', 'type' => 'number', 'is_add' => '1', 'is_edit' => '1', 'is_list' => '1', 'is_sort' => '1', 'search_type' => '=', 'status' => '1', 'sort' => '98', 'remark' => '', 'setup' => "array ('default' => '50', 'extra_attr' => '', 'extra_class' => '', 'step' => '1', 'fieldtype' => 'int',)"];
             }
             // 自动添加状态字段
             if ($module->is_status) {
-                $data[] = ['module_id' => $module->id, 'field' => 'status', 'name' => '状态', 'required' => '1', 'maxlength' => '1', 'type' => 'radio', 'data_source' => '1', 'dict_code' => '1', 'is_add' => '1', 'is_edit' => '1', 'is_list' => '1', 'is_search' => '1', 'is_sort' => '0', 'search_type' => '=', 'status' => '1', 'sort' => '48', 'remark' => '', 'setup' => "array ('default' => '1', 'extra_attr' => '', 'extra_class' => '', 'fieldtype' => 'tinyint',)"];
+                $data[] = ['module_id' => $module->id, 'field' => 'status', 'name' => '状态', 'required' => '1', 'maxlength' => '1', 'type' => 'radio', 'data_source' => '1', 'dict_code' => '1', 'is_add' => '1', 'is_edit' => '1', 'is_list' => '1', 'is_search' => '1', 'is_sort' => '0', 'search_type' => '=', 'status' => '1', 'sort' => '97', 'remark' => '', 'setup' => "array ('default' => '1', 'extra_attr' => '', 'extra_class' => '', 'fieldtype' => 'tinyint',)"];
             }
 
             // 添加CMS模块时自动增加[栏目ID、点击数、关键词、描述、模板、跳转地址]字段
@@ -497,5 +706,106 @@ class Module extends Base
             }
         }
         return true;
+    }
+
+    /**
+     * 根据字段信息获取字段类型
+     * @param $field 字段信息
+     * @return string
+     */
+    private static function getFieldType($field)
+    {
+        $inputType = 'text';
+        switch ($field['DATA_TYPE']) {
+            case 'bigint':
+            case 'int':
+            case 'mediumint':
+            case 'smallint':
+            case 'tinyint':
+                $inputType = 'number';
+                break;
+            case 'enum':
+            case 'set':
+            case 'decimal':
+            case 'double':
+            case 'float':
+                $inputType = 'number';
+                break;
+            case 'longtext':
+            case 'text':
+                $inputType = 'textarea';
+                break;
+            case 'mediumtext':
+                $inputType = 'textarea';
+                break;
+            case 'smalltext':
+            case 'tinytext':
+            case 'year':
+            case 'date':
+            case 'time':
+            case 'datetime':
+            case 'timestamp':
+            default:
+                break;
+        }
+        $fieldsName = $field['COLUMN_NAME'];
+
+        // 时间类型
+        foreach (['time'] as $v) {
+            if (preg_match("/{$v}$/i", $fieldsName) && $field['DATA_TYPE'] == 'int') {
+                $inputType = 'datetime';
+                break;
+            }
+        }
+
+        // 单图片类型
+        foreach (['image', 'avatar'] as $v) {
+            if (preg_match("/{$v}$/i", $fieldsName) && in_array($field['DATA_TYPE'], ['varchar', 'char', 'text', 'mediumtext'])) {
+                $inputType = 'image';
+                break;
+            }
+        }
+
+        // 多图片类型
+        foreach (['images', 'avatars'] as $v) {
+            if (preg_match("/{$v}$/i", $fieldsName) && in_array($field['DATA_TYPE'], ['varchar', 'char', 'text', 'mediumtext'])) {
+                $inputType = 'images';
+                break;
+            }
+        }
+
+        // 单文件类型
+        foreach (['file'] as $v) {
+            if (preg_match("/{$v}$/i", $fieldsName) && in_array($field['DATA_TYPE'], ['varchar', 'char', 'text', 'mediumtext'])) {
+                $inputType = 'file';
+                break;
+            }
+        }
+
+        // 多文件类型
+        foreach (['files'] as $v) {
+            if (preg_match("/{$v}$/i", $fieldsName) && in_array($field['DATA_TYPE'], ['varchar', 'char', 'text', 'mediumtext'])) {
+                $inputType = 'files';
+                break;
+            }
+        }
+
+        // 编辑器类型
+        foreach (['content'] as $v) {
+            if (preg_match("/{$v}$/i", $fieldsName) && in_array($field['DATA_TYPE'], ['varchar', 'char', 'text', 'mediumtext'])) {
+                $inputType = 'editor';
+                break;
+            }
+        }
+
+        // 密码类型
+        foreach (['password'] as $v) {
+            if (preg_match("/{$v}$/i", $fieldsName) && in_array($field['DATA_TYPE'], ['varchar', 'char'])) {
+                $inputType = 'password';
+                break;
+            }
+        }
+
+        return $inputType;
     }
 }

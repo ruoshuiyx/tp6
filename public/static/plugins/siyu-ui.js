@@ -420,8 +420,10 @@
 					// 最大最小化
 					maxmin: true,
                     // 遮罩
-					shade: 0.3,
-                    // 标题
+					shade: 0,
+					// 是否允许拖拽到窗口外
+					moveOut: true,
+					// 标题
 					title: title,
                     // 内容
 					content: url,

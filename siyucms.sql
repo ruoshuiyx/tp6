@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50726
 File Encoding         : 65001
 
-Date: 2021-04-16 14:01:53
+Date: 2021-06-03 16:38:40
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -774,8 +774,8 @@ INSERT INTO `tp_field` VALUES ('22', '5', 'status', '状态', '', '1', '0', '0',
 INSERT INTO `tp_field` VALUES ('23', '3', 'create_time', '创建时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '', 'array (\r\n  \'default\' => \'0\',\r\n  \'format\' => \'Y-m-d H:i:s\',\r\n  \'extra_attr\' => \'\',\r\n  \'extra_class\' => \'\',\r\n  \'placeholder\' => \'\',\r\n  \'fieldtype\' => \'int\',\r\n)', '0');
 INSERT INTO `tp_field` VALUES ('24', '3', 'update_time', '更新时间', '', '0', '0', '11', 'datetime', '0', '', '', '', '0', '0', '1', '0', '0', '=', '1', '50', '', 'array (\r\n  \'default\' => \'0\',\r\n  \'format\' => \'Y-m-d H:i:s\',\r\n  \'extra_attr\' => \'\',\r\n  \'extra_class\' => \'\',\r\n  \'placeholder\' => \'\',\r\n  \'fieldtype\' => \'int\',\r\n)', '0');
 INSERT INTO `tp_field` VALUES ('25', '3', 'sort', '排序', '', '1', '0', '5', 'number', '0', '', '', '', '1', '1', '1', '0', '1', '=', '1', '8', '', 'array (\r\n  \'default\' => \'50\',\r\n  \'extra_attr\' => \'\',\r\n  \'extra_class\' => \'\',\r\n  \'step\' => \'1\',\r\n  \'fieldtype\' => \'int\',\r\n  \'group\' => \'\',\r\n)', '0');
-INSERT INTO `tp_field` VALUES ('26', '3', 'module_name', '模块名称', '填写中文名称，如：友情链接', '1', '0', '100', 'text', '0', '', '', '', '1', '1', '1', '1', '0', 'like', '1', '2', '模块名称', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
-INSERT INTO `tp_field` VALUES ('27', '3', 'table_name', '表名称', '除去表前缀的数据表名称，全部小写并以`_`分割，如：user_group', '1', '0', '50', 'text', '0', '', '', '', '1', '1', '1', '1', '0', 'like', '1', '3', '表名称', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('26', '3', 'module_name', '模块名称', '填写中文名称，如：友情链接', '1', '0', '100', 'text', '0', '', '', '', '1', '1', '1', '1', '0', 'like', '1', '3', '模块名称', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
+INSERT INTO `tp_field` VALUES ('27', '3', 'table_name', '表名称', '除去表前缀的数据表名称，全部小写并以`_`分割，如：user_group', '1', '0', '50', 'text', '0', '', '', '', '1', '1', '1', '1', '0', 'like', '1', '2', '表名称', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('28', '3', 'model_name', '模型名称', '除去表前缀的数据表名称，驼峰法命名，且首字母大写，如：UserGroup', '1', '0', '50', 'text', '0', '', '', '', '1', '1', '1', '1', '0', 'like', '1', '4', '模型名称', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'placeholder\' => \'\',\n  \'fieldtype\' => \'varchar\',\n  \'group\' => \'\',\n)', '0');
 INSERT INTO `tp_field` VALUES ('29', '3', 'table_comment', '表描述', '', '1', '0', '200', 'text', '0', '', '', '', '1', '1', '1', '0', '0', '=', '1', '5', '表描述', 'array (\r\n  \'default\' => \'\',\r\n  \'extra_attr\' => \'\',\r\n  \'extra_class\' => \'\',\r\n  \'placeholder\' => \'\',\r\n  \'fieldtype\' => \'varchar\',\r\n  \'group\' => \'\',\r\n)', '0');
 INSERT INTO `tp_field` VALUES ('30', '3', 'table_type', '表类型', '', '1', '0', '10', 'select', '1', '', '', '3', '1', '1', '1', '1', '0', '=', '1', '6', '表类型', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', '0');

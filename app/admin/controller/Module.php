@@ -27,6 +27,7 @@
 namespace app\admin\controller;
 
 // 引入框架内置类
+use think\facade\Db;
 use think\facade\Request;
 
 // 引入表格和表单构建器
@@ -70,13 +71,15 @@ class Module extends Base
             ->addColumn('right_button', '操作', 'btn')                 // 启用右侧操作列
             ->addRightButtons(['edit', 'delete'])                      // 设置右侧操作列
             ->addTopButtons(['add', 'edit', 'del', 'export', 'build']) // 设置顶部按钮组
-            ->addTopButton('default', [
-                'title'   => '生成菜单规则',
-                'icon'    => 'fa fa-bars',
-                'class'   => 'btn btn-danger single disabled',
-                'href'    => '',
-                'onclick' => '$.operate.makeRule(\'' . url('makeRule') . '\')'
-            ])                                                         // 自定义按钮
+            ->addTopButton(
+                'default', [
+                             'title'   => '生成菜单规则',
+                             'icon'    => 'fa fa-bars',
+                             'class'   => 'btn btn-danger single disabled',
+                             'href'    => '',
+                             'onclick' => '$.operate.makeRule(\'' . url('makeRule') . '\')'
+                         ]
+            )                                                          // 自定义按钮
             ->fetch();
     }
 
@@ -229,6 +232,68 @@ class Module extends Base
 
     // ==========================
 
+    // 检查表信息
+    public function checkTale(string $table_name = '')
+    {
+        if ($table_name) {
+            try {
+                // 获取模型名称
+                $moduleName   = '';
+                $tableNameArr = explode('_', $table_name);
+                foreach ($tableNameArr as $v) {
+                    $moduleName .= ucfirst($v);
+                }
+                // 获取完整表名称
+                $tableName = \think\facade\Config::get('database.connections.mysql.prefix') . $table_name;
+                // 获取表全部字段
+                $fields = Db::getTableFields($tableName);
+                // 从数据库中获取表字段信息
+                $sql        = "SELECT * FROM `information_schema`.`columns` WHERE TABLE_SCHEMA = :table_schema AND table_name = :table_name "
+                    . "ORDER BY ORDINAL_POSITION";
+                $columnList = Db::query($sql, ['table_schema' => \think\facade\Config::get('database.connections.mysql.database'), 'table_name' => $tableName]);
+                $priKey     = '';
+                foreach ($columnList as $k => $v) {
+                    if ($v['COLUMN_KEY'] == 'PRI') {
+                        $priKey = $v['COLUMN_NAME'];
+                        break;
+                    }
+                }
+                if ( ! $priKey) {
+                    return json(['error' => 1, 'msg' => '请设置 [' . $tableName . '] 表的主键']);
+                }
+                // 获取表基础信息
+                $tableInfo = Db::query("SHOW TABLE STATUS LIKE '{$tableName}'");
+                $tableInfo = $tableInfo[0];
+                // 获取表类型
+                $tableType = '2';
+                if (in_array('cate_id', $fields) && in_array('hits', $fields) && in_array('keywords', $fields) && in_array('description', $fields) && in_array('template', $fields) && in_array('url', $fields)) {
+                    $tableType = '1';
+                }
+                // 自动时间戳
+                if (in_array('create_time', $fields) && in_array('update_time', $fields)) {
+                    $autoTimestamp = '1';
+                }
+
+                // 返回信息
+                $data = [
+                    'module_name'    => $tableInfo['Comment'] ?: $table_name,    // 模块名称
+                    'model_name'     => $moduleName,                             // 模型名称
+                    'table_comment'  => $tableInfo['Comment'],                   // 表描述
+                    'pk'             => $priKey,                                 // 主键
+                    'table_type'     => $tableType,                              // 表类型
+                    'is_sort'        => in_array('sort', $fields) ? '1' : '0',   // 排序字段
+                    'is_status'      => in_array('status', $fields) ? '1' : '0', // 状态字段
+                    'remark'         => $tableInfo['Comment'],                   // 备注
+                    'auto_timestamp' => $autoTimestamp ?? '0',                   // 自动写入时间戳
+                    'add_param'      => $addParam ?? '',                         // 添加参数
+                ];
+                return json(['error' => 0, 'msg' => '数据表已存在，系统已自动补全其他字段', 'data' => $data]);
+            } catch (\Exception $e) {
+                return json(['error' => 2, 'msg' => $e->getMessage()]);
+            }
+        }
+    }
+
     // 生成代码
     public function build(string $id, string $file = '')
     {
@@ -258,7 +323,7 @@ class Module extends Base
 
     /**
      * 删除模型时删除当前模型的所有字段数据[兼容多选和单选]
-     * @param string $id
+     * @param  string  $id
      * @return bool
      * @throws \Exception
      */
@@ -280,7 +345,7 @@ class Module extends Base
                             $(this).parent(\'.dd_radio_lable\').hide();
                         }
                     });
-                    // 切换表类型为CMS时显示预览按钮
+                    // 切换表类型时显示/隐藏预览按钮，设置添加参数
                     $("select[name=\'table_type\']").change(function(){
                         var value = $(this).val();
                         if(value == \'1\'){
@@ -290,6 +355,7 @@ class Module extends Base
                                     $(this).parent(\'.dd_radio_lable\').show();
                                 }
                             });
+                            $("input[name=\'add_param\']").val(\'cate_id\');
                         } else {
                             $("input[name=\'right_button[]\']").each(function(){
                                 if($(this).val() == \'preview\'){
@@ -297,7 +363,40 @@ class Module extends Base
                                     $(this).parent(\'.dd_radio_lable\').hide();
                                 }
                             });
+                            $("input[name=\'add_param\']").val(\'\');
                         }
+                    })
+                    // 表名称添加完时尝试补充其他信息
+                    $("input[name=\'table_name\']").change(function(){
+                        var config = {
+                            url: \'checkTale\',
+                            dataType: \'json\',
+                            data: {table_name:$("input[name=\'table_name\']").val()},
+                            success: function(result) {
+                                if(result.error == 1){
+                                    toastr.success(result.msg);
+                                } else if(result.error == 0) {
+                                    $("input[name=\'module_name\']").val(result.data.module_name);
+                                    $("input[name=\'model_name\']").val(result.data.model_name);
+                                    $("input[name=\'table_comment\']").val(result.data.table_comment);
+                                    $("input[name=\'pk\']").val(result.data.pk);
+                                    $("select[name=\'table_type\']").val(result.data.table_type);
+                                    if(result.data.is_sort == \'1\'){
+                                        $("#is_sort1").attr(\'checked\', \'checked\');
+                                    } else {
+                                        $("#is_sort2").attr(\'checked\', \'checked\');
+                                    }
+                                    if(result.data.is_status == \'1\'){
+                                        $("#is_status1").attr(\'checked\', \'checked\');
+                                    } else {
+                                        $("#is_status2").attr(\'checked\', \'checked\');
+                                    }
+                                    $("textarea[name=\'remark\']").text(result.data.remark);
+                                    toastr.success(result.msg);
+                                }
+                            }
+                        };
+                        $.ajax(config)
                     })
                 })
             </script>';
