@@ -43,6 +43,7 @@ class Message extends Base
     {
         return $this->belongsTo('Cate', 'cate_id');
     }
+    
 
     // 获取列表
     public static function getList($where, $pageSize, $order = ['sort', 'id' => 'desc'])
@@ -57,6 +58,7 @@ class Message extends Base
             if ($list[$k]['cate_id']) {
                 $v['cate_id'] = $v->cate->getData('cate_name');
             }
+            
         }
         return MakeBuilder::changeTableData($list, 'Message');
     }
@@ -71,6 +73,7 @@ class Message extends Base
             if ($list[$k]['cate_id']) {
                 $v['cate_id'] = $v->cate->getData('cate_name');
             }
+            
         }
         return MakeBuilder::changeTableData($list, 'Message');
     }

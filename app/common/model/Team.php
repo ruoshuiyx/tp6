@@ -42,10 +42,12 @@ class Team extends Base
     public function cate()
     {
         return $this->belongsTo('Cate', 'cate_id');
-    }public function usersType()
+    }
+    public function usersType()
     {
         return $this->belongsTo('UsersType', 'view_auth');
     }
+    
 
     // 获取列表
     public static function getList($where, $pageSize, $order = ['sort', 'id' => 'desc'])
@@ -59,9 +61,11 @@ class Team extends Base
         foreach ($list as $k => $v) {
             if ($list[$k]['cate_id']) {
                 $v['cate_id'] = $v->cate->getData('cate_name');
-            }if ($list[$k]['view_auth']) {
+            }
+            if ($list[$k]['view_auth']) {
                 $v['view_auth'] = $v->usersType->getData('name');
             }
+            
         }
         return MakeBuilder::changeTableData($list, 'Team');
     }
@@ -75,9 +79,11 @@ class Team extends Base
         foreach ($list as $k => $v) {
             if ($list[$k]['cate_id']) {
                 $v['cate_id'] = $v->cate->getData('cate_name');
-            }if ($list[$k]['view_auth']) {
+            }
+            if ($list[$k]['view_auth']) {
                 $v['view_auth'] = $v->usersType->getData('name');
             }
+            
         }
         return MakeBuilder::changeTableData($list, 'Team');
     }

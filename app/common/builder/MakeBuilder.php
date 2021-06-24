@@ -986,10 +986,10 @@ class MakeBuilder
     ';
             $listInfo  .= 'if ($list[$k][\'' . $filed['field'] . '\']) {
             ';
-            $listInfo  .= '    $v[\'' . $filed['field'] . '\'] = $v->' . lcfirst($filed['relation_model']) . '->getData(\'' . $filed['relation_field'] . '\');
-            ';
+            $listInfo  .= '    $v[\'' . $filed['field'] . '\'] = $v->' . lcfirst($filed['relation_model']) . '->getData(\'' . $filed['relation_field'] . '\');';
             $listInfo  .= '
-            }';
+            }
+            ';
         }
 
         // 主键
