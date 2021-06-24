@@ -6,7 +6,7 @@
  *                      .::::.
  *                    .::::::::.            | AUTHOR: siyu
  *                    :::::::::::           | EMAIL: 407593529@qq.com
- *                 ..:::::::::::'           | DATETIME: 2020/07/10
+ *                 ..:::::::::::'           | DATETIME: 2021/06/23
  *             '::::::::::::'
  *                .::::::::::
  *           '::::::::::::::..
@@ -37,6 +37,7 @@ class Link extends Base
     protected $createTime = 'create_time';
     protected $updateTime = 'update_time';
 
+    
     
     
 

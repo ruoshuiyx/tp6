@@ -483,6 +483,45 @@ class MakeBuilder
     }
 
     /**
+     * 获取列表的新增地址
+     * @param string $tableName 表名称
+     * @return string
+     */
+    public function getAddUrl(string $tableName = '')
+    {
+        $module = Module::where('table_name', $tableName)->find();
+        if (!$module) {
+            return '';
+        }
+        if ($module->add_param) {
+            $addParamArr = explode(",", $module->add_param);
+            $addArr      = [];
+            foreach ($addParamArr as $k => $v) {
+                $addArr[$v] = Request::param($v);
+            }
+            return url('add', $addArr)->__toString();
+        }
+        return '';
+    }
+
+    /**
+     * 隐藏<显示全部>按钮
+     * @param string $tableName 表名称
+     * @return bool
+     */
+    public function getHideShowAll(string $tableName = '')
+    {
+        $module = Module::where('table_name', $tableName)->find();
+        if (!$module) {
+            return false;
+        }
+        if ($module->show_all == 0) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * 获取选项的列表值
      * @param array $field 字段信息
      * @return array
@@ -912,27 +951,6 @@ class MakeBuilder
         $content = str_replace('{$tableName}', $module->table_name, $content);
         $content = str_replace('{$modelName}', $module->model_name, $content);
         $content = str_replace('{$validate}', $module->model_name, $content);
-        // 替换控制器添加和修改时`显示全部`按钮
-        if ($module->show_all == 0) {
-            $content = str_replace('{$showAll}', '$builder->hideShowAll();
-        ', $content);
-        } else {
-            $content = str_replace('{$showAll}', '', $content);
-        }
-        // 替换控制器列表页面顶部按钮组中添加按钮的参数，如 cate_id,多个用`,`分割
-        if ($module->add_param) {
-            $arrUrl    = explode(",", $module->add_param);
-            $arrUrlStr = '';
-            foreach ($arrUrl as $k => $v) {
-                $arrUrlStr .= '\'' . $v . '\'=>Request::param(\'' . $v . '\'),';
-            }
-            $arrUrlStr = rtrim($arrUrlStr, ',');
-            $arrUrlStr = "url('add',[{$arrUrlStr}])->__toString()";
-            $content   = str_replace('{$setAddUrl}', '->setAddUrl(' . $arrUrlStr . ')
-            ', $content);
-        } else {
-            $content = str_replace('{$setAddUrl}', '', $content);
-        }
 
         return $content;
     }
@@ -964,10 +982,12 @@ class MakeBuilder
             $relations .= 'public function ' . lcfirst($filed['relation_model']) . '()
     {
         return $this->belongsTo(\'' . $filed['relation_model'] . '\', \'' . $filed['field'] . '\');
-    }';
+    }
+    ';
             $listInfo  .= 'if ($list[$k][\'' . $filed['field'] . '\']) {
             ';
-            $listInfo  .= '    $v[\'' . $filed['field'] . '\'] = $v->' . lcfirst($filed['relation_model']) . '->getData(\'' . $filed['relation_field'] . '\');';
+            $listInfo  .= '    $v[\'' . $filed['field'] . '\'] = $v->' . lcfirst($filed['relation_model']) . '->getData(\'' . $filed['relation_field'] . '\');
+            ';
             $listInfo  .= '
             }';
         }
