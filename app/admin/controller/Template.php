@@ -262,7 +262,7 @@ class Template extends Base
     }
 
     // 删除
-    public function del(string $id, string $type)
+    public function del(string $id, string $type = 'html')
     {
         $id   = $this->checkFilename($id);
         $type = $this->checkFiletype($type);
@@ -285,7 +285,7 @@ class Template extends Base
     }
 
     // 批量删除
-    public function selectDel(string $id, string $type)
+    public function selectDel(string $id, string $type = 'html')
     {
         $type = $this->checkFiletype($type);
         if (Request::isPost()) {

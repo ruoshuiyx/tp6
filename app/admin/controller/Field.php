@@ -44,9 +44,9 @@ class Field extends Base
     protected $tableName = 'field';
 
     // 当前主模型
-    protected $moduleName = 'Field';
+    protected $modelName = 'Field';
 
-    // 字段列表
+    // 列表
     public function index()
     {
         // 获取主键
@@ -60,7 +60,7 @@ class Field extends Base
             $where         = MakeBuilder::getListWhere($this->tableName);
             $orderByColumn = Request::param('orderByColumn') ?? $pk;
             $isAsc         = Request::param('isAsc') ?? 'desc';
-            $model         = '\app\common\model\\'.$this->moduleName;
+            $model         = '\app\common\model\\'.$this->modelName;
 
             return $model::getList($where, $this->pageSize, [$orderByColumn => $isAsc]);
         }
@@ -78,7 +78,7 @@ class Field extends Base
     }
 
     /**
-     * 添加字段
+     * 添加
      * @param  int  $moduleId  模块（表）ID
      * @return string
      */
@@ -138,9 +138,7 @@ class Field extends Base
         }
     }
 
-    /**
-     * 添加字段保存
-     */
+    // 添加保存
     public function addPost()
     {
         if (Request::isPost()) {
@@ -197,12 +195,8 @@ class Field extends Base
         }
     }
 
-    /**
-     * 编辑字段
-     * @param  int  $id  id
-     * @return string
-     */
-    public function edit(int $id)
+    // 修改
+    public function edit(string $id)
     {
         // 获取所有模块
         $modules = \app\common\model\Module::field('id,module_name,table_name,table_comment')
@@ -242,9 +236,7 @@ class Field extends Base
         return View::fetch('add');
     }
 
-    /**
-     * 编辑字段保存
-     */
+    // 修改保存
     public function editPost()
     {
         if (Request::isPost()) {
@@ -308,17 +300,6 @@ class Field extends Base
         }
     }
 
-    // 排序
-    public function sort()
-    {
-        if (Request::isPost()) {
-            $data  = Request::post();
-            $model = '\app\common\model\\'.$this->moduleName;
-
-            return $model::sort($data);
-        }
-    }
-
     // 状态变更
     public function state(string $id, string $field = '')
     {
@@ -327,7 +308,7 @@ class Field extends Base
             if ($field) {
                 $alowField = ['is_add', 'is_edit', 'is_list', 'is_search', 'is_sort', 'required'];
                 if (in_array($field, $alowField)) {
-                    $model        = '\app\common\model\\'.$this->moduleName;
+                    $model        = '\app\common\model\\'.$this->modelName;
                     $info         = $model::find($id);
                     $value        = $info[$field] == 1 ? 0 : 1;
                     $info[$field] = $value;
@@ -336,13 +317,13 @@ class Field extends Base
                     return json(['error' => 0, 'msg' => '修改成功!']);
                 }
             }
-            $model = '\app\common\model\\'.$this->moduleName;
+            $model = '\app\common\model\\'.$this->modelName;
 
             return $model::state($id);
         }
     }
 
-    // 删除字段
+    // 删除
     public function del(string $id)
     {
         if (Request::isPost()) {

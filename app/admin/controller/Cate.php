@@ -219,39 +219,6 @@ class Cate extends Base
         }
     }
 
-    // 批量删除
-    public function selectDel(string $id){
-        if (Request::isPost()) {
-            $model = '\app\common\model\\' . $this->modelName;
-            return $model::selectDel($id);
-        }
-    }
-
-    // 排序
-    public function sort()
-    {
-        if (Request::isPost()) {
-            $data = Request::post();
-            $model = '\app\common\model\\' . $this->modelName;
-            return $model::sort($data);
-        }
-    }
-
-    // 状态变更
-    public function state(string $id)
-    {
-        if (Request::isPost()) {
-            $model = '\app\common\model\\' . $this->modelName;
-            return $model::state($id);
-        }
-    }
-
-    // 导出
-    public function export()
-    {
-        \app\common\model\Base::export($this->tableName, $this->modelName);
-    }
-
     // 批量添加
     public function batchAdd()
     {

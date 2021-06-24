@@ -1,7 +1,7 @@
 <?php
 /**
  * +----------------------------------------------------------------------
- * | 模型管理控制器
+ * | 模块管理控制器
  * +----------------------------------------------------------------------
  *                      .::::.
  *                    .::::::::.            | AUTHOR: siyu
@@ -44,7 +44,7 @@ class Module extends Base
     protected $tableName = 'module';
 
     // 当前主模型
-    protected $moduleName = 'Module';
+    protected $modelName = 'Module';
 
     // 列表
     public function index()
@@ -60,7 +60,7 @@ class Module extends Base
             $where         = MakeBuilder::getListWhere($this->tableName);
             $orderByColumn = Request::param('orderByColumn') ?? $pk;
             $isAsc         = Request::param('isAsc') ?? 'desc';
-            $model         = '\app\common\model\\' . $this->moduleName;
+            $model         = '\app\common\model\\' . $this->modelName;
             return $model::getList($where, $this->pageSize, [$orderByColumn => $isAsc]);
         }
         // 构建页面
@@ -108,7 +108,7 @@ class Module extends Base
                 // 验证失败 输出错误信息
                 $this->error($result);
             } else {
-                $model = '\app\common\model\\' . $this->moduleName;
+                $model = '\app\common\model\\' . $this->modelName;
                 // 唯一判断
                 $count = $model::where('table_name', $data['table_name'])->count();
                 if ($count) {
@@ -134,7 +134,7 @@ class Module extends Base
     // 修改
     public function edit(string $id)
     {
-        $model = '\app\common\model\\' . $this->moduleName;
+        $model = '\app\common\model\\' . $this->modelName;
         $info  = $model::edit($id)->toArray();
         // 获取字段信息
         $coloumns = MakeBuilder::getAddColumns($this->tableName, $info);
@@ -164,7 +164,7 @@ class Module extends Base
                     $this->error($result);
                 }
                 // 修改表记录信息
-                $model  = '\app\common\model\\' . $this->moduleName;
+                $model  = '\app\common\model\\' . $this->modelName;
                 $result = $model::editPost($data);
                 if ($result['error']) {
                     $this->error($result['msg']);
@@ -191,7 +191,7 @@ class Module extends Base
             if (strpos($id, ',') !== false) {
                 return $this->selectDel($id);
             }
-            $model = '\app\common\model\\' . $this->moduleName;
+            $model = '\app\common\model\\' . $this->modelName;
             return $model::del($id);
         }
     }
@@ -200,34 +200,9 @@ class Module extends Base
     public function selectDel(string $id)
     {
         if (Request::isPost()) {
-            $model = '\app\common\model\\' . $this->moduleName;
+            $model = '\app\common\model\\' . $this->modelName;
             return $model::selectDel($id);
         }
-    }
-
-    // 排序
-    public function sort()
-    {
-        if (Request::isPost()) {
-            $data  = Request::post();
-            $model = '\app\common\model\\' . $this->moduleName;
-            return $model::sort($data);
-        }
-    }
-
-    // 状态变更
-    public function state(string $id)
-    {
-        if (Request::isPost()) {
-            $model = '\app\common\model\\' . $this->moduleName;
-            return $model::state($id);
-        }
-    }
-
-    // 导出
-    public function export()
-    {
-        \app\common\model\Base::export($this->tableName, $this->moduleName);
     }
 
     // ==========================
@@ -238,10 +213,10 @@ class Module extends Base
         if ($table_name) {
             try {
                 // 获取模型名称
-                $moduleName   = '';
+                $modelName   = '';
                 $tableNameArr = explode('_', $table_name);
                 foreach ($tableNameArr as $v) {
-                    $moduleName .= ucfirst($v);
+                    $modelName .= ucfirst($v);
                 }
                 // 获取完整表名称
                 $tableName = \think\facade\Config::get('database.connections.mysql.prefix') . $table_name;
@@ -277,7 +252,7 @@ class Module extends Base
                 // 返回信息
                 $data = [
                     'module_name'    => $tableInfo['Comment'] ?: $table_name,    // 模块名称
-                    'model_name'     => $moduleName,                             // 模型名称
+                    'model_name'     => $modelName,                             // 模型名称
                     'table_comment'  => $tableInfo['Comment'],                   // 表描述
                     'pk'             => $priKey,                                 // 主键
                     'table_type'     => $tableType,                              // 表类型

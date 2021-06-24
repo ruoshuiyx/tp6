@@ -211,31 +211,6 @@ class Admin extends Base
         }
     }
 
-    // 排序
-    public function sort()
-    {
-        if (Request::isPost()) {
-            $data = Request::post();
-            $model = '\app\common\model\\' . $this->modelName;
-            return $model::sort($data);
-        }
-    }
-
-    // 状态变更
-    public function state(string $id)
-    {
-        if (Request::isPost()) {
-            $model = '\app\common\model\\' . $this->modelName;
-            return $model::state($id);
-        }
-    }
-
-    // 导出
-    public function export()
-    {
-        \app\common\model\Base::export($this->tableName, $this->modelName);
-    }
-
     //===========================
 
     // 获取角色分组信息
