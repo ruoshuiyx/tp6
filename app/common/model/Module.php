@@ -125,7 +125,7 @@ class Module extends Base
             // 插入表记录
             $data = [
                 ['module_id' => $module->id, 'field' => $pk, 'name' => '编号', 'type' => 'hidden', 'is_list' => '1', 'status' => '1', 'sort' => '1', 'remark' => '自增ID', 'setup' => "array ('default' => '0','extra_attr' => '','extra_class' => '','step' => '1','fieldtype' => 'int','group' => '')"],
-                ['module_id' => $module->id, 'field' => 'create_time', 'name' => '添加时间', 'maxlength' => '11', 'type' => 'datetime', 'is_list' => '1', 'search_type' => '=', 'status' => '1', 'sort' => '99', 'remark' => '添加时间', 'setup' => "array ('default' => '0', 'format' => 'Y-m-d H:i:s', 'extra_attr' => '', 'extra_class' => '', 'placeholder' => '', 'fieldtype' => 'int',)"],
+                ['module_id' => $module->id, 'field' => 'create_time', 'name' => '创建时间', 'maxlength' => '11', 'type' => 'datetime', 'is_list' => '1', 'search_type' => '=', 'status' => '1', 'sort' => '99', 'remark' => '创建时间', 'setup' => "array ('default' => '0', 'format' => 'Y-m-d H:i:s', 'extra_attr' => '', 'extra_class' => '', 'placeholder' => '', 'fieldtype' => 'int',)"],
                 ['module_id' => $module->id, 'field' => 'update_time', 'name' => '更新时间', 'maxlength' => '11', 'type' => 'datetime', 'is_list' => '1', 'search_type' => '=', 'status' => '1', 'sort' => '100', 'remark' => '更新时间', 'setup' => "array ('default' => '0', 'format' => 'Y-m-d H:i:s', 'extra_attr' => '', 'extra_class' => '', 'placeholder' => '', 'fieldtype' => 'int',)"],
             ];
             // 自动添加排序字段
@@ -481,9 +481,9 @@ class Module extends Base
             $fild->saveAll($data);
             return true;
         } else {
-            $sqlStr = '`' . $pk . '` int(8) unsigned NOT NULL AUTO_INCREMENT,
-              `create_time` int(11) NOT NULL,
-              `update_time` int(11) NOT NULL,';
+            $sqlStr = '`' . $pk . '` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT \'编号\',
+              `create_time` int(11) unsigned NOT NULL DEFAULT \'0\' COMMENT \'创建时间\',
+              `update_time` int(11) unsigned NOT NULL DEFAULT \'0\' COMMENT \'更新时间\',';
             // 自动添加排序字段
             if ($module->is_sort) {
                 $sqlStr .= '`sort` mediumint(8) DEFAULT \'50\' COMMENT \'排序\',';

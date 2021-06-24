@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地
+Source Server         : localhost
 Source Server Version : 50726
 Source Host           : localhost:3306
 Source Database       : tp6
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50726
 File Encoding         : 65001
 
-Date: 2021-06-03 16:38:40
+Date: 2021-06-24 13:31:52
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -20,12 +20,12 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_ad`;
 CREATE TABLE `tp_ad` (
-  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
-  `create_time` int(11) NOT NULL,
-  `update_time` int(11) NOT NULL,
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间	',
   `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
-  `status` tinyint(1) DEFAULT NULL COMMENT '状态',
-  `type_id` text NOT NULL COMMENT '广告位',
+  `status` tinyint(1) DEFAULT '1' COMMENT '状态',
+  `type_id` int(8) NOT NULL DEFAULT '0' COMMENT '广告位',
   `name` varchar(255) NOT NULL DEFAULT '' COMMENT '广告名称',
   `image` varchar(80) NOT NULL DEFAULT '' COMMENT '图片',
   `thumb` varchar(80) NOT NULL DEFAULT '' COMMENT '缩略图',
@@ -45,13 +45,13 @@ INSERT INTO `tp_ad` VALUES ('2', '1580378773', '1583585682', '2', '1', '1', 'ban
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_admin`;
 CREATE TABLE `tp_admin` (
-  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
-  `create_time` int(11) NOT NULL,
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  `status` tinyint(1) DEFAULT NULL COMMENT '状态',
+  `status` tinyint(1) DEFAULT '1' COMMENT '状态',
   `username` varchar(25) NOT NULL DEFAULT '' COMMENT '用户名',
   `password` varchar(255) NOT NULL DEFAULT '' COMMENT '密码',
-  `login_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '登录时间',
+  `login_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '登录时间',
   `login_ip` varchar(255) NOT NULL DEFAULT '' COMMENT '登录IP',
   `nickname` varchar(25) NOT NULL DEFAULT '' COMMENT '昵称',
   `image` varchar(80) NOT NULL DEFAULT '' COMMENT '头像',
@@ -69,17 +69,17 @@ INSERT INTO `tp_admin` VALUES ('2', '1583727997', '1583749457', '0', 'test', 'e1
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_admin_log`;
 CREATE TABLE `tp_admin_log` (
-  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
-  `create_time` int(11) NOT NULL,
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  `admin_id` text NOT NULL COMMENT '管理员',
+  `admin_id` int(8) NOT NULL DEFAULT '0' COMMENT '管理员',
   `url` varchar(255) NOT NULL DEFAULT '' COMMENT '操作页面	',
   `title` varchar(100) NOT NULL DEFAULT '' COMMENT '日志标题',
   `content` text NOT NULL COMMENT '日志内容',
   `ip` varchar(20) NOT NULL DEFAULT '' COMMENT '操作IP',
   `user_agent` text NOT NULL COMMENT 'User-Agent',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='管理员日志';
+) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8 COMMENT='管理员日志';
 
 -- ----------------------------
 -- Records of tp_admin_log
@@ -90,9 +90,9 @@ CREATE TABLE `tp_admin_log` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_ad_type`;
 CREATE TABLE `tp_ad_type` (
-  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
-  `create_time` int(11) NOT NULL,
-  `update_time` int(11) NOT NULL,
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间	',
   `name` varchar(255) NOT NULL DEFAULT '' COMMENT '分组名称',
   `description` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
   `sort` int(10) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
@@ -111,8 +111,8 @@ INSERT INTO `tp_ad_type` VALUES ('2', '1580372431', '1580372431', '【内页】�
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_article`;
 CREATE TABLE `tp_article` (
-  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
-  `create_time` int(11) NOT NULL,
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
   `status` tinyint(1) DEFAULT NULL COMMENT '状态',
@@ -161,10 +161,10 @@ INSERT INTO `tp_article` VALUES ('17', '1581054590', '1581054590', '50', '1', '6
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_auth_group`;
 CREATE TABLE `tp_auth_group` (
-  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
-  `create_time` int(11) NOT NULL,
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  `status` tinyint(1) DEFAULT NULL COMMENT '状态',
+  `status` tinyint(1) DEFAULT '1' COMMENT '状态',
   `title` varchar(255) NOT NULL DEFAULT '' COMMENT '角色组',
   `rules` text COMMENT '权限',
   PRIMARY KEY (`id`)
@@ -181,10 +181,10 @@ INSERT INTO `tp_auth_group` VALUES ('2', '1580634019', '1613634834', '1', '测�
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_auth_group_access`;
 CREATE TABLE `tp_auth_group_access` (
-  `uid` mediumint(8) unsigned NOT NULL,
-  `group_id` mediumint(8) unsigned NOT NULL,
-  `create_time` int(11) DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
+  `uid` mediumint(8) unsigned NOT NULL COMMENT '用户ID',
+  `group_id` mediumint(8) unsigned NOT NULL COMMENT '分组ID',
+  `create_time` int(11) unsigned DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(11) unsigned DEFAULT '0' COMMENT '更新时间	',
   UNIQUE KEY `uid_group_id` (`uid`,`group_id`),
   KEY `uid` (`uid`),
   KEY `group_id` (`group_id`)
@@ -201,17 +201,17 @@ INSERT INTO `tp_auth_group_access` VALUES ('2', '2', '1583728403', '1583748601')
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_auth_rule`;
 CREATE TABLE `tp_auth_rule` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
   `pid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '父ID',
   `name` varchar(255) NOT NULL DEFAULT '' COMMENT '控制器/方法',
-  `title` char(20) NOT NULL DEFAULT '',
+  `title` char(20) NOT NULL DEFAULT '' COMMENT '权限名称',
   `type` tinyint(1) NOT NULL DEFAULT '1',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '菜单状态',
   `condition` char(100) NOT NULL DEFAULT '',
   `sort` mediumint(8) NOT NULL DEFAULT '0' COMMENT '排序',
-  `auth_open` tinyint(2) DEFAULT '1',
-  `icon` char(50) DEFAULT '',
-  `create_time` int(11) DEFAULT '0' COMMENT '添加时间',
+  `auth_open` tinyint(2) DEFAULT '1' COMMENT '验证权限',
+  `icon` char(50) DEFAULT '' COMMENT '图标名称',
+  `create_time` int(11) unsigned DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `param` varchar(50) NOT NULL DEFAULT '' COMMENT '参数',
   PRIMARY KEY (`id`),
@@ -505,8 +505,8 @@ INSERT INTO `tp_auth_rule` VALUES ('282', '177', 'Cate/batchAddPost', '操作-�
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_cate`;
 CREATE TABLE `tp_cate` (
-  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
-  `create_time` int(11) NOT NULL,
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `sort` int(8) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
@@ -553,7 +553,7 @@ INSERT INTO `tp_cate` VALUES ('13', '1580907441', '1580907441', '7', '1', '联�
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_config`;
 CREATE TABLE `tp_config` (
-  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT COMMENT '表id',
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
   `name` varchar(50) DEFAULT NULL COMMENT '配置的key键名',
   `value` varchar(512) DEFAULT NULL COMMENT '配置的val值',
   `inc_type` varchar(64) DEFAULT NULL COMMENT '配置分组',
@@ -583,11 +583,11 @@ INSERT INTO `tp_config` VALUES ('94', 'test_mobile', '', 'sms', null);
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_debris`;
 CREATE TABLE `tp_debris` (
-  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
-  `create_time` int(11) NOT NULL,
-  `update_time` int(11) NOT NULL,
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
-  `status` tinyint(1) DEFAULT NULL COMMENT '状态',
+  `status` tinyint(1) DEFAULT '1' COMMENT '状态',
   `title` varchar(255) NOT NULL DEFAULT '' COMMENT '碎片标题',
   `name` varchar(255) NOT NULL DEFAULT '' COMMENT '调用名称',
   `content` text NOT NULL COMMENT '碎片内容',
@@ -607,12 +607,12 @@ INSERT INTO `tp_debris` VALUES ('1', '1580388141', '1580388225', '1', '1', '关�
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_dictionary`;
 CREATE TABLE `tp_dictionary` (
-  `id` int(8) NOT NULL AUTO_INCREMENT,
+  `id` int(8) NOT NULL AUTO_INCREMENT COMMENT '编号',
   `dict_label` varchar(100) NOT NULL DEFAULT '' COMMENT '字典标签',
   `dict_value` varchar(255) NOT NULL DEFAULT '' COMMENT '字典键值',
   `dict_type` char(5) NOT NULL DEFAULT '' COMMENT '字典类型',
   `remark` varchar(200) NOT NULL DEFAULT '' COMMENT '备注',
-  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
+  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
   `sort` int(5) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
   `status` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
@@ -655,11 +655,11 @@ INSERT INTO `tp_dictionary` VALUES ('27', 'CKEditor', '0', '12', 'CKEditor', '16
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_dictionary_type`;
 CREATE TABLE `tp_dictionary_type` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '编号',
   `dict_name` char(100) NOT NULL DEFAULT '' COMMENT '字典名称',
   `status` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '状态',
-  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `remark` varchar(200) NOT NULL DEFAULT '' COMMENT '备注',
   `sort` int(5) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
   PRIMARY KEY (`id`)
@@ -686,11 +686,11 @@ INSERT INTO `tp_dictionary_type` VALUES ('12', '编辑器', '1', '1612507874', '
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_download`;
 CREATE TABLE `tp_download` (
-  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
-  `create_time` int(11) NOT NULL,
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
-  `status` tinyint(1) DEFAULT NULL COMMENT '状态',
+  `status` tinyint(1) DEFAULT '1' COMMENT '状态',
   `cate_id` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
   `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
   `author` varchar(255) NOT NULL DEFAULT '' COMMENT '作者',
@@ -722,7 +722,7 @@ INSERT INTO `tp_download` VALUES ('3', '1581079561', '1581079561', '50', '1', '1
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_field`;
 CREATE TABLE `tp_field` (
-  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
   `module_id` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '所属模块',
   `field` varchar(100) NOT NULL DEFAULT '' COMMENT '字段名',
   `name` varchar(100) NOT NULL DEFAULT '' COMMENT '字段别名',
@@ -1101,10 +1101,10 @@ INSERT INTO `tp_field` VALUES ('355', '24', 'view_auth', '阅读权限', '', '0'
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_field_group`;
 CREATE TABLE `tp_field_group` (
-  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
-  `create_time` int(11) NOT NULL,
-  `update_time` int(11) NOT NULL,
-  `module_id` text NOT NULL COMMENT '所属模块',
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `module_id` int(8) NOT NULL DEFAULT '0' COMMENT '所属模块',
   `group_name` varchar(255) NOT NULL DEFAULT '' COMMENT '分组名称',
   `status` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
   `sort` int(5) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
@@ -1129,9 +1129,9 @@ INSERT INTO `tp_field_group` VALUES ('9', '1586855728', '1586855814', '13', '上
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_link`;
 CREATE TABLE `tp_link` (
-  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
-  `create_time` int(11) NOT NULL,
-  `update_time` int(11) NOT NULL,
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `name` varchar(255) NOT NULL DEFAULT '' COMMENT '网站名称',
   `url` varchar(255) NOT NULL DEFAULT '' COMMENT '网站地址',
   `logo` varchar(80) NOT NULL DEFAULT '' COMMENT '网站logo',
@@ -1151,10 +1151,10 @@ INSERT INTO `tp_link` VALUES ('1', '1580360741', '1580360741', 'SIYUCMS', 'http:
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_message`;
 CREATE TABLE `tp_message` (
-  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
-  `create_time` int(11) NOT NULL,
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  `status` tinyint(1) DEFAULT NULL COMMENT '状态',
+  `status` tinyint(1) DEFAULT '1' COMMENT '状态',
   `cate_id` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
   `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
   `content` text NOT NULL COMMENT '内容',
@@ -1183,8 +1183,8 @@ CREATE TABLE `tp_module` (
   `list_fields` varchar(255) NOT NULL DEFAULT '' COMMENT '前台列表页可调用字段,默认为*,仅用作前台CMS调用时使用',
   `remark` text NOT NULL COMMENT '备注',
   `sort` smallint(3) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
-  `create_time` int(11) NOT NULL,
-  `update_time` int(11) NOT NULL,
+  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `is_sort` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '排序字段',
   `is_status` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '状态字段',
   `top_button` varchar(255) NOT NULL DEFAULT 'add,edit,del,export' COMMENT '顶部按钮',
@@ -1228,11 +1228,11 @@ INSERT INTO `tp_module` VALUES ('25', '留言模块', 'message', 'Message', '留
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_page`;
 CREATE TABLE `tp_page` (
-  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
-  `create_time` int(11) NOT NULL,
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
-  `status` tinyint(1) DEFAULT NULL COMMENT '状态',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态',
   `cate_id` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
   `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
   `content` text NOT NULL COMMENT '内容',
@@ -1252,11 +1252,11 @@ INSERT INTO `tp_page` VALUES ('3', '1580966524', '1580966524', '12', '1', '3', '
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_picture`;
 CREATE TABLE `tp_picture` (
-  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
-  `create_time` int(11) NOT NULL,
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
-  `status` tinyint(1) DEFAULT NULL COMMENT '状态',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态',
   `cate_id` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
   `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
   `author` varchar(255) NOT NULL DEFAULT '' COMMENT '作者',
@@ -1291,11 +1291,11 @@ INSERT INTO `tp_picture` VALUES ('6', '1581076451', '1581076451', '50', '1', '7'
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_product`;
 CREATE TABLE `tp_product` (
-  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
-  `create_time` int(11) NOT NULL,
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
-  `status` tinyint(1) DEFAULT NULL COMMENT '状态',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态',
   `cate_id` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
   `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
   `author` varchar(255) NOT NULL DEFAULT '' COMMENT '作者',
@@ -1332,8 +1332,8 @@ INSERT INTO `tp_product` VALUES ('8', '1581076758', '1581076758', '50', '1', '9'
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_system`;
 CREATE TABLE `tp_system` (
-  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
-  `create_time` int(11) NOT NULL,
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `name` varchar(255) NOT NULL DEFAULT '' COMMENT '网站名称',
   `logo` varchar(80) NOT NULL DEFAULT '' COMMENT '网站LOGO',
@@ -1378,13 +1378,13 @@ INSERT INTO `tp_system` VALUES ('1', '1580560560', '1586857104', 'SIYUCMS', '/up
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_system_group`;
 CREATE TABLE `tp_system_group` (
-  `id` int(8) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL COMMENT '分组名称',
+  `id` int(8) NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `name` varchar(255) DEFAULT '' COMMENT '分组名称',
   `description` text COMMENT '备注',
   `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
   `status` int(1) DEFAULT '0' COMMENT '状态（1 正常，0 锁定）',
-  `create_time` int(11) DEFAULT '0' COMMENT '添加时间',
-  `update_time` int(11) DEFAULT '0' COMMENT '修改时间',
+  `create_time` int(11) unsigned DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(11) unsigned DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='系统设置分组表';
 
@@ -1402,11 +1402,11 @@ INSERT INTO `tp_system_group` VALUES ('5', '自定义', '自定义系统设置�
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_team`;
 CREATE TABLE `tp_team` (
-  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
-  `create_time` int(11) NOT NULL,
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `sort` mediumint(8) DEFAULT '50' COMMENT '排序',
-  `status` tinyint(1) DEFAULT NULL COMMENT '状态',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态',
   `cate_id` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '栏目',
   `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
   `author` varchar(255) NOT NULL DEFAULT '' COMMENT '作者',
@@ -1453,21 +1453,21 @@ INSERT INTO `tp_team` VALUES ('16', '1581079697', '1581079697', '50', '1', '12',
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_users`;
 CREATE TABLE `tp_users` (
-  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
+  `id` mediumint(8) NOT NULL AUTO_INCREMENT COMMENT '编号',
   `email` varchar(100) NOT NULL DEFAULT '' COMMENT '邮箱',
   `password` varchar(100) NOT NULL DEFAULT '' COMMENT '密码',
-  `sex` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0 保密, 1 男, 2 女',
+  `sex` tinyint(1) NOT NULL DEFAULT '0' COMMENT '性别:0=保密,1=男,2=女',
   `last_login_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最后登录时间',
   `last_login_ip` varchar(15) NOT NULL DEFAULT '' COMMENT '最后登录IP',
-  `qq` varchar(20) DEFAULT NULL,
-  `mobile` varchar(20) DEFAULT NULL COMMENT '手机',
-  `mobile_validated` tinyint(3) DEFAULT '0' COMMENT '是否验证手机 1 验证 0 未验证',
-  `email_validated` tinyint(3) DEFAULT '0' COMMENT '是否验证手机 1 验证 0 未验证',
-  `type_id` tinyint(3) DEFAULT NULL COMMENT '类型',
+  `qq` varchar(20) DEFAULT '' COMMENT 'QQ',
+  `mobile` varchar(20) DEFAULT '' COMMENT '手机号',
+  `mobile_validated` tinyint(3) DEFAULT '0' COMMENT '验证手机:1=验证,0=未验证',
+  `email_validated` tinyint(3) DEFAULT '0' COMMENT '验证邮箱:1=验证,0=未验证',
+  `type_id` tinyint(3) DEFAULT '0' COMMENT '所属分组',
   `status` tinyint(1) DEFAULT '1' COMMENT '状态',
-  `create_ip` varchar(15) DEFAULT NULL COMMENT '注册IP',
-  `update_time` int(10) DEFAULT '0' COMMENT '修改时间',
-  `create_time` int(10) DEFAULT '0' COMMENT '注册时间',
+  `create_ip` varchar(15) DEFAULT '' COMMENT '注册IP',
+  `update_time` int(11) unsigned DEFAULT '0' COMMENT '更新时间',
+  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='会员表';
 
@@ -1488,9 +1488,9 @@ INSERT INTO `tp_users` VALUES ('13', 'test009@qq.com', '96e79218965eb72c92a549dd
 -- ----------------------------
 DROP TABLE IF EXISTS `tp_users_type`;
 CREATE TABLE `tp_users_type` (
-  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
-  `create_time` int(11) NOT NULL,
-  `update_time` int(11) NOT NULL,
+  `id` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `name` varchar(100) NOT NULL DEFAULT '' COMMENT '分组名称',
   `remark` text NOT NULL COMMENT '描述',
   `sort` int(5) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
