@@ -18,7 +18,8 @@ function getUrl($v)
             if ($v['cate_folder']) {
                 $v['url'] = (string)\think\facade\Route::buildUrl($v['cate_folder'] . '/index')->domain('');
             } else {
-                $moduleName = \app\common\model\Module::where('id', $v['module_id'])
+                $moduleId   = $v['module']['id'] ?? $v['module_id'];
+                $moduleName = \app\common\model\Module::where('id', $moduleId)
                     ->value('model_name');
                 $v['url']   = (string)\think\facade\Route::buildUrl($moduleName . '/index', ['cate' => $v['id']])->domain('');
             }
@@ -31,10 +32,10 @@ function getUrl($v)
 function getShowUrl($v)
 {
     if ($v) {
-        if (isset($v['url']) && !empty($v['url'])) {
+        if (isset($v['url']) && ! empty($v['url'])) {
             return $v['url'];
         }
-        if (isset($v['cate_id']) && !empty($v['cate_id'])) {
+        if (isset($v['cate_id']) && ! empty($v['cate_id'])) {
             $cate = \app\common\model\Cate::field('id,cate_folder,module_id')
                 ->where('id', $v['cate_id'])
                 ->find();
@@ -102,7 +103,7 @@ function changefield($info, $moduleId)
 
             } elseif ($v['type'] == 'daterange') {
             } elseif ($v['type'] == 'tag') {
-                if (!empty($info[$v['field']])) {
+                if ( ! empty($info[$v['field']])) {
                     $tags = explode(',', $info[$v['field']]);
                     foreach ($tags as $k => $tag) {
                         $tags[$k] = [
@@ -220,7 +221,7 @@ function is_mobile_phone($mobile_phone)
  */
 function trim_array_element($array)
 {
-    if (!is_array($array))
+    if ( ! is_array($array))
         return trim($array);
     return array_map('trim_array_element', $array);
 }
@@ -256,7 +257,7 @@ function array2string($info)
         }
     }
     if ($info == '') return '';
-    if (!is_array($info)) {
+    if ( ! is_array($info)) {
         //删除反斜杠
         $string = stripslashes($info);
     }
@@ -557,7 +558,7 @@ function changeDict(array $list, string $field, string $all = "全部")
         $param           = \think\facade\Request::param('', '', 'htmlspecialchars');
         // 高亮显示
         $list[$k]['current'] = 0;
-        if (!empty($param)) {
+        if ( ! empty($param)) {
             foreach ($param as $kk => $vv) {
                 if ($kk == $field) {
                     if (strpos($vv, '|') !== false) {
@@ -612,7 +613,7 @@ function getSearchField(string $field)
         $field    = str_replace('|', ',', $field);
         $fieldArr = explode(',', $field);
         foreach ($fieldArr as $k => $v) {
-            if (!empty($v)) {
+            if ( ! empty($v)) {
                 // 查询浏览器参数是否包含此参数
                 if (\think\facade\Request::has($v, 'get')) {
                     $str = \think\facade\Request::get($v, '', 'htmlspecialchars');
@@ -703,18 +704,18 @@ function get_tagcloud($list, $moduleId, $limit = 10)
             if ($v['tags']) {
                 $arr = explode(',', $v['tags']);
                 foreach ($arr as $ar) {
-                    if (!empty($ar)) {
+                    if ( ! empty($ar)) {
                         $result[] = $ar;
                     }
                 }
             }
         }
     }
-    // 截取
     if ($result) {
         $arr = array_count_values($result); // 统计数组中所有的值出现的次数
-        arsort($arr); // 降序排序
-        $arr    = array_slice($arr, 0, $limit); // 截取前N条数据
+        // 降序排序
+        arsort($arr);
+        $arr    = array_slice($arr, 0, $limit);// 截取前N条数据
         $result = [];
         foreach ($arr as $k => $v) {
             $result[] = [
@@ -733,15 +734,15 @@ function get_tagcloud($list, $moduleId, $limit = 10)
  */
 function get_back_url()
 {
-    if (isset($_SERVER["HTTP_REFERER"]) && !empty($_SERVER["HTTP_REFERER"])) {
+    if (isset($_SERVER["HTTP_REFERER"]) && ! empty($_SERVER["HTTP_REFERER"])) {
         $queryStr = explode('?', $_SERVER["HTTP_REFERER"]);
         if (count($queryStr) == 2) {
             parse_str($queryStr[1], $queryArr);
-            if (isset($queryArr['back_url']) && !empty($queryArr['back_url'])) {
+            if (isset($queryArr['back_url']) && ! empty($queryArr['back_url'])) {
                 $backUrl = explode("&", urldecode($queryArr['back_url']));
                 foreach ($backUrl as $k => $v) {
                     $v = explode("=", $v);
-                    if (isset($v[1]) && !empty($v[1])) {
+                    if (isset($v[1]) && ! empty($v[1])) {
                         $backArr[$v[0]] = $v[1];
                     }
                 }
@@ -827,13 +828,13 @@ function convert_php_to_moment_format(string $format = '')
         's' => 'ss',
         'u' => 'SSS',
         'e' => 'zz', // deprecated since version 1.6.0 of moment.js
-        'I' => '', // no equivalent
-        'O' => '', // no equivalent
-        'P' => '', // no equivalent
-        'T' => '', // no equivalent
-        'Z' => '', // no equivalent
-        'c' => '', // no equivalent
-        'r' => '', // no equivalent
+        'I' => '',   // no equivalent
+        'O' => '',   // no equivalent
+        'P' => '',   // no equivalent
+        'T' => '',   // no equivalent
+        'Z' => '',   // no equivalent
+        'c' => '',   // no equivalent
+        'r' => '',   // no equivalent
         'U' => 'X',
     ];
     $momentFormat = strtr($format, $replacements);
@@ -847,7 +848,7 @@ function get_cate_folder()
 {
     //return \think\facade\Request::controller();                    // 控制器的方式无法使用'-','_','/'连接符
     $careFolder = \think\facade\Request::rule()->getRule();          // 获取当前路由规则
-    $careFolder = str_replace('<id>', '', $careFolder); // 移除路由规则多余的字符
-    $careFolder = trim($careFolder, '/');                     // 移除两侧的/
+    $careFolder = str_replace('<id>', '', $careFolder);              // 移除路由规则多余的字符
+    $careFolder = trim($careFolder, '/');                            // 移除两侧的/
     return $careFolder;
 }
