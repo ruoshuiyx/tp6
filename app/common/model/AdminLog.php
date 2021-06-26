@@ -23,6 +23,7 @@
  *                      '.:::::'                    ':'````..
  * +----------------------------------------------------------------------
  */
+
 namespace app\common\model;
 
 // 引入框架内置类
@@ -46,7 +47,8 @@ class AdminLog extends Base
     // 获取列表
     public static function getList($where, $pageSize, $order = ['sort', 'id' => 'desc'])
     {
-        $list = self::where($where)
+        $list = self::with(['admin'])
+            ->where($where)
             ->order($order)
             ->paginate([
                 'query'     => Request::get(),
@@ -57,7 +59,7 @@ class AdminLog extends Base
                 $v['admin_id'] = $v->admin->getData('username');
             }
             // 截取部分user_agent
-            $userAgent = explode('(', $v['user_agent']);
+            $userAgent       = explode('(', $v['user_agent']);
             $v['user_agent'] = $userAgent[0];
         }
         return MakeBuilder::changeTableData($list, 'AdminLog');
@@ -66,7 +68,8 @@ class AdminLog extends Base
     // 导出列表
     public static function getExport($where = array(), $order = ['sort', 'id' => 'desc'])
     {
-        $list = self::where($where)
+        $list = self::with(['admin'])
+            ->where($where)
             ->order($order)
             ->select();
         foreach ($list as $k => $v) {
@@ -81,15 +84,15 @@ class AdminLog extends Base
     public static function record()
     {
         // 入库信息
-        $adminId   = Session::get('admin.id',0);
+        $adminId   = Session::get('admin.id', 0);
         $url       = Request::url();
         $title     = '';
-        $content   = Request::except(['s','_pjax']); //s 变量为系统内置的变量，_pjax为js的变量，无记录的必要
+        $content   = Request::except(['s', '_pjax']); //s 变量为系统内置的变量，_pjax为js的变量，无记录的必要
         $ip        = Request::ip();
         $userAgent = Request::server('HTTP_USER_AGENT');
 
         // 标题处理
-        $auth = new \Auth();
+        $auth     = new \Auth();
         $titleArr = $auth->getBreadCrumb();
         if (is_array($titleArr)) {
             foreach ($titleArr as $k => $v) {
@@ -109,12 +112,12 @@ class AdminLog extends Base
 
         // 登录处理
         if (strpos($url, 'Login/checkLogin') !== false) {
-            $title = '[登录成功]';
+            $title   = '[登录成功]';
             $content = '';
         }
 
         // 插入数据
-        if (!empty($title)) {
+        if ( ! empty($title)) {
             // 查询管理员上一条数据
             $result = self::where('admin_id', '=', $adminId)
                 ->order('id', 'desc')
@@ -122,22 +125,22 @@ class AdminLog extends Base
             if ($result) {
                 if ($result->url != $url) {
                     self::create([
-                        'title'       => $title ? $title : '',
-                        'content'     => !is_scalar($content) ? json_encode($content) : $content,
-                        'url'         => $url,
-                        'admin_id'    => $adminId,
-                        'user_agent'   => $userAgent,
-                        'ip'          => $ip
+                        'title'      => $title ? $title : '',
+                        'content'    => ! is_scalar($content) ? json_encode($content) : $content,
+                        'url'        => $url,
+                        'admin_id'   => $adminId,
+                        'user_agent' => $userAgent,
+                        'ip'         => $ip
                     ]);
                 }
             } else {
                 self::create([
-                    'title'       => $title ? $title : '',
-                    'content'     => !is_scalar($content) ? json_encode($content) : $content,
-                    'url'         => $url,
-                    'admin_id'    => $adminId,
-                    'user_agent'   => $userAgent,
-                    'ip'          => $ip
+                    'title'      => $title ? $title : '',
+                    'content'    => ! is_scalar($content) ? json_encode($content) : $content,
+                    'url'        => $url,
+                    'admin_id'   => $adminId,
+                    'user_agent' => $userAgent,
+                    'ip'         => $ip
                 ]);
             }
         }

@@ -23,6 +23,7 @@
  *                      '.:::::'                    ':'````..
  * +----------------------------------------------------------------------
  */
+
 namespace app\common\model;
 
 // 引入框架内置类
@@ -30,19 +31,20 @@ use think\facade\Request;
 
 // 引入构建器
 use app\common\facade\MakeBuilder;
+
 class Field extends Base
 {
     // 开启自动写入时间戳字段
     protected $autoWriteTimestamp = false;
 
     // 一对一获取所属模块
-    public function Module()
+    public function module()
     {
         return $this->belongsTo('Module', 'module_id');
     }
 
     // 一对一获取所属字典
-    public function DictionaryType()
+    public function dictionaryType()
     {
         return $this->belongsTo('DictionaryType', 'dict_code');
     }
@@ -50,19 +52,20 @@ class Field extends Base
     // 获取列表
     public static function getList($where, $pageSize, $order = ['sort', 'id' => 'desc'])
     {
-        $list = self::where($where)
+        $list = self::with(['module', 'dictionaryType'])
+            ->where($where)
             ->order($order)
             ->paginate([
-                'query' => Request::get(),
+                'query'     => Request::get(),
                 'list_rows' => $pageSize,
             ]);
         foreach ($list as $k => $v) {
-            $list[$k]['module_id'] = $v->Module->getData('module_name');
+            $list[$k]['module_id'] = $v->module->getData('module_name');
             if ($list[$k]['dict_code']) {
-                $list[$k]['dict_code'] = $v->DictionaryType->getData('dict_name');
+                $list[$k]['dict_code'] = $v->dictionaryType->getData('dict_name');
             }
         }
-        return  MakeBuilder::changeTableData($list, 'Field');
+        return MakeBuilder::changeTableData($list, 'Field');
     }
 
     // 获取模型对应的字段信息
@@ -75,7 +78,7 @@ class Field extends Base
         // 格式化setup 字段
         $result = array();
         foreach ($list as $k => $v) {
-            if (!empty($v['setup'])) {
+            if ( ! empty($v['setup'])) {
                 $list[$k]['setup'] = string2array($v['setup']);
                 if (array_key_exists('options', $list[$k]['setup'])) {
                     $list[$k]['setup']['options'] = explode("\n", $list[$k]['setup']['options']);
