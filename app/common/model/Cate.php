@@ -45,7 +45,8 @@ class Cate extends Base
     // 获取列表
     public static function getList($order = ['sort', 'id' => 'desc'])
     {
-        $list = self::order($order)
+        $list = self::with(['module'])
+            ->order($order)
             ->select();
         foreach ($list as $k => $v) {
             if ($list[$k]['module_id']) {
@@ -71,7 +72,8 @@ class Cate extends Base
     // 导出列表
     public static function getExport($where = array(), $order = ['sort', 'id' => 'desc'])
     {
-        $list = self::where($where)
+        $list = self::with(['module'])
+            ->where($where)
             ->order($order)
             ->select();
         foreach ($list as $k => $v) {
