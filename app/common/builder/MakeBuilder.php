@@ -54,7 +54,7 @@ class MakeBuilder
         $module = Module::where('table_name', $tableName)
             ->find();
         // 非空判断
-        if (!$module) {
+        if ( ! $module) {
             return [];
         }
         // 根据模块ID获取所有字段
@@ -170,7 +170,7 @@ class MakeBuilder
 
             $field['options'] = $options ?? [];
             // text
-            $field['group'] = isset($field['setup']['group']) && !empty($field['setup']['group']) ? explode('|', $field['setup']['group']) : [];
+            $field['group'] = isset($field['setup']['group']) && ! empty($field['setup']['group']) ? explode('|', $field['setup']['group']) : [];
 
             // 必填项转换
             $field['required'] = $field['required'] == 1 ? true : false;
@@ -405,7 +405,7 @@ class MakeBuilder
             if (Request::param($v[1]) || Request::param($v[1]) === "0") {
                 $searhKeywords = Request::param($v[1]);
                 // 判断字段类型，默认为=
-                if (isset($v[3]) && !empty($v[3])) {
+                if (isset($v[3]) && ! empty($v[3])) {
                     $option = $v[3];
                 } else {
                     $option = '=';
@@ -490,7 +490,7 @@ class MakeBuilder
     public function getAddUrl(string $tableName = '')
     {
         $module = Module::where('table_name', $tableName)->find();
-        if (!$module) {
+        if ( ! $module) {
             return '';
         }
         if ($module->add_param) {
@@ -512,7 +512,7 @@ class MakeBuilder
     public function getHideShowAll(string $tableName = '')
     {
         $module = Module::where('table_name', $tableName)->find();
-        if (!$module) {
+        if ( ! $module) {
             return false;
         }
         if ($module->show_all == 0) {
@@ -817,7 +817,7 @@ class MakeBuilder
 
         // 查询模块信息
         $module = \app\common\model\Module::find($id);
-        if (!$module) {
+        if ( ! $module) {
             return ['error' => 1, 'msg' => '模块查找有误'];
         }
 
@@ -827,7 +827,7 @@ class MakeBuilder
         }
 
         // 生成文件
-        if (!empty($file)) {
+        if ( ! empty($file)) {
             if ($file == 'controller') {
                 // 生成控制器
                 $this->makeController($module->model_name, $module->table_name);
@@ -978,6 +978,7 @@ class MakeBuilder
         // 初始化模型关联信息
         $relations = '';
         $listInfo  = '';
+        $withInfo  = '';
         foreach ($fileds as &$filed) {
             $relations .= 'public function ' . lcfirst($filed['relation_model']) . '()
     {
@@ -990,7 +991,10 @@ class MakeBuilder
             $listInfo  .= '
             }
             ';
+            $withInfo  .= '\'' . lcfirst($filed['relation_model']) . '\',';
         }
+        $withInfo = ! empty($withInfo) ? 'with([' . rtrim($withInfo, ',') . '])
+            ->' : '';
 
         // 主键
         $pk = '';
@@ -1000,6 +1004,7 @@ class MakeBuilder
 
         $content = str_replace('{$relations}', $relations, $content);
         $content = str_replace('{$listInfo}', $listInfo, $content);
+        $content = str_replace('{$withInfo}', $withInfo, $content);
         $content = str_replace('{$modulePk}', $pk, $content);
         $content = str_replace('{$moduleTable}', $this->checkModuleTable($module->table_name, $module->model_name), $content);
         return $content;
@@ -1041,7 +1046,7 @@ class MakeBuilder
             if ($filed['type'] == 'number') {
                 $rule['number'] = 'number';
             }
-            if (!empty($rule)) {
+            if ( ! empty($rule)) {
                 $rules[$filed['field'] . '|' . $filed['name']] = $rule;
             }
         }
@@ -1058,7 +1063,7 @@ class MakeBuilder
             $rulesStr .= '],
         ';
         }
-        if (!empty($rulesStr)) {
+        if ( ! empty($rulesStr)) {
             $rulesStr = rtrim($rulesStr, ',
         ');
             $rulesStr = 'protected $rule = [
@@ -1118,7 +1123,7 @@ class MakeBuilder
                 'name'   => $module->model_name . '/index',
                 'title'  => $module->module_name,
                 'sort'   => 50,
-                'status' => isset($pid) && !empty($pid) ? 1 : 0,
+                'status' => isset($pid) && ! empty($pid) ? 1 : 0,
             ];
             // 查询是否已存在，存在的不再处理
             $rule = \app\common\model\AuthRule::where('name', $module->model_name . '/index')->find();

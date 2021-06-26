@@ -44,7 +44,7 @@ class {$modelName} extends Base
     // 获取列表
     public static function getList($where, $pageSize, $order = ['sort', 'id' => 'desc'])
     {
-        $list = self::where($where)
+        $list = self::{$withInfo}where($where)
             ->order($order)
             ->paginate([
                 'query'     => Request::get(),
@@ -59,7 +59,7 @@ class {$modelName} extends Base
     // 导出列表
     public static function getExport($where = array(), $order = ['sort', 'id' => 'desc'])
     {
-        $list = self::where($where)
+        $list = self::{$withInfo}where($where)
             ->order($order)
             ->select();
         foreach ($list as $k => $v) {

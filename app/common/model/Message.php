@@ -6,7 +6,7 @@
  *                      .::::.
  *                    .::::::::.            | AUTHOR: siyu
  *                    :::::::::::           | EMAIL: 407593529@qq.com
- *                 ..:::::::::::'           | DATETIME: 2021/06/23
+ *                 ..:::::::::::'           | DATETIME: 2021/06/26
  *             '::::::::::::'
  *                .::::::::::
  *           '::::::::::::::..
@@ -48,7 +48,8 @@ class Message extends Base
     // 获取列表
     public static function getList($where, $pageSize, $order = ['sort', 'id' => 'desc'])
     {
-        $list = self::where($where)
+        $list = self::with(['cate'])
+            ->where($where)
             ->order($order)
             ->paginate([
                 'query'     => Request::get(),
@@ -66,7 +67,8 @@ class Message extends Base
     // 导出列表
     public static function getExport($where = array(), $order = ['sort', 'id' => 'desc'])
     {
-        $list = self::where($where)
+        $list = self::with(['cate'])
+            ->where($where)
             ->order($order)
             ->select();
         foreach ($list as $k => $v) {

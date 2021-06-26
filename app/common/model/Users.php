@@ -6,7 +6,7 @@
  *                      .::::.
  *                    .::::::::.            | AUTHOR: siyu
  *                    :::::::::::           | EMAIL: 407593529@qq.com
- *                 ..:::::::::::'           | DATETIME: 2021/06/23
+ *                 ..:::::::::::'           | DATETIME: 2021/06/26
  *             '::::::::::::'
  *                .::::::::::
  *           '::::::::::::::..
@@ -43,11 +43,13 @@ class Users extends Base
     {
         return $this->belongsTo('UsersType', 'type_id');
     }
+    
 
     // 获取列表
     public static function getList($where, $pageSize, $order = ['sort', 'id' => 'desc'])
     {
-        $list = self::where($where)
+        $list = self::with(['usersType'])
+            ->where($where)
             ->order($order)
             ->paginate([
                 'query'     => Request::get(),
@@ -57,6 +59,7 @@ class Users extends Base
             if ($list[$k]['type_id']) {
                 $v['type_id'] = $v->usersType->getData('name');
             }
+            
         }
         return MakeBuilder::changeTableData($list, 'Users');
     }
@@ -64,13 +67,15 @@ class Users extends Base
     // 导出列表
     public static function getExport($where = array(), $order = ['sort', 'id' => 'desc'])
     {
-        $list = self::where($where)
+        $list = self::with(['usersType'])
+            ->where($where)
             ->order($order)
             ->select();
         foreach ($list as $k => $v) {
             if ($list[$k]['type_id']) {
                 $v['type_id'] = $v->usersType->getData('name');
             }
+            
         }
         return MakeBuilder::changeTableData($list, 'Users');
     }
