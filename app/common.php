@@ -8,7 +8,8 @@ function getUrl($v)
     if (trim($v['url']) == '') {
         // 判断是否跳转到下级栏目
         if ($v['is_next'] == 1) {
-            $is_next = \app\common\model\Cate::where('parent_id', $v['id'])
+            $is_next = \app\common\model\Cate::with(['module'])
+                ->where('parent_id', $v['id'])
                 ->order('sort asc,id desc')
                 ->find();
             if ($is_next) {
@@ -18,10 +19,14 @@ function getUrl($v)
             if ($v['cate_folder']) {
                 $v['url'] = (string)\think\facade\Route::buildUrl($v['cate_folder'] . '/index')->domain('');
             } else {
-                $moduleId   = $v['module']['id'] ?? $v['module_id'];
-                $moduleName = \app\common\model\Module::where('id', $moduleId)
-                    ->value('model_name');
-                $v['url']   = (string)\think\facade\Route::buildUrl($moduleName . '/index', ['cate' => $v['id']])->domain('');
+                if (isset($v['module']['model_name']) && ! empty($v['module']['model_name'])) {
+                    $moduleName = $v['module']['model_name'];
+                } else {
+                    $moduleId   = $v['module']['id'] ?? $v['module_id'];
+                    $moduleName = \app\common\model\Module::where('id', $moduleId)
+                        ->value('model_name');
+                }
+                $v['url'] = (string)\think\facade\Route::buildUrl($moduleName . '/index', ['cate' => $v['id']])->domain('');
             }
         }
     }
@@ -36,15 +41,23 @@ function getShowUrl($v)
             return $v['url'];
         }
         if (isset($v['cate_id']) && ! empty($v['cate_id'])) {
-            $cate = \app\common\model\Cate::field('id,cate_folder,module_id')
-                ->where('id', $v['cate_id'])
-                ->find();
+            if (isset($v['cate'])) {
+                $cate = $v['cate'];
+            } else {
+                $cate = \app\common\model\Cate::field('id,cate_folder,module_id')
+                    ->where('id', $v['cate_id'])
+                    ->find();
+            }
             if ($cate['cate_folder']) {
                 $url = (string)\think\facade\Route::buildUrl($cate['cate_folder'] . '/info', ['id' => $v['id']])->domain('');
             } else {
-                $moduleName = \app\common\model\Module::where('id', $cate['module_id'])
-                    ->value('model_name');
-                $url        = (string)\think\facade\Route::buildUrl($moduleName . '/info', ['cate' => $cate['id'], 'id' => $v['id']])->domain('');
+                if (isset($v['cate']['module'])) {
+                    $modelName = $v['cate']['module']['model_name'];
+                } else {
+                    $modelName = \app\common\model\Module::where('id', $cate['module_id'])
+                        ->value('model_name');
+                }
+                $url = (string)\think\facade\Route::buildUrl($modelName . '/info', ['cate' => $cate['id'], 'id' => $v['id']])->domain('');
             }
         }
     }
@@ -54,15 +67,24 @@ function getShowUrl($v)
 /***
  * 处理数据（把列表中需要处理的字段转换成数组和对应的值,用于自定义标签文件中）
  * @param $list      列表
- * @param $moduleid  模型ID
+ * @param $moduleId  模型ID
  * @return array
  */
-function changeFields($list, $moduleid)
+function changeFields($list, $moduleId)
 {
-    $info = [];
+    // 根据模型ID查询字段信息
+    $fields     = \app\common\model\Field::with(['module', 'dictionaryType'])->where('module_id', '=', $moduleId)
+        ->select()
+        ->toArray();
+    $optionsArr = [];
+    foreach ($fields as $k => $v) {
+        $options                 = \app\common\facade\MakeBuilder::getFieldOptions($v);
+        $optionsArr[$v['field']] = $options;
+    }
+
     foreach ($list as $k => $v) {
         $url             = getShowUrl($v);
-        $list[$k]        = changeField($v, $moduleid);
+        $list[$k]        = changeField($v, $moduleId, $optionsArr);
         $info[$k]        = $list[$k]; // 定义中间变量防止报错
         $info[$k]['url'] = $url;
     }
@@ -71,18 +93,23 @@ function changeFields($list, $moduleid)
 
 /***
  * 处理数据（用于详情页中数据转换）
- * @param $info      内容详情
- * @param $moduleid  模型ID
+ * @param $info        内容详情
+ * @param $moduleid    模型ID
+ * @param $optionsArr  选项信息
  * @return array
  */
-function changefield($info, $moduleId)
+function changeField($info, $moduleId, $optionsArr)
 {
-    $fields = \app\common\model\Field::where('module_id', '=', $moduleId)
+    $fields = \app\common\model\Field::with(['module', 'dictionaryType'])->where('module_id', '=', $moduleId)
         ->select()
         ->toArray();
     foreach ($fields as $k => $v) {
         // select等需要获取数据的字段
-        $options = \app\common\facade\MakeBuilder::getFieldOptions($v);
+        if ($optionsArr) {
+            $options = $optionsArr[$v['field']];
+        } else {
+            $options = \app\common\facade\MakeBuilder::getFieldOptions($v);
+        }
         if (isset($info[$v['field']])) {
             if ($v['type'] == 'text') {
                 // 忽略
@@ -537,7 +564,7 @@ function getCateId()
     } else {
         $cateFolder = get_cate_folder();
         if ($cateFolder) {
-            $result = \app\common\model\Cate::where('cate_folder', '=', get_cate_folder())->value('id');
+            $result = \app\common\model\Cate::where('cate_folder', '=', $cateFolder)->value('id');
         }
     }
     return $result ?? '';

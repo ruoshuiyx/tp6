@@ -39,7 +39,7 @@ class Tp extends TagLib
     protected $tags = array(
         'close'    => ['attr' => 'time,format', 'close' => 0],                              // 闭合标签，默认为不闭合
         'open'     => ['attr' => 'name,type', 'close' => 1],
-        'nav'      => ['attr' => 'id,limit,name', 'close' => 1],                            // 通用导航信息
+        'nav'      => ['attr' => 'id,limit,name', 'close' => 1],                             // 通用导航信息
         'cate'     => ['attr' => 'id,type,anchor', 'close' => 0],                            // 通用栏目信息
         'position' => ['attr' => 'name', 'close' => 1],                                      // 通用位置信息
         'link'     => ['attr' => 'name', 'close' => 1],                                      // 获取友情链接
@@ -87,11 +87,11 @@ class Tp extends TagLib
         $tag['id']    = $tag['id'] ?? '0';
         $name         = $tag['name'] ?? 'nav';
 
-        $cateStr = '$__CATE__ = \app\common\model\Cate::where(\'is_menu\',1)->order(\'sort ASC,id DESC\')->select();';
+        $cateStr = '$__CATE__ = \app\common\model\Cate::with([\'module\'])->where(\'is_menu\',1)->order(\'sort ASC,id DESC\')->select();';
         $cateStr .= '$__LIST__ = unlimitedForLayer($__CATE__, \'sub\', ' . $tag['id'] . ');';
 
         // 提取前N条数据,因为sql的LIMIT避免不了子栏目的问题
-        if (!empty($tag['limit'])) {
+        if ( ! empty($tag['limit'])) {
             $cateStr .= '$__LIST__ = array_slice($__LIST__, 0,' . $tag['limit'] . ');';
         }
         $parse = '<?php ';
@@ -111,7 +111,7 @@ class Tp extends TagLib
         $anchor = $tag['anchor'] ?? '';
 
         $str = '<?php ';
-        $str .= '$__CATE__ = \app\common\model\Cate::where("id",' . $id . ')->find();';
+        $str .= '$__CATE__ = \app\common\model\Cate::with([\'module\'])->where("id",' . $id . ')->find();';
         $str .= 'if ($__CATE__) { ';
         $str .= '$__CATE__->url = getUrl($__CATE__->toArray());';
         $str .= '
@@ -129,7 +129,7 @@ class Tp extends TagLib
     {
         $name  = $tag['name'] ? $tag['name'] : 'position';
         $parse = '<?php ';
-        $parse .= '$__CATE__   = \app\common\model\Cate::select();';
+        $parse .= '$__CATE__   = \app\common\model\Cate::with([\'module\'])->select();';
         $parse .= '$__CATEID__ = getCateId();';
         $parse .= '$__LIST__   = getParents($__CATE__,$__CATEID__);';
         $parse .= ' ?>';
@@ -188,20 +188,20 @@ class Tp extends TagLib
     // 通用列表
     public function tagList($tag, $content)
     {
-        $id     = $tag['id'] ?? '0';                     // 可以为空
-        $name   = $tag['name'] ?? "list";                  // 不可为空
-        $order  = $tag['order'] ?? 'sort ASC,id DESC';      // 排序
-        $limit  = $tag['limit'] ?? '0';                     // 多少条数据,传递时不再进行分页
+        $id     = $tag['id'] ?? '0';                         // 可以为空
+        $name   = $tag['name'] ?? "list";                    // 不可为空
+        $order  = $tag['order'] ?? 'sort ASC,id DESC';       // 排序
+        $limit  = $tag['limit'] ?? '0';                      // 多少条数据,传递时不再进行分页
         $search = $tag['search'] ?? '';                      // 分类筛选字段,通过,或|传递多个
         $simple = $tag['simple'] ?? 'false';                 // 是否简洁模式
 
         $where    = isset($tag['where']) ? $tag['where'] . ' AND status = 1 ' : ' status = 1 '; // 查询条件
-        $pageSize = $tag['pagesize'] ?? config('app.page_size'); // 每页数量
+        $pageSize = $tag['pagesize'] ?? config('app.page_size');                                // 每页数量
         $parse    = '<?php ';
         $parse    .= '
             $list       = [];
             $__CATEID__ = ' . $id . ' ? ' . $id . ' : getCateId();
-            $__CATE__   = \app\common\model\Cate::find($__CATEID__);
+            $__CATE__   = \app\common\model\Cate::with([\'module\'])->find($__CATEID__);
             $__SEARCH__ = getSearchField(\'' . $search . '\');
             // 查询子分类,列表要包含子分类内容
             $__ALLCATE__ = \app\common\model\Cate::field(\'id,parent_id\')->select()->toArray();
@@ -211,7 +211,7 @@ class Tp extends TagLib
                 $__MODEL__ = \'\app\common\model\\\\\' . $__CATE__->module->getData(\'model_name\');
                 // 当传递limit时，不再进行分页
                 if(' . $limit . ' != 0){
-                    $__LIST__ = $__MODEL__::where("' . $where . '" . $__SEARCH__)
+                    $__LIST__ = $__MODEL__::with([\'cate\',\'cate.module\'])->where("' . $where . '" . $__SEARCH__)
                         ->where(\'cate_id\', \'in\', $__IDS__)
                         ->field($__CATE__->module->getData(\'list_fields\'))
                         ->order(\'' . $order . '\')
@@ -220,7 +220,7 @@ class Tp extends TagLib
                     $page = \'\';
                 }else{
                     $__PAGESIZE__ = empty($__CATE__[\'page_size\'])?' . $pageSize . ':$__CATE__->page_size;
-                    $__LIST__ =  $__MODEL__::where("' . $where . '" . $__SEARCH__)
+                    $__LIST__ =  $__MODEL__::with([\'cate\',\'cate.module\'])->where("' . $where . '" . $__SEARCH__)
                         ->where(\'cate_id\', \'in\', $__IDS__)
                         ->field($__CATE__->module->getData(\'list_fields\'))
                         ->order(\'' . $order . '\')
@@ -246,19 +246,19 @@ class Tp extends TagLib
     // 通用搜索
     public function tagSearch($tag, $content)
     {
-        $search   = $tag['search'] ?? "";                      // 关键字
-        $table    = $tag['table'] ?? "article";               // 表名称
-        $name     = $tag['name'] ?? "list";                  // 不可为空
-        $order    = $tag['order'] ?? 'sort ASC,id DESC';      // 排序
+        $search   = $tag['search'] ?? "";                                                     // 关键字
+        $table    = $tag['table'] ?? "article";                                               // 表名称
+        $name     = $tag['name'] ?? "list";                                                   // 不可为空
+        $order    = $tag['order'] ?? 'sort ASC,id DESC';                                      // 排序
         $where    = isset($tag['where']) ? $tag['where'] . ' AND status = 1 ' : 'status = 1'; // 查询条件
-        $pagesize = $tag['pagesize'] ?? config('app.page_size'); // 分页条数
+        $pagesize = $tag['pagesize'] ?? config('app.page_size');                              // 分页条数
 
         $parse = '<?php ';
         $parse .= '
                 $__MODULE__ = \app\common\model\Module::where("table_name","' . strtolower($table) . '")->find();
                 $__MODEL__ = \'\app\common\model\\\\\' . $__MODULE__->model_name;
 
-                $__LIST__ = $__MODEL__::where("' . $where . '")
+                $__LIST__ = $__MODEL__::with([\'cate\',\'cate.module\'])->where("' . $where . '")
                     ->where("title", "like", "%' . $search . '%")
                     ->order("' . $order . '")
                     ->paginate([
@@ -280,8 +280,8 @@ class Tp extends TagLib
     // 通用TAG标签
     public function tagTag($tag, $content)
     {
-        $name     = $tag['name'] ?? "list";                  //不可为空
-        $order    = $tag['order'] ?? 'sort ASC,id DESC';      //排序
+        $name     = $tag['name'] ?? "list";                      //不可为空
+        $order    = $tag['order'] ?? 'sort ASC,id DESC';         //排序
         $pagesize = $tag['pagesize'] ?? config('app.page_size'); //分页条数
 
         $parse = '<?php ';
@@ -298,7 +298,7 @@ class Tp extends TagLib
                     ->value(\'field\');
                 // 当前模型
                 $__MODEL__ = \'\app\common\model\\\\\' . $__MODULE__->model_name;
-                $__LIST__ = $__MODEL__::where($__TAGFIELD__, "find in set", $__T__)
+                $__LIST__ = $__MODEL__::with([\'cate\',\'cate.module\'])->where($__TAGFIELD__, "find in set", $__T__)
                 ->order("' . $order . '")
                 ->paginate("' . $pagesize . '");
                 $page = $__LIST__->render();
@@ -316,7 +316,7 @@ class Tp extends TagLib
     // 标签云标签
     public function tagTagcloud($tag, $content)
     {
-        $name  = $tag['name'] ?? "list";    // 不可为空
+        $name  = $tag['name'] ?? "list";     // 不可为空
         $table = $tag['table'] ?? 'article'; // 表
         $limit = $tag['limit'] ?? '10';      // 条数
         $parse = '<?php ';

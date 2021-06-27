@@ -40,6 +40,12 @@ class Module extends Base
     protected $createTime = 'create_time';
     protected $updateTime = 'update_time';
 
+    // 一对多获取字段信息
+    public function field()
+    {
+        return $this->hasMany('Field', 'module_id');
+    }
+
     // 获取列表
     public static function getList($where, $pageSize, $order = ['sort', 'id' => 'desc'])
     {
