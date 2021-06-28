@@ -534,15 +534,16 @@ class MakeBuilder
             $result = \app\common\model\Dictionary::where('dict_type', $field['dict_code'])
                 ->field('dict_value,dict_label')
                 ->order('sort ASC,id DESC')
-                ->select()
-                ->toArray();
-            $result = $this->changeSelect($result);
+                ->select();
+            if ($result) {
+                $result = $this->changeSelect($result->toArray());
+            }
         } elseif ($field['data_source'] == 2) {
             if (\think\facade\Config::get('builder.select2_ajax') == true && $field['type'] == 'select2') {
                 $result = [];
             } else {
                 // 取出对应模型的所有数据
-                $module = '\app\common\model\\' . $field['relation_model'];
+                $model = '\app\common\model\\' . $field['relation_model'];
                 // 根据模型名称获取select的排序
                 $order = $this->getOrder($field['relation_model']);
                 // 主键
@@ -559,17 +560,16 @@ class MakeBuilder
                     }
                 }
                 // 获取数据列表
-                $result = $module::field($pk . ',' . $field['relation_field'] . $fieldPid)
-                    ->order($order)
-                    ->select()
-                    ->toArray();
-                $result = $this->changeSelect($result);
+                $result = $model::order($order)
+                    ->field($pk . ',' . $field['relation_field'] . $fieldPid)
+                    ->select();
+                if ($result) {
+                    $result = $this->changeSelect($result->toArray());
+                }
             }
-        } else {
-            $result = [];
         }
 
-        return $result;
+        return $result ?? [];
     }
 
     /**
