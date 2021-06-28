@@ -41,7 +41,7 @@ class Module extends Base
     protected $updateTime = 'update_time';
 
     // 一对多获取字段信息
-    public function field()
+    public function fields()
     {
         return $this->hasMany('Field', 'module_id');
     }
@@ -86,7 +86,7 @@ class Module extends Base
     {
         // 获取模块信息
         $module = self::where('table_name', $tableName)->find();
-        if (!$module) {
+        if ( ! $module) {
             return '[module] 表中不存在 table_name 为' . $tableName . '的记录，无法继续';
         }
         $tableType = $module->getData('table_type'); // 表类型 1 cms 2 后台
@@ -290,7 +290,7 @@ class Module extends Base
                     break;
                 }
             }
-            if (!$priKey) {
+            if ( ! $priKey) {
                 return '请设置 [' . $tableName . '] 表的主键';
             }
             // 循环所有字段,开始构造要入库的字段信息

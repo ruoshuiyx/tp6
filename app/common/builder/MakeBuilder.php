@@ -560,8 +560,8 @@ class MakeBuilder
                     }
                 }
                 // 获取数据列表
-                $result = $model::order($order)
-                    ->field($pk . ',' . $field['relation_field'] . $fieldPid)
+                $result = $model::field($pk . ',' . $field['relation_field'] . $fieldPid)
+                    ->order($order)
                     ->select();
                 if ($result) {
                     $result = $this->changeSelect($result->toArray());
