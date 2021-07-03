@@ -88,7 +88,7 @@ function changeFields($list, $moduleId)
         $info[$k]        = $list[$k]; // 定义中间变量防止报错
         $info[$k]['url'] = $url;
     }
-    return $info;
+    return $info ?? [];
 }
 
 /***
