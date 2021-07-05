@@ -4,7 +4,11 @@
         <select class="form-control" id="{$form[type].name}" name="{$form[type].name}" {$form[type].extra_attr|default=''}>
             <option value="">{$form[type].placeholder}</option>
             {volist name="form[type].options" id="option"}
+            {if is_array($option)}
+            <option value="{$key}" {if ((string)$form[type].value == (string)$key)}selected{/if} {if $option.disabled == 1}disabled{/if}>{$option.value}</option>
+            {else}
             <option value="{$key}" {if ((string)$form[type].value == (string)$key)}selected{/if}>{$option}</option>
+            {/if}
             {/volist}
         </select>
     </div>

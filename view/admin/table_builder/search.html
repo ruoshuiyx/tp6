@@ -18,7 +18,11 @@
                                 <option value="">所有</option>
                                 {notempty name="search.param"}
                                 {volist name="search.param" id="v"}
+                                {if is_array($v)}
+                                <option value="{$key}" {if ((string)$search.default == (string)$key)}selected{/if}{if $v.disabled == 1}disabled{/if}>{$v.value}</option>
+                                {else}
                                 <option value="{$key}" {if ((string)$search.default == (string)$key)}selected{/if}>{$v}</option>
+                                {/if}
                                 {/volist}
                                 {/notempty}
                             </select>

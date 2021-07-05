@@ -565,6 +565,20 @@ class MakeBuilder
                     ->select();
                 if ($result) {
                     $result = $this->changeSelect($result->toArray());
+                    // 针对栏目ID字段做特殊处理（需考虑是否可选择）
+                    if ($field['field'] == 'cate_id') {
+                        $idArr     = \app\common\model\Cate::where('module_id', $field['module_id'])->column('id');
+                        $resultNew = [];
+                        foreach ($result as $k => $v) {
+
+                            $resultNew[$k] = [
+                                'key'      => $k,
+                                'value'    => $v,
+                                'disabled' => in_array($k, $idArr) == true ? 0 : 1
+                            ];
+                        }
+                        $result = $resultNew;
+                    }
                 }
             }
         }
