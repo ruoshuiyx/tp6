@@ -45,7 +45,7 @@ class AdminLog extends Base
     }
 
     // 获取列表
-    public static function getList($where, $pageSize, $order = ['sort', 'id' => 'desc'])
+    public static function getList(array $where = [], int $pageSize = 0, array $order = ['sort', 'id' => 'desc'])
     {
         $list = self::with(['admin'])
             ->where($where)
@@ -61,21 +61,6 @@ class AdminLog extends Base
             // 截取部分user_agent
             $userAgent       = explode('(', $v['user_agent']);
             $v['user_agent'] = $userAgent[0];
-        }
-        return MakeBuilder::changeTableData($list, 'AdminLog');
-    }
-
-    // 导出列表
-    public static function getExport($where = array(), $order = ['sort', 'id' => 'desc'])
-    {
-        $list = self::with(['admin'])
-            ->where($where)
-            ->order($order)
-            ->select();
-        foreach ($list as $k => $v) {
-            if ($list[$k]['admin_id']) {
-                $v['admin_id'] = $v->admin->getData('username');
-            }
         }
         return MakeBuilder::changeTableData($list, 'AdminLog');
     }

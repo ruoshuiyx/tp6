@@ -25,12 +25,6 @@
  */
 namespace app\common\model;
 
-// 引入框架内置类
-use think\facade\Request;
-
-// 引入构建器
-use app\common\facade\MakeBuilder;
-
 class {$modelName} extends Base
 {
     // 定义时间戳字段名
@@ -40,32 +34,5 @@ class {$modelName} extends Base
     {$modulePk}
     {$moduleTable}
     {$relations}
-
-    // 获取列表
-    public static function getList($where, $pageSize, $order = ['sort', 'id' => 'desc'])
-    {
-        $list = self::{$withInfo}where($where)
-            ->order($order)
-            ->paginate([
-                'query'     => Request::get(),
-                'list_rows' => $pageSize,
-            ]);
-        foreach ($list as $k => $v) {
-            {$listInfo}
-        }
-        return MakeBuilder::changeTableData($list, '{$modelName}');
-    }
-
-    // 导出列表
-    public static function getExport($where = array(), $order = ['sort', 'id' => 'desc'])
-    {
-        $list = self::{$withInfo}where($where)
-            ->order($order)
-            ->select();
-        foreach ($list as $k => $v) {
-            {$listInfo}
-        }
-        return MakeBuilder::changeTableData($list, '{$modelName}');
-    }
 
 }

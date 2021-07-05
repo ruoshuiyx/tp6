@@ -23,6 +23,7 @@
  *                      '.:::::'                    ':'````..
  * +----------------------------------------------------------------------
  */
+
 namespace app\common\model;
 
 // 引入框架内置类
@@ -41,7 +42,7 @@ class Admin extends Base
     protected $updateTime = 'update_time';
 
     // 获取列表
-    public static function getList($where, $pageSize, $order = ['sort', 'id' => 'desc'])
+    public static function getList(array $where = [], int $pageSize = 0, array $order = ['sort', 'id' => 'desc'])
     {
         $list = self::where($where)
             ->order($order)
@@ -51,25 +52,13 @@ class Admin extends Base
             ]);
         $auth = new \Auth();
         foreach ($list as $k => $v) {
-            $title = '';
+            $title  = '';
             $groups = $auth->getGroups($v->id);
             foreach ($groups as $group) {
                 $title .= $group['title'] . ',';
             }
-            $title = rtrim($title, ',');
+            $title                  = rtrim($title, ',');
             $list[$k]['group_name'] = $title;
-        }
-        return MakeBuilder::changeTableData($list, 'Admin');
-    }
-
-    // 导出列表
-    public static function getExport($where = array(), $order = ['sort', 'id' => 'desc'])
-    {
-        $list = self::where($where)
-            ->order($order)
-            ->select();
-        foreach ($list as $k => $v) {
-            
         }
         return MakeBuilder::changeTableData($list, 'Admin');
     }
@@ -84,12 +73,12 @@ class Admin extends Base
         // 查找所有系统设置表数据
         $system = \app\common\model\System::find(1);
 
-        $username = Request::param("username");
-        $password = Request::param("password");
+        $username  = Request::param("username");
+        $password  = Request::param("password");
         $open_code = $system['code'];
         if ($open_code) {
             $code = Request::param("vercode");
-            if (!captcha_check($code)) {
+            if ( ! captcha_check($code)) {
                 $data = ['error' => '1', 'msg' => '验证码错误'];
                 return json($data);
             }
@@ -119,9 +108,9 @@ class Admin extends Base
                     ->where('uid', $uid)
                     ->find();
                 // 查询所有不验证的方法并放入规则中
-                $authOpen = AuthRule::where('auth_open', '=', '0')
+                $authOpen  = AuthRule::where('auth_open', '=', '0')
                     ->select();
-                $authRole = AuthRule::select();
+                $authRole  = AuthRule::select();
                 $authOpens = [];
                 foreach ($authOpen as $k => $v) {
                     $authOpens[] = $v['id'];
@@ -132,7 +121,7 @@ class Admin extends Base
                     }
                 }
 
-                $authOpensStr = !empty($authOpens) ? implode(",", $authOpens) : '';
+                $authOpensStr   = ! empty($authOpens) ? implode(",", $authOpens) : '';
                 $rules['rules'] = $rules['rules'] . $authOpensStr;
 
                 // 重新查询要赋值的数据[原因是toArray必须保证find的数据不为空，为空就报错]
@@ -145,9 +134,9 @@ class Admin extends Base
                     'nickname'   => $result['nickname'],
                     'image'      => $result['image'],
                 ]);
-                Session::set('admin.group_id' , $rules['group_id']);
-                Session::set('admin.rules'    , explode(',', $rules['rules']));
-                Session::set('admin.title'    , $rules['title']);
+                Session::set('admin.group_id', $rules['group_id']);
+                Session::set('admin.rules', explode(',', $rules['rules']));
+                Session::set('admin.title', $rules['title']);
 
                 // 触发登录成功事件
                 Event::trigger('AdminLogin', $result);

@@ -47,7 +47,7 @@ class Module extends Base
     }
 
     // 获取列表
-    public static function getList($where, $pageSize, $order = ['sort', 'id' => 'desc'])
+    public static function getList(array $where = [], int $pageSize = 0, array $order = ['sort', 'id' => 'desc'])
     {
         $list = self::where($where)
             ->order($order)
@@ -66,15 +66,6 @@ class Module extends Base
             }
         }
         return MakeBuilder::changeTableData($list, 'Module');
-    }
-
-    // 导出列表
-    public static function getExport($where = array(), $order = ['sort', 'id' => 'desc'])
-    {
-        $list = self::where($where)
-            ->order($order)
-            ->select();
-        return $list;
     }
 
     /**

@@ -43,7 +43,7 @@ class Cate extends Base
     }
 
     // 获取列表
-    public static function getList($order = ['sort', 'id' => 'desc'])
+    public static function getList(array $where = [], int $pageSize = 0, array $order = ['sort', 'id' => 'desc'])
     {
         $list = self::with(['module'])
             ->order($order)
@@ -67,21 +67,6 @@ class Cate extends Base
             'data' => $list,
         ];
         return MakeBuilder::changeTableData($result, 'Cate');
-    }
-
-    // 导出列表
-    public static function getExport($where = array(), $order = ['sort', 'id' => 'desc'])
-    {
-        $list = self::with(['module'])
-            ->where($where)
-            ->order($order)
-            ->select();
-        foreach ($list as $k => $v) {
-            if ($list[$k]['module_id']) {
-                $v['module_id'] = $v->module->getData('module_name');
-            }
-        }
-        return MakeBuilder::changeTableData($list, 'Cate');
     }
 
     // 获取父ID选项信息

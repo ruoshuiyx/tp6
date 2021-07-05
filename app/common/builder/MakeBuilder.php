@@ -991,24 +991,13 @@ class MakeBuilder
             ->toArray();
         // 初始化模型关联信息
         $relations = '';
-        $listInfo  = '';
-        $withInfo  = '';
         foreach ($fileds as &$filed) {
             $relations .= 'public function ' . lcfirst($filed['relation_model']) . '()
     {
         return $this->belongsTo(\'' . $filed['relation_model'] . '\', \'' . $filed['field'] . '\');
     }
     ';
-            $listInfo  .= 'if ($list[$k][\'' . $filed['field'] . '\']) {
-            ';
-            $listInfo  .= '    $v[\'' . $filed['field'] . '\'] = ! empty($v->' . lcfirst($filed['relation_model']) . ') ? $v->' . lcfirst($filed['relation_model']) . '->getData(\'' . $filed['relation_field'] . '\') : \'\';';
-            $listInfo  .= '
-            }
-            ';
-            $withInfo  .= '\'' . lcfirst($filed['relation_model']) . '\',';
         }
-        $withInfo = ! empty($withInfo) ? 'with([' . rtrim($withInfo, ',') . '])
-            ->' : '';
 
         // 主键
         $pk = '';
@@ -1017,8 +1006,6 @@ class MakeBuilder
         }
 
         $content = str_replace('{$relations}', $relations, $content);
-        $content = str_replace('{$listInfo}', $listInfo, $content);
-        $content = str_replace('{$withInfo}', $withInfo, $content);
         $content = str_replace('{$modulePk}', $pk, $content);
         $content = str_replace('{$moduleTable}', $this->checkModuleTable($module->table_name, $module->model_name), $content);
         return $content;

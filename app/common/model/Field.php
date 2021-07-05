@@ -50,7 +50,7 @@ class Field extends Base
     }
 
     // 获取列表
-    public static function getList($where, $pageSize, $order = ['sort', 'id' => 'desc'])
+    public static function getList(array $where = [], int $pageSize = 0, array $order = ['sort', 'id' => 'desc'])
     {
         $list = self::with(['module', 'dictionaryType'])
             ->where($where)

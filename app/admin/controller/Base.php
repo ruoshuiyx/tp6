@@ -101,7 +101,7 @@ abstract class Base
     protected function initialize()
     {
         // 每页显示数据量
-        $this->pageSize = Request::param('pageSize', Config::get('app.page_size'));
+        $this->pageSize = (int)Request::param('pageSize', Config::get('app.page_size'));
 
         // 左侧菜单
         $menus = \app\admin\model\Base::getMenus();
