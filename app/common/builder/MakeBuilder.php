@@ -1001,7 +1001,7 @@ class MakeBuilder
     ';
             $listInfo  .= 'if ($list[$k][\'' . $filed['field'] . '\']) {
             ';
-            $listInfo  .= '    $v[\'' . $filed['field'] . '\'] = $v->' . lcfirst($filed['relation_model']) . '->getData(\'' . $filed['relation_field'] . '\');';
+            $listInfo  .= '    $v[\'' . $filed['field'] . '\'] = ! empty($v->' . lcfirst($filed['relation_model']) . ') ? $v->' . lcfirst($filed['relation_model']) . '->getData(\'' . $filed['relation_field'] . '\') : \'\';';
             $listInfo  .= '
             }
             ';
