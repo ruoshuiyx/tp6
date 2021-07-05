@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 24/06/2021 14:52:20
+ Date: 05/07/2021 17:09:28
 */
 
 SET NAMES utf8mb4;
@@ -1374,30 +1374,6 @@ CREATE TABLE `tp_system`  (
 -- Records of tp_system
 -- ----------------------------
 INSERT INTO `tp_system` VALUES (1, 1580560560, 1586857104, 'SIYUCMS', '/uploads/20181226/a3a4245ec095da4903c6c81123fd480d.png', '辽ICP备12345678号-1', 'Copyright © SIYUCMS 2019.All right reserved.Powered by SIYUCMS', 'www.xxx.com', '辽宁省沈阳市铁西区重工街XX路XX号1-1-1', 'X先生', '010-8888 7777', '158 4018 8888', '010-8888 9999', '407593529@qq.com', '407593529', '/uploads/20181226/cb7a4c21d6443bc5e7a8d16ac2cbe242.png', 'SIYUCMS 官网', 'SIYUCMS，SIYUCMS内容管理系统，php，ThinkPHP CMS，ThinkPHP建站系统', 'SIYUCMS 是一款基于 ThinkPHP + AdminLTE 的内容管理系统。后台界面采用响应式布局，清爽、极简、简单、易用，是做开发的最佳选择。', 0, 1, 0, 0, 1, 'default', 'html', '', 1, '0', 'rar,zip,avi,rmvb,3gp,flv,mp3,mp4,txt,doc,xls,ppt,pdf,xls,docx,xlsx,doc', '0', 'jpg,png,gif,jpeg,ico', 0);
-
--- ----------------------------
--- Table structure for tp_system_group
--- ----------------------------
-DROP TABLE IF EXISTS `tp_system_group`;
-CREATE TABLE `tp_system_group`  (
-  `id` int(8) NOT NULL AUTO_INCREMENT COMMENT '编号',
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '分组名称',
-  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '备注',
-  `sort` mediumint(8) NULL DEFAULT 50 COMMENT '排序',
-  `status` int(1) NULL DEFAULT 0 COMMENT '状态（1 正常，0 锁定）',
-  `create_time` int(11) UNSIGNED NULL DEFAULT 0 COMMENT '创建时间',
-  `update_time` int(11) UNSIGNED NULL DEFAULT 0 COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统设置分组表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of tp_system_group
--- ----------------------------
-INSERT INTO `tp_system_group` VALUES (1, '基础设置', '基础设置', 1, 1, 1557903491, 1557903491);
-INSERT INTO `tp_system_group` VALUES (2, 'SEO设置', 'SEO设置', 2, 1, 1557903521, 1557903521);
-INSERT INTO `tp_system_group` VALUES (3, '开关设置', '开关设置', 3, 1, 1557903537, 1557903537);
-INSERT INTO `tp_system_group` VALUES (4, '模板设置', '模板设置', 4, 1, 1557903562, 1557903567);
-INSERT INTO `tp_system_group` VALUES (5, '自定义', '自定义系统设置信息', 5, 1, 1557905966, 1557906261);
 
 -- ----------------------------
 -- Table structure for tp_team
