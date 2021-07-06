@@ -128,8 +128,10 @@ abstract class Base
         View::assign(['breadCrumb' => $breadCrumb]);
 
         // 内容管理,获取栏目列表
-        $cates = \app\common\model\Cate::getList();
-        View::assign(['cates' => unlimitedForLayer($cates['data'])]);
+        if (class_exists('\app\common\model\Cate')) {
+            $cates = \app\common\model\Cate::getList();
+        }
+        View::assign(['cates' => unlimitedForLayer($cates['data'] ?? [])]);
 
         // index应用地址
         $domainBind = Config::get('app.domain_bind');
@@ -168,7 +170,7 @@ abstract class Base
             }
             $class = false !== strpos($validate, '\\') ? $validate : $this->app->parseClass('validate', $validate);
             $v     = new $class();
-            if (!empty($scene)) {
+            if ( ! empty($scene)) {
                 $v->scene($scene);
             }
         }

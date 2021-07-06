@@ -23,6 +23,7 @@
  *                      '.:::::'                    ':'````..
  * +----------------------------------------------------------------------
  */
+
 namespace app\admin\controller;
 
 use think\facade\App;
@@ -57,7 +58,9 @@ class Index extends Base
         $user = \app\common\model\Users::where('create_time', '>', time() - 60 * 60 * 24 * 7)->count();
 
         // 查找待处理留言信息
-        $message = \app\common\model\Message::where('status', '0')->count();
+        if (class_exists('\app\common\model\Message')) {
+            $message = \app\common\model\Message::where('status', '0')->count();
+        }
 
         // 查找是否有在线留言的模型id
         $messageModuleId = \app\common\model\Module::where('table_name', 'message')->value('id');
@@ -65,7 +68,7 @@ class Index extends Base
         if ($messageModuleId) {
             // 查询留言模块第一个栏目ID
             $messageCatId = \app\common\model\Cate::where('module_id', $messageModuleId)->value('id');
-            if (!is_null($messageCatId)) {
+            if ( ! is_null($messageCatId)) {
                 // 生成URL
                 $messageCatUrl = url('Message/index', ['cate_id' => $messageCatId]);
             }
@@ -74,7 +77,7 @@ class Index extends Base
         $view = [
             'config'        => $config,
             'user'          => $user,
-            'message'       => $message,
+            'message'       => $message ?? 0,
             'messageCatUrl' => $messageCatUrl,
             'indexTips'     => $this->getIndexTips(),
         ];
@@ -124,7 +127,7 @@ class Index extends Base
                     $url = $module . Config::get('route.pathinfo_depr') . 'info.' . Config::get('route.url_html_suffix') . '?cate=' . $cate['id'] . '&id=' . $id;
                 }
             }
-            if (isset($url) && !empty($url)) {
+            if (isset($url) && ! empty($url)) {
                 // 检测是否开启了域名绑定
                 $domainBind = Config::get('app.domain_bind');
                 if ($domainBind) {
@@ -199,7 +202,7 @@ class Index extends Base
                     $this->_deleteDir($R . DIRECTORY_SEPARATOR . $item);
                 } else {
                     if ($item != '.gitignore') {
-                        if (!unlink($R . DIRECTORY_SEPARATOR . $item)) {
+                        if ( ! unlink($R . DIRECTORY_SEPARATOR . $item)) {
                             return false;
                         }
                     }

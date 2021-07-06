@@ -5,5 +5,6 @@
 return [
     // 指令定义
     'commands' => [
+        // 'admin' => 'app\command\Admin', // 文件精简
     ],
 ];
