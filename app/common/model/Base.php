@@ -173,6 +173,7 @@ class Base extends Model
     // 导出
     public static function export($tableNam, $moduleName)
     {
+        ob_end_clean();
         // 获取主键
         $pk = \app\common\facade\MakeBuilder::getPrimarykey($tableNam);
         // 获取列表数据
