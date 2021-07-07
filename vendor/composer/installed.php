@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '661f1e64b93bede1db31ba1dbdc9dc7e9299bade',
+        'reference' => 'bb6b713b9147f4c8783ff332359ebcc2c75c04c3',
         'name' => 'topthink/think',
         'dev' => true,
     ),
@@ -155,12 +155,12 @@
             'dev_requirement' => false,
         ),
         'myclabs/php-enum' => array(
-            'pretty_version' => '1.8.2',
-            'version' => '1.8.2.0',
+            'pretty_version' => '1.8.3',
+            'version' => '1.8.3.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../myclabs/php-enum',
             'aliases' => array(),
-            'reference' => '8bef486e885cae67ced6e43257300e8acc3f06ad',
+            'reference' => 'b942d263c641ddb5190929ff840c68f78713e937',
             'dev_requirement' => false,
         ),
         'phpmailer/phpmailer' => array(
@@ -340,7 +340,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '661f1e64b93bede1db31ba1dbdc9dc7e9299bade',
+            'reference' => 'bb6b713b9147f4c8783ff332359ebcc2c75c04c3',
             'dev_requirement' => false,
         ),
         'topthink/think-captcha' => array(
