@@ -84,6 +84,12 @@
 					columns: options.columns,                           // 显示列信息（*）
 					classes: options.classes,                           // 设置表样式
 					queryParams: options.queryParams,                   // 传递参数（*）
+					onDblClickRow: function (row, $element, field) {	// 双击一行时触发编辑动作
+						var edit = $element.children("td").last().html();
+						if ($.common.isNotEmpty(edit) && edit.indexOf('$.operate.edit') != -1) {
+							$.operate.edit($element.data('uniqueid'));
+						}
+					}
 				};
 				// 将tree合并到option[关闭分页且传递父id字段才可以看到tree]
 				if (option.pagination == false && $.common.isNotEmpty(options.parentIdField)) {
@@ -715,7 +721,8 @@
                 if (result.code == 1) {
                     var parent = window.parent;
                     $.modal.close();
-                    parent.$.modal.msgSuccess(result.msg);
+					parent.toastr.success(result.msg); // toastr提示
+                    // parent.$.modal.msgSuccess(result.msg); // 消息提示
                     parent.$.table.refresh();
                 } else {
                     $.modal.alertError(result.msg);
@@ -725,7 +732,8 @@
             // 保存结果弹出msg刷新table表格
             ajaxSuccess: function (result) {
                 if (result.error == 0 || result.code == 1) {
-                    $.modal.msgSuccess(result.msg);
+					toastr.success(result.msg); // toastr提示
+                    //$.modal.msgSuccess(result.msg); // 消息提示
                     $.table.refresh();
                 } else {
                     $.modal.alertError(result.msg);
