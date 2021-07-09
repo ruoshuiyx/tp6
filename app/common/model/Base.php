@@ -46,27 +46,69 @@ class Base extends Model
     public static function getList(array $where = [], int $pageSize = 0, array $order = ['sort', 'id' => 'desc'])
     {
         $model = new static();
+        $model = $model->alias($model->getName());
         // 获取with关联
-        $moduleId = \app\common\model\Module::where('model_name', $model->getName())->value('id');
-        $fileds   = \app\common\model\Field::where('module_id', $moduleId)
-            ->where('data_source', 2)
+        $moduleId  = \app\common\model\Module::where('model_name', $model->getName())->value('id');
+        $fileds    = \app\common\model\Field::where('module_id', $moduleId)
             ->select()
             ->toArray();
-        $listInfo = [];
-        $withInfo = [];
-        foreach ($fileds as &$filed) {
-            $listInfo[] = [
-                'field'          => $filed['field'],
-                'relation_model' => lcfirst($filed['relation_model']),
-                'relation_field' => $filed['relation_field'],
-            ];
-            $withInfo[] = lcfirst($filed['relation_model']);
+        $listInfo  = []; // 字段根据关联信息重新赋值
+        $withInfo  = []; // 模型关联信息
+        $fieldInfo = []; // 字段包含.的时候从关联模型中获取数据
+        foreach ($fileds as $filed) {
+            // 数据源为模型数据时设置关联信息
+            if ($filed['data_source'] == 2) {
+                $listInfo[] = [
+                    'field'          => $filed['field'],
+                    'relation_model' => lcfirst($filed['relation_model']),
+                    'relation_field' => $filed['relation_field'],
+                ];
+                $withInfo[] = lcfirst($filed['relation_model']);
+            }
+            // 字段包含.的时候从关联模型中获取数据
+            if (strpos($filed['field'], '.') !== false) {
+                $filedArr    = explode('.', $filed['field']);
+                $fieldInfo[] = [
+                    'field'          => $filed['field'],
+                    'relation_model' => lcfirst($filedArr[0]),
+                    'relation_field' => $filedArr[1],
+                ];
+            }
         }
         if ($withInfo) {
             $model = $model->with($withInfo);
         }
         if ($where) {
-            $model = $model->where($where);
+            $whereNew = [];
+            $whereHas = [];
+            foreach ($where as $v) {
+                if (strpos($v[0], '.') === false) {
+                    $whereNew[] = $v;
+                } else {
+                    // 关联模型搜索
+                    $filedArr = explode('.', $v[0]);
+
+                    $whereHas[lcfirst($filedArr[0])][] = [
+                        'field'        => $filedArr[1],
+                        'field_option' => $v[1],
+                        'field_value'  => $v[2],
+                    ];
+                }
+            }
+            // 关联模型搜索
+            if ($whereHas) {
+                foreach ($whereHas as $k => $v) {
+                    $model = $model->hasWhere($k, function ($query) use ($v) {
+                        foreach ($v as $vv) {
+                            $query->where($vv['field'], $vv['field_option'], $vv['field_value']);
+                        }
+                    });
+                }
+            }
+            // 当前模型搜索
+            if ($whereNew) {
+                $model = $model->where($where);
+            }
         }
         if ($pageSize) {
             $list = $model->order($order)
@@ -81,6 +123,9 @@ class Base extends Model
 
         foreach ($list as $v) {
             foreach ($listInfo as $vv) {
+                $v[$vv['field']] = ! empty($v->{$vv['relation_model']}) ? $v->{$vv['relation_model']}->getData($vv['relation_field']) : '';
+            }
+            foreach ($fieldInfo as $vv) {
                 $v[$vv['field']] = ! empty($v->{$vv['relation_model']}) ? $v->{$vv['relation_model']}->getData($vv['relation_field']) : '';
             }
         }

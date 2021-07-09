@@ -402,8 +402,12 @@ class MakeBuilder
         $where = [];
         // 循环所有搜索字段，看是否有传递
         foreach ($search as $k => $v) {
-            if (Request::param($v[1]) || Request::param($v[1]) === "0") {
-                $searhKeywords = Request::param($v[1]);
+            $param = Request::param();
+            if ( ! isset($param[$v[1]])) {
+                continue;
+            }
+            if ($param[$v[1]] || $param[$v[1]] === "0") {
+                $searhKeywords = $param[$v[1]];
                 // 判断字段类型，默认为=
                 if (isset($v[3]) && ! empty($v[3])) {
                     $option = $v[3];
