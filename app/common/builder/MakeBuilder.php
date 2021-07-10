@@ -995,7 +995,12 @@ class MakeBuilder
             ->toArray();
         // 初始化模型关联信息
         $relations = '';
+        $relationModel = [];
         foreach ($fileds as &$filed) {
+            if(in_array(lcfirst($filed['relation_model']), $relationModel)){
+                break;
+            }
+            $relationModel[] = lcfirst($filed['relation_model']);
             $relations .= 'public function ' . lcfirst($filed['relation_model']) . '()
     {
         return $this->belongsTo(\'' . $filed['relation_model'] . '\', \'' . $filed['field'] . '\');
