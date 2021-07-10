@@ -256,15 +256,17 @@ class Field extends Base
             $data['is_sort']   = $data['is_sort'] ?? 0;
 
             // 查询字段是否已在表中存在
-            $name      = \app\common\model\Module::where('id', '=', $data['module_id'])->value('table_name');
-            $tablename = Config::get('database.connections.mysql.prefix') . $name;
-            // 新的字段已被存在于表中
-            if ($this->_iset_field($tablename, $data['field']) && $oldfield != $data['field']) {
-                $this->error($tablename . '表已存在[' . $data['field'] . ']字段');
-            }
-            // 旧的字段不存在于表中
-            if ($this->_iset_field($tablename, $oldfield) == false) {
-                $this->error($tablename . '表不存在[' . $oldfield . ']字段');
+            if(strpos($data['field'], '.') === false){
+                $name      = \app\common\model\Module::where('id', '=', $data['module_id'])->value('table_name');
+                $tablename = Config::get('database.connections.mysql.prefix') . $name;
+                // 新的字段已被存在于表中
+                if ($this->_iset_field($tablename, $data['field']) && $oldfield != $data['field']) {
+                    $this->error($tablename . '表已存在[' . $data['field'] . ']字段');
+                }
+                // 旧的字段不存在于表中
+                if ($this->_iset_field($tablename, $oldfield) == false) {
+                    $this->error($tablename . '表不存在[' . $oldfield . ']字段');
+                }
             }
 
             $editfieldsql = $this->get_tablesql(Request::post(), 'edit');
@@ -275,7 +277,7 @@ class Field extends Base
             $model = Db::name('field');
 
             if (false !== $model->update($data)) {
-                if (Request::param('execute_sql', 0) == 1) {
+                if (Request::param('execute_sql', 0) == 1 && !empty($editfieldsql)) {
                     if (is_array($editfieldsql)) {
                         foreach ($editfieldsql as $sql) {
                             try {
