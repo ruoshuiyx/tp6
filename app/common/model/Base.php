@@ -52,9 +52,9 @@ class Base extends Model
         $fileds    = \app\common\model\Field::where('module_id', $moduleId)
             ->select()
             ->toArray();
-        $listInfo  = []; // 字段根据关联信息重新赋值
-        $withInfo  = []; // 模型关联信息
-        $fieldInfo = []; // 字段包含.的时候从关联模型中获取数据
+        $listInfo  = [];  // 字段根据关联信息重新赋值
+        $withInfo  = [];  // 模型关联信息
+        $fieldInfo = [];  // 字段包含.的时候从关联模型中获取数据
         foreach ($fileds as $filed) {
             // 数据源为模型数据时设置关联信息
             if ($filed['data_source'] == 2) {
@@ -123,10 +123,10 @@ class Base extends Model
 
         foreach ($list as $v) {
             foreach ($listInfo as $vv) {
-                $v[$vv['field']] = ! empty($v->{$vv['relation_model']}) ? $v->{$vv['relation_model']}->getData($vv['relation_field']) : '';
+                $v[$vv['field']] = !empty($v->{$vv['relation_model']}) ? $v->{$vv['relation_model']}->getData($vv['relation_field']) : '';
             }
             foreach ($fieldInfo as $vv) {
-                $v[$vv['field']] = ! empty($v->{$vv['relation_model']}) ? $v->{$vv['relation_model']}->getData($vv['relation_field']) : '';
+                $v[$vv['field']] = !empty($v->{$vv['relation_model']}) ? $v->{$vv['relation_model']}->getData($vv['relation_field']) : '';
             }
         }
         return MakeBuilder::changeTableData($list, $model->getName());
@@ -142,45 +142,57 @@ class Base extends Model
     // 通用修改保存
     public static function editPost($data)
     {
-        if ($data) {
-            foreach ($data as $k => $v) {
-                if (is_array($v)) {
-                    $data[$k] = implode(',', $v);
+        try {
+            if ($data) {
+                foreach ($data as $k => $v) {
+                    if (is_array($v)) {
+                        $data[$k] = implode(',', $v);
+                    }
                 }
             }
-        }
 
-        $result = self::update($data);
-        if ($result) {
-            return ['error' => 0, 'msg' => '修改成功'];
-        } else {
-            return ['error' => 1, 'msg' => '修改失败'];
+            $result = self::update($data);
+            if ($result) {
+                return ['error' => 0, 'msg' => '修改成功'];
+            } else {
+                return ['error' => 1, 'msg' => '修改失败'];
+            }
+        } catch (\Exception $e) {
+            return ['error' => 1, 'msg' => $e->getMessage()];
         }
     }
 
     // 通用添加保存
     public static function addPost($data)
     {
-        if ($data) {
-            foreach ($data as $k => $v) {
-                if (is_array($v)) {
-                    $data[$k] = implode(',', $v);
+        try {
+            if ($data) {
+                foreach ($data as $k => $v) {
+                    if (is_array($v)) {
+                        $data[$k] = implode(',', $v);
+                    }
                 }
             }
-        }
-        $result = self::create($data);
-        if ($result) {
-            return ['error' => 0, 'msg' => '添加成功'];
-        } else {
-            return ['error' => 1, 'msg' => '添加失败'];
+            $result = self::create($data);
+            if ($result) {
+                return ['error' => 0, 'msg' => '添加成功'];
+            } else {
+                return ['error' => 1, 'msg' => '添加失败'];
+            }
+        } catch (\Exception $e) {
+            return ['error' => 1, 'msg' => $e->getMessage()];
         }
     }
 
     // 删除
     public static function del($id)
     {
-        self::destroy($id);
-        return json(['error' => 0, 'msg' => '删除成功!']);
+        try {
+            self::destroy($id);
+            return json(['error' => 0, 'msg' => '删除成功!']);
+        } catch (\Exception $e) {
+            return json(['error' => 1, 'msg' => $e->getMessage()]);
+        }
     }
 
     // 批量删除
@@ -198,21 +210,29 @@ class Base extends Model
     // 排序修改
     public static function sort($data)
     {
-        $info = self::find($data['id']);
-        if ($info->sort != $data['sort']) {
-            $info->sort = $data['sort'];
-            $info->save();
-            return json(['error' => 0, 'msg' => '修改成功!']);
+        try {
+            $info = self::find($data['id']);
+            if ($info->sort != $data['sort']) {
+                $info->sort = $data['sort'];
+                $info->save();
+                return json(['error' => 0, 'msg' => '修改成功!']);
+            }
+        } catch (\Exception $e) {
+            return json(['error' => 1, 'msg' => $e->getMessage()]);
         }
     }
 
     // 状态修改
     public static function state($id)
     {
-        $info         = self::find($id);
-        $info->status = $info['status'] == 1 ? 0 : 1;
-        $info->save();
-        return json(['error' => 0, 'msg' => '修改成功!']);
+        try {
+            $info         = self::find($id);
+            $info->status = $info['status'] == 1 ? 0 : 1;
+            $info->save();
+            return json(['error' => 0, 'msg' => '修改成功!']);
+        } catch (\Exception $e) {
+            return json(['error' => 1, 'msg' => $e->getMessage()]);
+        }
     }
 
     // 导出
@@ -241,7 +261,7 @@ class Base extends Model
         foreach ($list as $key => $value) {
             foreach ($coloumns as $k => $v) {
                 // 修正字典数据
-                if (isset($v[4]) && is_array($v[4]) && ! empty($v[4])) {
+                if (isset($v[4]) && is_array($v[4]) && !empty($v[4])) {
                     $value[$v['0']] = $v[4][$value[$v['0']]];
                 }
                 $sheet->setCellValue($str[$k] . ($key + 2), $value[$v['0']]);
