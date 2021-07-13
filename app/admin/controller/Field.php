@@ -120,7 +120,7 @@ class Field extends Base
                 // 调用字段设置模版
                 View::assign(Request::param());
                 // 传递field说明是编辑字段,编辑字段需要调取当前字段的配置信息
-                if ( ! empty($field)) {
+                if (!empty($field)) {
                     $fieldInfo          = \app\common\model\Field::where('module_id', $moduleId)
                         ->where('field', '=', $field)
                         ->find();
@@ -171,7 +171,7 @@ class Field extends Base
             $model = Db::name('field');
             if ($model->insert($data) !== false) {
                 // 数据库已存在字段时不再执行字段操作
-                if (isset($addfieldsql) && ! empty($addfieldsql)) {
+                if (isset($addfieldsql) && !empty($addfieldsql)) {
                     if (is_array($addfieldsql)) {
                         foreach ($addfieldsql as $sql) {
                             try {
@@ -256,7 +256,7 @@ class Field extends Base
             $data['is_sort']   = $data['is_sort'] ?? 0;
 
             // 查询字段是否已在表中存在
-            if(strpos($data['field'], '.') === false){
+            if (strpos($data['field'], '.') === false) {
                 $name      = \app\common\model\Module::where('id', '=', $data['module_id'])->value('table_name');
                 $tablename = Config::get('database.connections.mysql.prefix') . $name;
                 // 新的字段已被存在于表中
@@ -428,7 +428,7 @@ class Field extends Base
             case 'text':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if ( ! $maxlength) {
+                    if (!$maxlength) {
                         $maxlength = 255;
                     }
                     $maxlength = min($maxlength, 255);
@@ -440,7 +440,7 @@ class Field extends Base
             case 'textarea':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if ( ! $maxlength) {
+                    if (!$maxlength) {
                         $maxlength = 255;
                     }
                     $maxlength = min($maxlength, 255);
@@ -452,14 +452,14 @@ class Field extends Base
             case 'radio':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if ( ! $maxlength) {
+                    if (!$maxlength) {
                         $maxlength = 255;
                     }
                     $maxlength = min($maxlength, 255);
                     $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
-                    $default = $default ?? 0;
-                    if ( ! $maxlength) {
+                    $default = $default !== '' ? intval($default) : 0;
+                    if (!$maxlength) {
                         $maxlength = 10;
                     }
                     $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) " . ($numbertype == 1 ? 'UNSIGNED' : '') . " NOT NULL DEFAULT '$default' COMMENT '$comment'";
@@ -468,13 +468,13 @@ class Field extends Base
             case 'checkbox':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if ( ! $maxlength) {
+                    if (!$maxlength) {
                         $maxlength = 255;
                     }
                     $maxlength = min($maxlength, 255);
                     $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
-                    if ( ! $maxlength) {
+                    if (!$maxlength) {
                         $maxlength = 10;
                     }
                     $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) " . ($numbertype == 1 ? 'UNSIGNED' : '') . " NOT NULL DEFAULT '$default' COMMENT '$comment'";
@@ -483,13 +483,13 @@ class Field extends Base
             case 'date':
                 $fieldtype = $fieldtype ?? 'INT';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if ( ! $maxlength) {
+                    if (!$maxlength) {
                         $maxlength = 255;
                     }
                     $maxlength = min($maxlength, 255);
                     $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
-                    if ( ! $maxlength) {
+                    if (!$maxlength) {
                         $maxlength = 10;
                     }
                     $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) " . ($numbertype == 1 ? 'UNSIGNED' : '') . " NOT NULL DEFAULT '$default' COMMENT '$comment'";
@@ -498,13 +498,13 @@ class Field extends Base
             case 'time':
                 $fieldtype = $fieldtype ?? 'INT';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if ( ! $maxlength) {
+                    if (!$maxlength) {
                         $maxlength = 255;
                     }
                     $maxlength = min($maxlength, 255);
                     $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
-                    if ( ! $maxlength) {
+                    if (!$maxlength) {
                         $maxlength = 10;
                     }
                     $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) " . ($numbertype == 1 ? 'UNSIGNED' : '') . " NOT NULL DEFAULT '$default' COMMENT '$comment'";
@@ -513,20 +513,20 @@ class Field extends Base
             case 'datetime':
                 $fieldtype = $fieldtype ?? 'INT';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if ( ! $maxlength) {
+                    if (!$maxlength) {
                         $maxlength = 255;
                     }
                     $maxlength = min($maxlength, 255);
                     $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
-                    if ( ! $maxlength) {
+                    if (!$maxlength) {
                         $maxlength = 10;
                     }
                     $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) " . ($numbertype == 1 ? 'UNSIGNED' : '') . " NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 }
                 break;
             case 'daterange':
-                if ( ! $maxlength) {
+                if (!$maxlength) {
                     $maxlength = 50;
                 }
                 $maxlength = min($maxlength, 255);
@@ -536,7 +536,7 @@ class Field extends Base
             case 'tag':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if ( ! $maxlength) {
+                    if (!$maxlength) {
                         $maxlength = 255;
                     }
                     $maxlength = min($maxlength, 255);
@@ -548,15 +548,19 @@ class Field extends Base
             case 'number':
                 $fieldtype = $fieldtype ?? 'INT';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if ( ! $maxlength) {
+                    if (!$maxlength) {
                         $maxlength = 255;
                     }
                     $maxlength = min($maxlength, 255);
                     $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
-                    $default = $default ?? intval($default);
-                    if ( ! $maxlength) {
+                    $default = $default !== '' ? intval($default) : 0;
+                    if (!$maxlength) {
                         $maxlength = 10;
+                    }
+                    if ($fieldtype == 'FLOAT' || $fieldtype == 'DECIMAL' || $fieldtype == 'DOUBLE') {
+                        $point     = isset($info['setup']['point']) && $info['setup']['point'] !== '' ? $info['setup']['point'] : '0';
+                        $maxlength = $maxlength . ',' . $point;
                     }
                     $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) " . ($numbertype == 1 ? 'UNSIGNED' : '') . " NOT NULL DEFAULT {$default} COMMENT '$comment'";
                 }
@@ -564,7 +568,7 @@ class Field extends Base
             case 'password':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if ( ! $maxlength) {
+                    if (!$maxlength) {
                         $maxlength = 255;
                     }
                     $maxlength = min($maxlength, 255);
@@ -576,14 +580,14 @@ class Field extends Base
             case 'select':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if ( ! $maxlength) {
+                    if (!$maxlength) {
                         $maxlength = 255;
                     }
                     $maxlength = min($maxlength, 255);
                     $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } elseif ($fieldtype == 'INT' || $fieldtype == 'TINYINT') {
-                    $default = $default ?? intval($default);
-                    if ( ! $maxlength) {
+                    $default = $default !== '' ? intval($default) : 0;
+                    if (!$maxlength) {
                         $maxlength = $fieldtype == 'INT' ? 10 : 4;
                     }
                     $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) " . ($numbertype == 1 ? 'UNSIGNED' : '') . " NOT NULL DEFAULT {$default} COMMENT '$comment'";
@@ -594,14 +598,14 @@ class Field extends Base
             case 'select2':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if ( ! $maxlength) {
+                    if (!$maxlength) {
                         $maxlength = 255;
                     }
                     $maxlength = min($maxlength, 255);
                     $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } elseif ($fieldtype == 'INT' || $fieldtype == 'TINYINT') {
-                    $default = $default ?? intval($default);
-                    if ( ! $maxlength) {
+                    $default = $default !== '' ? intval($default) : 0;
+                    if (!$maxlength) {
                         $maxlength = $fieldtype == 'INT' ? 10 : 4;
                     }
                     $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) " . ($numbertype == 1 ? 'UNSIGNED' : '') . " NOT NULL DEFAULT {$default} COMMENT '$comment'";
@@ -612,7 +616,7 @@ class Field extends Base
             case 'image':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if ( ! $maxlength) {
+                    if (!$maxlength) {
                         $maxlength = 80;
                     }
                     $maxlength = min($maxlength, 255);
@@ -624,7 +628,7 @@ class Field extends Base
             case 'images':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if ( ! $maxlength) {
+                    if (!$maxlength) {
                         $maxlength = 255;
                     }
                     $maxlength = min($maxlength, 255);
@@ -636,7 +640,7 @@ class Field extends Base
             case 'file':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if ( ! $maxlength) {
+                    if (!$maxlength) {
                         $maxlength = 80;
                     }
                     $maxlength = min($maxlength, 255);
@@ -648,7 +652,7 @@ class Field extends Base
             case 'files':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if ( ! $maxlength) {
+                    if (!$maxlength) {
                         $maxlength = 255;
                     }
                     $maxlength = min($maxlength, 255);
@@ -660,7 +664,7 @@ class Field extends Base
             case 'editor':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if ( ! $maxlength) {
+                    if (!$maxlength) {
                         $maxlength = 255;
                     }
                     $maxlength = min($maxlength, 255);
@@ -672,13 +676,13 @@ class Field extends Base
             case 'hidden':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if ( ! $maxlength) {
+                    if (!$maxlength) {
                         $maxlength = 255;
                     }
                     $maxlength = min($maxlength, 255);
                     $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
                 } else {
-                    if ( ! $maxlength) {
+                    if (!$maxlength) {
                         $maxlength = 10;
                     }
                     // 主键字段自增
@@ -692,7 +696,7 @@ class Field extends Base
             case 'color':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
-                    if ( ! $maxlength) {
+                    if (!$maxlength) {
                         $maxlength = 10;
                     }
                     $maxlength = min($maxlength, 255);

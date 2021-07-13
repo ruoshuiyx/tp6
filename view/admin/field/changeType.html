@@ -351,11 +351,19 @@
                    value="{$fieldInfo.setup.step ?: '1'}"/></td>
     </tr>
     <tr>
+        <td>小数点</td>
+        <td><input type="text" class="form-control" name="setup[point]"
+                   value="{$fieldInfo.setup.point ?: '0'}"/></td>
+    </tr>
+    <tr>
         <td>字段类型</td>
         <td>
             <select class="form-control" name="setup[fieldtype]">
                 <option value="int" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='int'?'selected':''}{/if}>int</option>
                 <option value="tinyint" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='tinyint'?'selected':''}{/if}>tinyint</option>
+                <option value="float" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='float'?'selected':''}{/if}>float</option>
+                <option value="decimal" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='decimal'?'selected':''}{/if}>decimal</option>
+                <option value="double" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='double'?'selected':''}{/if}>double</option>
                 <option value="char" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='char'?'selected':''}{/if}>char</option>
                 <option value="varchar" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='varchar'?'selected':''}{/if}>varchar</option>
             </select>
