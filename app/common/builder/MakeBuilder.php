@@ -54,7 +54,7 @@ class MakeBuilder
         $module = Module::where('table_name', $tableName)
             ->find();
         // 非空判断
-        if ( ! $module) {
+        if (!$module) {
             return [];
         }
         // 根据模块ID获取所有字段
@@ -170,7 +170,7 @@ class MakeBuilder
 
             $field['options'] = $options ?? [];
             // text
-            $field['group'] = isset($field['setup']['group']) && ! empty($field['setup']['group']) ? explode('|', $field['setup']['group']) : [];
+            $field['group'] = isset($field['setup']['group']) && !empty($field['setup']['group']) ? explode('|', $field['setup']['group']) : [];
 
             // 必填项转换
             $field['required'] = $field['required'] == 1 ? true : false;
@@ -403,13 +403,13 @@ class MakeBuilder
         // 循环所有搜索字段，看是否有传递
         foreach ($search as $k => $v) {
             $param = Request::param();
-            if ( ! isset($param[$v[1]])) {
+            if (!isset($param[$v[1]])) {
                 continue;
             }
             if ($param[$v[1]] || $param[$v[1]] === "0") {
                 $searhKeywords = $param[$v[1]];
                 // 判断字段类型，默认为=
-                if (isset($v[3]) && ! empty($v[3])) {
+                if (isset($v[3]) && !empty($v[3])) {
                     $option = $v[3];
                 } else {
                     $option = '=';
@@ -494,7 +494,7 @@ class MakeBuilder
     public function getAddUrl(string $tableName = '')
     {
         $module = Module::where('table_name', $tableName)->find();
-        if ( ! $module) {
+        if (!$module) {
             return '';
         }
         if ($module->add_param) {
@@ -516,7 +516,7 @@ class MakeBuilder
     public function getHideShowAll(string $tableName = '')
     {
         $module = Module::where('table_name', $tableName)->find();
-        if ( ! $module) {
+        if (!$module) {
             return false;
         }
         if ($module->show_all == 0) {
@@ -835,7 +835,7 @@ class MakeBuilder
 
         // 查询模块信息
         $module = \app\common\model\Module::find($id);
-        if ( ! $module) {
+        if (!$module) {
             return ['error' => 1, 'msg' => '模块查找有误'];
         }
 
@@ -845,7 +845,7 @@ class MakeBuilder
         }
 
         // 生成文件
-        if ( ! empty($file)) {
+        if (!empty($file)) {
             if ($file == 'controller') {
                 // 生成控制器
                 $this->makeController($module->model_name, $module->table_name);
@@ -994,14 +994,14 @@ class MakeBuilder
             ->select()
             ->toArray();
         // 初始化模型关联信息
-        $relations = '';
+        $relations     = '';
         $relationModel = [];
         foreach ($fileds as &$filed) {
-            if(in_array(lcfirst($filed['relation_model']), $relationModel)){
+            if (in_array(lcfirst($filed['relation_model']), $relationModel)) {
                 break;
             }
             $relationModel[] = lcfirst($filed['relation_model']);
-            $relations .= 'public function ' . lcfirst($filed['relation_model']) . '()
+            $relations       .= 'public function ' . lcfirst($filed['relation_model']) . '()
     {
         return $this->belongsTo(\'' . $filed['relation_model'] . '\', \'' . $filed['field'] . '\');
     }
@@ -1035,29 +1035,32 @@ class MakeBuilder
             return false;
         }
         // 查询该表是否存在关联的字段
-        $fileds = \app\common\model\Field::where('module_id', $module->id)
+        $fields = \app\common\model\Field::where('module_id', $module->id)
             ->select()
             ->toArray();
         $rules  = [];
-        foreach ($fileds as &$filed) {
-            if (in_array($filed['field'], ['create_time', 'update_time'])) {
+        foreach ($fields as &$field) {
+            $field['setup'] = string2array($field['setup']);
+            if (in_array($field['field'], ['create_time', 'update_time'])) {
                 continue;
             }
             $rule = [];
-            if ($filed['required'] == 1) {
+            if ($field['required'] == 1) {
                 $rule['require'] = 'require';
             }
-            if ($filed['maxlength'] > 0) {
-                $rule['max'] = $filed['maxlength'];
+            if ($field['maxlength'] > 0) {
+                $rule['max'] = $field['maxlength'];
             }
-            if ($filed['minlength'] > 0) {
-                $rule['min'] = $filed['minlength'];
+            if ($field['minlength'] > 0) {
+                $rule['min'] = $field['minlength'];
             }
-            if ($filed['type'] == 'number') {
-                $rule['number'] = 'number';
+            if ($field['type'] == 'number') {
+                if (!in_array($field['setup']['fieldtype'], ['float', 'decimal', 'double'])) {
+                    $rule['number'] = 'number';
+                }
             }
-            if ( ! empty($rule)) {
-                $rules[$filed['field'] . '|' . $filed['name']] = $rule;
+            if (!empty($rule)) {
+                $rules[$field['field'] . '|' . $field['name']] = $rule;
             }
         }
         // 转换为需要的字符串
@@ -1073,7 +1076,7 @@ class MakeBuilder
             $rulesStr .= '],
         ';
         }
-        if ( ! empty($rulesStr)) {
+        if (!empty($rulesStr)) {
             $rulesStr = rtrim($rulesStr, ',
         ');
             $rulesStr = 'protected $rule = [
@@ -1133,7 +1136,7 @@ class MakeBuilder
                 'name'   => $module->model_name . '/index',
                 'title'  => $module->module_name,
                 'sort'   => 50,
-                'status' => isset($pid) && ! empty($pid) ? 1 : 0,
+                'status' => isset($pid) && !empty($pid) ? 1 : 0,
             ];
             // 查询是否已存在，存在的不再处理
             $rule = \app\common\model\AuthRule::where('name', $module->model_name . '/index')->find();
