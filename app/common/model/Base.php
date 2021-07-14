@@ -242,7 +242,7 @@ class Base extends Model
         // 获取主键
         $pk = \app\common\facade\MakeBuilder::getPrimarykey($tableNam);
         // 获取列表数据
-        $coloumns = \app\common\facade\MakeBuilder::getListColumns($tableNam);
+        $columns = \app\common\facade\MakeBuilder::getListColumns($tableNam);
         // 搜索
         $where         = \app\common\facade\MakeBuilder::getListWhere($tableNam);
         $orderByColumn = \think\facade\Request::param('orderByColumn') ?? $pk;
@@ -254,12 +254,12 @@ class Base extends Model
         $str         = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
         $spreadsheet = new Spreadsheet();
         $sheet       = $spreadsheet->getActiveSheet();
-        foreach ($coloumns as $k => $v) {
+        foreach ($columns as $k => $v) {
             $sheet->setCellValue($str[$k] . '1', $v['1']);
         }
         $list = isset($list['total']) && isset($list['per_page']) && isset($list['data']) ? $list['data'] : $list;
         foreach ($list as $key => $value) {
-            foreach ($coloumns as $k => $v) {
+            foreach ($columns as $k => $v) {
                 // 修正字典数据
                 if (isset($v[4]) && is_array($v[4]) && !empty($v[4])) {
                     $value[$v['0']] = $v[4][$value[$v['0']]];

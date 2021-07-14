@@ -678,10 +678,10 @@ class MakeBuilder
     /**
      * 添加/修改页面获取字段分组，用于FormBuilder
      * @param string $modelName 模型名称
-     * @param array  $coloumns  字段数据
+     * @param array  $columns   字段数据
      * @return array
      */
-    public function getgetAddGroups(string $modelName, string $tableName, array $coloumns)
+    public function getgetAddGroups(string $modelName, string $tableName, array $columns)
     {
         // 查询模块信息
         $module = \app\common\model\Module::where('model_name', $modelName)->find();
@@ -703,7 +703,7 @@ class MakeBuilder
         }
         $groupsNew = [];
         foreach ($groups as $key => $value) {
-            foreach ($coloumns as $k => $v) {
+            foreach ($columns as $k => $v) {
                 if (in_array($v[1], $value)) {
                     $groupsNew[$key][] = $v;
                 }

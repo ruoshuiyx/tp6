@@ -52,7 +52,7 @@ class Field extends Base
         // 获取主键
         $pk = MakeBuilder::getPrimarykey($this->tableName);
         // 获取列表数据
-        $coloumns = MakeBuilder::getListColumns($this->tableName);
+        $columns = MakeBuilder::getListColumns($this->tableName);
         // 获取搜索数据
         $search = MakeBuilder::getListSearch($this->tableName);
         // 搜索
@@ -68,7 +68,7 @@ class Field extends Base
         // 构建页面
         return TableBuilder::getInstance()
             ->setUniqueId($pk)                              // 设置主键
-            ->addColumns($coloumns)                         // 添加列表字段数据
+            ->addColumns($columns)                          // 添加列表字段数据
             ->setSearch($search)                            // 添加头部搜索
             ->addColumn('right_button', '操作', 'btn')       // 启用右侧操作列
             ->addRightButtons(['edit', 'delete'])           // 设置右侧操作列

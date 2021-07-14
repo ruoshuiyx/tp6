@@ -52,7 +52,7 @@ class Module extends Base
         // 获取主键
         $pk = MakeBuilder::getPrimarykey($this->tableName);
         // 获取列表数据
-        $coloumns = MakeBuilder::getListColumns($this->tableName);
+        $columns = MakeBuilder::getListColumns($this->tableName);
         // 获取搜索数据
         $search = MakeBuilder::getListSearch($this->tableName);
         // 搜索
@@ -66,7 +66,7 @@ class Module extends Base
         // 构建页面
         return TableBuilder::getInstance()
             ->setUniqueId($pk)                                         // 设置主键
-            ->addColumns($coloumns)                                    // 添加列表字段数据
+            ->addColumns($columns)                                     // 添加列表字段数据
             ->setSearch($search)                                       // 添加头部搜索
             ->addColumn('right_button', '操作', 'btn')                 // 启用右侧操作列
             ->addRightButtons(['edit', 'delete'])                      // 设置右侧操作列
@@ -87,12 +87,12 @@ class Module extends Base
     public function add()
     {
         // 获取字段信息
-        $coloumns = MakeBuilder::getAddColumns($this->tableName);
+        $columns = MakeBuilder::getAddColumns($this->tableName);
         // 提示信息
         $pageTips = '1、没有表时会创建表和字段并插入至字段管理中;<br>2、已有表时会检测必要字段后插入至字段管理中;<br>3、已有表需包含的字段：主键、create_time、update_time、[sort 勾选排序字段时]、[status 勾选状态字段时]、[cate_id, hits, keywords, description, template, url 表类型为CMS时];';
         // 构建页面
         return FormBuilder::getInstance()
-            ->addFormItems($coloumns)
+            ->addFormItems($columns)
             ->setPageTips($pageTips, 'warning')  // 提示信息
             ->setExtraJs($this->getAddExtraJs()) // 设置额外JS
             ->fetch();
@@ -137,12 +137,12 @@ class Module extends Base
         $model = '\app\common\model\\' . $this->modelName;
         $info  = $model::edit($id)->toArray();
         // 获取字段信息
-        $coloumns = MakeBuilder::getAddColumns($this->tableName, $info);
+        $columns = MakeBuilder::getAddColumns($this->tableName, $info);
         // 提示信息
         $pageTips = '1、主键发生变动时会更改数据库中的表结构，字段管理中的主键字段也会相应改变;<br>2、表名称发生变动时会更改数据库中的表名称，需要重新进行代码生成和菜单生成;';
         // 构建页面
         return FormBuilder::getInstance()
-            ->addFormItems($coloumns)
+            ->addFormItems($columns)
             ->setPageTips($pageTips, 'warning')   // 提示信息
             ->setExtraJs($this->getEditExtraJs()) // 设置额外JS
             ->fetch();

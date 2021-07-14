@@ -50,9 +50,9 @@ class AdminLog extends Base
         $model = '\app\common\model\\' . $this->modelName;
         $info = $model::edit($id)->toArray();
         // 获取字段信息
-        $coloumns = MakeBuilder::getAddColumns($this->tableName, $info);
+        $columns = MakeBuilder::getAddColumns($this->tableName, $info);
         // 获取分组后的字段信息
-        $groups = MakeBuilder::getgetAddGroups($this->modelName, $this->tableName, $coloumns);
+        $groups = MakeBuilder::getgetAddGroups($this->modelName, $this->tableName, $columns);
         // 隐藏<显示全部>按钮
         $hideShowAll = MakeBuilder::getHideShowAll($this->tableName);
 
@@ -62,7 +62,7 @@ class AdminLog extends Base
             $builder->hideShowAll();
         }
         $builder->hideBtn(['submit','back']);
-        $groups ? $builder->addGroup($groups) : $builder->addFormItems($coloumns);
+        $groups ? $builder->addGroup($groups) : $builder->addFormItems($columns);
         return $builder->fetch();
     }
 

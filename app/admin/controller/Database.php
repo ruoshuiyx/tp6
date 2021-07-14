@@ -51,7 +51,7 @@ class Database extends Base
         // 设置主键
         $pk = 'name';
         // 字段信息
-        $coloumns = [
+        $columns = [
             ['name'  , '数据表'],
             ['engine', '存储引擎'],
             //['version', '版本'],
@@ -116,7 +116,7 @@ class Database extends Base
         // 构建页面
         return TableBuilder::getInstance()
             ->setUniqueId($pk)                              // 设置主键
-            ->addColumns($coloumns)                         // 添加列表字段数据
+            ->addColumns($columns)                         // 添加列表字段数据
             ->setSearch($search)                            // 添加头部搜索
             ->setPageTips($pageTips, 'warning')             // 提示信息
             ->setPagination('false')                        // 关闭分页显示
@@ -210,7 +210,7 @@ class Database extends Base
         // 设置主键
         $pk = 'time';
         // 字段信息
-        $coloumns = [
+        $columns = [
             ['time', '编号',],
             ['name', '文件名称'],
             ['part', '分卷'],
@@ -254,7 +254,7 @@ class Database extends Base
         // 构建页面
         return TableBuilder::getInstance()
             ->setUniqueId($pk)// 设置主键
-            ->addColumns($coloumns)// 添加列表字段数据
+            ->addColumns($columns)// 添加列表字段数据
             ->setSearch($search)// 添加头部搜索
             ->setPageTips($pageTips, 'warning')// 提示信息
             ->setPagination('false')// 关闭分页显示

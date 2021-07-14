@@ -50,9 +50,9 @@ class Admin extends Base
         // 获取主键
         $pk = MakeBuilder::getPrimarykey($this->tableName);
         // 获取列表数据
-        $coloumns = MakeBuilder::getListColumns($this->tableName);
+        $columns = MakeBuilder::getListColumns($this->tableName);
         // 插入`角色组`字段到第1个元素
-        array_splice($coloumns, 1, 0, [['group_name','角色组','text','',[],'','false']]);
+        array_splice($columns, 1, 0, [['group_name','角色组','text','',[],'','false']]);
         // 获取搜索数据
         $search = MakeBuilder::getListSearch($this->tableName);
         // 获取当前模块信息
@@ -68,7 +68,7 @@ class Admin extends Base
         // 构建页面
         return TableBuilder::getInstance()
             ->setUniqueId($pk)                              // 设置主键
-            ->addColumns($coloumns)                         // 添加列表字段数据
+            ->addColumns($columns)                         // 添加列表字段数据
             ->setSearch($search)                            // 添加头部搜索
             ->addColumn('right_button', '操作', 'btn')      // 启用右侧操作列
             ->addRightButtons($module->right_button)        // 设置右侧操作列
@@ -80,14 +80,14 @@ class Admin extends Base
     public function add()
     {
         // 获取字段信息
-        $coloumns = MakeBuilder::getAddColumns($this->tableName);
+        $columns = MakeBuilder::getAddColumns($this->tableName);
         // 获取分组后的字段信息
-        $groups = MakeBuilder::getgetAddGroups($this->modelName, $this->tableName, $coloumns);
+        $groups = MakeBuilder::getgetAddGroups($this->modelName, $this->tableName, $columns);
 
         // 构建页面
         $builder = FormBuilder::getInstance();
         $builder->addSelect('group_id', '角色组', '', $this->getAuthGroupOptions(), '', '', '', '', true);
-        $groups ? $builder->addGroup($groups) : $builder->addFormItems($coloumns);
+        $groups ? $builder->addGroup($groups) : $builder->addFormItems($columns);
         return $builder->fetch();
     }
 
@@ -132,9 +132,9 @@ class Admin extends Base
         $model = '\app\common\model\\' . $this->modelName;
         $info = $model::edit($id)->toArray();
         // 获取字段信息
-        $coloumns = MakeBuilder::getAddColumns($this->tableName, $info);
+        $columns = MakeBuilder::getAddColumns($this->tableName, $info);
         // 获取分组后的字段信息
-        $groups = MakeBuilder::getgetAddGroups($this->modelName, $this->tableName, $coloumns);
+        $groups = MakeBuilder::getgetAddGroups($this->modelName, $this->tableName, $columns);
         // 获取当前管理员的分组
         $groupId = \app\common\model\AuthGroupAccess::where('uid', $info['id'])
             ->value('group_id');
@@ -142,7 +142,7 @@ class Admin extends Base
         // 构建页面
         $builder = FormBuilder::getInstance();
         $builder->addSelect('group_id', '角色组', '', $this->getAuthGroupOptions(), $groupId, '', '', '', true);
-        $groups ? $builder->addGroup($groups) : $builder->addFormItems($coloumns);
+        $groups ? $builder->addGroup($groups) : $builder->addFormItems($columns);
         return $builder->fetch();
     }
 

@@ -51,7 +51,7 @@ class AuthRule extends Base
         // 获取主键
         $pk = MakeBuilder::getPrimarykey($this->tableName);
         // 获取列表数据
-        $coloumns = MakeBuilder::getListColumns($this->tableName);
+        $columns = MakeBuilder::getListColumns($this->tableName);
         // 获取搜索数据
         $search = MakeBuilder::getListSearch($this->tableName);
         // 获取当前模块信息
@@ -74,7 +74,7 @@ class AuthRule extends Base
         // 构建页面
         return TableBuilder::getInstance()
             ->setUniqueId($pk)                              // 设置主键
-            ->addColumns($coloumns)                         // 添加列表字段数据
+            ->addColumns($columns)                          // 添加列表字段数据
             ->setSearch($search)                            // 添加头部搜索
             ->addColumn('right_button', '操作', 'btn')      // 启用右侧操作列
             ->addRightButton('info', [                      // 添加额外按钮
@@ -102,24 +102,24 @@ class AuthRule extends Base
     public function add(string $pid = '')
     {
         // 获取字段信息
-        $coloumns = MakeBuilder::getAddColumns($this->tableName);
+        $columns = MakeBuilder::getAddColumns($this->tableName);
 
         // 获取父ID数据
-        foreach ($coloumns as $k => $v) {
+        foreach ($columns as $k => $v) {
             if ($v[1] == 'pid') {
                 $model      = '\app\common\model\\' . $this->modelName;
                 $pidOptions = $model::getPidOptions();
                 // 设置父ID选项
-                $coloumns[$k][4] = $pidOptions;
+                $columns[$k][4] = $pidOptions;
                 // 设置父ID默认值
                 if ($pid) {
-                    $coloumns[$k][5] = $pid;
+                    $columns[$k][5] = $pid;
                 }
             }
         }
 
         // 获取分组后的字段信息
-        $groups = MakeBuilder::getgetAddGroups($this->modelName, $this->tableName, $coloumns);
+        $groups = MakeBuilder::getgetAddGroups($this->modelName, $this->tableName, $columns);
         // 隐藏<显示全部>按钮
         $hideShowAll = MakeBuilder::getHideShowAll($this->tableName);
 
@@ -128,7 +128,7 @@ class AuthRule extends Base
         if ($hideShowAll) {
             $builder->hideShowAll();
         }
-        $groups ? $builder->addGroup($groups) : $builder->addFormItems($coloumns);
+        $groups ? $builder->addGroup($groups) : $builder->addFormItems($columns);
         return $builder->fetch();
     }
 
@@ -138,19 +138,19 @@ class AuthRule extends Base
         $model = '\app\common\model\\' . $this->modelName;
         $info  = $model::edit($id)->toArray();
         // 获取字段信息
-        $coloumns = MakeBuilder::getAddColumns($this->tableName, $info);
+        $columns = MakeBuilder::getAddColumns($this->tableName, $info);
 
         // 获取父ID数据
-        foreach ($coloumns as $k => $v) {
+        foreach ($columns as $k => $v) {
             if ($v[1] == 'pid') {
                 $model           = '\app\common\model\\' . $this->modelName;
                 $pidOptions      = $model::getPidOptions();
-                $coloumns[$k][4] = $pidOptions;
+                $columns[$k][4] = $pidOptions;
             }
         }
 
         // 获取分组后的字段信息
-        $groups = MakeBuilder::getgetAddGroups($this->modelName, $this->tableName, $coloumns);
+        $groups = MakeBuilder::getgetAddGroups($this->modelName, $this->tableName, $columns);
         // 隐藏<显示全部>按钮
         $hideShowAll = MakeBuilder::getHideShowAll($this->tableName);
 
@@ -159,7 +159,7 @@ class AuthRule extends Base
         if ($hideShowAll) {
             $builder->hideShowAll();
         }
-        $groups ? $builder->addGroup($groups) : $builder->addFormItems($coloumns);
+        $groups ? $builder->addGroup($groups) : $builder->addFormItems($columns);
         return $builder->fetch();
     }
 }

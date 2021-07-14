@@ -81,15 +81,15 @@ class Template extends Base
         // 设置主键
         $pk = 'id';
         // 字段信息
-        $coloumns = [
+        $columns = [
             ['id', '文件名称'],
             ['filepath', '目录'],
             ['filesize', '文件大小'],
             ['filemtime', '更新时间', '', '', '', '', 'true'],
             ['ext', '后缀'],
         ];
-        $files    = dir_list($path, $type);
-        $list     = [];
+        $files   = dir_list($path, $type);
+        $list    = [];
         foreach ($files as $key => $file) {
             $filename = basename($file);
             //$list[$key]['value']     = substr($filename, 0, strrpos($filename, '.'));
@@ -125,7 +125,7 @@ class Template extends Base
         // 构建页面
         return TableBuilder::getInstance()
             ->setUniqueId($pk)                              // 设置主键
-            ->addColumns($coloumns)                         // 添加列表字段数据
+            ->addColumns($columns)                         // 添加列表字段数据
             ->setPageTips($pageTips, 'success', 'search')   // 提示信息
             ->setPagination('false')                        // 关闭分页显示
             ->addColumn('right_button', '操作', 'btn')
@@ -379,7 +379,7 @@ class Template extends Base
         $js   = $type == 'js' ? 'btn-info' : 'btn-primary';
         $img  = $type == 'img' ? 'btn-info' : 'btn-primary';
 
-        $link = [
+        $link     = [
             'html' => url('index', ['type' => 'html']),
             'css'  => url('index', ['type' => 'css']),
             'js'   => url('index', ['type' => 'js']),

@@ -303,7 +303,7 @@ abstract class Base
         // 获取主键
         $pk = MakeBuilder::getPrimarykey($this->tableName);
         // 获取列表数据
-        $coloumns = MakeBuilder::getListColumns($this->tableName);
+        $columns = MakeBuilder::getListColumns($this->tableName);
         // 获取搜索数据
         $search = MakeBuilder::getListSearch($this->tableName);
         // 获取当前模块信息
@@ -326,7 +326,7 @@ abstract class Base
         // 构建页面
         return TableBuilder::getInstance()
             ->setUniqueId($pk)                              // 设置主键
-            ->addColumns($coloumns)                         // 添加列表字段数据
+            ->addColumns($columns)                          // 添加列表字段数据
             ->setSearch($search)                            // 添加头部搜索
             ->addColumn('right_button', '操作', 'btn')      // 启用右侧操作列
             ->addRightButtons($module->right_button)        // 设置右侧操作列
@@ -339,9 +339,9 @@ abstract class Base
     public function add()
     {
         // 获取字段信息
-        $coloumns = MakeBuilder::getAddColumns($this->tableName);
+        $columns = MakeBuilder::getAddColumns($this->tableName);
         // 获取分组后的字段信息
-        $groups = MakeBuilder::getgetAddGroups($this->modelName, $this->tableName, $coloumns);
+        $groups = MakeBuilder::getgetAddGroups($this->modelName, $this->tableName, $columns);
         // 隐藏<显示全部>按钮
         $hideShowAll = MakeBuilder::getHideShowAll($this->tableName);
 
@@ -350,7 +350,7 @@ abstract class Base
         if ($hideShowAll) {
             $builder->hideShowAll();
         }
-        $groups ? $builder->addGroup($groups) : $builder->addFormItems($coloumns);
+        $groups ? $builder->addGroup($groups) : $builder->addFormItems($columns);
         return $builder->fetch();
     }
 
@@ -381,9 +381,9 @@ abstract class Base
         $model = '\app\common\model\\' . $this->modelName;
         $info  = $model::edit($id)->toArray();
         // 获取字段信息
-        $coloumns = MakeBuilder::getAddColumns($this->tableName, $info);
+        $columns = MakeBuilder::getAddColumns($this->tableName, $info);
         // 获取分组后的字段信息
-        $groups = MakeBuilder::getgetAddGroups($this->modelName, $this->tableName, $coloumns);
+        $groups = MakeBuilder::getgetAddGroups($this->modelName, $this->tableName, $columns);
         // 隐藏<显示全部>按钮
         $hideShowAll = MakeBuilder::getHideShowAll($this->tableName);
 
@@ -392,7 +392,7 @@ abstract class Base
         if ($hideShowAll) {
             $builder->hideShowAll();
         }
-        $groups ? $builder->addGroup($groups) : $builder->addFormItems($coloumns);
+        $groups ? $builder->addGroup($groups) : $builder->addFormItems($columns);
         return $builder->fetch();
     }
 
