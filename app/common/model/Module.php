@@ -77,7 +77,7 @@ class Module extends Base
     {
         // 获取模块信息
         $module = self::where('table_name', $tableName)->find();
-        if ( ! $module) {
+        if (!$module) {
             return '[module] 表中不存在 table_name 为' . $tableName . '的记录，无法继续';
         }
         $tableType = $module->getData('table_type'); // 表类型 1 cms 2 后台
@@ -281,7 +281,7 @@ class Module extends Base
                     break;
                 }
             }
-            if ( ! $priKey) {
+            if (!$priKey) {
                 return '请设置 [' . $tableName . '] 表的主键';
             }
             // 循环所有字段,开始构造要入库的字段信息
@@ -302,7 +302,10 @@ class Module extends Base
                 $inputType = self::getFieldType($v);
 
                 $maxlength = substr(substr($v['COLUMN_TYPE'], strripos($v['COLUMN_TYPE'], "(") + 1), 0, strrpos(substr($v['COLUMN_TYPE'], strripos($v['COLUMN_TYPE'], "(") + 1), ")")); // 字符长度
-                $step      = $inputType == 'number' && $v['NUMERIC_SCALE'] > 0 ? "0." . str_repeat(0, $v['NUMERIC_SCALE'] - 1) . "1" : 1;
+                if (strpos($maxlength, ',') !== false) {
+                    $maxlength = explode(',', $maxlength)[0];
+                }
+                $step = $inputType == 'number' && $v['NUMERIC_SCALE'] > 0 ? "0." . str_repeat(0, $v['NUMERIC_SCALE'] - 1) . "1" : 1;
 
                 $columnName    = $v['COLUMN_NAME'];                                          // 字段名称
                 $columnComment = explode(':', $v['COLUMN_COMMENT'])[0] ?: $columnName;       // 字段别名
@@ -317,15 +320,20 @@ class Module extends Base
                 $isSort        = 1;                                                          // 排序状态
                 $searchType    = '=';                                                        // 搜索类型
 
-
                 // 部分类型的默认值为0
                 if (in_array($dataType, ['tinyint', 'bigint', 'int', 'mediumint', 'smallint', 'decimal', 'double', 'float'])) {
                     $default = $default ?: 0;
                 }
 
+                // 部分类型需要小数点
+                $numericScale = 0;
+                if ($v['NUMERIC_SCALE']) {
+                    $numericScale = $v['NUMERIC_SCALE'];
+                }
+
                 if ($inputType == 'number') {
                     $isSearch = 0;
-                    $setup    = "array ('default' => '{$default}', 'extra_attr' => '', 'extra_class' => '', 'step' => '{$step}', 'fieldtype' => '{$dataType}',)";
+                    $setup    = "array ('default' => '{$default}', 'extra_attr' => '', 'extra_class' => '', 'step' => '{$step}', 'fieldtype' => '{$dataType}', 'point' => '{$numericScale}')";
                     $data[]   = [
                         'module_id'      => $module->id,
                         'field'          => $columnName,
