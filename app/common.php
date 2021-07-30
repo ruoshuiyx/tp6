@@ -19,7 +19,7 @@ function getUrl($v)
             if ($v['cate_folder']) {
                 $v['url'] = (string)\think\facade\Route::buildUrl($v['cate_folder'] . '/index')->domain('');
             } else {
-                if (isset($v['module']['model_name']) && ! empty($v['module']['model_name'])) {
+                if (isset($v['module']['model_name']) && !empty($v['module']['model_name'])) {
                     $moduleName = $v['module']['model_name'];
                 } else {
                     $moduleId   = $v['module']['id'] ?? $v['module_id'];
@@ -37,10 +37,10 @@ function getUrl($v)
 function getShowUrl($v)
 {
     if ($v) {
-        if (isset($v['url']) && ! empty($v['url'])) {
+        if (isset($v['url']) && !empty($v['url'])) {
             return $v['url'];
         }
-        if (isset($v['cate_id']) && ! empty($v['cate_id'])) {
+        if (isset($v['cate_id']) && !empty($v['cate_id'])) {
             if (isset($v['cate'])) {
                 $cate = $v['cate'];
             } else {
@@ -130,7 +130,7 @@ function changeField($info, $moduleId, $optionsArr)
 
             } elseif ($v['type'] == 'daterange') {
             } elseif ($v['type'] == 'tag') {
-                if ( ! empty($info[$v['field']])) {
+                if (!empty($info[$v['field']])) {
                     $tags = explode(',', $info[$v['field']]);
                     foreach ($tags as $k => $tag) {
                         $tags[$k] = [
@@ -248,7 +248,7 @@ function is_mobile_phone($mobile_phone)
  */
 function trim_array_element($array)
 {
-    if ( ! is_array($array))
+    if (!is_array($array))
         return trim($array);
     return array_map('trim_array_element', $array);
 }
@@ -284,7 +284,7 @@ function array2string($info)
         }
     }
     if ($info == '') return '';
-    if ( ! is_array($info)) {
+    if (!is_array($info)) {
         //删除反斜杠
         $string = stripslashes($info);
     }
@@ -585,7 +585,7 @@ function changeDict(array $list, string $field, string $all = "全部")
         $param           = \think\facade\Request::param('', '', 'htmlspecialchars');
         // 高亮显示
         $list[$k]['current'] = 0;
-        if ( ! empty($param)) {
+        if (!empty($param)) {
             foreach ($param as $kk => $vv) {
                 if ($kk == $field) {
                     if (strpos($vv, '|') !== false) {
@@ -640,7 +640,7 @@ function getSearchField(string $field)
         $field    = str_replace('|', ',', $field);
         $fieldArr = explode(',', $field);
         foreach ($fieldArr as $k => $v) {
-            if ( ! empty($v)) {
+            if (!empty($v)) {
                 // 查询浏览器参数是否包含此参数
                 if (\think\facade\Request::has($v, 'get')) {
                     $str = \think\facade\Request::get($v, '', 'htmlspecialchars');
@@ -731,7 +731,7 @@ function get_tagcloud($list, $moduleId, $limit = 10)
             if ($v['tags']) {
                 $arr = explode(',', $v['tags']);
                 foreach ($arr as $ar) {
-                    if ( ! empty($ar)) {
+                    if (!empty($ar)) {
                         $result[] = $ar;
                     }
                 }
@@ -761,15 +761,15 @@ function get_tagcloud($list, $moduleId, $limit = 10)
  */
 function get_back_url()
 {
-    if (isset($_SERVER["HTTP_REFERER"]) && ! empty($_SERVER["HTTP_REFERER"])) {
+    if (isset($_SERVER["HTTP_REFERER"]) && !empty($_SERVER["HTTP_REFERER"])) {
         $queryStr = explode('?', $_SERVER["HTTP_REFERER"]);
         if (count($queryStr) == 2) {
             parse_str($queryStr[1], $queryArr);
-            if (isset($queryArr['back_url']) && ! empty($queryArr['back_url'])) {
+            if (isset($queryArr['back_url']) && !empty($queryArr['back_url'])) {
                 $backUrl = explode("&", urldecode($queryArr['back_url']));
                 foreach ($backUrl as $k => $v) {
                     $v = explode("=", $v);
-                    if (isset($v[1]) && ! empty($v[1])) {
+                    if (isset($v[1]) && !empty($v[1])) {
                         $backArr[$v[0]] = $v[1];
                     }
                 }
@@ -878,4 +878,50 @@ function get_cate_folder()
     $careFolder = str_replace('<id>', '', $careFolder);              // 移除路由规则多余的字符
     $careFolder = trim($careFolder, '/');                            // 移除两侧的/
     return $careFolder;
+}
+
+/**
+ * 根据父ID获取下级联动数据
+ * @param string $modelName    模型名称
+ * @param int    $pid          父ID
+ * @param string $pidFieldName 父ID字段名
+ * @return array
+ */
+function getLinkageData(string $modelName, int $pid = 0, string $pidFieldName = 'pid')
+{
+    $model = '\app\common\model\\' . $modelName;
+    if (class_exists($model)) {
+        return $model:: where($pidFieldName, $pid)->select()->toArray();
+    }
+    return [];
+}
+
+/**
+ * 根据末级ID获取父级联动数据
+ * @param string $modelName     模型名称
+ * @param string $id            主键值
+ * @param string $idFieldName   主键字段名
+ * @param string $nameFieldName name字段名
+ * @param string $pidFieldName  pid字段名
+ * @param int    $level         级别
+ */
+function getLinkageAllData(string $modelName, $id = '', $idFieldName = 'id', $nameFieldName = 'name', $pidFieldName = 'pid', $level = 1)
+{
+    $model = '\app\common\model\\' . $modelName;
+    // 获取当前数据的父ID
+    $pidFielValue = $model:: where($idFieldName, $id)->value($pidFieldName);
+
+    // 当前级别的数据
+    $resultKey[$level]  = $pidFielValue;
+    $resultData[$level] = getLinkageData($modelName, (int)$pidFielValue, $pidFieldName);
+
+    if ($pidFielValue != 0) {
+        $data       = getLinkageAllData($modelName, $pidFielValue, $idFieldName, $nameFieldName, $pidFieldName, $level + 1);
+        $resultKey  = $resultKey + $data['key']; // 后面一个数组，加入到前面一个数组中，键名相同时，不会被覆盖
+        $resultData = $resultData + $data['data'];
+    }
+
+    $result['key']  = $resultKey;
+    $result['data'] = $resultData;
+    return $result;
 }

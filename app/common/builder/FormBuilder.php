@@ -46,7 +46,7 @@ class FormBuilder
         'tips_type'      => '',        // 提示类型
         'form_url'       => '',        // 表单提交地址 [默认为当前方法 + Post]
         'form_method'    => 'post',    // 表单提交方式
-        'empty_tips'     => '暂无数据', // 没有表单项时的提示信息
+        'empty_tips'     => '暂无数据',    // 没有表单项时的提示信息
         'btn_hide'       => [],        // 要隐藏的按钮
         'btn_title'      => [],        // 按钮标题
         'btn_extra'      => [],        // 额外按钮
@@ -1080,6 +1080,70 @@ class FormBuilder
         $item = [
             'type' => 'html',
             'html' => $html,
+        ];
+
+        if ($this->_is_group) {
+            return $item;
+        }
+
+        $this->_vars['form_items'][] = $item;
+        return $this;
+    }
+
+    /**
+     * 添加多级联动
+     * @param string       $name        字段名称
+     * @param string       $title       字段别名
+     * @param string       $tips        提示信息
+     * @param string       $model       模型名称
+     * @param string       $level       级别
+     * @param string       $default     默认值
+     * @param array|string $fields      字段名，默认为id,name,pid
+     * @param string       $extra_attr  额外属性
+     * @param string       $extra_class 额外css类
+     * @param string       $placeholder 占位符
+     * @param bool         $required    是否必填
+     * @param string       $ajax_url    ajax 地址
+     * @return $this|array
+     */
+    public function addLinkage($name = '', $title = '', $tips = '', $model = '', $level = 2, $default = '', $fields = [], $extra_attr = '', $extra_class = '', $placeholder = '', $required = false, $ajax_url = '')
+    {
+        // 关联模型的主键的字段名
+        $key = 'id';
+        // 要展示的字段名
+        $option = 'name';
+        // 关联模型父级id的字段名
+        $pid = 'pid';
+
+        if (!empty($fields)) {
+            if (!is_array($fields)) {
+                $fields = explode(',', $fields);
+                $key    = $fields[0] ?? $key;
+                $option = $fields[1] ?? $option;
+                $pid    = $fields[2] ?? $pid;
+            } else {
+                $key    = $fields['id'] ?? $key;
+                $option = $fields['name'] ?? $option;
+                $pid    = $fields['pid'] ?? $pid;
+            }
+        }
+
+        $item = [
+            'type'        => 'linkage',
+            'name'        => $name,
+            'title'       => $title,
+            'tips'        => $tips,
+            'model'       => $model,
+            'level'       => $level,
+            'key'         => $key,
+            'option'      => $option,
+            'pid'         => $pid,
+            'value'       => $default,
+            'extra_class' => $extra_class,
+            'extra_attr'  => $extra_attr,
+            'placeholder' => $placeholder ?: '请选择',
+            'required'    => $required,
+            'ajax_url'    => $ajax_url,
         ];
 
         if ($this->_is_group) {

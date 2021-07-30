@@ -475,6 +475,48 @@
     </tr>
 </table>
 {/case}
+{case value="linkage" }
+<table class="typeTable" cellpadding="2" cellspacing="1">
+    <tr>
+        <td>默认值</td>
+        <td><input type="text" class="form-control" name="setup[default]"
+                   value="{$fieldInfo.setup.default ?? '0'}"/></td>
+    </tr>
+    <tr>
+        <td>字段名</td>
+        <td><input type="text" class="form-control" name="setup[fields]"
+                   value="{$fieldInfo.setup.fields ?? 'id,name,pid'}"/></td>
+    </tr>
+    <tr>
+        <td>级别</td>
+        <td><input type="text" class="form-control" name="setup[level]"
+                   value="{$fieldInfo.setup.level ?? '2'}"/></td>
+    </tr>
+    <tr>
+        <td>额外属性</td>
+        <td><input type="text" class="form-control" name="setup[extra_attr]"
+                   value="{$fieldInfo.setup.extra_attr ?: ''}"/></td>
+    </tr>
+    <tr>
+        <td>额外css类</td>
+        <td><input type="text" class="form-control" name="setup[extra_class]"
+                   value="{$fieldInfo.setup.extra_class ?: ''}"/></td>
+    </tr>
+    <tr>
+        <td>字段类型</td>
+        <td>
+            <select class="form-control" name="setup[fieldtype]">
+                <option value="int" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='int'?'selected':''}{/if}>int</option>
+                <option value="tinyint" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='tinyint'?'selected':''}{/if}>tinyint</option>
+                <option value="varchar" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='varchar'?'selected':''}{/if}>varchar</option>
+                <option value="char" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='char'?'selected':''}{/if}>char</option>
+                <option value="text" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='text'?'selected':''}{/if}>text</option>
+                <option value="mediumtext" {if $fieldInfo}{$fieldInfo.setup.fieldtype=='mediumtext'?'selected':''}{/if}>mediumtext</option>
+            </select>
+        </td>
+    </tr>
+</table>
+{/case}
 {case value="image"}
 <table class="typeTable" cellpadding="2" cellspacing="1">
     <tr>

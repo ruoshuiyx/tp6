@@ -347,6 +347,23 @@ class MakeBuilder
                     $field['setup']['placeholder'] ?? '', // 占位符
                     $field['required'],                   // 是否必填
                 ];
+            } elseif ($field['type'] == 'linkage') {
+                $ajaxUrl = (string)url('Index/linkage', ['id' => $field['id']]);
+                $columns[] = [
+                    $field['type'],                             // 类型
+                    $field['field'],                            // 字段名称
+                    $field['name'],                             // 字段别名
+                    $field['tips'],                             // 提示信息
+                    $field['relation_model'],                   // 模型关联
+                    $field['setup']['level'] ?? '2',            // 级别
+                    $field['setup']['default'],                 // 默认值
+                    $field['setup']['fields'] ?? 'id,name,pid', // 字段名
+                    $field['setup']['extra_attr'] ?? '',        // 额外属性
+                    $field['setup']['extra_class'] ?? '',       // 额外CSS
+                    $field['setup']['placeholder'] ?? '',       // 占位符
+                    $field['required'],                         // 是否必填
+                    $ajaxUrl,                                   // ajax请求地址
+                ];
             }
             // Button
         }

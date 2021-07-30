@@ -68,7 +68,7 @@ class Index extends Base
         if ($messageModuleId) {
             // 查询留言模块第一个栏目ID
             $messageCatId = \app\common\model\Cate::where('module_id', $messageModuleId)->value('id');
-            if ( ! is_null($messageCatId)) {
+            if (!is_null($messageCatId)) {
                 // 生成URL
                 $messageCatUrl = url('Message/index', ['cate_id' => $messageCatId]);
             }
@@ -127,7 +127,7 @@ class Index extends Base
                     $url = $module . Config::get('route.pathinfo_depr') . 'info.' . Config::get('route.url_html_suffix') . '?cate=' . $cate['id'] . '&id=' . $id;
                 }
             }
-            if (isset($url) && ! empty($url)) {
+            if (isset($url) && !empty($url)) {
                 // 检测是否开启了域名绑定
                 $domainBind = Config::get('app.domain_bind');
                 if ($domainBind) {
@@ -190,6 +190,31 @@ class Index extends Base
         return $list;
     }
 
+    /**
+     * ajax获取多级联动数据
+     * @param string $model        模型名称
+     * @param string $key          关联模型的主键
+     * @param string $keyValue     要展示的字段
+     * @param int    $pid          父ID
+     * @param string $pidFieldName 关联模型的父级id字段名
+     * @return array
+     */
+    public function linkage(string $model, string $key, string $keyValue, int $pid = 0, string $pidFieldName = 'pid')
+    {
+        $list   = getLinkageData($model, $pid, $pidFieldName);
+        $result = [];
+        foreach ($list as $v) {
+            $result[] = [
+                'key'   => $v[$key],
+                'value' => $v[$keyValue],
+            ];
+        }
+        return [
+            'code' => 1,
+            'list' => $result
+        ];
+    }
+
     // 执行删除
     private function _deleteDir($R)
     {
@@ -202,7 +227,7 @@ class Index extends Base
                     $this->_deleteDir($R . DIRECTORY_SEPARATOR . $item);
                 } else {
                     if ($item != '.gitignore') {
-                        if ( ! unlink($R . DIRECTORY_SEPARATOR . $item)) {
+                        if (!unlink($R . DIRECTORY_SEPARATOR . $item)) {
                             return false;
                         }
                     }
