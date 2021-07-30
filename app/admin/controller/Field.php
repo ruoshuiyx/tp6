@@ -613,6 +613,24 @@ class Field extends Base
                     $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NULL COMMENT '$comment'";
                 }
                 break;
+            case 'linkage':
+                $fieldtype = $fieldtype ?? 'VARCHAR';
+                if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
+                    if (!$maxlength) {
+                        $maxlength = 255;
+                    }
+                    $maxlength = min($maxlength, 255);
+                    $sql       = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) NOT NULL DEFAULT '$default' COMMENT '$comment'";
+                } elseif ($fieldtype == 'INT' || $fieldtype == 'TINYINT') {
+                    $default = $default !== '' ? intval($default) : 0;
+                    if (!$maxlength) {
+                        $maxlength = $fieldtype == 'INT' ? 10 : 4;
+                    }
+                    $sql = "ALTER TABLE `$tablename` $do `$field` $fieldtype( $maxlength ) " . ($numbertype == 1 ? 'UNSIGNED' : '') . " NOT NULL DEFAULT {$default} COMMENT '$comment'";
+                } else {
+                    $sql = "ALTER TABLE `$tablename` $do `$field` TEXT NULL COMMENT '$comment'";
+                }
+                break;
             case 'image':
                 $fieldtype = $fieldtype ?? 'VARCHAR';
                 if ($fieldtype == 'VARCHAR' || $fieldtype == 'CHAR') {
