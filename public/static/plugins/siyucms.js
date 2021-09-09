@@ -109,6 +109,55 @@ $(document).on("click", '#totop', function (e) {
     }, 300)
 });
 
+// 多级联动
+$(document).on("change", '.js_linkage', function () {
+    var value = $(this).val(); // 当前下拉框选中的值
+    var nextLevelId = $(this).data('next_level_id'); // 下一级别下拉框的id
+    var ajaxUrl = $(this).data('ajax_url'); // 请求地址
+
+    // 下级联动菜单恢复默认
+    if (nextLevelId != '') {
+        $('#' + nextLevelId).html('<option value="">' + $(this).data('placeholder') + '</option>');
+        var hasNextLevel = $('#' + nextLevelId).data('next_level_id');
+        if (hasNextLevel) {
+            $('#' + hasNextLevel).html('<option value="">' + $(this).data('placeholder') + '</option>');
+            hasNextLevel = $('#' + hasNextLevel).data('next-next_level_id-id');
+            if (hasNextLevel) {
+                $('#' + hasNextLevel).html('<option value="">' + $(this).data('placeholder') + '</option>');
+            }
+        }
+    }
+
+    if (value != '') {
+        // 获取数据
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                level: $(this).data('next_level'), // 下一级别(废弃)
+                pid: value, // 当前下拉框选中的值
+                model: $(this).data('model'), // 模型名称
+                key: $(this).data('key'), // 关联模型的主键
+                keyValue: $(this).data('key_value'), // 要展示的字段
+                pidFieldName: $(this).data('pid_field_name'), // 关联模型的父级id字段名
+            },
+            success: function (res) {
+                if (res.code == '1') {
+                    var list = res.list;
+                    if (list) {
+                        for (var item in list) {
+                            $('#' + nextLevelId).append("<option value='" + list[item].key + "'>" + list[item].value + "</option>");
+                        }
+                    }
+                } else {
+                    $.modal.alertError(res.msg);
+                }
+            }
+        })
+    }
+});
+
 // pjax 执行完成后执行的方法
 $(document).on('pjax:complete', function () {
 
@@ -210,55 +259,6 @@ $(function () {
 
     // tooltip 提示
     $('[data-toggle="tooltip"]').tooltip()
-
-    // 多级联动
-    $('.js_linkage').change(function () {
-        var value = $(this).val(); // 当前下拉框选中的值
-        var nextLevelId = $(this).data('next_level_id'); // 下一级别下拉框的id
-        var ajaxUrl = $(this).data('ajax_url'); // 请求地址
-
-        // 下级联动菜单恢复默认
-        if (nextLevelId != '') {
-            $('#' + nextLevelId).html('<option value="">' + $(this).data('placeholder') + '</option>');
-            var hasNextLevel = $('#' + nextLevelId).data('next_level_id');
-            if (hasNextLevel) {
-                $('#' + hasNextLevel).html('<option value="">' + $(this).data('placeholder') + '</option>');
-                hasNextLevel = $('#' + hasNextLevel).data('next-next_level_id-id');
-                if (hasNextLevel) {
-                    $('#' + hasNextLevel).html('<option value="">' + $(this).data('placeholder') + '</option>');
-                }
-            }
-        }
-
-        if (value != '') {
-            // 获取数据
-            $.ajax({
-                url: ajaxUrl,
-                type: 'POST',
-                dataType: 'json',
-                data: {
-                    level: $(this).data('next_level'), // 下一级别(废弃)
-                    pid: value, // 当前下拉框选中的值
-                    model: $(this).data('model'), // 模型名称
-                    key: $(this).data('key'), // 关联模型的主键
-                    keyValue: $(this).data('key_value'), // 要展示的字段
-                    pidFieldName: $(this).data('pid_field_name'), // 关联模型的父级id字段名
-                },
-                success: function (res) {
-                    if (res.code == '1') {
-                        var list = res.list;
-                        if (list) {
-                            for (var item in list) {
-                                $('#' + nextLevelId).append("<option value='" + list[item].key + "'>" + list[item].value + "</option>");
-                            }
-                        }
-                    } else {
-                        $.modal.alertError(res.msg);
-                    }
-                }
-            })
-        }
-    });
 
 })
 
