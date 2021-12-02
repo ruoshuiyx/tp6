@@ -41,14 +41,14 @@ class FormBuilder
      * @var array 模板变量
      */
     private $_vars = [
-        'page_title'     => '',        // 页面标题
+        'page_title'     => '',        // 页面标题（layer弹层模式下无效）
         'page_tips'      => '',        // 页面提示
         'tips_type'      => '',        // 提示类型
         'form_url'       => '',        // 表单提交地址 [默认为当前方法 + Post]
         'form_method'    => 'post',    // 表单提交方式
         'empty_tips'     => '暂无数据',    // 没有表单项时的提示信息
-        'btn_hide'       => [],        // 要隐藏的按钮
-        'btn_title'      => [],        // 按钮标题
+        'btn_hide'       => [],        // 要隐藏的按钮（layer弹层模式下无效）
+        'btn_title'      => [],        // 按钮标题（layer弹层模式下无效）
         'btn_extra'      => [],        // 额外按钮
         'extra_html'     => '',        // 额外HTML代码
         'extra_js'       => '',        // 额外JS代码
@@ -139,17 +139,6 @@ class FormBuilder
     }
 
     /**
-     * 隐藏<显示全部>按钮
-     * @param string $url 链接地址
-     * @return $this
-     */
-    public function hideShowAll()
-    {
-        $this->_vars['show_all'] = false;
-        return $this;
-    }
-
-    /**
      * 设置表单提交地址
      * @param string $form_url 提交地址
      * @return $this
@@ -206,7 +195,7 @@ class FormBuilder
 
     /**
      * 设置按钮标题
-     * @param string|array $btn   按钮名 'submit' -> “提交”，'back' -> “返回”
+     * @param string|array $btn   按钮名 'submit' -> '提交'，'back' -> '返回'
      * @param string       $title 按钮标题
      * @return $this
      */
@@ -283,6 +272,17 @@ class FormBuilder
     public function submitConfirm()
     {
         $this->_vars['submit_confirm'] = true;
+        return $this;
+    }
+
+    /**
+     * 隐藏<显示全部>按钮
+     * @param string $url 链接地址
+     * @return $this
+     */
+    public function hideShowAll()
+    {
+        $this->_vars['show_all'] = false;
         return $this;
     }
 
