@@ -82,7 +82,7 @@ class Admin extends Base
         // 获取字段信息
         $columns = MakeBuilder::getAddColumns($this->tableName);
         // 获取分组后的字段信息
-        $groups = MakeBuilder::getgetAddGroups($this->modelName, $this->tableName, $columns);
+        $groups = MakeBuilder::getAddGroups($this->modelName, $this->tableName, $columns);
 
         // 构建页面
         $builder = FormBuilder::getInstance();
@@ -134,7 +134,7 @@ class Admin extends Base
         // 获取字段信息
         $columns = MakeBuilder::getAddColumns($this->tableName, $info);
         // 获取分组后的字段信息
-        $groups = MakeBuilder::getgetAddGroups($this->modelName, $this->tableName, $columns);
+        $groups = MakeBuilder::getAddGroups($this->modelName, $this->tableName, $columns);
         // 获取当前管理员的分组
         $groupId = \app\common\model\AuthGroupAccess::where('uid', $info['id'])
             ->value('group_id');

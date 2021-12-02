@@ -341,7 +341,7 @@ abstract class Base
         // 获取字段信息
         $columns = MakeBuilder::getAddColumns($this->tableName);
         // 获取分组后的字段信息
-        $groups = MakeBuilder::getgetAddGroups($this->modelName, $this->tableName, $columns);
+        $groups = MakeBuilder::getAddGroups($this->modelName, $this->tableName, $columns);
         // 隐藏<显示全部>按钮
         $hideShowAll = MakeBuilder::getHideShowAll($this->tableName);
 
@@ -383,7 +383,7 @@ abstract class Base
         // 获取字段信息
         $columns = MakeBuilder::getAddColumns($this->tableName, $info);
         // 获取分组后的字段信息
-        $groups = MakeBuilder::getgetAddGroups($this->modelName, $this->tableName, $columns);
+        $groups = MakeBuilder::getAddGroups($this->modelName, $this->tableName, $columns);
         // 隐藏<显示全部>按钮
         $hideShowAll = MakeBuilder::getHideShowAll($this->tableName);
 

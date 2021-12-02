@@ -698,7 +698,7 @@ class MakeBuilder
      * @param array  $columns   字段数据
      * @return array
      */
-    public function getgetAddGroups(string $modelName, string $tableName, array $columns)
+    public function getAddGroups(string $modelName, string $tableName, array $columns)
     {
         // 查询模块信息
         $module = \app\common\model\Module::where('model_name', $modelName)->find();

@@ -118,7 +118,7 @@ class Cate extends Base
             }
         }
         // 获取分组后的字段信息
-        $groups = MakeBuilder::getgetAddGroups($this->modelName, $this->tableName, $columns);
+        $groups = MakeBuilder::getAddGroups($this->modelName, $this->tableName, $columns);
         // 构建页面
         $builder = FormBuilder::getInstance();
 
@@ -173,7 +173,7 @@ class Cate extends Base
         }
 
         // 获取分组后的字段信息
-        $groups = MakeBuilder::getgetAddGroups($this->modelName, $this->tableName, $columns);
+        $groups = MakeBuilder::getAddGroups($this->modelName, $this->tableName, $columns);
 
         // 构建页面
         $builder = FormBuilder::getInstance();
