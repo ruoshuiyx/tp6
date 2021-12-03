@@ -84,6 +84,7 @@
 					columns: options.columns,                           // 显示列信息（*）
 					classes: options.classes,                           // 设置表样式
 					queryParams: options.queryParams,                   // 传递参数（*）
+                    loadingFontSize: 16,                                // 加载字样的字体大小
                     formatNoMatches: function () {                      // 空数据提示信息
                         return options.empty_tips;
                     },
