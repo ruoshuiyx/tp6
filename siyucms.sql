@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 30/07/2021 17:16:52
+ Date: 03/12/2021 14:10:56
 */
 
 SET NAMES utf8mb4;
@@ -121,7 +121,7 @@ CREATE TABLE `tp_area`  (
   `create_time` int(11) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
   `update_time` int(11) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间	',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3221 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB AUTO_INCREMENT = 3221 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '区域模块' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of tp_area
@@ -3427,7 +3427,7 @@ CREATE TABLE `tp_auth_group_access`  (
   UNIQUE INDEX `uid_group_id`(`uid`, `group_id`) USING BTREE,
   INDEX `uid`(`uid`) USING BTREE,
   INDEX `group_id`(`group_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '用户组明细表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tp_auth_group_access
@@ -3454,7 +3454,7 @@ CREATE TABLE `tp_auth_rule`  (
   `update_time` int(11) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
   `param` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '参数',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 283 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 283 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '规则表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tp_auth_rule
@@ -3855,7 +3855,7 @@ CREATE TABLE `tp_dictionary`  (
   `sort` int(5) UNSIGNED NOT NULL DEFAULT 50 COMMENT '排序',
   `status` tinyint(4) UNSIGNED NOT NULL DEFAULT 1 COMMENT '状态',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '字典数据' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tp_dictionary
@@ -3901,7 +3901,7 @@ CREATE TABLE `tp_dictionary_type`  (
   `remark` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '备注',
   `sort` int(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '字典类型' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tp_dictionary_type
@@ -4431,7 +4431,7 @@ CREATE TABLE `tp_module`  (
   `show_all` tinyint(4) UNSIGNED NOT NULL DEFAULT 1 COMMENT '查看全部',
   `add_param` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '添加参数',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '模型表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '模块配置表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tp_module
@@ -4711,7 +4711,7 @@ CREATE TABLE `tp_users_type`  (
   `sort` int(5) UNSIGNED NOT NULL DEFAULT 50 COMMENT '排序',
   `status` tinyint(4) UNSIGNED NOT NULL DEFAULT 1 COMMENT '状态',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '用户组' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '会员分组' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tp_users_type
