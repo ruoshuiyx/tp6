@@ -2166,7 +2166,7 @@
   var SELECTOR_SEARCH_RESULTS_GROUP = SELECTOR_SEARCH_RESULTS + " ." + CLASS_NAME_LIST_GROUP;
   var Default$4 = {
     arrowSign: '->',
-    minLength: 3,
+    minLength: 2,
     maxResults: 7,
     highlightName: true,
     highlightPath: false,
