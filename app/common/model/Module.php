@@ -59,7 +59,7 @@ class Module extends Base
             )
             ->toArray();
         // 获取不可选中的信息
-        $unMakeModule = MakeBuilder::unMakeModule();
+        $unMakeModule = \think\facade\Config::get('builder.un_make_module');
         foreach ($list['data'] as $k => $v) {
             if (in_array($v['model_name'], $unMakeModule)) {
                 $list['data'][$k]['checkbox_disabled'] = '1';

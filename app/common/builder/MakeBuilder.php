@@ -83,7 +83,7 @@ class MakeBuilder
         $fields  = $this->getFields($tableName);
 
         foreach ($fields as &$field) {
-            // 筛选可搜索且状态不为0的字段
+            // 筛选可列表展示且状态不为0的字段
             if ($field['is_list'] != 1 || $field['status'] == 0) {
                 continue;
             }
@@ -418,7 +418,19 @@ class MakeBuilder
         //全局查询条件
         $where = [];
         // 循环所有搜索字段，看是否有传递
-        foreach ($search as $k => $v) {
+        /**
+         * $field['type'],                // 字段类型
+         * $field['field'],               // 字段名称
+         * $field['name'],                // 字段别名
+         * $field['search_type'] ?? '=',  // 匹配方式
+         * $field['default_value'] ?? '', // 默认值
+         * $field['param'] ?? [],         // 额外参数
+         * $field['data_source'] ?? 0,    // 数据源 [0 字段本身, 1 系统字典, 2 模型数据]
+         * $field['relation_model'] ?? '',// 模型关联
+         * $field['relation_field'] ?? '',// 关联字段
+         * $field['id'] ?? 0,             // 字段编号
+         */
+        foreach ($search as $v) {
             $param = Request::param();
             if (!isset($param[$v[1]])) {
                 continue;
@@ -517,7 +529,7 @@ class MakeBuilder
         if ($module->add_param) {
             $addParamArr = explode(",", $module->add_param);
             $addArr      = [];
-            foreach ($addParamArr as $k => $v) {
+            foreach ($addParamArr as $v) {
                 $addArr[$v] = Request::param($v);
             }
             return url('add', $addArr)->__toString();
@@ -831,15 +843,6 @@ class MakeBuilder
     //==============================================
 
     /**
-     * 获取不可生成的模块[内置模块][模型名称]
-     * @return array
-     */
-    public function unMakeModule()
-    {
-        return ['Field', 'Module', 'AuthGroup', 'Admin', 'AuthRule', 'AdminLog', 'Cate'];
-    }
-
-    /**
      * 生成模块文件
      * @param string $id   模块ID
      * @param string $file 生成的文件[controller,model,validate]
@@ -848,7 +851,7 @@ class MakeBuilder
     public function makeModule(string $id, string $file = '')
     {
         // 不可生成的模块[内置模块][模型名称]
-        $unMakeModule = $this->unMakeModule();
+        $unMakeModule = \think\facade\Config::get('builder.un_make_module');
 
         // 查询模块信息
         $module = \app\common\model\Module::find($id);
