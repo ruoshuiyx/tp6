@@ -40,6 +40,7 @@
 				clickToSelect : true,				    // 默认false不响应，设为true则当点击此行的某处时，会自动选中此行的checkbox/radiobox
                 pageSize      : "{$page_size}",         // 每页显示的行数
                 layerOpen     : "{$layer_open}",        // 添加/编辑等页启用layer弹层加载
+                empty_tips    : "{$empty_tips}",        // 空数据提示信息
                 columns: [
                     {
                         //field: 'state',
@@ -243,13 +244,13 @@
             $.form.reset();
         }
 		//HTML反转义
-		function HTMLDecode(text) { 
-			var temp = document.createElement("div"); 
-			temp.innerHTML = text; 
-			var output = temp.innerText || temp.textContent; 
-			temp = null; 
-			return output; 
-		} 
+		function HTMLDecode(text) {
+			var temp = document.createElement("div");
+			temp.innerHTML = text;
+			var output = temp.innerText || temp.textContent;
+			temp = null;
+			return output;
+		}
     </script>
 
     <!--bootstrap table end-->

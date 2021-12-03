@@ -84,6 +84,9 @@
 					columns: options.columns,                           // 显示列信息（*）
 					classes: options.classes,                           // 设置表样式
 					queryParams: options.queryParams,                   // 传递参数（*）
+                    formatNoMatches: function () {                      // 空数据提示信息
+                        return options.empty_tips;
+                    },
 					onDblClickRow: function (row, $element, field) {	// 双击一行时触发编辑动作
 						var edit = $element.children("td").last().html();
 						if ($.common.isNotEmpty(edit) && edit.indexOf('$.operate.edit') != -1) {

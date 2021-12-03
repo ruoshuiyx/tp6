@@ -45,32 +45,32 @@ class TableBuilder
      * @var array 模板变量
      */
     private $_vars = [
-        'page_title'       => '',        // 页面标题
-        'page_tips'        => '',        // 页面提示
-        'page_tips_top'    => '',        // 页面提示[top]
-        'page_tips_search' => '',        // 页面提示[search]
-        'page_tips_bottom' => '',        // 页面提示[bottom]
-        'page_size'        => '',        // 每页显示的行数
-        'tips_type'        => '',        // 页面提示类型
-        'extra_js'         => '',        // 额外JS代码
-        'extra_css'        => '',        // 额外CSS代码
-        'extra_html'       => '',        // 额外HTML代码
-        'columns'          => [],        // 表格列集合
-        'right_buttons'    => [],        // 表格右侧按钮
-        'top_buttons'      => [],        // 顶部栏按钮组[toolbar]
-        'unique_id'        => 'id',      // 表格主键名称，（默认为id，如表主键不为id必须设置主键）
-        'data_url'         => '',        // 表格数据源
-        'add_url'          => '',        // 默认的新增地址
-        'edit_url'         => '',        // 默认的修改地址
-        'del_url'          => '',        // 默认的删除地址
-        'export_url'       => '',        // 默认的导出地址
-        'sort_url'         => '',        // 默认的排序地址
-        'search'           => [],        // 搜索参数
-        'pagination'       => 'true',    // 是否进行分页
-        'parent_id_field'  => '',        // 列表树模式需传递父id
-        'empty_tips'       => '暂无数据', // 空数据提示信息[待完善]
-        'hide_checkbox'    => false,     // 是否隐藏第一列多选[待完善]
-        'layer_open'       => true,      // 添加/编辑等页启用layer弹层加载
+        'page_title'       => '',          // 页面标题
+        'page_tips'        => '',          // 页面提示
+        'page_tips_top'    => '',          // 页面提示[top]
+        'page_tips_search' => '',          // 页面提示[search]
+        'page_tips_bottom' => '',          // 页面提示[bottom]
+        'page_size'        => '',          // 每页显示的行数
+        'tips_type'        => '',          // 页面提示类型
+        'extra_js'         => '',          // 额外JS代码
+        'extra_css'        => '',          // 额外CSS代码
+        'extra_html'       => '',          // 额外HTML代码
+        'columns'          => [],          // 表格列集合
+        'right_buttons'    => [],          // 表格右侧按钮
+        'top_buttons'      => [],          // 顶部栏按钮组[toolbar]
+        'unique_id'        => 'id',        // 表格主键名称（默认为id，如表主键不为id必须设置主键）
+        'data_url'         => '',          // 表格数据源
+        'add_url'          => '',          // 默认的新增地址
+        'edit_url'         => '',          // 默认的修改地址
+        'del_url'          => '',          // 默认的删除地址
+        'export_url'       => '',          // 默认的导出地址
+        'sort_url'         => '',          // 默认的排序地址
+        'search'           => [],          // 搜索参数
+        'pagination'       => 'true',      // 是否进行分页
+        'parent_id_field'  => '',          // 列表树模式需传递父id
+        'empty_tips'       => '没有找到匹配的记录', // 空数据提示信息
+        'hide_checkbox'    => false,       // 是否隐藏第一列多选[待完善]
+        'layer_open'       => true,        // 添加/编辑等页启用layer弹层加载
     ];
 
     /**
@@ -131,8 +131,7 @@ class TableBuilder
 
     /**
      * 渲染模版
-     * @param string $template      模板文件名或者内容
-     * @param bool   $renderContent 是否渲染内容
+     * @param string $template 模板文件名
      * @return string
      * @throws \Exception
      */
@@ -299,6 +298,19 @@ class TableBuilder
     }
 
     /**
+     * 设置空数据提示信息
+     * @param string $value 字段
+     * @return $this
+     */
+    public function setEmptyTips($value = '')
+    {
+        if ($value != '') {
+            $this->_vars['empty_tips'] = $value;
+        }
+        return $this;
+    }
+
+    /**
      * 设置每页显示的行数
      * @param string $value 数量
      * @return $this
@@ -343,6 +355,7 @@ class TableBuilder
                     'target' => '_blank'
                 ];
                 break;
+
             // 编辑按钮
             case 'edit':
                 // 默认属性
@@ -520,7 +533,7 @@ class TableBuilder
     }
 
     /**
-     * 添加一个顶部按钮[目前只能新窗口打开，暂时不考虑弹出层]
+     * 添加一个顶部按钮
      * @param string $type      按钮类型：add/edit/del/export/build/default
      * @param array  $attribute 按钮属性
      * @return $this
