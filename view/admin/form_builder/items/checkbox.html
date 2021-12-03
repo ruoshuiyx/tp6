@@ -1,13 +1,13 @@
 <div class="row dd_input_group no-gutters {$form[type].extra_class|default=''}" id="form_group_{$form[type].name}">
     <label class="col-3 col-sm-2 col-md-2 col-lg-2 col-xl-1 dd_input_l col-form-label {notempty name="form[type].required"}is-required{/notempty}" for="{$form[type].name}">{$form[type].title|htmlspecialchars}</label>
     <div class="col-9 col-sm-9 col-md-9 col-lg-6 col-xl-4">
-        <div class="dd_radio_lable_left">
+        <div class="dd_radio_lable_left border-white">
             <input type="hidden" name="{$form[type].name}[]" value="">
             {volist name="form[type].options" id="option"}
-            <label class="dd_radio_lable">
+            <div class="icheck-peterriver icheck-inline">
                 <input type="checkbox" name="{$form[type].name}[]" class="dd_radio" id="{$form[type].name}{$i}" value="{$key}" {in name="key" value="$form[type].value|default=''" }checked{/in} {$form[type].extra_attr|raw|default=''}>
-                <span>{$option|raw|htmlspecialchars}</span>
-            </label>
+                <label for="{$form[type].name}{$i}">{$option|raw|htmlspecialchars}</label>
+            </div>
             {/volist}
         </div>
     </div>
