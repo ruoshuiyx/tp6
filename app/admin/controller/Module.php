@@ -253,7 +253,7 @@ class Module extends Base
                 $data = [
                     'module_name'    => $tableInfo['Comment'] ?: $table_name,    // 模块名称
                     'model_name'     => $modelName,                             // 模型名称
-                    'table_comment'  => $tableInfo['Comment'],                   // 表描述
+                    'table_comment'  => $tableInfo['Comment'],                   // 表注释
                     'pk'             => $priKey,                                 // 主键
                     'table_type'     => $tableType,                              // 表类型
                     'is_sort'        => in_array('sort', $fields) ? '1' : '0',   // 排序字段

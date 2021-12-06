@@ -42,7 +42,7 @@ class Module extends Validate
             'require' => 'require',
             'max'     => '50',
         ],
-        'table_comment|表描述' => [
+        'table_comment|表注释' => [
             'max'     => '200',
         ],
         'table_type|表类型' => [
