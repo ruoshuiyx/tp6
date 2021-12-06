@@ -72,7 +72,7 @@ label{margin-bottom: 0;}
 .content_main .btn{font-size: 0.875rem !important;}
 .text-sm .content_main .btn{font-size: 0.8125rem !important;}
 .text-sm .content_main .btn-app > .fa, .text-sm .content_main .btn-app > .glyphicon, .btn-app > .ion{}
-.content_main .btn-app, text-sm .content_main .btn-app{height: auto;padding: 12px 5px 8px 5px;width: 23%;margin: 1%;}
+.content_main .btn-app, .text-sm .content_main .btn-app{height: auto;padding: 11px 5px 8px 5px;width: 23%;margin: 1%;}
 .content_main .btn-app i, .text-sm .content_main .btn-app i{margin-bottom: 5px;}
 .content_main .small-box, .text-sm .content_main .small-box{margin-bottom: 0}
 .content_main .table td, .content_main .table th, .text-sm .content_main .table td, .text-sm .content_main .table th{padding: .5rem .5rem;}
@@ -172,14 +172,12 @@ label{margin-bottom: 0;}
 .select-list .select2-container--default .select2-selection--single .select2-selection__rendered{ line-height: 25px; padding-left: 4px;}
 .select-list .select2-container--default .select2-selection--single .select2-selection__arrow{ height: 26px}
 .text-sm .select-list .select2-container--default .select2-selection--single, .select-list .select2-container--default .select2-selection--single{height: 30px;padding: .1rem .75rem;border-radius: 2px;}
-/* 列表状态变更 */
+/* 列表排序文本框 */
 .changeSort{padding: 0 6px;line-height: 24px;height: 24px;border-radius: 0}
 .text-sm .changeSort{line-height: 21px;height: 21px;font-size: .8125rem}
 /* 列表图片缩略图 */
 .image_preview, .image_preview_info{float: left;margin-right: 5px; /*max-width: 100px;*/max-height: 38px;}
 .btn-secondary{background-color: #f4f4f4;color: #444;border-color: #ddd;}
-/* 列表加载中字样 */
-.bootstrap-table .fixed-table-container .fixed-table-body .fixed-table-loading .loading-wrap .loading-text{font-size: 1.25rem;}
 /* 列表间距 */
 .select-table{padding: .3rem 1rem;}
 .search-collapse{padding: .3rem 1rem;}
