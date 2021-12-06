@@ -73,12 +73,12 @@ class Module extends Base
             ->addTopButtons(['add', 'edit', 'del', 'export', 'build']) // 设置顶部按钮组
             ->addTopButton(
                 'default', [
-                             'title'   => '生成菜单规则',
-                             'icon'    => 'fa fa-bars',
-                             'class'   => 'btn btn-danger single disabled',
-                             'href'    => '',
-                             'onclick' => '$.operate.makeRule(\'' . url('makeRule') . '\')'
-                         ]
+                    'title'   => '生成菜单规则',
+                    'icon'    => 'fa fa-bars',
+                    'class'   => 'btn btn-danger single disabled',
+                    'href'    => '',
+                    'onclick' => '$.operate.makeRule(\'' . url('makeRule') . '\')'
+                ]
             )                                                          // 自定义按钮
             ->fetch();
     }
@@ -213,7 +213,7 @@ class Module extends Base
         if ($table_name) {
             try {
                 // 获取模型名称
-                $modelName   = '';
+                $modelName    = '';
                 $tableNameArr = explode('_', $table_name);
                 foreach ($tableNameArr as $v) {
                     $modelName .= ucfirst($v);
@@ -227,13 +227,13 @@ class Module extends Base
                     . "ORDER BY ORDINAL_POSITION";
                 $columnList = Db::query($sql, ['table_schema' => \think\facade\Config::get('database.connections.mysql.database'), 'table_name' => $tableName]);
                 $priKey     = '';
-                foreach ($columnList as $k => $v) {
+                foreach ($columnList as $v) {
                     if ($v['COLUMN_KEY'] == 'PRI') {
                         $priKey = $v['COLUMN_NAME'];
                         break;
                     }
                 }
-                if ( ! $priKey) {
+                if (!$priKey) {
                     return json(['error' => 1, 'msg' => '请设置 [' . $tableName . '] 表的主键']);
                 }
                 // 获取表基础信息
@@ -252,7 +252,7 @@ class Module extends Base
                 // 返回信息
                 $data = [
                     'module_name'    => $tableInfo['Comment'] ?: $table_name,    // 模块名称
-                    'model_name'     => $modelName,                             // 模型名称
+                    'model_name'     => $modelName,                              // 模型名称
                     'table_comment'  => $tableInfo['Comment'],                   // 表注释
                     'pk'             => $priKey,                                 // 主键
                     'table_type'     => $tableType,                              // 表类型
@@ -298,7 +298,7 @@ class Module extends Base
 
     /**
      * 删除模型时删除当前模型的所有字段数据[兼容多选和单选]
-     * @param  string  $id
+     * @param string $id
      * @return bool
      * @throws \Exception
      */

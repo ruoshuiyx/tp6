@@ -284,10 +284,12 @@ class Xlsx extends BaseWriter
     /**
      * Save PhpSpreadsheet to file.
      *
-     * @param resource|string $pFilename
+     * @param resource|string $filename
      */
-    public function save($pFilename): void
+    public function save($filename, int $flags = 0): void
     {
+        $this->processFlags($flags);
+
         // garbage collect
         $this->pathNames = [];
         $this->spreadSheet->garbageCollect();
@@ -501,7 +503,7 @@ class Xlsx extends BaseWriter
         Functions::setReturnDateType($saveDateReturnType);
         Calculation::getInstance($this->spreadSheet)->getDebugLog()->setWriteDebugLog($saveDebugLog);
 
-        $this->openFileHandle($pFilename);
+        $this->openFileHandle($filename);
 
         $options = new Archive();
         $options->setEnableZip64(false);
@@ -638,13 +640,13 @@ class Xlsx extends BaseWriter
     /**
      * Set Office2003 compatibility.
      *
-     * @param bool $pValue Office2003 compatibility?
+     * @param bool $office2003compatibility Office2003 compatibility?
      *
      * @return $this
      */
-    public function setOffice2003Compatibility($pValue)
+    public function setOffice2003Compatibility($office2003compatibility)
     {
-        $this->office2003compatibility = $pValue;
+        $this->office2003compatibility = $office2003compatibility;
 
         return $this;
     }
