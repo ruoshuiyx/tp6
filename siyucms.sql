@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 06/12/2021 10:56:51
+ Date: 06/12/2021 15:30:37
 */
 
 SET NAMES utf8mb4;
@@ -114,7 +114,7 @@ CREATE TABLE `tp_admin_log`  (
 DROP TABLE IF EXISTS `tp_area`;
 CREATE TABLE `tp_area`  (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `pid` int(11) NULL DEFAULT NULL COMMENT '父级id',
+  `pid` int(11) NULL DEFAULT 0 COMMENT '父级id',
   `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '区划编码',
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '区划名称',
   `level` tinyint(1) NULL DEFAULT NULL COMMENT '级次id 0:省/自治区/直辖市 1:市级 2:县级',
