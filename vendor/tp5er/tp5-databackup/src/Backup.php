@@ -1,11 +1,11 @@
 <?php
 // +----------------------------------------------------------------------
 // | Author: tp5er <tp5er@qq.com>
-// | QQ: 1751212020
+// | QQ Group: 368683534
 // +----------------------------------------------------------------------
 namespace tp5er;
 use think\Db;
-use think\App;
+use think\Config;
 class Backup
 {
     /**
@@ -66,7 +66,7 @@ class Backup
     public function setTimeout($time=null)
     {
         if (!is_null($time)) {
-           set_time_limit($time)||ini_set("max_execution_time", $time);
+            set_time_limit($time)||ini_set("max_execution_time", $time);
         }
         return $this;
     }
@@ -106,11 +106,7 @@ class Backup
     //数据类连接
     public static function connect()
     {
-        if(APP::VERSION>="6.0.0"){
-            return \think\facade\Db::connect();
-        }else{
-            return Db::connect();
-        }
+        return \think\facade\Db::connect();
     }
     //数据库表列表
     public function dataList($table = null,$type=1)
@@ -122,7 +118,7 @@ class Backup
             if ($type) {
                 $list = $db->query("SHOW FULL COLUMNS FROM {$table}");
             }else{
-                 $list = $db->query("show columns from {$table}");
+                $list = $db->query("show columns from {$table}");
             }
         }
         return array_map('array_change_key_case', $list);
@@ -140,23 +136,26 @@ class Backup
         $list = array();
         foreach ($glob as $name => $file) {
             if (preg_match('/^\\d{8,8}-\\d{6,6}-\\d+\\.sql(?:\\.gz)?$/', $name)) {
-                $name1= $name;
                 $name = sscanf($name, '%4s%2s%2s-%2s%2s%2s-%d');
+                $info['name'] = $name;
                 $date = "{$name[0]}-{$name[1]}-{$name[2]}";
                 $time = "{$name[3]}:{$name[4]}:{$name[5]}";
                 $part = $name[6];
                 if (isset($list["{$date} {$time}"])) {
                     $info = $list["{$date} {$time}"];
                     $info['part'] = max($info['part'], $part);
-                    $info['size'] = $info['size'] + $file->getSize();
+                    $info['size'] = format_bytes($info['size'] + $file->getSize());
+                    $info['size_num'] = $info['size'] + $file->getSize();
                 } else {
                     $info['part'] = $part;
-                    $info['size'] = $file->getSize();
+                    $info['size'] = format_bytes($file->getSize());
+                    $info['size_num'] = $file->getSize();
                 }
                 $extension = strtoupper(pathinfo($file->getFilename(), PATHINFO_EXTENSION));
-                $info['name']=$name1;
                 $info['compress'] = $extension === 'SQL' ? '-' : $extension;
+                $info['name'] = $file->getFilename();
                 $info['time'] = strtotime("{$date} {$time}");
+                $info['addtime'] = ("{$date} {$time}");
                 $list["{$date} {$time}"] = $info;
             }
         }
@@ -244,23 +243,23 @@ class Backup
             throw new \Exception("{$time} File is abnormal");
         }
     }
-    public function import($start,$time)
+    public function import($start)
     {
         //还原数据
         $db = self::connect();
-        $this->file=$this->getFile('time',$time);
         if ($this->config['compress']) {
-            $gz = gzopen($this->file[0], 'r');
+            $gz = gzopen($this->file[1], 'r');
             $size = 0;
         } else {
-            $size = filesize($this->file[0]);
-            $gz = fopen($this->file[0], 'r');
+            $size = filesize($this->file[1]);
+            $gz = fopen($this->file[1], 'r');
         }
+        $line = count(file($this->file[1]))+1;
         $sql = '';
         if ($start) {
             $this->config['compress'] ? gzseek($gz, $start) : fseek($gz, $start);
         }
-        for ($i = 0; $i < 1000; $i++) {
+        for ($i = 0; $i < $line; $i++) {
             $sql .= $this->config['compress'] ? gzgets($gz) : fgets($gz);
             if (preg_match('/.*;$/', trim($sql))) {
                 if (false !== $db->execute($sql)) {
@@ -456,7 +455,7 @@ class Backup
      */
     public function __destruct()
     {
-        if($this->fp){
+        if ($this->fp) {
             $this->config['compress'] ? @gzclose($this->fp) : @fclose($this->fp);
         }
     }
