@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 06/12/2021 15:30:37
+ Date: 06/12/2021 15:37:38
 */
 
 SET NAMES utf8mb4;
@@ -3343,7 +3343,6 @@ INSERT INTO `tp_area` VALUES (3216, 1, '110010', '北京市', 1, 0, 0);
 INSERT INTO `tp_area` VALUES (3217, 18, '120010', '天津市', 1, 0, 0);
 INSERT INTO `tp_area` VALUES (3218, 780, '310010', '上海市', 1, 0, 0);
 INSERT INTO `tp_area` VALUES (3219, 2220, '500010', '重庆市', 1, 0, 0);
-INSERT INTO `tp_area` VALUES (3220, NULL, '', '', NULL, 0, 0);
 
 -- ----------------------------
 -- Table structure for tp_article
