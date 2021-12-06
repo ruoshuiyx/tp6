@@ -1,11 +1,11 @@
 <?php
 // +----------------------------------------------------------------------
 // | Author: tp5er <tp5er@qq.com>
-// | QQ Group: 368683534
+// | QQ: 1751212020
 // +----------------------------------------------------------------------
 namespace tp5er;
 use think\Db;
-use think\Config;
+use think\App;
 class Backup
 {
     /**
@@ -73,7 +73,7 @@ class Backup
     /**
      * 设置数据库连接必备参数
      * @param array  $dbconfig   数据库连接配置信息
-     * @return object 
+     * @return object
      */
     public function setDbConn($dbconfig = [])
     {
@@ -88,7 +88,7 @@ class Backup
     /**
      * 设置备份文件名
      * @param Array  $file  文件名字
-     * @return object 
+     * @return object
      */
     public function setFile($file = null)
     {
@@ -106,7 +106,11 @@ class Backup
     //数据类连接
     public static function connect()
     {
-        return \think\facade\Db::connect();
+        if(APP::VERSION>="6.0.0"){
+            return \think\facade\Db::connect();
+        }else{
+            return Db::connect();
+        }
     }
     //数据库表列表
     public function dataList($table = null,$type=1)
@@ -136,26 +140,23 @@ class Backup
         $list = array();
         foreach ($glob as $name => $file) {
             if (preg_match('/^\\d{8,8}-\\d{6,6}-\\d+\\.sql(?:\\.gz)?$/', $name)) {
+                $name1= $name;
                 $name = sscanf($name, '%4s%2s%2s-%2s%2s%2s-%d');
-                $info['name'] = $name;
                 $date = "{$name[0]}-{$name[1]}-{$name[2]}";
                 $time = "{$name[3]}:{$name[4]}:{$name[5]}";
                 $part = $name[6];
                 if (isset($list["{$date} {$time}"])) {
                     $info = $list["{$date} {$time}"];
                     $info['part'] = max($info['part'], $part);
-                    $info['size'] = format_bytes($info['size'] + $file->getSize());
-                    $info['size_num'] = $info['size'] + $file->getSize();
+                    $info['size'] = $info['size'] + $file->getSize();
                 } else {
                     $info['part'] = $part;
-                    $info['size'] = format_bytes($file->getSize());
-                    $info['size_num'] = $file->getSize();
+                    $info['size'] = $file->getSize();
                 }
                 $extension = strtoupper(pathinfo($file->getFilename(), PATHINFO_EXTENSION));
+                $info['name']=$name1;
                 $info['compress'] = $extension === 'SQL' ? '-' : $extension;
-                $info['name'] = $file->getFilename();
                 $info['time'] = strtotime("{$date} {$time}");
-                $info['addtime'] = ("{$date} {$time}");
                 $list["{$date} {$time}"] = $info;
             }
         }
@@ -243,23 +244,23 @@ class Backup
             throw new \Exception("{$time} File is abnormal");
         }
     }
-    public function import($start)
+    public function import($start,$time)
     {
         //还原数据
         $db = self::connect();
+        $this->file=$this->getFile('time',$time);
         if ($this->config['compress']) {
-            $gz = gzopen($this->file[1], 'r');
+            $gz = gzopen($this->file[0], 'r');
             $size = 0;
         } else {
-            $size = filesize($this->file[1]);
-            $gz = fopen($this->file[1], 'r');
+            $size = filesize($this->file[0]);
+            $gz = fopen($this->file[0], 'r');
         }
-        $line = count(file($this->file[1]))+1;
         $sql = '';
         if ($start) {
             $this->config['compress'] ? gzseek($gz, $start) : fseek($gz, $start);
         }
-        for ($i = 0; $i < $line; $i++) {
+        for ($i = 0; $i < 1000; $i++) {
             $sql .= $this->config['compress'] ? gzgets($gz) : fgets($gz);
             if (preg_match('/.*;$/', trim($sql))) {
                 if (false !== $db->execute($sql)) {
@@ -348,7 +349,7 @@ class Backup
     /**
      * 优化表
      * @param  String $tables 表名
-     * @return String $tables  
+     * @return String $tables
      */
     public function optimize($tables = null)
     {
@@ -372,7 +373,7 @@ class Backup
     /**
      * 修复表
      * @param  String $tables 表名
-     * @return String $tables  
+     * @return String $tables
      */
     public function repair($tables = null)
     {
@@ -455,7 +456,7 @@ class Backup
      */
     public function __destruct()
     {
-        if ($this->fp) {
+        if($this->fp){
             $this->config['compress'] ? @gzclose($this->fp) : @fclose($this->fp);
         }
     }

@@ -2890,23 +2890,29 @@
         },
         {
             "name": "tp5er/tp5-databackup",
-            "version": "2.0.0",
-            "version_normalized": "2.0.0.0",
+            "version": "3.0.0",
+            "version_normalized": "3.0.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tp5er/tp5-databackup.git",
-                "reference": "f492b6c1faf01dd97e4ed689eb47c8b822bb50aa"
+                "reference": "38aa5f826579b0a86fcddef318d9f73eb651e519"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tp5er/tp5-databackup/zipball/f492b6c1faf01dd97e4ed689eb47c8b822bb50aa",
-                "reference": "f492b6c1faf01dd97e4ed689eb47c8b822bb50aa",
-                "shasum": ""
+                "url": "https://api.github.com/repos/tp5er/tp5-databackup/zipball/38aa5f826579b0a86fcddef318d9f73eb651e519",
+                "reference": "38aa5f826579b0a86fcddef318d9f73eb651e519",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
             },
             "require": {
                 "php": ">=5.4.0"
             },
-            "time": "2021-04-27T01:51:18+00:00",
+            "time": "2021-09-27T19:45:50+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -2927,7 +2933,7 @@
             "description": "Implement the database backup restore",
             "support": {
                 "issues": "https://github.com/tp5er/tp5-databackup/issues",
-                "source": "https://github.com/tp5er/tp5-databackup/tree/2.0.0"
+                "source": "https://github.com/tp5er/tp5-databackup/tree/3.0.0"
             },
             "install-path": "../tp5er/tp5-databackup"
         },

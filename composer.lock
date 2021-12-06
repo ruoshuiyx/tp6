@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3079ff27b27ef1af93621d1788946e6f",
+    "content-hash": "fe6b8b1f2154787b706105350e45c59c",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -2644,16 +2644,16 @@
         },
         {
             "name": "tp5er/tp5-databackup",
-            "version": "2.0.0",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tp5er/tp5-databackup.git",
-                "reference": "f492b6c1faf01dd97e4ed689eb47c8b822bb50aa"
+                "reference": "38aa5f826579b0a86fcddef318d9f73eb651e519"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tp5er/tp5-databackup/zipball/f492b6c1faf01dd97e4ed689eb47c8b822bb50aa",
-                "reference": "f492b6c1faf01dd97e4ed689eb47c8b822bb50aa",
+                "url": "https://api.github.com/repos/tp5er/tp5-databackup/zipball/38aa5f826579b0a86fcddef318d9f73eb651e519",
+                "reference": "38aa5f826579b0a86fcddef318d9f73eb651e519",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -2684,9 +2684,9 @@
             "description": "Implement the database backup restore",
             "support": {
                 "issues": "https://github.com/tp5er/tp5-databackup/issues",
-                "source": "https://github.com/tp5er/tp5-databackup/tree/2.0.0"
+                "source": "https://github.com/tp5er/tp5-databackup/tree/3.0.0"
             },
-            "time": "2021-04-27T01:51:18+00:00"
+            "time": "2021-09-27T19:45:50+00:00"
         },
         {
             "name": "zzstudio/think-addons",

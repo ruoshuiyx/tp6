@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '2e653a4f26b1a2c7f421e5a2c93a0ac5e3bc18e1',
+        'reference' => '981e635bff2820fd4a824e979b7ea9863db92091',
         'name' => 'topthink/think',
         'dev' => true,
     ),
@@ -349,7 +349,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '2e653a4f26b1a2c7f421e5a2c93a0ac5e3bc18e1',
+            'reference' => '981e635bff2820fd4a824e979b7ea9863db92091',
             'dev_requirement' => false,
         ),
         'topthink/think-captcha' => array(
@@ -416,12 +416,12 @@
             'dev_requirement' => false,
         ),
         'tp5er/tp5-databackup' => array(
-            'pretty_version' => '2.0.0',
-            'version' => '2.0.0.0',
+            'pretty_version' => '3.0.0',
+            'version' => '3.0.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../tp5er/tp5-databackup',
             'aliases' => array(),
-            'reference' => 'f492b6c1faf01dd97e4ed689eb47c8b822bb50aa',
+            'reference' => '38aa5f826579b0a86fcddef318d9f73eb651e519',
             'dev_requirement' => false,
         ),
         'zzstudio/think-addons' => array(
