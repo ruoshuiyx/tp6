@@ -239,18 +239,20 @@ class TableBuilder
      * @param string $param    额外参数
      * @param string $class    css类名
      * @param string $sortable 是否排序
+     * @param int    $with     列宽
      * @return $this
      */
-    public function addColumn($name = '', $title = '', $type = '', $default = '', $param = '', $class = '', $sortable = 'false')
+    public function addColumn($name = '', $title = '', $type = '', $default = '', $param = '', $class = '', $sortable = 'false', $width = 0)
     {
         $column = [
-            'name'     => $name,
-            'title'    => $title,
-            'type'     => $type,
-            'default'  => $default,
-            'param'    => $param,
-            'class'    => $class,
-            'sortable' => $sortable,
+            'name'     => $name,     // 字段名称
+            'title'    => $title,    // 字段别名
+            'type'     => $type,     // 单元格类型
+            'default'  => $default,  // 默认值
+            'param'    => $param,    // 额外参数
+            'class'    => $class,    // css类名
+            'sortable' => $sortable, // 是否排序
+            'width'    => $width,    // 列宽
         ];
 
         $this->_vars['columns'][] = $column;

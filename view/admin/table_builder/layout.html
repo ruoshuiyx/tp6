@@ -70,6 +70,9 @@
                             {notempty name="column.class"}
                                 class: '{$column.class|default=''}', {// 使用class定义/覆盖列的CSS类}
                             {/notempty}
+                            {notempty name="column.width"}
+                                width: {$column.width}, {// 列宽}
+                            {/notempty}
 
 							{if $column.param }
 								{if $column.name == 'status' }
