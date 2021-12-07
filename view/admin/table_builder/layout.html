@@ -41,6 +41,9 @@
                 pageSize      : "{$page_size}",         // 每页显示的行数
                 layerOpen     : "{$layer_open}",        // 添加/编辑等页启用layer弹层加载
                 empty_tips    : "{$empty_tips}",        // 空数据提示信息
+                fixedColumns  : true,                   // 是否启用固定列功能
+                fixedLeft     : {$fixed_left},          // 左侧固定列数
+                fixedRight    : {$fixed_right},         // 右侧固定列数
                 columns: [
                     {
                         //field: 'state',
@@ -58,7 +61,7 @@
                         {
                             field: '{$column.name|default=''}',  {// 字段名称}
                             title: '{$column.title|default=''}', {// 字段别名}
-							
+
                             {if $column.name==$unique_id}
                                 sortable: true,                  {// 主键必须可以排序}
                             {else}
@@ -67,7 +70,7 @@
                             {notempty name="column.class"}
                                 class: '{$column.class|default=''}', {// 使用class定义/覆盖列的CSS类}
                             {/notempty}
-							
+
 							{if $column.param }
 								{if $column.name == 'status' }
 									formatter: function(value, row, index) {
@@ -216,7 +219,7 @@
 											}
 											actions.push('<a class="{$right_button.class|default=''}" target="{$right_button.target|default=''}" href="'+url+'"><i class="{$right_button.icon|default=''}"></i> {$right_button.title|default=''}</a> ');
 										}
-		
+
 										{/volist}
 										return actions.join('');
 									}
@@ -225,7 +228,7 @@
 									{/switch}
 								{/if}
 							{/if}
-                            
+
                         },
                     {/volist}
                 ]

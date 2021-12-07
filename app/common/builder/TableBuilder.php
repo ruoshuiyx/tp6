@@ -71,6 +71,8 @@ class TableBuilder
         'empty_tips'       => '没有找到匹配的记录', // 空数据提示信息
         'hide_checkbox'    => false,       // 是否隐藏第一列多选[待完善]
         'layer_open'       => true,        // 添加/编辑等页启用layer弹层加载
+        'fixed_left'       => 0,           // 左侧固定列数
+        'fixed_right'      => 1,           // 右侧固定列数
     ];
 
     /**
@@ -684,6 +686,28 @@ class TableBuilder
     public function setLayerOpen($value = true)
     {
         $this->_vars['layer_open'] = $value;
+        return $this;
+    }
+
+    /**
+     * 设置左侧固定列数
+     * @param string $value 列数
+     * @return $this
+     */
+    public function setFixedLeft($value = 1)
+    {
+        $this->_vars['fixed_left'] = $value;
+        return $this;
+    }
+
+    /**
+     * 设置右侧固定列数
+     * @param string $value 列数
+     * @return $this
+     */
+    public function setFixedRight($value = 1)
+    {
+        $this->_vars['fixed_right'] = $value;
         return $this;
     }
 }
