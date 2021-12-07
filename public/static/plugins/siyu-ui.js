@@ -97,7 +97,21 @@
                         if ($.common.isNotEmpty(edit) && edit.indexOf('$.operate.edit') != -1) {
                             $.operate.edit($element.data('uniqueid'));
                         }
-                    }
+                    },
+                    buttons: function () {                              // 自定义按钮
+                        return {
+                            btnSearch: {
+                                text: '隐藏/显示 搜索',
+                                icon: 'fa-search',
+                                event: function () {
+                                    $('.search-collapse').slideToggle();
+                                },
+                                attributes: {
+                                    title: '隐藏/显示 搜索'
+                                }
+                            }
+                        }
+                    },
                 };
                 // 将tree合并到option[关闭分页且传递父id字段才可以看到tree]
                 if (option.pagination == false && $.common.isNotEmpty(options.parentIdField)) {
