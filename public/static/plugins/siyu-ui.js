@@ -90,7 +90,7 @@
                     queryParams: options.queryParams,                   // 传递参数（*）
                     loadingFontSize: 16,                                // 加载字样的字体大小
                     formatNoMatches: function () {                      // 空数据提示信息
-                        return options.empty_tips;
+                        return options.emptyTips;
                     },
                     onDblClickRow: function (row, $element, field) {	// 双击一行时触发编辑动作
                         var edit = $element.children("td").last().html();
