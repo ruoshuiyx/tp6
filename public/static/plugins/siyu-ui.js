@@ -125,7 +125,7 @@
 									// expanderExpandedClass: 'glyphicon glyphicon-minus',  //图标样式
 									// expanderCollapsedClass: 'glyphicon glyphicon-plus',
 									onChange: function () {
-										$.btTable.bootstrapTable('resetWidth');
+										$.btTable.bootstrapTable('resetView');
 									}
 								});
 							}
