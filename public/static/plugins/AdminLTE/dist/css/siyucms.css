@@ -12,6 +12,7 @@
 .alert > p, .alert > ul{margin-bottom: 0;} /* 弹窗调整(已废弃) */
 
 /*---------------------------公共样式---------------------------*/
+body{color: #495057}
 a, a:hover{color: inherit;}
 .w_40{width: 40px;}
 .w_110{width: 110px;}
@@ -60,8 +61,6 @@ label{margin-bottom: 0;}
 .sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active, .sidebar-light-primary .nav-sidebar > .nav-item > .nav-link.active{background-color: #3c8dbc;}
 .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show > .btn-primary.dropdown-toggle{color: #fff;background-color: #204d74;border-color: #122b40;}
 .sidebar-dark-primary .nav-sidebar.nav-legacy > .nav-item > .nav-link.active, .sidebar-light-primary .nav-sidebar.nav-legacy > .nav-item > .nav-link.active{border-color: #3c8dbc;}
-/* table隔行换色 */
-.table-striped tbody tr:nth-of-type(odd){background-color: rgba(0, 0, 0, .01);}
 /* 主体区域直角风格 */
 .content_main-radius section.content .card, .content_main-radius section.content .form_builder, .content_main-radius section.content .search-collapse, .content_main-radius section.content .select-table, .content_main-radius section.content .search{border-radius: 0 !important;}
 
@@ -186,8 +185,12 @@ label{margin-bottom: 0;}
 .page-item.active .page-link{background-color: #3c8dbc;border-color: #3c8dbc;}
 /* 列表头背景 */
 .table-striped table thead{background-color: #eff3f8;}
+/* 表格隔行背景色 */
+.table-striped tbody tr:nth-of-type(odd) {background-color: rgba(0,0,0,.015);}
+/* 表格鼠标移上背景色 */
+.table-hover tbody tr:hover{background-color: #e0f3ff}
 /* 表格选中样式 */
-.fixed-table-container .selected{background-color: #E8F7FD !important;color: #1890ff !important;}
+.bootstrap-table .fixed-table-container .table tbody tr.selected td{background-color: #e0f3ff; color: #007bff}
 /* 加载中字体大小 */
 .bootstrap-table .fixed-table-container .fixed-table-body .fixed-table-loading .loading-wrap .loading-text{font-size: 1rem;}
 
