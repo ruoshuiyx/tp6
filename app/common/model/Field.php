@@ -52,13 +52,20 @@ class Field extends Base
     // 获取列表
     public static function getList(array $where = [], int $pageSize = 0, array $order = ['sort', 'id' => 'desc'])
     {
-        $list = self::with(['module', 'dictionaryType'])
-            ->where($where)
-            ->order($order)
-            ->paginate([
-                'query'     => Request::get(),
-                'list_rows' => $pageSize,
-            ]);
+        if ($pageSize) {
+            $list = self::with(['module', 'dictionaryType'])
+                ->where($where)
+                ->order($order)
+                ->paginate([
+                    'query'     => Request::get(),
+                    'list_rows' => $pageSize,
+                ]);
+        } else {
+            $list = self::with(['module', 'dictionaryType'])
+                ->where($where)
+                ->order($order)
+                ->select();
+        }
         foreach ($list as $k => $v) {
             $list[$k]['module_id'] = $v->module->getData('module_name');
             if ($list[$k]['dict_code']) {
@@ -78,7 +85,7 @@ class Field extends Base
         // 格式化setup 字段
         $result = array();
         foreach ($list as $k => $v) {
-            if ( ! empty($v['setup'])) {
+            if (!empty($v['setup'])) {
                 $list[$k]['setup'] = string2array($v['setup']);
                 if (array_key_exists('options', $list[$k]['setup'])) {
                     $list[$k]['setup']['options'] = explode("\n", $list[$k]['setup']['options']);

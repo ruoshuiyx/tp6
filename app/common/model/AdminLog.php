@@ -47,13 +47,20 @@ class AdminLog extends Base
     // 获取列表
     public static function getList(array $where = [], int $pageSize = 0, array $order = ['sort', 'id' => 'desc'])
     {
-        $list = self::with(['admin'])
-            ->where($where)
-            ->order($order)
-            ->paginate([
-                'query'     => Request::get(),
-                'list_rows' => $pageSize,
-            ]);
+        if ($pageSize) {
+            $list = self::with(['admin'])
+                ->where($where)
+                ->order($order)
+                ->paginate([
+                    'query'     => Request::get(),
+                    'list_rows' => $pageSize,
+                ]);
+        } else {
+            $list = self::with(['admin'])
+                ->where($where)
+                ->order($order)
+                ->select();
+        }
         foreach ($list as $k => $v) {
             if ($list[$k]['admin_id']) {
                 $v['admin_id'] = $v->admin->getData('username');
@@ -102,7 +109,7 @@ class AdminLog extends Base
         }
 
         // 插入数据
-        if ( ! empty($title)) {
+        if (!empty($title)) {
             // 查询管理员上一条数据
             $result = self::where('admin_id', '=', $adminId)
                 ->order('id', 'desc')
@@ -111,7 +118,7 @@ class AdminLog extends Base
                 if ($result->url != $url) {
                     self::create([
                         'title'      => $title ? $title : '',
-                        'content'    => ! is_scalar($content) ? json_encode($content) : $content,
+                        'content'    => !is_scalar($content) ? json_encode($content) : $content,
                         'url'        => $url,
                         'admin_id'   => $adminId,
                         'user_agent' => $userAgent,
@@ -121,7 +128,7 @@ class AdminLog extends Base
             } else {
                 self::create([
                     'title'      => $title ? $title : '',
-                    'content'    => ! is_scalar($content) ? json_encode($content) : $content,
+                    'content'    => !is_scalar($content) ? json_encode($content) : $content,
                     'url'        => $url,
                     'admin_id'   => $adminId,
                     'user_agent' => $userAgent,

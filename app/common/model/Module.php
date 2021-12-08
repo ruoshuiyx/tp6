@@ -49,15 +49,22 @@ class Module extends Base
     // 获取列表
     public static function getList(array $where = [], int $pageSize = 0, array $order = ['sort', 'id' => 'desc'])
     {
-        $list = self::where($where)
-            ->order($order)
-            ->paginate(
-                [
-                    'query'     => Request::get(),
-                    'list_rows' => $pageSize,
-                ]
-            )
-            ->toArray();
+        if ($pageSize) {
+            $list = self::where($where)
+                ->order($order)
+                ->paginate(
+                    [
+                        'query'     => Request::get(),
+                        'list_rows' => $pageSize,
+                    ]
+                )
+                ->toArray();
+        } else {
+            $list = self::where($where)
+                ->order($order)
+                ->select()
+                ->toArray();
+        }
         // 获取不可选中的信息
         $unMakeModule = \think\facade\Config::get('builder.un_make_module');
         foreach ($list['data'] as $k => $v) {

@@ -44,12 +44,19 @@ class Admin extends Base
     // 获取列表
     public static function getList(array $where = [], int $pageSize = 0, array $order = ['sort', 'id' => 'desc'])
     {
-        $list = self::where($where)
-            ->order($order)
-            ->paginate([
-                'query'     => Request::get(),
-                'list_rows' => $pageSize,
-            ]);
+        if ($pageSize) {
+            $list = self::where($where)
+                ->order($order)
+                ->paginate([
+                    'query'     => Request::get(),
+                    'list_rows' => $pageSize,
+                ]);
+        } else {
+            $list = self::where($where)
+                ->order($order)
+                ->select();
+        }
+
         $auth = new \Auth();
         foreach ($list as $k => $v) {
             $title  = '';
@@ -78,7 +85,7 @@ class Admin extends Base
         $open_code = $system['code'];
         if ($open_code) {
             $code = Request::param("vercode");
-            if ( ! captcha_check($code)) {
+            if (!captcha_check($code)) {
                 $data = ['error' => '1', 'msg' => '验证码错误'];
                 return json($data);
             }
@@ -121,7 +128,7 @@ class Admin extends Base
                     }
                 }
 
-                $authOpensStr   = ! empty($authOpens) ? implode(",", $authOpens) : '';
+                $authOpensStr   = !empty($authOpens) ? implode(",", $authOpens) : '';
                 $rules['rules'] = $rules['rules'] . $authOpensStr;
 
                 // 重新查询要赋值的数据[原因是toArray必须保证find的数据不为空，为空就报错]
