@@ -27,7 +27,7 @@
             <option value="">{$form[type].placeholder}</option>
             {notempty name="levelData.1"}
             {volist name="levelData.1" id="option"}
-            <option value="{$option[$form[type]['key']]}" {if (isset($levelKey[2]) && $levelKey[2] == (string)$option[$form[type]['key']])}selected{/if}>{$option[$form[type]['option']]|raw}</option>
+            <option value="{$option[$form[type]['key']]}" {if ($form[type].value == (string)$option[$form[type]['key']])}selected{/if}>{$option[$form[type]['option']]|raw}</option>
             {/volist}
             {/notempty}
         </select>

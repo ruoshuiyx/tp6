@@ -13,6 +13,63 @@
                         {if $search.data_source == 2 && ($search.type == 'text' || $search.type == 'textarea' || $search.type == 'number' || $search.type == 'hidden') }
                             {// 模型关联且需要转换的单独处理 }
                             <input type="text" id="search_{$search.name|default=''}" name="{$search.name|default=''}" value="{$search.default|default=''}"/>
+                        {elseif $search.data_source == 2 && $search.type == 'linkage'}
+                            {// 多级联动 }
+                            {php}
+                                // 获取字段信息
+                                $filedInfo = \app\common\model\Field::where('id', $search['field_id'])->find();
+                                $filedInfo['setup'] = string2array($filedInfo['setup']);
+                                $setupFields = explode(',', $filedInfo['setup']['fields']);
+
+                                // 获取一级联动数据
+                                $levelOne  = getLinkageData($search['relation_model'], 0, $setupFields[2]);
+                                $levelKey  = [];
+                                $levelData = [];
+                                $ajaxUrl = (string)url('Index/linkage', ['id' => $search['field_id']]);
+
+                                // 默认值
+                                if ($search['default'] != '') {
+                                    $levelKeyData = getLinkageAllData($search['relation_model'], $search['default'], $setupFields[0], $setupFields[1], $setupFields[2]);
+                                    $levelKey = $levelKeyData['key'];
+                                    $levelData = $levelKeyData['data'];
+                                    sort($levelKey); // 升序排序
+                                    $levelData = array_reverse($levelData); // 以相反的元素顺序返回数组
+                                }
+                            {/php}
+                            <select class="js_linkage" data-model="{$search.relation_model}" data-key="{$setupFields.0}" data-key_value="{$setupFields.1}" data-pid_field_name="{$setupFields.2|default='pid'}" data-next_level_id="{$search.name}_2" id="{$search.name}_1" name="{$search.name}_1" data-placeholder="请选择" data-ajax_url="{$ajaxUrl}" style="width: auto; display: inline-block">
+                                <option value="">请选择</option>
+                                {volist name="levelOne" id="option"}
+                                <option value="{$option[$setupFields[0]]}" {if (isset($levelKey[1]) && $levelKey[1] == (string)$option[$setupFields[0]])}selected{/if}>{$option[$setupFields[1]]|raw}</option>
+                                {/volist}
+                            </select>
+                            {eq name="$filedInfo.setup.level" value="2"}
+                            <select id="{$search.name}_2" name="{$search.name}" data-placeholder="请选择" style="width: auto; display: inline-block">
+                                <option value="">请选择</option>
+                                {notempty name="levelData.1"}
+                                {volist name="levelData.1" id="option"}
+                                <option value="{$option[$setupFields[0]]}" {if ($search.default == (string)$option[$setupFields[0]])}selected{/if}>{$option[$setupFields[1]]|raw}</option>
+                                {/volist}
+                                {/notempty}
+                            </select>
+                            {/eq}
+                            {eq name="$filedInfo.setup.level" value="3"}
+                            <select class="js_linkage" data-model="{$search.relation_model}" data-key="{$setupFields.0}" data-key_value="{$setupFields.1}" data-pid_field_name="{$setupFields.2|default='pid'}" data-next_level_id="{$search.name}_3" id="{$search.name}_2" name="{$search.name}_2" data-placeholder="请选择" data-ajax_url="{$ajaxUrl}" style="width: auto; display: inline-block">
+                                <option value="">请选择</option>
+                                {notempty name="levelData.1"}
+                                {volist name="levelData.1" id="option"}
+                                <option value="{$option[$setupFields[0]]}" {if (isset($levelKey[2]) && $levelKey[2] == (string)$option[$setupFields[0]])}selected{/if}>{$option[$setupFields[1]]|raw}</option>
+                                {/volist}
+                                {/notempty}
+                            </select>
+                            <select id="{$search.name}_3" name="{$search.name}" data-placeholder="请选择" style="width: auto; display: inline-block">
+                                <option value="">请选择</option>
+                                {notempty name="levelData.2"}
+                                {volist name="levelData.2" id="option"}
+                                <option value="{$option[$setupFields[0]]}" {if ($search.default == (string)$option[$setupFields[0]])}selected{/if}>{$option[$setupFields[1]]|raw}</option>
+                                {/volist}
+                                {/notempty}
+                            </select>
+                            {/eq}
                         {else}
                             <select id="search_{$search.name|default=''}" name="{$search.name|default=''}">
                                 <option value="">所有</option>
