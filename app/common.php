@@ -925,3 +925,26 @@ function getLinkageAllData(string $modelName, $id = '', $idFieldName = 'id', $na
     $result['data'] = $resultData;
     return $result;
 }
+
+/**
+ * 根据末级ID获取每级的联动数据
+ * @param string $modelName     模型名称
+ * @param string $id            主键值
+ * @param string $idFieldName   主键字段名
+ * @param string $nameFieldName name字段名
+ * @param string $pidFieldName  pid字段名
+ * @param array  $result        数据
+ */
+function getLinkageListData(string $modelName, $id = '', $idFieldName = 'id', $nameFieldName = 'name', $pidFieldName = 'pid', $result = [])
+{
+    $model = '\app\common\model\\' . $modelName;
+    // 查找当前层的数据
+    $data = $model:: where($idFieldName, $id)->field([$idFieldName, $nameFieldName, $pidFieldName])->find();
+    if ($data) {
+        $result[] = $data->toArray();
+        if ($data->{$pidFieldName}) {
+            return getLinkageListData($modelName, $data->{$pidFieldName}, $idFieldName, $nameFieldName, $pidFieldName, $result);
+        }
+    }
+    return $result;
+}

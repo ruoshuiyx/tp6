@@ -47,37 +47,46 @@ class Base extends Model
     {
         $model = new static();
         $model = $model->alias($model->getName());
+
         // 获取with关联
         $moduleId  = \app\common\model\Module::where('model_name', $model->getName())->value('id');
         $fileds    = \app\common\model\Field::where('module_id', $moduleId)
             ->select()
             ->toArray();
         $listInfo  = [];  // 字段根据关联信息重新赋值
-        $withInfo  = [];  // 模型关联信息
+        $withInfo  = [];  // 模型关联信息(用于设置关联预载入)
         $fieldInfo = [];  // 字段包含.的时候从关联模型中获取数据
         foreach ($fileds as $filed) {
             // 数据源为模型数据时设置关联信息
             if ($filed['data_source'] == 2) {
                 $listInfo[] = [
-                    'field'          => $filed['field'],
-                    'relation_model' => lcfirst($filed['relation_model']),
-                    'relation_field' => $filed['relation_field'],
+                    'field'          => $filed['field'],                   // 字段名称
+                    'relation_model' => lcfirst($filed['relation_model']), // 关联模型
+                    'relation_field' => $filed['relation_field'],          // 展示字段
+                    'type'           => $filed['type'],                    // 字段类型
+                    'setup'          => string2array($filed['setup']),     // 字段其他设置
                 ];
                 $withInfo[] = lcfirst($filed['relation_model']);
             }
             // 字段包含.的时候从关联模型中获取数据
             if (strpos($filed['field'], '.') !== false) {
+                // 拆分字段名称为数组
                 $filedArr    = explode('.', $filed['field']);
                 $fieldInfo[] = [
-                    'field'          => $filed['field'],
-                    'relation_model' => lcfirst($filedArr[0]),
-                    'relation_field' => $filedArr[1],
+                    'field'          => $filed['field'],       // 字段名称
+                    'relation_model' => lcfirst($filedArr[0]), // 关联模型
+                    'relation_field' => $filedArr[1],          // 展示字段
+                    'type'           => $filed['type'],        // 字段类型
                 ];
             }
         }
+
+        // 关联预载入
         if ($withInfo) {
             $model = $model->with($withInfo);
         }
+
+        // 筛选条件
         if ($where) {
             $whereNew = [];
             $whereHas = [];
@@ -110,6 +119,8 @@ class Base extends Model
                 $model = $model->where($where);
             }
         }
+
+        // 查询/分页查询
         if ($pageSize) {
             $list = $model->order($order)
                 ->paginate([
@@ -120,15 +131,30 @@ class Base extends Model
             $list = $model->order($order)
                 ->select();
         }
-
-        foreach ($list as $v) {
+        foreach ($list as $k => $v) {
+            // 字段根据关联信息重新赋值(多级联动需另行处理)
             foreach ($listInfo as $vv) {
-                $v[$vv['field']] = !empty($v->{$vv['relation_model']}) ? $v->{$vv['relation_model']}->getData($vv['relation_field']) : '';
+                if ($vv['type'] == 'linkage') {
+                    // 拆分字段其他设置为数组
+                    $setupFields = explode(',', $vv['setup']['fields']);
+                    // 根据末级ID获取每级的联动数据
+                    $levelData = getLinkageListData(ucfirst($vv['relation_model']), $v[$vv['field']], $setupFields[0], $setupFields[1], $setupFields[2]);
+                    $levelData = array_reverse($levelData); // 以相反的元素顺序返回数组
+                    $str       = '';                        // 要转换成的数据
+                    foreach ($levelData as $v) {
+                        $str .= $v[$setupFields[1]] . '-';
+                    }
+                    $list[$k][$vv['field']] = rtrim($str, '-');
+                } else {
+                    $list[$k][$vv['field']] = !empty($v->{$vv['relation_model']}) ? $v->{$vv['relation_model']}->getData($vv['relation_field']) : '';
+                }
             }
+            // 字段包含.的时候从关联模型中获取数据
             foreach ($fieldInfo as $vv) {
-                $v[$vv['field']] = !empty($v->{$vv['relation_model']}) ? $v->{$vv['relation_model']}->getData($vv['relation_field']) : '';
+                $list[$k][$vv['field']] = !empty($v->{$vv['relation_model']}) ? $v->{$vv['relation_model']}->getData($vv['relation_field']) : '';
             }
         }
+
         return MakeBuilder::changeTableData($list, $model->getName());
     }
 
