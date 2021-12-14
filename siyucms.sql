@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 10/12/2021 17:07:26
+ Date: 14/12/2021 09:03:23
 */
 
 SET NAMES utf8mb4;
@@ -4775,7 +4775,7 @@ INSERT INTO `tp_field` VALUES (352, 21, 'view_auth', '阅读权限', '', 0, 0, 0
 INSERT INTO `tp_field` VALUES (353, 22, 'view_auth', '阅读权限', '', 0, 0, 0, 'select', 2, 'UsersType', 'name', '', 1, 1, 0, 0, 0, '=', 1, 17, '阅读权限', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', 0);
 INSERT INTO `tp_field` VALUES (354, 23, 'view_auth', '阅读权限', '', 0, 0, 0, 'select', 2, 'UsersType', 'name', '', 1, 1, 0, 0, 0, '=', 1, 17, '阅读权限', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', 0);
 INSERT INTO `tp_field` VALUES (355, 24, 'view_auth', '阅读权限', '', 0, 0, 0, 'select', 2, 'UsersType', 'name', '', 1, 1, 0, 0, 0, '=', 1, 17, '阅读权限', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', 0);
-INSERT INTO `tp_field` VALUES (356, 13, 'display_mode', '运行模式', '', 1, 0, 0, 'radio', 1, '', '', '13', 1, 1, 1, 1, 1, '=', 1, 32, '', 'array (\n  \'default\' => \'\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'varchar\',\n)', 5);
+INSERT INTO `tp_field` VALUES (356, 13, 'display_mode', '运行模式', '修改后请重新进入后台', 1, 0, 0, 'radio', 1, '', '', '13', 1, 1, 1, 1, 1, '=', 1, 32, '', 'array (\n  \'default\' => \'0\',\n  \'extra_attr\' => \'\',\n  \'extra_class\' => \'\',\n  \'fieldtype\' => \'tinyint\',\n)', 5);
 
 -- ----------------------------
 -- Table structure for tp_field_group
@@ -5047,14 +5047,14 @@ CREATE TABLE `tp_system`  (
   `upload_image_size` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '图片限制',
   `upload_image_ext` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '图片格式',
   `editor` tinyint(4) UNSIGNED NOT NULL DEFAULT 0 COMMENT '编辑器',
-  `display_mode` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '运行模式',
+  `display_mode` tinyint(4) UNSIGNED NOT NULL DEFAULT 0 COMMENT '运行模式',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统设置' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tp_system
 -- ----------------------------
-INSERT INTO `tp_system` VALUES (1, 1580560560, 1639105327, 'SIYUCMS', '/uploads/20181226/a3a4245ec095da4903c6c81123fd480d.png', '辽ICP备12345678号-1', 'Copyright © SIYUCMS 2019.All right reserved.Powered by SIYUCMS', 'www.xxx.com', '辽宁省沈阳市铁西区重工街XX路XX号1-1-1', 'X先生', '010-8888 7777', '158 4018 8888', '010-8888 9999', '407593529@qq.com', '407593529', '/uploads/20181226/cb7a4c21d6443bc5e7a8d16ac2cbe242.png', 'SIYUCMS 官网', 'SIYUCMS，SIYUCMS内容管理系统，php，ThinkPHP CMS，ThinkPHP建站系统', 'SIYUCMS 是一款基于 ThinkPHP + AdminLTE 的内容管理系统。后台界面采用响应式布局，清爽、极简、简单、易用，是做开发的最佳选择。', 0, 1, 0, 0, 1, 'default', 'html', '', 1, '0', 'rar,zip,avi,rmvb,3gp,flv,mp3,mp4,txt,doc,xls,ppt,pdf,xls,docx,xlsx,doc', '0', 'jpg,png,gif,jpeg,ico', 0, '1');
+INSERT INTO `tp_system` VALUES (1, 1580560560, 1639105327, 'SIYUCMS', '/uploads/20181226/a3a4245ec095da4903c6c81123fd480d.png', '辽ICP备12345678号-1', 'Copyright © SIYUCMS 2019.All right reserved.Powered by SIYUCMS', 'www.xxx.com', '辽宁省沈阳市铁西区重工街XX路XX号1-1-1', 'X先生', '010-8888 7777', '158 4018 8888', '010-8888 9999', '407593529@qq.com', '407593529', '/uploads/20181226/cb7a4c21d6443bc5e7a8d16ac2cbe242.png', 'SIYUCMS 官网', 'SIYUCMS，SIYUCMS内容管理系统，php，ThinkPHP CMS，ThinkPHP建站系统', 'SIYUCMS 是一款基于 ThinkPHP + AdminLTE 的内容管理系统。后台界面采用响应式布局，清爽、极简、简单、易用，是做开发的最佳选择。', 0, 1, 0, 0, 1, 'default', 'html', '', 1, '0', 'rar,zip,avi,rmvb,3gp,flv,mp3,mp4,txt,doc,xls,ppt,pdf,xls,docx,xlsx,doc', '0', 'jpg,png,gif,jpeg,ico', 0, 1);
 
 -- ----------------------------
 -- Table structure for tp_team

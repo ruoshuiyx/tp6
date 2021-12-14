@@ -9,7 +9,8 @@
 </head>
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed pace-primary text-sm {if $layer == true}layer-body{/if}" data-display_mode="{$system.display_mode}">
 <div class="wrapper">
-{if $layer == false}
+
+{if $iframe == false && $layer == false}
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
         <!-- Left navbar links -->
