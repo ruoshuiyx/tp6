@@ -107,20 +107,6 @@ abstract class Base
         $menus = \app\admin\model\Base::getMenus();
         View::assign(['menus' => $menus]);
 
-        // pjax
-        if (Request::has('_pjax')) {
-            View::assign(['pjax' => true]);
-        } else {
-            View::assign(['pjax' => false]);
-        }
-
-        // layer open
-        if (Request::has('_layer')) {
-            View::assign(['layer' => true]);
-        } else {
-            View::assign(['layer' => false]);
-        }
-
         // 面包导航
         $auth       = new \Auth();
         $breadCrumb = $auth->getBreadCrumb();
@@ -146,6 +132,31 @@ abstract class Base
         $system       = \app\common\model\System::find(1);
         $this->system = $system;
         View::assign(['system' => $system]);
+
+        // pjax单页面模式
+        if (Request::has('_pjax')) {
+            View::assign(['pjax' => true]);
+        } else {
+            View::assign(['pjax' => false]);
+        }
+
+        // iframe多标签模式
+        if ($system['display_mode'] == 1) {
+            if ($this->request->controller() == 'Index' && $this->request->action() == 'index') {
+                View::assign(['iframe' => false]);
+            } else {
+                View::assign(['iframe' => true]);
+            }
+        } else {
+            View::assign(['iframe' => false]);
+        }
+
+        // layer open
+        if (Request::has('_layer')) {
+            View::assign(['layer' => true]);
+        } else {
+            View::assign(['layer' => false]);
+        }
     }
 
     /**

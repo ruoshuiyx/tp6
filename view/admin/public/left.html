@@ -83,8 +83,9 @@
                             <li class="nav-item">
                                 <a href="{:url($voo.module.model_name.'/index',['cate_id'=>$voo.id])}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
+                                    {$voo.left_html}
                                     <p>
-                                        {$voo.cate_name}
+                                        {$voo.original_cate_name}
                                         {if count($voo.sub)}<i class="right fas fa-angle-left"></i>{/if}
                                     </p>
                                 </a>
@@ -94,8 +95,9 @@
                                     <li class="nav-item">
                                         <a href="{:url($vooo.module.model_name.'/index',['cate_id'=>$vooo.id])}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
+                                            {$vooo.left_html}
                                             <p>
-                                                {$vooo.cate_name}
+                                                {$vooo.original_cate_name}
                                             </p>
                                         </a>
                                     </li>

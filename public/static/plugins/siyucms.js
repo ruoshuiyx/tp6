@@ -188,7 +188,9 @@ $(document).on('pjax:complete', function () {
 $(function () {
     // 返回上一页时重新触发pjax，防止加载重复的bootstrap-table
     window.addEventListener("popstate", function (e) {
-        $.pjax.reload('.content-wrapper');
+        if ($('body').data('display_mode') != "1") {
+            $.pjax.reload('.content-wrapper');
+        }
     }, false);
 
     // 左侧菜单点击

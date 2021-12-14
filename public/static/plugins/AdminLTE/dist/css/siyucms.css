@@ -5,7 +5,8 @@
 .text-sm .brand-link{font-size: 1.25rem;line-height: 1.25rem;} /* 左上角LOGO右侧文字大小调整 */
 .content-header{padding: 1rem .5rem;} /* 面包导航上下高度调整 */
 .text-sm .content-header{padding: 1rem .5rem;} /* 面包导航上下高度调整 */
-.content-wrapper > .content{padding: 0 1rem;} /* 右侧内容区域间距调整 */
+.content-wrapper .content,.content-iframe .content{padding: 0 1rem;} /* 右侧内容区域间距调整 */
+.content-wrapper.iframe-mode .tab-empty{display: unset} /* 右侧内容区域取消默认样式 */
 #search_form{font-size: .875rem} /* 搜索区域默认字体大小调整 */
 .text-sm #search_form{font-size: .8125rem} /* 搜索区域默认字体大小调整 */
 .text-info{color: #3c8dbc !important;} /* 列表页状态字段颜色调整 */
@@ -65,7 +66,7 @@ label{margin-bottom: 0;}
 .content_main-radius section.content .card, .content_main-radius section.content .form_builder, .content_main-radius section.content .search-collapse, .content_main-radius section.content .select-table, .content_main-radius section.content .search{border-radius: 0 !important;}
 
 /*---------------------------首页---------------------------*/
-.content_main{font-size: 0.875rem}
+.content_main{font-size: 0.875rem; overflow: hidden;}
 .text-sm .content_main{font-size: 0.8125rem}
 .content_main .card-body, .text-sm .content_main .card-body{padding: 0.625rem;}
 .content_main .btn{font-size: 0.875rem !important;}
@@ -86,6 +87,8 @@ label{margin-bottom: 0;}
 .study a{display:block; width:48%; float:left; margin:0 1%}
 /* 控制台提示 */
 .alert-dismissible .close, .alert-dismissible .mailbox-attachment-close{padding: .5875rem 1rem;}
+/* iframe模式标签栏高度 */
+.text-sm .nav-link{padding: .5rem 1rem}
 
 /*---------------------------左侧工具栏---------------------------*/
 /*.nav-pills .nav-link ,.nav-sidebar .nav-item>.nav-link{border-radius: 0;} !*移除圆角*!*/

@@ -141,8 +141,8 @@ class Base extends Model
                     $levelData = getLinkageListData(ucfirst($vv['relation_model']), $v[$vv['field']], $setupFields[0], $setupFields[1], $setupFields[2]);
                     $levelData = array_reverse($levelData); // 以相反的元素顺序返回数组
                     $str       = '';                        // 要转换成的数据
-                    foreach ($levelData as $v) {
-                        $str .= $v[$setupFields[1]] . '-';
+                    foreach ($levelData as $level) {
+                        $str .= $level[$setupFields[1]] . '-';
                     }
                     $list[$k][$vv['field']] = rtrim($str, '-');
                 } else {

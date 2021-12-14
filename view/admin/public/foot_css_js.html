@@ -40,6 +40,8 @@
 <script src="/static/plugins/jquery-treegrid/js/jquery.treegrid.js"></script>
 <script src="/static/plugins/bootstrap-table/extensions/treegrid/bootstrap-table-treegrid.js"></script>
 
+{// 根据配置启用pjax模式 }
+{if $system.display_mode == 0}
 {literal}
 <script type="text/javascript">
     $(function () {
@@ -69,3 +71,4 @@
     })
 </script>
 {/literal}
+{/if}

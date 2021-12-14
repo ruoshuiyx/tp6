@@ -878,10 +878,13 @@
                 });
                 return json;
             },
-            // pjax跳转页
+            // 跳转页
             jump: function (url) {
-                $.pjax({url: url, container: '.content-wrapper'})
-                //window.location.href = url;
+                if ($('body').data('display_mode') == "1") {
+                    window.location.href = url;
+                } else {
+                    $.pjax({url: url, container: '.content-wrapper'})
+                }
             },
             // 序列化表单，不含空元素
             serializeRemoveNull: function (serStr) {

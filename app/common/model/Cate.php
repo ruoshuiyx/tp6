@@ -55,16 +55,17 @@ class Cate extends Base
         }
         $list = tree_cate($list->toArray());
         // 重设栏目名称
-        foreach($list as &$ls){
-            $ls['cate_name'] = $ls['l_cate_name'];
+        foreach ($list as &$ls) {
+            $ls['original_cate_name'] = $ls['cate_name'];
+            $ls['cate_name']          = $ls['l_cate_name'];
         }
         // 渲染输出
         $result = [
-            'total' => count($list),
-            'per_page' => 10000,
+            'total'        => count($list),
+            'per_page'     => 10000,
             'current_page' => 1,
-            'last_page' => 1,
-            'data' => $list,
+            'last_page'    => 1,
+            'data'         => $list,
         ];
         return MakeBuilder::changeTableData($result, 'Cate');
     }
@@ -72,10 +73,10 @@ class Cate extends Base
     // 获取父ID选项信息
     public static function getPidOptions($order = ['sort', 'id' => 'desc'])
     {
-        $list = self::order($order)
+        $list   = self::order($order)
             ->select()
             ->toArray();
-        $list = tree_cate($list);
+        $list   = tree_cate($list);
         $result = [];
         foreach ($list as $k => $v) {
             $result[$v['id']] = $v['l_cate_name'];
