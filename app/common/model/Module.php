@@ -49,30 +49,22 @@ class Module extends Base
     // 获取列表
     public static function getList(array $where = [], int $pageSize = 0, array $order = ['sort', 'id' => 'desc'])
     {
-        if ($pageSize) {
-            $list = self::where($where)
-                ->order($order)
-                ->paginate(
-                    [
-                        'query'     => Request::get(),
-                        'list_rows' => $pageSize,
-                    ]
-                )
-                ->toArray();
-        } else {
-            $list = self::where($where)
-                ->order($order)
-                ->select()
-                ->toArray();
-        }
+        // 获取默认列表数据
+        $list = parent::getList($where, $pageSize, $order);
+
         // 获取不可选中的信息
         $unMakeModule = \think\facade\Config::get('builder.un_make_module');
-        foreach ($list['data'] as $k => $v) {
+
+        // 增加是否可选中字段
+        $listData = $pageSize > 0 ? $list['data'] : $list;
+        foreach ($listData as &$v) {
             if (in_array($v['model_name'], $unMakeModule)) {
-                $list['data'][$k]['checkbox_disabled'] = '1';
+                $v['checkbox_disabled'] = '1';
             }
         }
-        return MakeBuilder::changeTableData($list, 'Module');
+        $pageSize > 0 ? $list['data'] = $listData : $list = $listData;
+
+        return $list;
     }
 
     /**
