@@ -348,7 +348,7 @@ class MakeBuilder
                     $field['required'],                   // 是否必填
                 ];
             } elseif ($field['type'] == 'linkage') {
-                $ajaxUrl = (string)url('Index/linkage', ['id' => $field['id']]);
+                $ajaxUrl   = (string)url('Index/linkage', ['id' => $field['id']]);
                 $columns[] = [
                     $field['type'],                             // 类型
                     $field['field'],                            // 字段名称
@@ -415,7 +415,7 @@ class MakeBuilder
     public function getListWhere(string $tableName = '')
     {
         $search = $this->getListSearch($tableName);
-        //全局查询条件
+        // 全局查询条件
         $where = [];
         // 循环所有搜索字段，看是否有传递
         /**
@@ -430,8 +430,40 @@ class MakeBuilder
          * $field['relation_field'] ?? '',// 关联字段
          * $field['id'] ?? 0,             // 字段编号
          */
+        $param = Request::param();
+        // 获取表的主键
+        $pk = $this->getPrimarykey($tableName);
+        // 导出已选择的数据
+        if (isset($param[$pk]) && !empty($param[$pk])) {
+            $searchColumns = array_column($search, 1);
+            // 是否存在主键的搜索条件
+            if (in_array($pk, $searchColumns)) {
+                // 修正主键option为whereIn
+                foreach ($search as $k => $v) {
+                    if ($v[1] == $pk) {
+                        $search[$k][3] = 'in';
+                        break;
+                    }
+                }
+            } else {
+                // 增加新的搜索字段
+                $search[] = [
+                    'hidden',                // 字段类型
+                    $pk,                     // 字段名称
+                    $pk,                     // 字段别名
+                    'in',                    // 匹配方式
+                    $param[$pk],             // 默认值
+                    [],                      // 额外参数
+                    0,                       // 数据源 [0 字段本身, 1 系统字典, 2 模型数据]
+                    '',                      // 模型关联
+                    '',                      // 关联字段
+                    0,                       // 字段编号
+                ];
+            }
+        }
+
         foreach ($search as $v) {
-            $param = Request::param();
+
             if (!isset($param[$v[1]])) {
                 continue;
             }

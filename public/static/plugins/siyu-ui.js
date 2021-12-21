@@ -247,9 +247,22 @@
 
             // 导出数据
             export: function (formId) {
-                $.modal.confirm("确定导出所有数据吗？", function () {
+                var rows = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+                var confirmStr = "所有的";
+                if (rows.length > 0) {
+                    confirmStr = "选中的" + rows.length + "条"
+                }
+                $.modal.confirm("确定导出" + confirmStr + "数据吗？", function () {
                     var currentId = $.common.isEmpty(formId) ? 'search_form' : formId;
-                    window.open($.table._option.exportUrl + '?' + $("#" + currentId).serialize());
+                    var param = $("#" + currentId).serialize();
+                    if (rows.length > 0) {
+                        if ($.common.isEmpty(param)) {
+                            param = $.table._option.uniqueId + '=' + rows.join();
+                        } else {
+                            param = param + '&' + $.table._option.uniqueId + '=' + rows.join();
+                        }
+                    }
+                    window.open($.table._option.exportUrl + '?' + param);
                 });
             },
 
