@@ -12,7 +12,7 @@ SIYUCMS 基于 ThinkPHP6.0 + AdminLTE 开发，简单 / 易用 / 响应式 / 低
 
 ## 安装使用
 
-> 下载SIYUCMS完整包解压到你本地（建议采用git方式拉取）
+> 下载SIYUCMS完整包解压到你本地（建议采用git方式拉取，或宝塔一键部署）
 
 > 将你的站点绑定到public目录(强烈建议绑定到public目录)
 
