@@ -16,10 +16,14 @@
 <div class="row dd_input_group no-gutters {$form[type].extra_class|default=''}" id="form_group_{$form[type].name}">
     <label class="col-3 col-sm-2 col-md-2 col-lg-2 col-xl-1 dd_input_l col-form-label {notempty name="form[type].required"}is-required{/notempty}" for="{$form[type].name}">{$form[type].title|htmlspecialchars}</label>
     <div class="col-9 col-sm-9 col-md-9 col-lg-8 col-xl-7">
-        <select class="form-control js_linkage" data-model="{$form[type]['model']}" data-key="{$form[type]['key']}" data-key_value="{$form[type]['option']}" data-pid_field_name="{$form[type].pid|default='pid'}" data-next_level_id="{$form[type].name}_2" id="{$form[type].name}_1" name="{$form[type].name}_1" data-placeholder="{$form[type].placeholder}" {$form[type].extra_attr|default=''} data-ajax_url="{$form[type]['ajax_url']}" style="width: auto; display: inline-block">
+        <select class="form-control js_linkage" data-model="{$form[type]['model']}" data-key="{$form[type]['key']}" data-key_value="{$form[type]['option']}" data-pid_field_name="{$form[type].pid|default='pid'}" data-next_level_id="{$form[type].name}_2" id="{$form[type].name}_1" name="{$form[type].name}{gt name="form[type].level" value="1"}_1{/gt}" data-placeholder="{$form[type].placeholder}" {$form[type].extra_attr|default=''} data-ajax_url="{$form[type]['ajax_url']}" style="width: auto; display: inline-block">
             <option value="">{$form[type].placeholder}</option>
             {volist name="levelOne" id="option"}
-            <option value="{$option[$form[type]['key']]}" {if (isset($levelKey[1]) && $levelKey[1] == (string)$option[$form[type]['key']])}selected{/if}>{$option[$form[type]['option']]|raw}</option>
+            {eq name="form[type].level" value="1"}
+                <option value="{$option[$form[type]['key']]}" {if ($form[type].value == (string)$option[$form[type]['key']])}selected{/if}>{$option[$form[type]['option']]|raw}</option>
+            {else/}
+                <option value="{$option[$form[type]['key']]}" {if (isset($levelKey[1]) && $levelKey[1] == (string)$option[$form[type]['key']])}selected{/if}>{$option[$form[type]['option']]|raw}</option>
+            {/eq}
             {/volist}
         </select>
         {eq name="form[type].level" value="2"}

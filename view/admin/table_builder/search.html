@@ -36,10 +36,14 @@
                                     $levelData = array_reverse($levelData); // 以相反的元素顺序返回数组
                                 }
                             {/php}
-                            <select class="js_linkage" data-model="{$search.relation_model}" data-key="{$setupFields.0}" data-key_value="{$setupFields.1}" data-pid_field_name="{$setupFields.2|default='pid'}" data-next_level_id="{$search.name}_2" id="{$search.name}_1" name="{$search.name}_1" data-placeholder="请选择" data-ajax_url="{$ajaxUrl}" style="width: auto; display: inline-block">
+                            <select class="js_linkage" data-model="{$search.relation_model}" data-key="{$setupFields.0}" data-key_value="{$setupFields.1}" data-pid_field_name="{$setupFields.2|default='pid'}" data-next_level_id="{$search.name}_2" id="{$search.name}_1" name="{$search.name}{gt name="$filedInfo.setup.level" value="1"}_1{/gt}" data-placeholder="请选择" data-ajax_url="{$ajaxUrl}" style="width: auto; display: inline-block">
                                 <option value="">请选择</option>
                                 {volist name="levelOne" id="option"}
+                                {eq name="$filedInfo.setup.level" value="1"}
+                                <option value="{$option[$setupFields[0]]}" {if ($search.default == (string)$option[$setupFields[0]])}selected{/if}>{$option[$setupFields[1]]|raw}</option>
+                                {else/}
                                 <option value="{$option[$setupFields[0]]}" {if (isset($levelKey[1]) && $levelKey[1] == (string)$option[$setupFields[0]])}selected{/if}>{$option[$setupFields[1]]|raw}</option>
+                                {/eq}
                                 {/volist}
                             </select>
                             {eq name="$filedInfo.setup.level" value="2"}
