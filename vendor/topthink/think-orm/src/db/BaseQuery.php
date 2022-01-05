@@ -269,7 +269,14 @@ abstract class BaseQuery
         $result = $this->connection->value($this, $field, $default);
 
         $array[$field] = $result;
-        $this->result($array);
+
+        if (!empty($this->options['json'])) {
+            $this->jsonResult($array, $this->options['json']);
+        }
+
+        if (!empty($this->options['with_attr'])) {
+            $array = $this->getResultAttr($array, $this->options['with_attr']);
+        }
 
         return $array[$field];
     }
@@ -284,9 +291,19 @@ abstract class BaseQuery
     public function column($field, string $key = ''): array
     {
         $result = $this->connection->column($this, $field, $key);
+
         if (count($result) != count($result, 1)) {
-            $this->resultSet($result, false);
+            foreach ($result as &$val) {
+                if (!empty($this->options['json'])) {
+                    $this->jsonResult($val, $this->options['json']);
+                }
+
+                if (!empty($this->options['with_attr'])) {
+                    $val = $this->getResultAttr($val, $this->options['with_attr']);
+                }
+            }
         }
+
         return $result;
     }
 
@@ -1170,7 +1187,7 @@ abstract class BaseQuery
 
         if (!empty($this->model)) {
             // 返回模型对象
-            $this->resultToModel($result, $this->options);
+            $this->resultToModel($result);
         } else {
             $this->result($result);
         }
@@ -1199,7 +1216,7 @@ abstract class BaseQuery
             $this->parseView($options);
         }
 
-        foreach (['data', 'order', 'join', 'union', 'filter', 'json', 'with_relation_attr'] as $name) {
+        foreach (['data', 'order', 'join', 'union', 'filter', 'json', 'with_attr', 'with_relatioin_attr'] as $name) {
             if (!isset($options[$name])) {
                 $options[$name] = [];
             }
