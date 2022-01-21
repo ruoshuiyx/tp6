@@ -128,9 +128,9 @@ class ComposerStaticInit53794ed0c79a444f8545feeb6d80c286
         array (
             0 => __DIR__ . '/..' . '/topthink/framework/src/think',
             1 => __DIR__ . '/..' . '/topthink/think-helper/src',
-            2 => __DIR__ . '/..' . '/topthink/think-template/src',
-            3 => __DIR__ . '/..' . '/zzstudio/think-addons/src',
-            4 => __DIR__ . '/..' . '/topthink/think-orm/src',
+            2 => __DIR__ . '/..' . '/topthink/think-orm/src',
+            3 => __DIR__ . '/..' . '/topthink/think-template/src',
+            4 => __DIR__ . '/..' . '/zzstudio/think-addons/src',
         ),
         'clagiordano\\weblibs\\configmanager\\' => 
         array (
