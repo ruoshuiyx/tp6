@@ -255,7 +255,7 @@ class Tp extends TagLib
 
         $parse = '<?php ';
         $parse .= '
-                $__TABLE__ = "' . strtolower($table) . '" ?:  request()->param(\'table\');
+                $__TABLE__ = "' . strtolower($table) . '" ?:  request()->param(\'table\', \'article\');
                 $__MODULE__ = \app\common\model\Module::where("table_name", $__TABLE__)->where(\'table_type\', 1)->find();
                 $__MODEL__ = \'\app\common\model\\\\\' . $__MODULE__->model_name;
 
