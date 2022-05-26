@@ -643,7 +643,7 @@ function getSearchField(string $field)
             if (!empty($v)) {
                 // 查询浏览器参数是否包含此参数
                 if (\think\facade\Request::has($v, 'get')) {
-                    $str = \think\facade\Request::get($v, '', 'htmlspecialchars');
+                    $str = \think\facade\Request::get($v, '', ['strip_tags', 'htmlspecialchars']);
                     if (strpos($str, '|') !== false) {
                         $sql    = ' AND (';
                         $strArr = explode("|", $str);
@@ -662,6 +662,9 @@ function getSearchField(string $field)
                         $dictCount = \app\common\model\Dictionary::where('dict_value', $str)->count();
                         if ($dictCount) {
                             $sql .= ' AND FIND_IN_SET(\'' . $str . '\', ' . $v . ') ';
+                        } else {
+                            // 常规搜索
+                            $sql .= ' AND ' . $v . ' LIKE "%' . $str . '%" ';
                         }
                     }
                 }
