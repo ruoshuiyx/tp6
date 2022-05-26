@@ -91,7 +91,7 @@ class Tp extends TagLib
         $cateStr .= '$__LIST__ = unlimitedForLayer($__CATE__, \'sub\', ' . $tag['id'] . ');';
 
         // 提取前N条数据,因为sql的LIMIT避免不了子栏目的问题
-        if ( ! empty($tag['limit'])) {
+        if (!empty($tag['limit'])) {
             $cateStr .= '$__LIST__ = array_slice($__LIST__, 0,' . $tag['limit'] . ');';
         }
         $parse = '<?php ';
@@ -127,7 +127,7 @@ class Tp extends TagLib
     // 通用位置信息
     public function tagPosition($tag, $content)
     {
-        $name  = $tag['name'] ? $tag['name'] : 'position';
+        $name  = $tag['name'] ?: 'position';
         $parse = '<?php ';
         $parse .= '$__CATE__   = \app\common\model\Cate::with([\'module\'])->select();';
         $parse .= '$__CATEID__ = getCateId();';
@@ -143,7 +143,7 @@ class Tp extends TagLib
     // 获取友情链接
     public function tagLink($tag, $content)
     {
-        $name  = $tag['name'] ? $tag['name'] : 'link';
+        $name  = $tag['name'] ?: 'link';
         $parse = '<?php ';
         $parse .= '$__LIST__ = \app\common\model\Link::where(\'status\',1)->order(\'sort asc,id desc\')->select();';
         $parse .= ' ?>';
@@ -247,7 +247,7 @@ class Tp extends TagLib
     public function tagSearch($tag, $content)
     {
         $search   = $tag['search'] ?? "";                                                     // 关键字
-        $table    = $tag['table'] ?? "article";                                               // 表名称
+        $table    = $tag['table'] ?? "";                                                      // 表名称
         $name     = $tag['name'] ?? "list";                                                   // 不可为空
         $order    = $tag['order'] ?? 'sort ASC,id DESC';                                      // 排序
         $where    = isset($tag['where']) ? $tag['where'] . ' AND status = 1 ' : 'status = 1'; // 查询条件
@@ -255,7 +255,8 @@ class Tp extends TagLib
 
         $parse = '<?php ';
         $parse .= '
-                $__MODULE__ = \app\common\model\Module::where("table_name","' . strtolower($table) . '")->find();
+                $__TABLE__ = "' . strtolower($table) . '" ?:  request()->param(\'table\');
+                $__MODULE__ = \app\common\model\Module::where("table_name", $__TABLE__)->where(\'table_type\', 1)->find();
                 $__MODEL__ = \'\app\common\model\\\\\' . $__MODULE__->model_name;
 
                 $__LIST__ = $__MODEL__::with([\'cate\',\'cate.module\'])->where("' . $where . '")
@@ -407,9 +408,9 @@ class Tp extends TagLib
     public function tagDict($tag, $content)
     {
         $name     = $tag['name'] ?? 'dictionary';
-        $dictType = $tag['dict_type'] ?? 0;
-        $field    = $tag['field'] ?? 'type';
-        $all      = $tag['all'] ?? lang('all');
+        $dictType = $tag['dict_type'] ?? 0;     // 字典类型的id
+        $field    = $tag['field'] ?? 'type';    // 字段名称，也是url参数里的名称
+        $all      = $tag['all'] ?? lang('all'); // 全部，为空则显示“全部”
         $parse    = '<?php ';
         $parse    .= '$__DICTS__ = \app\common\model\Dictionary::where(\'status\',1)->where(\'dict_type\',' . $dictType . ')->order(\'sort ASC,id desc\')->select()->toArray();
                    $__DICTS__ = changeDict($__DICTS__, \'' . $field . '\', \'' . $all . '\');
