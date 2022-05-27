@@ -34,7 +34,7 @@ foreach ($cate as $k => $v) {
             Route::any('' . $v['cate_folder'] . '', '' . $v['cate_folder'] . '/index');
         } else {
             // 列表+详情模型
-            Route::any('' . $v['cate_folder'] . '/<id>', $v['cate_folder'] . '/info')->pattern(['id' => '\d+']);;
+            Route::any('' . $v['cate_folder'] . '/<id>', $v['cate_folder'] . '/info')->pattern(['id' => '\d+']);
             Route::any('' . $v['cate_folder'] . '', $v['cate_folder'] . '/index');
         }
     }

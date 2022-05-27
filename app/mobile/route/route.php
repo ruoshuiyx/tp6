@@ -5,8 +5,8 @@
  * +----------------------------------------------------------------------
  *                      .::::.
  *                    .::::::::.            | AUTHOR: siyu
- *                    :::::::::::           | EMAIL: 407593529@qq.com
- *                 ..:::::::::::'           | DATETIME: 2020/03/17
+ *                    :::::::::::           | DATETIME: 2020/03/17
+ *                 ..:::::::::::'
  *             '::::::::::::'
  *                .::::::::::
  *           '::::::::::::::..
@@ -23,6 +23,7 @@
  *                      '.:::::'                    ':'````..
  * +----------------------------------------------------------------------
  */
+
 use think\facade\Route;
 
 $cate = \app\common\model\Cate::field('id,cate_name,cate_folder,module_id')->order('sort ASC,id ASC')->select();
@@ -33,7 +34,7 @@ foreach ($cate as $k => $v) {
             Route::any('' . $v['cate_folder'] . '', '' . $v['cate_folder'] . '/index');
         } else {
             // 列表+详情模型
-            Route::any('' . $v['cate_folder'] . '/<id>', $v['cate_folder'] . '/info');
+            Route::any('' . $v['cate_folder'] . '/<id>', $v['cate_folder'] . '/info')->pattern(['id' => '\d+']);
             Route::any('' . $v['cate_folder'] . '', $v['cate_folder'] . '/index');
         }
     }
