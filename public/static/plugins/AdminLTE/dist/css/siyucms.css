@@ -66,7 +66,7 @@ label{margin-bottom: 0;}
 .content_main-radius section.content .card, .content_main-radius section.content .form_builder, .content_main-radius section.content .search-collapse, .content_main-radius section.content .select-table, .content_main-radius section.content .search{border-radius: 0 !important;}
 
 /*---------------------------首页---------------------------*/
-.content_main{font-size: 0.875rem; overflow: hidden;}
+.content_main{font-size: 0.875rem; overflow: hidden; padding-top: 2px !important;}
 .text-sm .content_main{font-size: 0.8125rem}
 .content_main .card-body, .text-sm .content_main .card-body{padding: 0.625rem;}
 .content_main .btn{font-size: 0.875rem !important;}
