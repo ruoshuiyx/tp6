@@ -152,14 +152,14 @@ class Functions
         if ($condition === '') {
             return '=""';
         }
-        if (!is_string($condition) || !in_array($condition[0], ['>', '<', '='])) {
+        if (!is_string($condition) || !in_array($condition[0], ['>', '<', '='], true)) {
             $condition = self::operandSpecialHandling($condition);
             if (is_bool($condition)) {
                 return '=' . ($condition ? 'TRUE' : 'FALSE');
             } elseif (!is_numeric($condition)) {
                 if ($condition !== '""') { // Not an empty string
                     // Escape any quotes in the string value
-                    $condition = preg_replace('/"/ui', '""', $condition);
+                    $condition = (string) preg_replace('/"/ui', '""', $condition);
                 }
                 $condition = Calculation::wrapResult(strtoupper($condition));
             }
@@ -573,24 +573,20 @@ class Functions
             return (array) $array;
         }
 
-        $arrayValues = [];
-        foreach ($array as $value) {
+        $flattened = [];
+        $stack = array_values($array);
+
+        while ($stack) {
+            $value = array_shift($stack);
+
             if (is_array($value)) {
-                foreach ($value as $val) {
-                    if (is_array($val)) {
-                        foreach ($val as $v) {
-                            $arrayValues[] = $v;
-                        }
-                    } else {
-                        $arrayValues[] = $val;
-                    }
-                }
+                array_unshift($stack, ...array_values($value));
             } else {
-                $arrayValues[] = $value;
+                $flattened[] = $value;
             }
         }
 
-        return $arrayValues;
+        return $flattened;
     }
 
     /**
@@ -691,7 +687,7 @@ class Functions
             $worksheet2 = $defined->getWorkSheet();
             if (!$defined->isFormula() && $worksheet2 !== null) {
                 $coordinate = "'" . $worksheet2->getTitle() . "'!" .
-                    (string) preg_replace('/^=/', '', $defined->getValue());
+                    (string) preg_replace('/^=/', '', str_replace('$', '', $defined->getValue()));
             }
         }
 
@@ -705,8 +701,8 @@ class Functions
 
     public static function trimSheetFromCellReference(string $coordinate): string
     {
-        while (strpos($coordinate, '!') !== false) {
-            $coordinate = substr($coordinate, strpos($coordinate, '!') + 1);
+        if (strpos($coordinate, '!') !== false) {
+            $coordinate = substr($coordinate, strrpos($coordinate, '!') + 1);
         }
 
         return $coordinate;

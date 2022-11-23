@@ -32,7 +32,7 @@ class FilesystemTest extends TestCase
     /** @var vfsStreamDirectory */
     protected $root;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->app = m::mock(App::class)->makePartial();
         Container::setInstance($this->app);

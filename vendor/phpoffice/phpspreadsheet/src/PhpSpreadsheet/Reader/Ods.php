@@ -20,6 +20,7 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 use PhpOffice\PhpSpreadsheet\Shared\File;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Throwable;
 use XMLReader;
 use ZipArchive;
@@ -325,7 +326,7 @@ class Ods extends BaseReader
                 }
                 $spreadsheet->setActiveSheetIndex($worksheetID);
 
-                if ($worksheetName) {
+                if ($worksheetName || is_numeric($worksheetName)) {
                     // Use false for $updateFormulaCellReferences to prevent adjustment of worksheet references in
                     // formula cells... during the load, all formulae should be correct, and we're simply
                     // bringing the worksheet name in line with the formula, not the reverse
@@ -588,6 +589,7 @@ class Ods extends BaseReader
                             break;
                     }
                 }
+                $pageSettings->setVisibilityForWorksheet($spreadsheet->getActiveSheet(), $worksheetStyleName);
                 $pageSettings->setPrintSettingsForWorksheet($spreadsheet->getActiveSheet(), $worksheetStyleName);
                 ++$worksheetID;
             }
@@ -628,7 +630,7 @@ class Ods extends BaseReader
         foreach ($settings->getElementsByTagNameNS($configNs, 'config-item') as $t) {
             if ($t->getAttributeNs($configNs, 'name') === 'ActiveTable') {
                 try {
-                    $spreadsheet->setActiveSheetIndexByName($t->nodeValue ?: '');
+                    $spreadsheet->setActiveSheetIndexByName($t->nodeValue ?? '');
                 } catch (Throwable $e) {
                     // do nothing
                 }
@@ -758,7 +760,7 @@ class Ods extends BaseReader
                 }
 
                 $cellRange = $columnID . $rowID . ':' . $columnTo . $rowTo;
-                $spreadsheet->getActiveSheet()->mergeCells($cellRange);
+                $spreadsheet->getActiveSheet()->mergeCells($cellRange, Worksheet::MERGE_CELL_CONTENT_HIDE);
             }
         }
     }
