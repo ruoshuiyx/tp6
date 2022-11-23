@@ -2,10 +2,10 @@
 
 [![star](https://gitee.com/ruoshuiyx/tp6/badge/star.svg?theme=dark)](https://gitee.com/ruoshuiyx/tp6/stargazers)
 [![fork](https://gitee.com/ruoshuiyx/tp6/badge/fork.svg?theme=gray)](https://gitee.com/ruoshuiyx/tp6/members)
-![PHP Version](https://img.shields.io/badge/php-%3E%3D7.2-orange)
+![PHP Version](https://img.shields.io/badge/php-%3E%3D7.2.5-orange)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen)](https://gitee.com/ruoshuiyx/tp6/blob/master/LICENSE)
 
-SIYUCMS 基于 ThinkPHP6.0 + AdminLTE 开发，简单 / 易用 / 响应式 / 低门槛。
+SIYUCMS 基于 ThinkPHP6.1 + AdminLTE 开发，简单 / 易用 / 响应式 / 低门槛。
 
 系统内置了表单构建器和表格构建器，配合后台模块管理和字段管理能快速方便的构建Web应用程序。
 
