@@ -34,6 +34,9 @@ use app\common\builder\TableBuilder;
 class Database extends Base
 {
     protected $db = '', $datadir;
+
+    private $config;
+
     function initialize(){
         parent::initialize();
         $this->config=array(

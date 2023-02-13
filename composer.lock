@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "adbario/php-dot-notation",
-            "version": "2.4.1",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/adbario/php-dot-notation.git",
-                "reference": "3bfe67895d26697d20485343499532234eeb7c08"
+                "reference": "081e2cca50c84bfeeea2e3ef9b2c8d206d80ccae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/adbario/php-dot-notation/zipball/3bfe67895d26697d20485343499532234eeb7c08",
-                "reference": "3bfe67895d26697d20485343499532234eeb7c08",
+                "url": "https://api.github.com/repos/adbario/php-dot-notation/zipball/081e2cca50c84bfeeea2e3ef9b2c8d206d80ccae",
+                "reference": "081e2cca50c84bfeeea2e3ef9b2c8d206d80ccae",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -61,9 +61,9 @@
             ],
             "support": {
                 "issues": "https://github.com/adbario/php-dot-notation/issues",
-                "source": "https://github.com/adbario/php-dot-notation/tree/2.4.1"
+                "source": "https://github.com/adbario/php-dot-notation/tree/2.5.0"
             },
-            "time": "2022-08-25T19:47:20+00:00"
+            "time": "2022-10-14T20:31:46+00:00"
         },
         {
             "name": "alibabacloud/client",
@@ -2220,16 +2220,16 @@
         },
         {
             "name": "topthink/framework",
-            "version": "v6.1.1",
+            "version": "v6.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/framework.git",
-                "reference": "2cb56f3e6f3c479fe90ea5f28d38d3b5ef6c4210"
+                "reference": "67235be5b919aaaf1de5aed9839f65d8e766aca3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/top-think/framework/zipball/2cb56f3e6f3c479fe90ea5f28d38d3b5ef6c4210",
-                "reference": "2cb56f3e6f3c479fe90ea5f28d38d3b5ef6c4210",
+                "url": "https://api.github.com/repos/top-think/framework/zipball/67235be5b919aaaf1de5aed9839f65d8e766aca3",
+                "reference": "67235be5b919aaaf1de5aed9839f65d8e766aca3",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -2247,7 +2247,7 @@
                 "psr/log": "~1.0",
                 "psr/simple-cache": "^1.0",
                 "topthink/think-helper": "^3.1.1",
-                "topthink/think-orm": "^2.0"
+                "topthink/think-orm": "^2.0|^3.0"
             },
             "require-dev": {
                 "guzzlehttp/psr7": "^2.1.0",
@@ -2285,9 +2285,9 @@
             ],
             "support": {
                 "issues": "https://github.com/top-think/framework/issues",
-                "source": "https://github.com/top-think/framework/tree/v6.1.1"
+                "source": "https://github.com/top-think/framework/tree/v6.1.2"
             },
-            "time": "2022-10-26T03:48:53+00:00"
+            "time": "2023-02-08T02:24:01+00:00"
         },
         {
             "name": "topthink/think-captcha",
@@ -2350,16 +2350,16 @@
         },
         {
             "name": "topthink/think-filesystem",
-            "version": "v1.0.2",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/think-filesystem.git",
-                "reference": "d58951a64a8afe5ec6a7191ce373a9e8381344d9"
+                "reference": "29f19f140a9267c717fecd7ccb22c84c2d72382e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/top-think/think-filesystem/zipball/d58951a64a8afe5ec6a7191ce373a9e8381344d9",
-                "reference": "d58951a64a8afe5ec6a7191ce373a9e8381344d9",
+                "url": "https://api.github.com/repos/top-think/think-filesystem/zipball/29f19f140a9267c717fecd7ccb22c84c2d72382e",
+                "reference": "29f19f140a9267c717fecd7ccb22c84c2d72382e",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -2372,7 +2372,7 @@
                 "league/flysystem": "^1.1.4",
                 "league/flysystem-cached-adapter": "^1.0",
                 "php": ">=7.2.5",
-                "topthink/framework": "^6.1"
+                "topthink/framework": "^6.1|^8.0"
             },
             "require-dev": {
                 "mikey179/vfsstream": "^1.6",
@@ -2398,9 +2398,9 @@
             "description": "The ThinkPHP6.1 Filesystem Package",
             "support": {
                 "issues": "https://github.com/top-think/think-filesystem/issues",
-                "source": "https://github.com/top-think/think-filesystem/tree/v1.0.2"
+                "source": "https://github.com/top-think/think-filesystem/tree/v1.0.3"
             },
-            "time": "2023-01-06T14:34:47+00:00"
+            "time": "2023-02-08T01:25:15+00:00"
         },
         {
             "name": "topthink/think-helper",
@@ -2510,16 +2510,16 @@
         },
         {
             "name": "topthink/think-orm",
-            "version": "v2.0.56",
+            "version": "v2.0.58",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/think-orm.git",
-                "reference": "75b8512736daaa056d511f42c15bed87c9f3605a"
+                "reference": "fae96ca60891ae82df5d8050af959711354898a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/top-think/think-orm/zipball/75b8512736daaa056d511f42c15bed87c9f3605a",
-                "reference": "75b8512736daaa056d511f42c15bed87c9f3605a",
+                "url": "https://api.github.com/repos/top-think/think-orm/zipball/fae96ca60891ae82df5d8050af959711354898a5",
+                "reference": "fae96ca60891ae82df5d8050af959711354898a5",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -2565,9 +2565,9 @@
             ],
             "support": {
                 "issues": "https://github.com/top-think/think-orm/issues",
-                "source": "https://github.com/top-think/think-orm/tree/v2.0.56"
+                "source": "https://github.com/top-think/think-orm/tree/v2.0.58"
             },
-            "time": "2022-12-15T02:52:53+00:00"
+            "time": "2023-02-11T10:07:03+00:00"
         },
         {
             "name": "topthink/think-template",
@@ -3041,16 +3041,16 @@
         },
         {
             "name": "topthink/think-trace",
-            "version": "v1.5",
+            "version": "v1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/think-trace.git",
-                "reference": "55027fd79abb744f32a3be8d9e1ccf873a3ca9b7"
+                "reference": "136cd5d97e8bdb780e4b5c1637c588ed7ca3e142"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/top-think/think-trace/zipball/55027fd79abb744f32a3be8d9e1ccf873a3ca9b7",
-                "reference": "55027fd79abb744f32a3be8d9e1ccf873a3ca9b7",
+                "url": "https://api.github.com/repos/top-think/think-trace/zipball/136cd5d97e8bdb780e4b5c1637c588ed7ca3e142",
+                "reference": "136cd5d97e8bdb780e4b5c1637c588ed7ca3e142",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -3061,7 +3061,7 @@
             },
             "require": {
                 "php": ">=7.1.0",
-                "topthink/framework": "^6.0"
+                "topthink/framework": "^6.0|^8.0"
             },
             "type": "library",
             "extra": {
@@ -3092,9 +3092,9 @@
             "description": "thinkphp debug trace",
             "support": {
                 "issues": "https://github.com/top-think/think-trace/issues",
-                "source": "https://github.com/top-think/think-trace/tree/v1.5"
+                "source": "https://github.com/top-think/think-trace/tree/v1.6"
             },
-            "time": "2022-10-26T07:56:45+00:00"
+            "time": "2023-02-07T08:36:32+00:00"
         }
     ],
     "aliases": [],
