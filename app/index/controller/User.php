@@ -71,7 +71,7 @@ class User extends Base
             return redirect('index');
         }
         // 返回的地址
-        $callBack = urldecode($this->request->param('callback'));
+        $callBack = urldecode($this->request->param('callback', ''));
         if (Session::has('callback') === false && !empty($callBack)) {
             Session::set('callback', $callBack);
         }
