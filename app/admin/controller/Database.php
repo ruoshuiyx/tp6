@@ -25,8 +25,8 @@
  */
 namespace app\admin\controller;
 
+use app\admin\service\Backup;
 use think\facade\Request;
-use \tp5er\Backup;
 
 // 引入表格构建器
 use app\common\builder\TableBuilder;
