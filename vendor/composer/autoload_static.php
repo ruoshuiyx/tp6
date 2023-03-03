@@ -29,7 +29,6 @@ class ComposerStaticInit53794ed0c79a444f8545feeb6d80c286
     public static $prefixLengthsPsr4 = array (
         't' => 
         array (
-            'tp5er\\' => 6,
             'think\\view\\driver\\' => 18,
             'think\\trace\\' => 12,
             'think\\captcha\\' => 14,
@@ -102,10 +101,6 @@ class ComposerStaticInit53794ed0c79a444f8545feeb6d80c286
     );
 
     public static $prefixDirsPsr4 = array (
-        'tp5er\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/tp5er/tp5-databackup/src',
-        ),
         'think\\view\\driver\\' => 
         array (
             0 => __DIR__ . '/..' . '/topthink/think-view/src',
@@ -1204,12 +1199,21 @@ class ComposerStaticInit53794ed0c79a444f8545feeb6d80c286
         'PhpOffice\\PhpSpreadsheet\\Style\\NumberFormat\\FractionFormatter' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Style/NumberFormat/FractionFormatter.php',
         'PhpOffice\\PhpSpreadsheet\\Style\\NumberFormat\\NumberFormatter' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Style/NumberFormat/NumberFormatter.php',
         'PhpOffice\\PhpSpreadsheet\\Style\\NumberFormat\\PercentageFormatter' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Style/NumberFormat/PercentageFormatter.php',
+        'PhpOffice\\PhpSpreadsheet\\Style\\NumberFormat\\Wizard\\Accounting' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Style/NumberFormat/Wizard/Accounting.php',
+        'PhpOffice\\PhpSpreadsheet\\Style\\NumberFormat\\Wizard\\Currency' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Style/NumberFormat/Wizard/Currency.php',
+        'PhpOffice\\PhpSpreadsheet\\Style\\NumberFormat\\Wizard\\Locale' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Style/NumberFormat/Wizard/Locale.php',
+        'PhpOffice\\PhpSpreadsheet\\Style\\NumberFormat\\Wizard\\Number' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Style/NumberFormat/Wizard/Number.php',
+        'PhpOffice\\PhpSpreadsheet\\Style\\NumberFormat\\Wizard\\NumberBase' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Style/NumberFormat/Wizard/NumberBase.php',
+        'PhpOffice\\PhpSpreadsheet\\Style\\NumberFormat\\Wizard\\Percentage' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Style/NumberFormat/Wizard/Percentage.php',
+        'PhpOffice\\PhpSpreadsheet\\Style\\NumberFormat\\Wizard\\Scientific' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Style/NumberFormat/Wizard/Scientific.php',
+        'PhpOffice\\PhpSpreadsheet\\Style\\NumberFormat\\Wizard\\Wizard' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Style/NumberFormat/Wizard/Wizard.php',
         'PhpOffice\\PhpSpreadsheet\\Style\\Protection' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Style/Protection.php',
         'PhpOffice\\PhpSpreadsheet\\Style\\Style' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Style/Style.php',
         'PhpOffice\\PhpSpreadsheet\\Style\\Supervisor' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Style/Supervisor.php',
         'PhpOffice\\PhpSpreadsheet\\Worksheet\\AutoFilter' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Worksheet/AutoFilter.php',
         'PhpOffice\\PhpSpreadsheet\\Worksheet\\AutoFilter\\Column' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Worksheet/AutoFilter/Column.php',
         'PhpOffice\\PhpSpreadsheet\\Worksheet\\AutoFilter\\Column\\Rule' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Worksheet/AutoFilter/Column/Rule.php',
+        'PhpOffice\\PhpSpreadsheet\\Worksheet\\AutoFit' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Worksheet/AutoFit.php',
         'PhpOffice\\PhpSpreadsheet\\Worksheet\\BaseDrawing' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Worksheet/BaseDrawing.php',
         'PhpOffice\\PhpSpreadsheet\\Worksheet\\CellIterator' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Worksheet/CellIterator.php',
         'PhpOffice\\PhpSpreadsheet\\Worksheet\\Column' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Worksheet/Column.php',
@@ -1223,6 +1227,7 @@ class ComposerStaticInit53794ed0c79a444f8545feeb6d80c286
         'PhpOffice\\PhpSpreadsheet\\Worksheet\\HeaderFooterDrawing' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Worksheet/HeaderFooterDrawing.php',
         'PhpOffice\\PhpSpreadsheet\\Worksheet\\Iterator' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Worksheet/Iterator.php',
         'PhpOffice\\PhpSpreadsheet\\Worksheet\\MemoryDrawing' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Worksheet/MemoryDrawing.php',
+        'PhpOffice\\PhpSpreadsheet\\Worksheet\\PageBreak' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Worksheet/PageBreak.php',
         'PhpOffice\\PhpSpreadsheet\\Worksheet\\PageMargins' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Worksheet/PageMargins.php',
         'PhpOffice\\PhpSpreadsheet\\Worksheet\\PageSetup' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Worksheet/PageSetup.php',
         'PhpOffice\\PhpSpreadsheet\\Worksheet\\Protection' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Worksheet/Protection.php',
@@ -1460,7 +1465,6 @@ class ComposerStaticInit53794ed0c79a444f8545feeb6d80c286
         'app\\admin\\controller\\System' => __DIR__ . '/../..' . '/app/admin/controller/System.php',
         'app\\admin\\controller\\Team' => __DIR__ . '/../..' . '/app/admin/controller/Team.php',
         'app\\admin\\controller\\Template' => __DIR__ . '/../..' . '/app/admin/controller/Template.php',
-        'app\\admin\\controller\\Test' => __DIR__ . '/../..' . '/app/admin/controller/Test.php',
         'app\\admin\\controller\\Upload' => __DIR__ . '/../..' . '/app/admin/controller/Upload.php',
         'app\\admin\\controller\\Users' => __DIR__ . '/../..' . '/app/admin/controller/Users.php',
         'app\\admin\\controller\\UsersType' => __DIR__ . '/../..' . '/app/admin/controller/UsersType.php',
@@ -1468,6 +1472,7 @@ class ComposerStaticInit53794ed0c79a444f8545feeb6d80c286
         'app\\admin\\listener\\AdminLogin' => __DIR__ . '/../..' . '/app/admin/listener/AdminLogin.php',
         'app\\admin\\middleware\\Admin' => __DIR__ . '/../..' . '/app/admin/middleware/Admin.php',
         'app\\admin\\model\\Base' => __DIR__ . '/../..' . '/app/admin/model/Base.php',
+        'app\\admin\\service\\Backup' => __DIR__ . '/../..' . '/app/admin/service/Backup.php',
         'app\\admin\\service\\ThinkAddons' => __DIR__ . '/../..' . '/app/admin/service/ThinkAddons.php',
         'app\\admin\\validate\\Ad' => __DIR__ . '/../..' . '/app/admin/validate/Ad.php',
         'app\\admin\\validate\\AdType' => __DIR__ . '/../..' . '/app/admin/validate/AdType.php',
@@ -1799,7 +1804,6 @@ class ComposerStaticInit53794ed0c79a444f8545feeb6d80c286
         'think\\validate\\ValidateRule' => __DIR__ . '/..' . '/topthink/framework/src/think/validate/ValidateRule.php',
         'think\\view\\driver\\Php' => __DIR__ . '/..' . '/topthink/framework/src/think/view/driver/Php.php',
         'think\\view\\driver\\Think' => __DIR__ . '/..' . '/topthink/think-view/src/Think.php',
-        'tp5er\\Backup' => __DIR__ . '/..' . '/tp5er/tp5-databackup/src/Backup.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

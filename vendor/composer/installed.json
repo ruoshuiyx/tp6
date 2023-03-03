@@ -1379,17 +1379,17 @@
         },
         {
             "name": "phpoffice/phpspreadsheet",
-            "version": "1.27.0",
-            "version_normalized": "1.27.0.0",
+            "version": "1.28.0",
+            "version_normalized": "1.28.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "eeb8582f9cabf5a7f4ef78015691163233a1834f"
+                "reference": "6e81cf39bbd93ebc3a4e8150444c41e8aa9b769a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/eeb8582f9cabf5a7f4ef78015691163233a1834f",
-                "reference": "eeb8582f9cabf5a7f4ef78015691163233a1834f",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/6e81cf39bbd93ebc3a4e8150444c41e8aa9b769a",
+                "reference": "6e81cf39bbd93ebc3a4e8150444c41e8aa9b769a",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -1422,7 +1422,7 @@
                 "psr/simple-cache": "^1.0 || ^2.0 || ^3.0"
             },
             "require-dev": {
-                "dealerdirect/phpcodesniffer-composer-installer": "dev-master",
+                "dealerdirect/phpcodesniffer-composer-installer": "dev-main",
                 "dompdf/dompdf": "^1.0 || ^2.0",
                 "friendsofphp/php-cs-fixer": "^3.2",
                 "mitoteam/jpgraph": "^10.2.4",
@@ -1441,7 +1441,7 @@
                 "mpdf/mpdf": "Option for rendering PDF with PDF Writer",
                 "tecnickcom/tcpdf": "Option for rendering PDF with PDF Writer"
             },
-            "time": "2023-01-24T20:07:45+00:00",
+            "time": "2023-02-25T12:24:49+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -1487,7 +1487,7 @@
             ],
             "support": {
                 "issues": "https://github.com/PHPOffice/PhpSpreadsheet/issues",
-                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/1.27.0"
+                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/1.28.0"
             },
             "install-path": "../phpoffice/phpspreadsheet"
         },
@@ -3012,55 +3012,6 @@
             ],
             "description": "thinkphp template driver",
             "install-path": "../topthink/think-view"
-        },
-        {
-            "name": "tp5er/tp5-databackup",
-            "version": "2.0.0",
-            "version_normalized": "2.0.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/tp5er/tp5-databackup.git",
-                "reference": "f492b6c1faf01dd97e4ed689eb47c8b822bb50aa"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/tp5er/tp5-databackup/zipball/f492b6c1faf01dd97e4ed689eb47c8b822bb50aa",
-                "reference": "f492b6c1faf01dd97e4ed689eb47c8b822bb50aa",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require": {
-                "php": ">=5.4.0"
-            },
-            "time": "2021-04-27T01:51:18+00:00",
-            "type": "library",
-            "installation-source": "dist",
-            "autoload": {
-                "psr-4": {
-                    "tp5er\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "tp5er",
-                    "email": "tp5er@qq.com"
-                }
-            ],
-            "description": "Implement the database backup restore",
-            "support": {
-                "issues": "https://github.com/tp5er/tp5-databackup/issues",
-                "source": "https://github.com/tp5er/tp5-databackup/tree/2.0.0"
-            },
-            "install-path": "../tp5er/tp5-databackup"
         },
         {
             "name": "zzstudio/think-addons",
