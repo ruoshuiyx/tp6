@@ -893,7 +893,7 @@ function get_cate_folder()
 function getLinkageData(string $modelName, int $pid = 0, string $pidFieldName = 'pid')
 {
     $model = '\app\common\model\\' . $modelName;
-    if (class_exists($model)) {
+    if (class_exists($model, false)) {
         return $model:: where($pidFieldName, $pid)->select()->toArray();
     }
     return [];

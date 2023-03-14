@@ -58,7 +58,7 @@ class Index extends Base
         $user = \app\common\model\Users::where('create_time', '>', time() - 60 * 60 * 24 * 7)->count();
 
         // 查找待处理留言信息
-        if (class_exists('\app\common\model\Message')) {
+        if (class_exists('\app\common\model\Message', false)) {
             $message = \app\common\model\Message::where('status', '0')->count();
         }
 
