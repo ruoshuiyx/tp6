@@ -114,7 +114,7 @@ abstract class Base
         View::assign(['breadCrumb' => $breadCrumb]);
 
         // 内容管理,获取栏目列表
-        if (class_exists('\app\common\model\Cate', false)) {
+        if (file_exists(app()->getBasePath() . 'common' . DIRECTORY_SEPARATOR . 'model' . DIRECTORY_SEPARATOR . 'Cate.php')) {
             $cates = \app\common\model\Cate::getList();
         }
         View::assign(['cates' => unlimitedForLayer($cates['data'] ?? [])]);
