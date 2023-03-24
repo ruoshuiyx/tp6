@@ -23,6 +23,7 @@
  *                      '.:::::'                    ':'````..
  * +----------------------------------------------------------------------
  */
+
 namespace app\admin\controller;
 
 // 引入框架内置类
@@ -45,7 +46,8 @@ class Cate extends Base
     protected $modelName = 'Cate';
 
     // 列表
-    public function index(){
+    public function index()
+    {
         // 获取主键
         $pk = MakeBuilder::getPrimarykey($this->tableName);
         // 获取列表数据
@@ -53,7 +55,7 @@ class Cate extends Base
         // 获取搜索数据
         $search = MakeBuilder::getListSearch($this->tableName);
         // 获取当前模块信息
-        $model = '\app\common\model\\' . $this->modelName;
+        $model  = '\app\common\model\\' . $this->modelName;
         $module = \app\common\model\Module::where('table_name', $this->tableName)->find();
         // 检测单页模式
         $isSingle = MakeBuilder::checkSingle($this->modelName);
@@ -108,8 +110,8 @@ class Cate extends Base
                 $columns[$k][4] = $this->getModuleIds();
             }
             if ($coloumn[1] == 'parent_id') {
-                $model = '\app\common\model\\' . $this->modelName;
-                $pidOptions = $model::getPidOptions();
+                $model          = '\app\common\model\\' . $this->modelName;
+                $pidOptions     = $model::getPidOptions();
                 $columns[$k][4] = $pidOptions;
                 // 设置父ID默认值
                 if ($parentId) {
@@ -130,13 +132,13 @@ class Cate extends Base
     public function addPost()
     {
         if (Request::isPost()) {
-            $data = MakeBuilder::changeFormData(Request::except(['file'], 'post'), $this->tableName);
+            $data   = MakeBuilder::changeFormData(Request::except(['file'], 'post'), $this->tableName);
             $result = $this->validate($data, $this->validate);
             if (true !== $result) {
                 // 验证失败 输出错误信息
                 $this->error($result);
             } else {
-                $model = '\app\common\model\\' . $this->modelName;
+                $model  = '\app\common\model\\' . $this->modelName;
                 $result = $model::addPost($data);
                 if ($result['error']) {
                     $this->error($result['msg']);
@@ -152,7 +154,7 @@ class Cate extends Base
     public function edit(string $id)
     {
         $model = '\app\common\model\\' . $this->modelName;
-        $info = $model::edit($id)->toArray();
+        $info  = $model::edit($id)->toArray();
         // 获取字段信息
         $columns = MakeBuilder::getAddColumns($this->tableName, $info);
 
@@ -162,8 +164,8 @@ class Cate extends Base
                 $columns[$k][4] = $this->getModuleIds();
             }
             if ($coloumn[1] == 'parent_id') {
-                $model = '\app\common\model\\' . $this->modelName;
-                $pidOptions = $model::getPidOptions();
+                $model          = '\app\common\model\\' . $this->modelName;
+                $pidOptions     = $model::getPidOptions();
                 $columns[$k][4] = $pidOptions;
                 // 设置父ID默认值
                 if ($info['parent_id']) {
@@ -194,8 +196,10 @@ class Cate extends Base
                 // 验证失败 输出错误信息
                 $this->error($result);
             } else {
-                $model = '\app\common\model\\' . $this->modelName;
+                $model  = '\app\common\model\\' . $this->modelName;
                 $result = $model::editPost($data);
+                // 修改为单页模块时尝试对当前栏目进行初始化
+                $this->editSingleCateInit($data);
                 if ($result['error']) {
                     $this->error($result['msg']);
                 } else {
@@ -375,7 +379,7 @@ class Cate extends Base
             ->field('id,module_name')
             ->select()
             ->toArray();
-        $result = [];
+        $result  = [];
         foreach ($modules as &$module) {
             $result[$module['id']] = $module['module_name'];
         }
@@ -398,7 +402,7 @@ class Cate extends Base
         }
         // 查找当前分类的所有子分类
         $cate = \app\common\model\Cate::select()->toArray();
-        $ids = getChildsId($cate, $id);
+        $ids  = getChildsId($cate, $id);
         foreach ($ids as $k => $v) {
             // 删除一个分类的内容
             $this->delCateContent($v['id'], $v['module_id']);
@@ -453,5 +457,35 @@ class Cate extends Base
         }
         return false;
     }
+
+    /**
+     * 修改为单页模块时尝试对当前栏目进行初始化
+     * @param array $data
+     * @return bool
+     */
+    private function editSingleCateInit(array $data = [])
+    {
+        if ($data['id'] && $data['module_id'] == '18') {
+            // 查询当前栏目信息
+            $cate = \app\common\model\Cate::where('id', $data['id'])->find();
+            if ($cate) {
+                // 查询栏目是否已在page表存在
+                $pageNum = \app\common\model\Page::where('cate_id', $cate['id'])->count();
+                if ($pageNum == 0) {
+                    $data = [
+                        'sort'    => 50,
+                        'status'  => 1,
+                        'cate_id' => $cate['id'],
+                        'title'   => $cate['cate_name'],
+                        'content' => '',
+                    ];
+                    \app\common\model\Page::create($data);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 
 }
