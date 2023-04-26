@@ -12,8 +12,8 @@
 // [ 应用入口文件 ]
 namespace think;
 
-if (version_compare(PHP_VERSION, '7.1.0', '<')) {
-    echo '请升级您的PHP版本，要求：PHP >= 7.1.0，当前版本为 ' . PHP_VERSION;
+if (version_compare(PHP_VERSION, '7.2.5', '<')) {
+    echo '请升级您的PHP版本，要求：PHP >= 7.2.5，当前版本为 ' . PHP_VERSION;
     exit;
 }
 
