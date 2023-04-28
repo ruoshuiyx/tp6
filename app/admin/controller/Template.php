@@ -310,9 +310,9 @@ class Template extends Base
     // 媒体文件
     public function img()
     {
-        $path   = $this->template_path . $this->template_img . '/' . Request::param('folder');
-        $folder = Request::param('folder', '');
-        $uppath = explode('/', Request::param('folder'));
+        $folder = str_replace("..", "", Request::param('folder', ''));
+        $path   = $this->template_path . $this->template_img . '/' . $folder;
+        $uppath = explode('/', $folder);
         $leve   = count($uppath) - 1;
         unset($uppath[$leve]);
         if ($leve > 1) {
