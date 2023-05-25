@@ -23,6 +23,7 @@
  *                      '.:::::'                    ':'````..
  * +----------------------------------------------------------------------
  */
+
 namespace app\admin\controller;
 
 use think\App;
@@ -56,14 +57,14 @@ class Upload extends Base
         if (Request::param('from') == 'ckeditor') {
             // 获取上传文件表单字段名
             $fileKey = array_keys(request()->file());
-            $path = [];
+            $path    = [];
             for ($i = 0; $i < count($fileKey); $i++) {
                 // 获取表单上传文件并执行上传操作
                 $uploadFile = $this->uploadFile($fileKey[$i]);
                 if ($uploadFile['code'] == 1) {
                     $path[] = $uploadFile['url'];
                 } else {
-                    $path = [];
+                    $path  = [];
                     $error = $uploadFile['msg'];
                 }
             }
@@ -80,8 +81,8 @@ class Upload extends Base
             } else {
                 // 上传失败
                 $result['uploaded'] = false;
-                $result['url'] = '';
-                $result['message'] = $error;
+                $result['url']      = '';
+                $result['message']  = $error;
                 return json($result);
             }
         } else if ((Request::param('from') == 'ueditor')) {
@@ -91,7 +92,15 @@ class Upload extends Base
                 // webupload [file是webloader固定写入的隐藏文本名称]
                 return json($this->uploadFile('file'));
             } else {
-                return json($this->bigUpload());
+                try {
+                    return json($this->bigUpload());
+                } catch (\Exception $e) {
+                    return json([
+                        'code' => 0,
+                        'msg'  => 'ERROR:' . $e->getMessage(),
+                        'url'  => ''
+                    ]);
+                }
             }
         }
     }
@@ -226,7 +235,7 @@ class Upload extends Base
 
         // 获取上传文件名称
         $fileName = $file->getOriginalName();
-        $oldName = $fileName;
+        $oldName  = $fileName;
         $fileName = iconv('UTF-8', 'gb2312', $fileName);
 
         // 临时上传完整目录信息
@@ -241,7 +250,7 @@ class Upload extends Base
         $uploadPath = $uploadDir . DIRECTORY_SEPARATOR . $fileName;
 
         // Chunking might be enabled
-        $chunk = isset($_REQUEST["chunk"]) ? intval($_REQUEST["chunk"]) : 0;
+        $chunk  = isset($_REQUEST["chunk"]) ? intval($_REQUEST["chunk"]) : 0;
         $chunks = isset($_REQUEST["chunks"]) ? intval($_REQUEST["chunks"]) : 1;
 
         // 清空临时目录
@@ -316,7 +325,7 @@ class Upload extends Base
         rename("{$filePath}_{$chunk}.parttmp", "{$filePath}_{$chunk}.part");
 
         $index = 0;
-        $done = true;
+        $done  = true;
         for ($index = 0; $index < $chunks; $index++) {
             if (!file_exists("{$filePath}_{$index}.part")) {
                 $done = false;
@@ -735,7 +744,7 @@ class Upload extends Base
             'http' => array(
                 //'header' => "Referer:$httpReferer",  //突破防盗链,不可用
                 'user_agent'      => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36', //突破防盗链
-                'follow_location' => false, // don't follow redirects
+                'follow_location' => false,                                                                                                                // don't follow redirects
             ),
         ]);
         $res     = false;
