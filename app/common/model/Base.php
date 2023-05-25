@@ -36,6 +36,7 @@ use app\common\facade\MakeBuilder;
 // 引入导出的命名空间
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 
 class Base extends Model
 {
@@ -287,11 +288,11 @@ class Base extends Model
         // 获取要导出的数据
         $list = $model::getList($where, 0, [$orderByColumn => $isAsc]);
         // 初始化表头数组
-        $str         = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
         $spreadsheet = new Spreadsheet();
         $sheet       = $spreadsheet->getActiveSheet();
         foreach ($columns as $k => $v) {
-            $sheet->setCellValue($str[$k] . '1', $v['1']);
+            $column = Coordinate::stringFromColumnIndex($k+1);
+            $sheet->setCellValue($column . '1', $v['1']);
         }
         $list = isset($list['total']) && isset($list['per_page']) && isset($list['data']) ? $list['data'] : $list;
         foreach ($list as $key => $value) {
@@ -300,7 +301,8 @@ class Base extends Model
                 if (isset($v[4]) && is_array($v[4]) && !empty($v[4])) {
                     $value[$v['0']] = $v[4][$value[$v['0']]];
                 }
-                $sheet->setCellValue($str[$k] . ($key + 2), $value[$v['0']]);
+                $column = Coordinate::stringFromColumnIndex($k+1);
+                $sheet->setCellValue($column . ($key + 2), $value[$v['0']]);
             }
         }
         $moduleName = \app\common\model\Module::where('table_name', $tableNam)->value('module_name');
