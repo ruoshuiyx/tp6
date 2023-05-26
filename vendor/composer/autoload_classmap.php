@@ -1521,6 +1521,7 @@ return array(
     'think\\route\\Dispatch' => $vendorDir . '/topthink/framework/src/think/route/Dispatch.php',
     'think\\route\\Domain' => $vendorDir . '/topthink/framework/src/think/route/Domain.php',
     'think\\route\\Resource' => $vendorDir . '/topthink/framework/src/think/route/Resource.php',
+    'think\\route\\ResourceRegister' => $vendorDir . '/topthink/framework/src/think/route/ResourceRegister.php',
     'think\\route\\Rule' => $vendorDir . '/topthink/framework/src/think/route/Rule.php',
     'think\\route\\RuleGroup' => $vendorDir . '/topthink/framework/src/think/route/RuleGroup.php',
     'think\\route\\RuleItem' => $vendorDir . '/topthink/framework/src/think/route/RuleItem.php',

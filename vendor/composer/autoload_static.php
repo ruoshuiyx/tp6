@@ -119,12 +119,12 @@ class ComposerStaticInit53794ed0c79a444f8545feeb6d80c286
         ),
         'think\\' => 
         array (
-            0 => __DIR__ . '/..' . '/topthink/framework/src/think',
-            1 => __DIR__ . '/..' . '/topthink/think-filesystem/src',
-            2 => __DIR__ . '/..' . '/topthink/think-helper/src',
-            3 => __DIR__ . '/..' . '/topthink/think-orm/src',
-            4 => __DIR__ . '/..' . '/topthink/think-template/src',
-            5 => __DIR__ . '/..' . '/zzstudio/think-addons/src',
+            0 => __DIR__ . '/..' . '/topthink/think-filesystem/src',
+            1 => __DIR__ . '/..' . '/topthink/think-helper/src',
+            2 => __DIR__ . '/..' . '/topthink/think-template/src',
+            3 => __DIR__ . '/..' . '/zzstudio/think-addons/src',
+            4 => __DIR__ . '/..' . '/topthink/think-orm/src',
+            5 => __DIR__ . '/..' . '/topthink/framework/src/think',
         ),
         'clagiordano\\weblibs\\configmanager\\' => 
         array (
@@ -172,8 +172,8 @@ class ComposerStaticInit53794ed0c79a444f8545feeb6d80c286
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -1779,6 +1779,7 @@ class ComposerStaticInit53794ed0c79a444f8545feeb6d80c286
         'think\\route\\Dispatch' => __DIR__ . '/..' . '/topthink/framework/src/think/route/Dispatch.php',
         'think\\route\\Domain' => __DIR__ . '/..' . '/topthink/framework/src/think/route/Domain.php',
         'think\\route\\Resource' => __DIR__ . '/..' . '/topthink/framework/src/think/route/Resource.php',
+        'think\\route\\ResourceRegister' => __DIR__ . '/..' . '/topthink/framework/src/think/route/ResourceRegister.php',
         'think\\route\\Rule' => __DIR__ . '/..' . '/topthink/framework/src/think/route/Rule.php',
         'think\\route\\RuleGroup' => __DIR__ . '/..' . '/topthink/framework/src/think/route/RuleGroup.php',
         'think\\route\\RuleItem' => __DIR__ . '/..' . '/topthink/framework/src/think/route/RuleItem.php',
