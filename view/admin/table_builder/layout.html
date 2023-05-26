@@ -152,9 +152,9 @@
 										var link = '{$column.default|default=''}';
 										var reg = /__(.*?)__/g;
 										// 匹配ID和email，可能为任何的其他参数，但都是 __字段__ 格式
-										while (result = reg.exec(link)) {
-											link = link.replace(result[0], row[result[1]]);
-										}
+										link = link.replace(reg, (match, fieldName) => {
+                                            return row[fieldName] || '';
+                                        });
 										// 拼接
 										link = '<a href="'+link+'" target="{$column.param}">' + value + '</a>';
 										return link;
@@ -194,9 +194,9 @@
                                                 var url = '{$right_button.href|default=''}';
                                                 var reg = /__(.*?)__/g;
                                                 // 匹配ID和email，可能为任何的其他参数，但都是 __字段__ 格式
-                                                while (result = reg.exec(url)) {
-                                                    url = url.replace(result[0], row[result[1]]);
-                                                }
+                                                url = url.replace(reg, (match, fieldName) => {
+                                                    return row[fieldName] || '';
+                                                });
                                                 actions.push('<a class="{$right_button.class|default=''}" target="{$right_button.target|default=''}" href="'+url+'"><i class="{$right_button.icon|default=''}"></i> {$right_button.title|default=''}</a> ');
                                             }else{
                                                 actions.push('<a class="{$right_button.class|default=''}" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.{$unique_id} + '\')"><i class="{$right_button.icon|default=''}"></i> {$right_button.title|default=''}</a> ');
@@ -206,21 +206,31 @@
                                                 var url = '{$right_button.href|default=''}';
                                                 var reg = /__(.*?)__/g;
                                                 // 匹配ID和email，可能为任何的其他参数，但都是 __字段__ 格式
-                                                while (result = reg.exec(url)) {
-                                                    url = url.replace(result[0], row[result[1]]);
-                                                }
+                                                url = url.replace(reg, (match, fieldName) => {
+                                                    return row[fieldName] || '';
+                                                });
                                                 actions.push('<a class="{$right_button.class|default=''}" target="{$right_button.target|default=''}" href="'+url+'"><i class="{$right_button.icon|default=''}"></i> {$right_button.title|default=''}</a> ');
                                             }else{
                                                 actions.push('<a class="{$right_button.class|default=''}" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.{$unique_id} + '\')"><i class="{$right_button.icon|default=''}"></i> {$right_button.title|default=''}</a> ');
                                             }
 										} else {
-											var url = '{$right_button.href|default=''}';
-											var reg = /__(.*?)__/g;
-											// 匹配ID和email，可能为任何的其他参数，但都是 __字段__ 格式
-											while (result = reg.exec(url)) {
-												url = url.replace(result[0], row[result[1]]);
-											}
-											actions.push('<a class="{$right_button.class|default=''}" target="{$right_button.target|default=''}" href="'+url+'"><i class="{$right_button.icon|default=''}"></i> {$right_button.title|default=''}</a> ');
+                                            if('{$right_button.href|default=''}'){
+                                                var url = '{$right_button.href|default=''}';
+                                                var reg = /__(.*?)__/g;
+                                                // 匹配ID和email，可能为任何的其他参数，但都是 __字段__ 格式
+                                                url = url.replace(reg, (match, fieldName) => {
+                                                    return row[fieldName] || '';
+                                                });
+                                                actions.push('<a class="{$right_button.class|default=''}" target="{$right_button.target|default=''}" href="'+url+'"><i class="{$right_button.icon|default=''}"></i> {$right_button.title|default=''}</a> ');
+                                            } else {
+                                                var onclick = '{$right_button.onclick|default=''}'
+                                                var reg = /__(.*?)__/g;
+                                                // 匹配ID和email，可能为任何的其他参数，但都是 __字段__ 格式
+                                                onclick = onclick.replace(reg, (match, fieldName) => {
+                                                    return row[fieldName] || '';
+                                                });
+                                                actions.push('<a class="{$right_button.class|default=''}" href="javascript:void(0)" onclick="'+onclick+'"><i class="{$right_button.icon|default=''}"></i> {$right_button.title|default=''}</a> ');
+                                            }
 										}
 
 										{/volist}
