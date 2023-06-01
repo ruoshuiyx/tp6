@@ -159,7 +159,7 @@ class TableBuilder
         if ($key != '') {
             $this->_vars['unique_id'] = $key;
             # 可以省略主键非id时，需要设置排序字段，如果已经setSortName设置排序字段非id，则不修改
-            $this->_vars['sort_name'] = $this->_vars['sort_name'] != 'id' ?? $key; 
+            $this->_vars['sort_name'] = $this->_vars['sort_name'] != 'id' ? $this->_vars['sort_name'] : $key; 
         }
         return $this;
     }
