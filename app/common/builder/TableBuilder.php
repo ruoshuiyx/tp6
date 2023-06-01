@@ -59,6 +59,8 @@ class TableBuilder
         'right_buttons'    => [],          // 表格右侧按钮
         'top_buttons'      => [],          // 顶部栏按钮组[toolbar]
         'unique_id'        => 'id',        // 表格主键名称（默认为id，如表主键不为id必须设置主键）
+        'sort_name'        => 'id',        // 表格排序字段名称（默认为id，如表排序字段名称不为id必须设置排序字段名称）
+        'sort_order'       => 'desc',      // 表格默认排序方式（默认为desc）
         'data_url'         => '',          // 表格数据源
         'add_url'          => '',          // 默认的新增地址
         'edit_url'         => '',          // 默认的修改地址
@@ -156,6 +158,34 @@ class TableBuilder
     {
         if ($key != '') {
             $this->_vars['unique_id'] = $key;
+            # 可以省略主键非id时，需要设置排序字段，如果已经setSortName设置排序字段非id，则不修改
+            $this->_vars['sort_name'] = $this->_vars['sort_name'] != 'id' ?? $key; 
+        }
+        return $this;
+    }
+
+    /**
+     * 设置排序字段
+     * @param string $sort_name 排序字段名
+     * @return $this
+     */
+    public function setSortName($sort_name = '')
+    {
+        if ($sort_name != '') {
+            $this->_vars['sort_name'] = $sort_name;
+        }
+        return $this;
+    }
+
+    /**
+     * 设置排序方式
+     * @param string $sort_order 排序方式asc desc
+     * @return $this
+     */
+    public function setSortOrder($sort_order = '')
+    {
+        if ($sort_order != '') {
+            $this->_vars['sort_order'] = $sort_order;
         }
         return $this;
     }
