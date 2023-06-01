@@ -58,10 +58,10 @@ class AuthRule extends Base
         $model  = '\app\common\model\\' . $this->modelName;
         $module = \app\common\model\Module::where('table_name', $this->tableName)->find();
         // 搜索
+        $orderByColumn = Request::param('orderByColumn') ?? 'sort';
+        $isAsc         = Request::param('isAsc') ?? 'asc';
         if (Request::param('getList') == 1) {
             $where         = MakeBuilder::getListWhere($this->tableName);
-            $orderByColumn = Request::param('orderByColumn') ?? $pk;
-            $isAsc         = Request::param('isAsc') ?? 'desc';
             return $model::getList($where, $this->pageSize, [$orderByColumn => $isAsc]);
         }
         // 检测单页模式
@@ -74,6 +74,8 @@ class AuthRule extends Base
         // 构建页面
         return TableBuilder::getInstance()
             ->setUniqueId($pk)                              // 设置主键
+            ->setSortName($orderByColumn)                   // 设置排序字段
+            ->setSortOrder($isAsc)                          // 设置排序方式
             ->addColumns($columns)                          // 添加列表字段数据
             ->setSearch($search)                            // 添加头部搜索
             ->addColumn('right_button', '操作', 'btn')      // 启用右侧操作列
