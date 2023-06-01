@@ -269,7 +269,12 @@ class MakeBuilder
                 } else {
                     $format = $field['setup']['format'] ?: 'Y-m-d H:i:s';
                 }
-                $field['setup']['default'] = is_int($field['setup']['default']) ? date($format, $field['setup']['default']) : $field['setup']['default'];
+                // $field['setup']['default'] = is_int($field['setup']['default']) ? date($format, $field['setup']['default']) : $field['setup']['default'];
+                // 使时间默认值0的情况下不进行日期格式化
+                $default = $field['setup']['default'];
+                if (is_int($default) && $default > 0) {
+                    $field['setup']['default'] = date($format, $default);
+                }
                 $columns[]                 = [
                     $field['type'],                // 类型
                     $field['field'],               // 字段名称
