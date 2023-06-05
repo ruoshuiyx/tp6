@@ -167,6 +167,23 @@
 										}
 									}
 									{/case}
+                                    {case images }
+                                    formatter: function(value, row, index) {
+                                        value = value.replace(/&quot;/g, '"');
+                                        var images = JSON.parse(value);
+                                        if (Array.isArray(images) && images.length > 0) {
+                                            var html = '';
+                                            for (var i = 0; i < images.length; i++) {
+                                                var imageUrl = images[i].image;
+                                                if (imageUrl) {
+                                                    html += '<a href="' + imageUrl + '" target="_blank"><img class="image_preview" src="' + imageUrl + '"></a>';
+                                                }
+                                            }
+                                            return html;
+                                        }
+
+                                    }
+                                    {/case}
                                     {case color }
                                     formatter: function(value, row, index) {
                                         if ($.common.isNotEmpty(value)) {
