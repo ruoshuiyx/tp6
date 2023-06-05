@@ -17,7 +17,8 @@ class Base extends Model
         $menus = [];
         // 查找一级
         foreach ($authRule as $key => $val) {
-            $authRule[$key]['href'] = (string)url($val['name']);
+            parse_str($val['param'], $params);
+            $authRule[$key]['href'] = (string)url($val['name'], $params);
             if ($val['pid'] == 0) {
                 if (Session::get('admin.id') != 1) {
                     if (in_array($val['id'], Session::get('admin.rules', []))) {
