@@ -808,8 +808,10 @@ class MakeBuilder
                     $images = [];
                     for ($i = 0; $i < count($formData[$k]); $i++) {
                         if ($formData[$k][$i]) {
-                            $images[$i]['image'] = $formData[$k][$i];
-                            $images[$i]['title'] = $formData[$k . '_title'][$i];
+                            array_push($images, array(
+                                'image' => $formData[$k][$i],
+                                'title' => $formData[$k . '_title'][$i]
+                            ));
                         }
                     }
                     $formData[$k] = json_encode($images);
