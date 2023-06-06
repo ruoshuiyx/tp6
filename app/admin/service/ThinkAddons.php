@@ -19,6 +19,7 @@
 namespace app\admin\service;
 
 use think\Facade;
+use think\facade\Cache;
 use think\facade\Config;
 use think\facade\Db;
 use RecursiveDirectoryIterator;
@@ -221,6 +222,10 @@ class ThinkAddons
                 'msg'  => '插件实例化失败',
             ];
         }
+
+        // 清空插件缓存
+        Cache::delete('hooks');
+
         return [
             'code' => 1,
             'msg'  => '插件安装成功',
@@ -246,6 +251,10 @@ class ThinkAddons
                     'msg'  => $result['msg'],
                 ];
             } else {
+
+                // 清空插件缓存
+                Cache::delete('hooks');
+
                 return [
                     'code' => 1,
                     'msg'  => '插件卸载成功',
@@ -290,6 +299,10 @@ class ThinkAddons
                 'msg'  => '插件实例化失败',
             ];
         }
+
+        // 清空插件缓存
+        Cache::delete('hooks');
+
         return [
             'code' => 1,
             'msg'  => '状态变动成功',
