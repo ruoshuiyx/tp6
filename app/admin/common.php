@@ -245,7 +245,10 @@ function format_bread_crumb($data)
         if (empty($cateId)) {
             $model = '\app\common\model\\' . $module->model_name;
             if ($module['pk'] && \think\facade\Request::param('id')) {
-                $cateId = $model::where($module['pk'], \think\facade\Request::param('id'))->value('cate_id');
+                $cateIdArr = $model::where($module['pk'], \think\facade\Request::param('id'))->find();
+                if(isset($cateIdArr['cate_id'])){
+                    $cateId=$cateIdArr['cate_id'];
+                }
             }
         }
 
