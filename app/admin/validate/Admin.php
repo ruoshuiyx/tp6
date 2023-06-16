@@ -36,6 +36,7 @@ class Admin extends Validate
         ],
         'username|用户名' => [
             'require' => 'require',
+            'unique' => 'admin,username',
             'max' => '25',
             'min' => '4',
         ],
