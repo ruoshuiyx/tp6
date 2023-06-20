@@ -23,7 +23,7 @@
             })
     </script>
 </head>
-<body>
+<body onLoad="reload()">
 {if $mobile==false }
 <style>
     html, body {
@@ -189,7 +189,13 @@
             });
 
         })
-    })
+    });
+    function reload(){
+        $("input[name='username']").focus();
+        if(self != top){
+            window.top.location.href = "{:url('Login/index')}";
+        }
+    }
 </script>
 </body>
 
