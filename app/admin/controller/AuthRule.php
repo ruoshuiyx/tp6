@@ -83,7 +83,8 @@ class AuthRule extends Base
                 'title' => '添加',
                 'icon'  => 'fa fa-plus',
                 'class' => 'btn btn-success btn-xs',
-                'href'  => url('add', ['pid' => '__id__'])
+                'href'  => '',
+                'onclick' => '$.modal.open("添加", "'.url('add', ['_layer' => 1, 'pid' => '__id__']).'");'
             ])
             ->addRightButtons($module->right_button)        // 设置右侧操作列
             ->addTopButtons($module->top_button)            // 设置顶部按钮组
