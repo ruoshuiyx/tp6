@@ -45,6 +45,7 @@
                 fixedLeft     : {$fixed_left},          // 左侧固定列数
                 fixedRight    : {$fixed_right},         // 右侧固定列数
                 columns: [
+                    {if !$hide_checkbox}
                     {
                         //field: 'state',
                         checkbox: true,
@@ -57,6 +58,7 @@
 							 }
 						}
                     },
+                    {/if}
                     {volist name="columns" id="column"}
                         {
                             field: '{$column.name|default=''}',  {// 字段名称}
