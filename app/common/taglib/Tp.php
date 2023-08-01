@@ -188,7 +188,7 @@ class Tp extends TagLib
     // 通用列表
     public function tagList($tag, $content)
     {
-        $id     = $tag['id'] ?? '0';                         // 可以为空
+        $id     = $tag['id'] ?? '';                          // 可以为空
         $name   = $tag['name'] ?? "list";                    // 不可为空
         $order  = $tag['order'] ?? 'sort ASC,id DESC';       // 排序
         $limit  = $tag['limit'] ?? '0';                      // 多少条数据,传递时不再进行分页
@@ -200,12 +200,21 @@ class Tp extends TagLib
         $parse    = '<?php ';
         $parse    .= '
             $list       = [];
-            $__CATEID__ = ' . $id . ' ? ' . $id . ' : getCateId();
-            $__CATE__   = \app\common\model\Cate::with([\'module\'])->find($__CATEID__);
+            $__CATEID__ = "' . $id . '" ?: getCateId();
+            
+            $__IDS__PARAM__ = "";
+            if (strpos($__CATEID__, ",") !== false) {
+                $__IDS__PARAM__ = $__CATEID__;
+                $__CATEID__ARR__ = explode(",", $__CATEID__);
+                $__CATE__ = \app\common\model\Cate::with([\'module\'])->find($__CATEID__ARR__[0]);
+            } else {
+                 $__CATE__   = \app\common\model\Cate::with([\'module\'])->find($__CATEID__);
+            }
+            
             $__SEARCH__ = getSearchField(\'' . $search . '\');
             // 查询子分类,列表要包含子分类内容
             $__ALLCATE__ = \app\common\model\Cate::field(\'id,parent_id\')->select()->toArray();
-            $__IDS__ = getChildsIdStr(getChildsId($__ALLCATE__,$__CATEID__),$__CATEID__);
+            $__IDS__ = $__IDS__PARAM__ ?: getChildsIdStr(getChildsId($__ALLCATE__,$__CATEID__),$__CATEID__);
             // 表名称为空时（id不存在）直接返回空数组
             if ($__CATE__ && !empty($__CATE__->module->getData(\'table_name\'))) {
                 $__MODEL__ = \'\app\common\model\\\\\' . $__CATE__->module->getData(\'model_name\');
