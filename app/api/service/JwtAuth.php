@@ -1,10 +1,12 @@
 <?php
+
 namespace app\api\service;
 
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Lcobucci\JWT\ValidationData;
+use think\Exception;
 
 /**
  * 单例 一次请求中所有出现jwt的地方都是一个用户
@@ -29,7 +31,7 @@ class JwtAuth
     private $uid;
 
     // secrect
-    private $secrect = '1faASDF3';
+    private $secrect;
 
     // decode token
     private $decodeToken;
@@ -43,13 +45,17 @@ class JwtAuth
         if (is_null(self::$instance)) {
             self::$instance = new self();
         }
-        return self::$instance;
+        $jwtAuth = self::$instance;
+        if ($jwtAuth->secrect == '1faASDF3') {
+            throw new Exception('jwt密钥不可以为默认值，请在env文件中设置[JWT_SECRECT]', 400);
+        }
+        return $jwtAuth;
     }
 
     // 私有化构造函数
     private function __construct()
     {
-
+        $this->secrect = env('jwt_secrect', '1faASDF3');
     }
 
     // 私有化clone函数
@@ -87,7 +93,7 @@ class JwtAuth
     // 编码jwt token
     public function encode()
     {
-        $time = time();
+        $time        = time();
         $this->token = (new Builder())->setHeader('alg', 'HS256')
             ->setIssuer($this->iss)
             ->setAudience($this->aud)
@@ -104,7 +110,7 @@ class JwtAuth
     {
         if (!$this->decodeToken) {
             $this->decodeToken = (new Parser())->parse((string)$this->token); // Parses from a string
-            $this->uid = $this->decodeToken->getClaim('uid');
+            $this->uid         = $this->decodeToken->getClaim('uid');
         }
         return $this->decodeToken;
     }
