@@ -299,7 +299,24 @@ class Base extends Model
             foreach ($columns as $k => $v) {
                 // 修正字典数据
                 if (isset($v[4]) && is_array($v[4]) && !empty($v[4])) {
-                    $value[$v['0']] = $v[4][$value[$v['0']]];
+                    // 将$value[$v['0']]中的字符串分割成数组，数组去重
+                    $uniqueKeys = array_unique(explode(',', trim($value[$v['0']], ',')));
+                    // 初始化一个空字符串用于连接结果
+                    $str = '';
+
+                    // 遍历$aaArray中的每个元素
+                    foreach($uniqueKeys as $val){
+                        // 查找对应值在$bb中的对应项
+                        if(array_key_exists($val, $v[4])){
+                            // 将找到的对应项连接到结果字符串中
+                            $str .= $v[4][$val] . ',';
+                        }
+                    }
+
+                    // 去掉最后一个逗号
+                    $str = rtrim($str, ',');
+                    $value[$v['0']] = $str;
+                    // $value[$v['0']] = $v[4][$value[$v['0']]];
                 }
                 $column = Coordinate::stringFromColumnIndex($k+1);
                 $sheet->setCellValue($column . ($key + 2), $value[$v['0']]);
