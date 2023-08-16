@@ -117,7 +117,7 @@ class Base extends Model
             }
             // 当前模型搜索
             if ($whereNew) {
-                $model = $model->where($where);
+                $model = $model->where($whereNew);
             }
         }
 
