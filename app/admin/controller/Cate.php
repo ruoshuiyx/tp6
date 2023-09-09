@@ -239,9 +239,22 @@ class Cate extends Base
         // 额外js
         $js = '<script type="text/javascript">
                 // 增加一行
-                $(document).on("click", \'.js_add_row\', function () {
+                $(document).on("click", \'.js_add_row\', function () {                    
                     var html = $(\'.js_cates\').html();
+                    // 获取最后一行的信息
+                    var lastSortValue = $("form :input[name=\'sort[]\']").last().val();
+                    var lastModuleId = $("form :input[name=\'module_id[]\']").last().val();
+                    var lastParentId = $("form :input[name=\'parent_id[]\']").last().val();
+                    // 追加
                     $(\'.js_cates_content\').append(html);
+                    // 设置新的一行的默认信息
+                    $("form :input[name=\'sort[]\']").last().val(lastSortValue * 1 + 1);
+                    if (lastModuleId * 1 > 0){
+                        $("form :input[name=\'module_id[]\']").last().val(lastModuleId);
+                    }
+                    if (lastParentId * 1 > 0){
+                        $("form :input[name=\'parent_id[]\']").last().val(lastParentId);
+                    }
                 })
                 // 刪除一行
                 $(document).on("click", \'.js_del_row\', function () {
