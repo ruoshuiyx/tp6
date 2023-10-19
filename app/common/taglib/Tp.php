@@ -370,7 +370,7 @@ class Tp extends TagLib
                     }
                     // 处理上一篇中的URL
                     $__PREV__[\'url\'] = getShowUrl($__PREV__);
-                    $__PREV__ = "<a class=\"prev\" title=\" ".$__PREV__[\'title\']." \" href=\" ".$__PREV__[\'url\']." \">".$__PREV__[\'title\']."</a>";
+                    $__PREV__ = "<a class=\"prev\" title=\"".$__PREV__[\'title\']."\" href=\"".$__PREV__[\'url\']."\">".$__PREV__[\'title\']."</a>";
                 }else{
                     $__PREV__ = "<a class=\"prev_no\" href=\"javascript:;\">' . $noData . '</a>";
                 }
@@ -390,24 +390,24 @@ class Tp extends TagLib
                 $__CATEID__ = getCateId();
                 $__CATE__   = \app\common\model\Cate::find($__CATEID__);
                 $__MODEL__  = \'\app\common\model\\\\\' . $__CATE__->module->getData(\'model_name\');
-                $__PREV__   = $__MODEL__::where(\'cate_id\',$__CATEID__)
+                $__NEXT__   = $__MODEL__::where(\'cate_id\',$__CATEID__)
                     ->where(\'id\',\'>\',input(\'id\'))
                     ->where(\'status\',\'=\',1)
                     ->field(\'id,cate_id,title\')
                     ->order(\'id ASC\')
                     ->find();
-                if($__PREV__){
+                if($__NEXT__){
                     //处理字数
                     if(' . $len . '<>500){
-                       $__PREV__[\'title\'] = mb_substr($__PREV__[\'title\'],0,' . $len . ');
+                       $__NEXT__[\'title\'] = mb_substr($__NEXT__[\'title\'],0,' . $len . ');
                     }
                     //处理上一篇中的URL
-                    $__PREV__[\'url\'] = getShowUrl($__PREV__);
-                    $__PREV__ = "<a class=\"prev\" title=\" ".$__PREV__[\'title\']." \" href=\" ".$__PREV__[\'url\']." \">".$__PREV__[\'title\']."</a>";
+                    $__NEXT__[\'url\'] = getShowUrl($__NEXT__);
+                    $__NEXT__ = "<a class=\"next\" title=\"".$__NEXT__[\'title\']."\" href=\"".$__NEXT__[\'url\']."\">".$__NEXT__[\'title\']."</a>";
                 }else{
-                    $__PREV__ = "<a class=\"prev_no\" href=\"javascript:;\">' . $noData . '</a>";
+                    $__NEXT__ = "<a class=\"next_no\" href=\"javascript:;\">' . $noData . '</a>";
                 }
-                echo $__PREV__;
+                echo $__NEXT__;
                 ';
         $str    .= '?>';
         return $str;
