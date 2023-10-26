@@ -713,7 +713,13 @@
                     $.operate.submit(url, "post", "json", data);
                 });
             },
-
+            // 恢复数据库
+            databaseRestore: function (id, url) {
+                $.modal.confirm("确认要恢复数据库吗?", function () {
+                    var data = {"id": id};
+                    $.operate.submit(url, "post", "json", data);
+                });
+            },
             // 提交数据
             submit: function (url, type, dataType, data, callback) {
                 var config = {
