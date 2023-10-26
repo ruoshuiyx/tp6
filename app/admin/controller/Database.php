@@ -263,11 +263,11 @@ class Database extends Base
             ->setPagination('false')// 关闭分页显示
             ->addColumn('right_button', '操作', 'btn')
             ->addTopButtons('del')
-            ->addRightButton('info', [
                 'title' => '恢复',
                 'icon'  => 'fa fa-exclamation-triangle',
                 'class' => 'btn btn-flat btn-warning btn-xs confirm',
-                'href'  => url('import', ['id' => '__time__'])
+                'href'  => '',
+                'onclick' => '$.operate.databaseRestore("__time__","'.url('import').'");'
             ]) // 添加额外按钮
             ->addRightButton('info', [
                 'title' => '下载',
