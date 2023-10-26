@@ -401,7 +401,7 @@ class Tp extends TagLib
                     if(' . $len . '<>500){
                        $__NEXT__[\'title\'] = mb_substr($__NEXT__[\'title\'],0,' . $len . ');
                     }
-                    //处理上一篇中的URL
+                    //处理下一篇中的URL
                     $__NEXT__[\'url\'] = getShowUrl($__NEXT__);
                     $__NEXT__ = "<a class=\"next\" title=\"".$__NEXT__[\'title\']."\" href=\"".$__NEXT__[\'url\']."\">".$__NEXT__[\'title\']."</a>";
                 }else{
