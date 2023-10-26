@@ -263,6 +263,7 @@ class Database extends Base
             ->setPagination('false')// 关闭分页显示
             ->addColumn('right_button', '操作', 'btn')
             ->addTopButtons('del')
+            ->addRightButton('database_restore', [
                 'title' => '恢复',
                 'icon'  => 'fa fa-exclamation-triangle',
                 'class' => 'btn btn-flat btn-warning btn-xs confirm',
