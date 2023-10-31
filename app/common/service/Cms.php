@@ -100,8 +100,8 @@ class Cms
     {
         $result                = [];
         $result['title']       = $cate['cate_name'] ?: $cate['catname'];                           // 标题
-        $result['keywords']    = $info['keywords'] ?: ($cate['keywords'] ?: $system['key']);       // 关键词
-        $result['description'] = $info['description'] ?: ($cate['description'] ?: $system['des']); // 描述
+        $result['keywords']    = isset($info['keywords']) && $info['keywords'] ? $info['keywords'] : ($cate['keywords'] ?: $system['key']);       // 关键词
+        $result['description'] = isset($info['description']) && $info['description'] ? $info['description'] : ($cate['description'] ?: $system['des']); // 描述
         return $result;
     }
 
@@ -114,7 +114,7 @@ class Cms
      */
     public function getInfoView($info, $cate, string $tableName)
     {
-        return $info['template'] ? str_replace('.html', '', $info['template']) :
+        return isset($info['template']) && $info['template'] ? str_replace('.html', '', $info['template']) :
             ($cate['template_show'] ? str_replace('.html', '', $cate['template_show']) : $tableName . '_show');
     }
 
