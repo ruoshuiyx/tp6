@@ -71,6 +71,13 @@ class AuthRule extends Base
         }
         // 获取新增地址
         $addUlr = MakeBuilder::getAddUrl($this->tableName);
+        // 判断是否是弹出窗口，添加要打开的地址
+        $layer_open = \think\facade\Config::get('builder.layer_open', false);
+        if($layer_open){
+            $add_url = '$.modal.open("添加", "'.url('add', ['_layer' => 1, 'pid' => '__id__']).'");';
+        } else {
+            $add_url = '$.common.jump("'.url('add', ['pid' => '__id__']).'");';
+        }
         // 构建页面
         return TableBuilder::getInstance()
             ->setUniqueId($pk)                              // 设置主键
@@ -84,7 +91,7 @@ class AuthRule extends Base
                 'icon'  => 'fa fa-plus',
                 'class' => 'btn btn-success btn-xs',
                 'href'  => '',
-                'onclick' => '$.modal.open("添加", "'.url('add', ['_layer' => 1, 'pid' => '__id__']).'");'
+                'onclick' => $add_url
             ])
             ->addRightButtons($module->right_button)        // 设置右侧操作列
             ->addTopButtons($module->top_button)            // 设置顶部按钮组
