@@ -66,6 +66,13 @@ class Cate extends Base
         if (Request::param('getList') == 1) {
             return $model::getList();
         }
+        // 判断是否是弹出窗口，添加要打开的地址
+        $layer_open = \think\facade\Config::get('builder.layer_open', false);
+        if($layer_open){
+            $add_url = '$.modal.open("添加", "'.url('Cate/add', ['_layer' => 1, 'parentId' => '__id__']).'");';
+        } else {
+            $add_url = '$.common.jump("'.url('Cate/add', ['parentId' => '__id__']).'");';
+        }
         // 构建页面
         return TableBuilder::getInstance()
             ->setUniqueId($pk)                              // 设置主键
@@ -76,7 +83,8 @@ class Cate extends Base
                 'title' => '添加',
                 'icon'  => 'fa fa-plus',
                 'class' => 'btn btn-success btn-xs',
-                'href'  => url('add', ['parentId' => '__id__'])
+                'href'  => '',
+                'onclick' => $add_url
             ])
             ->addRightButtons($module->right_button)        // 设置右侧操作列
             ->addTopButtons($module->top_button)            // 设置顶部按钮组
