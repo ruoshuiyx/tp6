@@ -238,7 +238,19 @@
                                                 var reg = /__(.*?)__/g;
                                                 // 匹配ID和email，可能为任何的其他参数，但都是 __字段__ 格式
                                                 url = url.replace(reg, (match, fieldName) => {
-                                                    return row[fieldName] || '';
+                                                    // 判断fieldName是否包含.号，并且.号只出现一次
+                                                    if (fieldName.indexOf('.') > 0 && fieldName.indexOf('.') === fieldName.lastIndexOf('.')) {
+                                                        var parts = fieldName.split('.');
+                                                        if (row && row[parts[0]] && row[parts[0]][parts[1]]) {
+                                                            // 如果 row 和所需的属性都存在，则访问该属性
+                                                            return row[parts[0]][parts[1]];
+                                                        } else {
+                                                            // 否则，将 value 设置为空字符串
+                                                            return '';
+                                                        }
+                                                    } else {
+                                                        return row[fieldName] || '';
+                                                    }
                                                 });
                                                 actions.push('<a class="{$right_button.class|default=''}" target="{$right_button.target|default=''}" href="'+url+'"><i class="{$right_button.icon|default=''}"></i> {$right_button.title|default=''}</a> ');
                                             } else {
@@ -246,7 +258,19 @@
                                                 var reg = /__(.*?)__/g;
                                                 // 匹配ID和email，可能为任何的其他参数，但都是 __字段__ 格式
                                                 onclick = onclick.replace(reg, (match, fieldName) => {
-                                                    return row[fieldName] || '';
+                                                    // 判断fieldName是否包含.号，并且.号只出现一次
+                                                    if (fieldName.indexOf('.') > 0 && fieldName.indexOf('.') === fieldName.lastIndexOf('.')) {
+                                                        var parts = fieldName.split('.');
+                                                        if (row && row[parts[0]] && row[parts[0]][parts[1]]) {
+                                                            // 如果 row 和所需的属性都存在，则访问该属性
+                                                            return row[parts[0]][parts[1]];
+                                                        } else {
+                                                            // 否则，将 value 设置为空字符串
+                                                            return '';
+                                                        }
+                                                    } else {
+                                                        return row[fieldName] || '';
+                                                    }
                                                 });
                                                 actions.push('<a class="{$right_button.class|default=''}" href="javascript:void(0)" onclick="'+onclick+'"><i class="{$right_button.icon|default=''}"></i> {$right_button.title|default=''}</a> ');
                                             }
