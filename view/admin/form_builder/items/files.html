@@ -31,12 +31,14 @@
         <div id="fileList_{$form[type].name}" class="uploader-list"></div>
         <div id="filePicker_{$form[type].name}"><i class="fa fa-upload m-r-10"></i>选择文件</div>
         <!--上传图片-->
-        {notempty name="form[type].tips"}
+    </div>
+    {notempty name="form[type].tips"}
+    <div class="col-12 offset-sm-2 offset-md-2 offset-lg-0 offset-xl-0 col-sm-10 col-md-10 col-lg-2 col-xl-4 dd_ts">
         <small class="text-muted">
             <i class="fa fa-info-circle"></i> {$form[type].tips|raw}
         </small>
-        {/notempty}
     </div>
+    {/notempty}
 </div>
 <script type="text/javascript">
     webupload('fileList_{$form[type].name}', 'filePicker_{$form[type].name}', '{$form[type].name}_preview', '{$form[type].name}', true, '{$system.upload_file_ext|default=""}', '{$system.upload_file_size|default="0"}', 'file');
