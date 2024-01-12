@@ -796,6 +796,9 @@ class MakeBuilder
             if (array_key_exists($k, $fieldsNew)) {
                 // 改变日期等格式
                 if ($fieldsNew[$k]['type'] == 'date' || $fieldsNew[$k]['type'] == 'time' || $fieldsNew[$k]['type'] == 'datetime') {
+                    if($fieldsNew[$k]['setup']['format']== 'Y'){
+                        $v = $v . '-01';
+                    }
                     $formData[$k] = strtotime($v);
                 } else if ($fieldsNew[$k]['type'] == 'password') {
                     // 密码为空则不做修改，不为空则做md5处理
