@@ -51,7 +51,7 @@ label{margin-bottom: 0;}
 .pace-primary .pace .pace-progress{background: #dd4b39;}
 .pace .pace-progress{height: 1px;background: #dd4b39;-moz-box-shadow: 1px 1px 8px #333333;-webkit-box-shadow: 1px 1px 8px #333333;box-shadow: 1px 1px 8px #333333;}
 /* select2 */
-.select2-container{display: inline-block;}
+.select2-container{display: inline-block;width: 100% !important;}
 /* primary颜色重定义 */
 .bg-primary, .badge-primary{background-color: #3c8dbc !important;}
 .navbar-primary{background-color: #3c8dbc;}
